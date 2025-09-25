@@ -1,0 +1,37 @@
+@page "/products/create"
+@using Rise.Shared.Identity
+@* @attribute [Authorize(Roles = AppRoles.Administrator)] *@
+
+<h3 class="title">Create a new product</h3>
+
+@if (_result is not null && !_result.IsSuccess)
+{
+    <div class="notification is-danger">@string.Join("\n", _result.Errors)</div>
+}
+
+<EditForm Model="@Model" OnValidSubmit="@CreateProductAsync">
+    <FluentValidationValidator/>
+    
+    <div class="field">
+        <p class="control">
+            <InputText @bind-Value="Model.Name" class="input" placeholder="Name"/>
+        </p>
+        <ValidationMessage For="() => Model.Name" class="has-text-danger"/>
+    </div>
+    
+    <div class="field">
+        <p class="control">
+            <InputTextArea @bind-Value="Model.Description" class="textarea" placeholder="Description" rows="3"/>
+        </p>
+        <ValidationMessage For="() => Model.Description" class="has-text-danger"/>
+    </div>
+    
+    <div class="field is-grouped is-grouped-right">
+        <p class="control">
+            <button class="button is-light" type="submit">Create</button>
+        </p>
+        <p class="control">
+            <button type="reset" href="register" class="button is-light">Reset</button>
+        </p>
+    </div>
+</EditForm>

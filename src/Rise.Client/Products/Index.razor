@@ -1,0 +1,41 @@
+﻿@page "/product"
+@using Rise.Shared.Identity
+
+<PageTitle>Products</PageTitle>
+
+<h1 class="title">Products</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<AuthorizeView Roles="@AppRoles.Administrator">
+    <div class="is-flex is-justify-content-flex-end">
+        <a href="products/create" class="button is-dark">Create</a>
+    </div>
+</AuthorizeView>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table is-fullwidth">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in products)
+            {
+                <tr @key="product.Id">
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
