@@ -1,8 +1,13 @@
-# Rise - [GROUPNAME]
+# Rise - TIAO2
 
 ## Team Members
 
-- [MEMBER1_NAME] - [MEMBER1_EMAIL] - [MEMBER1_GITHUB_USERNAME]
+- Iliass Assoued - iliass.assoued@student.hogent.be - [@Iliassassoued](https://github.com/Iliassassoued)
+- Ali Aydinlioglu - ali.aydinlioglu@student.hogent.be - [MEMBER_GITHUB_USERNAME]
+- Wim Dedulle - wim.dedulle@student.hogent.be - [MEMBER_GITHUB_USERNAME]
+- Pieter Swillens - pieter.swillens@student.hogent.be - [MEMBER_GITHUB_USERNAME]
+- Andy Wauters - andy.wauters@student.hogent.be - [MEMBER_GITHUB_USERNAME]
+- Marek Zakrzewski - marek.zakrzewski@student.hogent.be - [MEMBER_GITHUB_USERNAME]
 
 ## Technologies & Packages Used
 
