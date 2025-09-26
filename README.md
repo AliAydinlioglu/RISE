@@ -7,7 +7,7 @@
 - Wim Dedulle - wim.dedulle@student.hogent.be - [MEMBER_GITHUB_USERNAME]
 - Pieter Swillens - pieter.swillens@student.hogent.be - [MEMBER_GITHUB_USERNAME]
 - Andy Wauters - andy.wauters@student.hogent.be - [MEMBER_GITHUB_USERNAME]
-- Marek Zakrzewski - marek.zakrzewski@student.hogent.be - [MEMBER_GITHUB_USERNAME]
+- Marek Zakrzewski - marek.zakrzewski@student.hogent.be - [@MarekZakrzewskiHoGent](https://github.com/MarekZakrzewskiHoGent)
 
 ## Technologies & Packages Used
 
