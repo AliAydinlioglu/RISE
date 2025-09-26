@@ -3,7 +3,7 @@
 ## Team Members
 
 - Iliass Assoued - iliass.assoued@student.hogent.be - [@Iliassassoued](https://github.com/Iliassassoued)
-- Ali Aydinlioglu - ali.aydinlioglu@student.hogent.be - [MEMBER_GITHUB_USERNAME]
+- Ali Aydinlioglu - ali.aydinlioglu@student.hogent.be - [@AliAydinlioglu](https://github.com/AliAydinlioglu)
 - Wim Dedulle - wim.dedulle@student.hogent.be - [MEMBER_GITHUB_USERNAME]
 - Pieter Swillens - pieter.swillens@student.hogent.be - [MEMBER_GITHUB_USERNAME]
 - Andy Wauters - andy.wauters@student.hogent.be - [MEMBER_GITHUB_USERNAME]
