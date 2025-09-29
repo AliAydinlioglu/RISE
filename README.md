@@ -4,9 +4,9 @@
 
 - Iliass Assoued - iliass.assoued@student.hogent.be - [@Iliassassoued](https://github.com/Iliassassoued)
 - Ali Aydinlioglu - ali.aydinlioglu@student.hogent.be - [@AliAydinlioglu](https://github.com/AliAydinlioglu)
-- Wim Dedulle - wim.dedulle@student.hogent.be - [MEMBER_GITHUB_USERNAME]
-- Pieter Swillens - pieter.swillens@student.hogent.be - [MEMBER_GITHUB_USERNAME]
-- Andy Wauters - andy.wauters@student.hogent.be - [MEMBER_GITHUB_USERNAME]
+- Wim Dedulle - wim.dedulle@student.hogent.be - [@WimDedulle](https://github.com/WimDedulle)
+- Pieter Swillens - pieter.swillens@student.hogent.be - [@Pieter-Swillens](https://github.com/Pieter-Swillens)
+- Andy Wauters - andy.wauters@student.hogent.be - [@ndwauterss](https://github.com/ndwauterss)
 - Marek Zakrzewski - marek.zakrzewski@student.hogent.be - [@MarekZakrzewskiHoGent](https://github.com/MarekZakrzewskiHoGent)
 
 ## Technologies & Packages Used
