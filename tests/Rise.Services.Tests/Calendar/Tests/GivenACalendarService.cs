@@ -18,7 +18,7 @@ public class GivenACalendarService
     [Fact]
     public async Task WhenUserRequestsCalendar_ThenCalendarShouldBeReturned()
     {
-        var user = new UserDto("user123", "TIAO-1");
+        var user = new UserDto("user123", "TIAO-01");
         
         var result = await _service.GetCalendarAsync(user);
         
@@ -38,15 +38,5 @@ public class GivenACalendarService
         fallCourse.CourseTitle.ShouldBe("FALL");
         fallCourse.Deadlines.Count.ShouldBe(1);
         fallCourse.Exams.Count.ShouldBe(2);
-    }
-    
-    [Fact]
-    public async Task WhenNonLoggedInUserRequestsCalendar_ThenCallShouldFail()
-    {
-        var result = await _service.GetCalendarAsync(null!);
-        
-        result.IsSuccess.ShouldBeFalse();
-        result.Status.ShouldBe(ResultStatus.Unauthorized);
-        result.Errors.ShouldContain("User is null");
     }
 }

@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Projects;
 using Rise.Persistence;
 using Rise.Services.Projects;
-using Rise.Services.Tests.Fakers;
 using Rise.Shared.Projects;
+using Rise.TestDoubles.Fakers;
 
 namespace Rise.Services.Tests.Projects;
 
