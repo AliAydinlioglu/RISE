@@ -15,8 +15,7 @@ public class GetCalendarEndpoint(ICalendarService service, ISessionContextProvid
         if (string.IsNullOrEmpty(userId))
             return Result.Unauthorized("User not authenticated");
 
-        var userDto = new UserDto(userId);
-        return await service.GetCalendarAsync(userDto);
+        return await service.GetCalendarAsync(userId);
 
     }
 }

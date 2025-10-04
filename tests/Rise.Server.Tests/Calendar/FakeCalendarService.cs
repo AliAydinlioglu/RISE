@@ -6,11 +6,11 @@ namespace Rise.Server.Tests.Calendar;
 
 public class FakeCalendarService : ICalendarService
 {
-    public Task<Result<CalendarResponse.Get>> GetCalendarAsync(UserDto? user)
+    public Task<Result<CalendarResponse.Get>> GetCalendarAsync(string userId)
     {
         var calendar = new CalendarResponse.Get
         {
-            ClassGroup = user!.ClassGroup,
+            ClassGroup = "TIAO-01",
             AcademicYear = "2024-2025",
             Period = new CalendarResponse.PeriodInfo
             {

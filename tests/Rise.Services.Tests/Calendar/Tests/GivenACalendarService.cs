@@ -1,5 +1,6 @@
 using Ardalis.Result;
 using Rise.Services.Calendar;
+using Rise.Shared.Calendar;
 using Rise.Shared.Identity;
 
 namespace Rise.Services.Tests.Calendar.Tests;
@@ -7,14 +8,13 @@ namespace Rise.Services.Tests.Calendar.Tests;
 public class GivenACalendarService
 {
     private readonly CalendarService _service;
-    private readonly FakeGetCalendarQuery _query;
     private readonly FakeUserRepository _userRepository;
 
     public GivenACalendarService()
     {
-        _query = new FakeGetCalendarQuery();
+        var query = new FakeGetCalendarQuery();
         _userRepository = new FakeUserRepository();
-        _service = new CalendarService(_query, _userRepository);
+        _service = new CalendarService(query, _userRepository);
     }
     
     [Fact]
@@ -26,6 +26,11 @@ public class GivenACalendarService
         var result = await _service.GetCalendarAsync(userId);
         
         result.IsSuccess.ShouldBeTrue();
+        AssertCalendarContent(result);
+    }
+
+    private static void AssertCalendarContent(Result<CalendarResponse.Get> result)
+    {
         var calendar = result.Value;
 
         calendar.ClassGroup.ShouldBe("TIAO-01");
