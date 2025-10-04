@@ -1,7 +1,7 @@
 using Ardalis.Result;
 using Rise.Shared.Identity;
 
-namespace Rise.Services.Tests.Calendar;
+namespace Rise.Services.Tests.Calendar.Tests;
 
 public class GivenACalendarService
 {
@@ -15,7 +15,7 @@ public class GivenACalendarService
         var result = await service.GetCalendarAsync(user);
         
         result.IsSuccess.ShouldBeTrue();
-        result.Value.ClassGroup.shouldBe("TIAO-1");
+        result.Value.ClassGroup.ShouldBe("TIAO-1");
     }
 }
 
@@ -26,8 +26,16 @@ public class CalendarService
         throw new NotImplementedException();
     }
 
-    public async Task<Result<object>> GetCalendarAsync(UserDto user)
+    public async Task<Result<CalendarResponse.Get>> GetCalendarAsync(UserDto user)
     {
         throw new NotImplementedException();
     }
+}
+
+public static partial class CalendarResponse
+{
+    public class Get
+    {
+        public string ClassGroup { get; set; }
+    }   
 }
