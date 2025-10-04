@@ -18,4 +18,15 @@ public class GivenACalendarService
         result.IsSuccess.ShouldBeTrue();
         result.Value.ClassGroup.ShouldBe("TIAO-1");
     }
+    
+    [Fact]
+    public async Task WhenNonLoggedInUserRequestsCalendar_ThenCallShouldFail()
+    {
+        var query = new FakeGetCalendarQuery();
+        var service = new CalendarService(query);
+        
+        var result = await service.GetCalendarAsync(null!);
+        
+        result.IsSuccess.ShouldBeFalse();
+    }
 }
