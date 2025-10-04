@@ -3,17 +3,13 @@ using Rise.Shared.Identity;
 
 namespace Rise.Services.Calendar;
 
-public class CalendarService: ICalendarService
+public class CalendarService(IGetCalendarQuery query) : ICalendarService
 {
-    private readonly IGetCalendarQuery _getCalendarQuery;
-
-    public CalendarService(IGetCalendarQuery query)
+    public async Task<Result<CalendarResponse.Get>> GetCalendarAsync(UserDto? user)
     {
-        _getCalendarQuery = query;
-    }
+        if (user is null)
+            return Result<CalendarResponse.Get>.Unauthorized("User is null");
 
-    public async Task<Result<CalendarResponse.Get>> GetCalendarAsync(UserDto user)
-    {
-        return await _getCalendarQuery.ExecuteAsync(user.ClassGroup);
+        return await query.ExecuteAsync(user.ClassGroup);
     }
 }

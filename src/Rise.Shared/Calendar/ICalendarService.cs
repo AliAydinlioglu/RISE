@@ -4,5 +4,5 @@ namespace Rise.Shared.Calendar;
 
 public interface ICalendarService
 {
-    Task<Result<CalendarResponse.Get>> GetCalendarAsync(UserDto user);
+    Task<Result<CalendarResponse.Get>> GetCalendarAsync(UserDto? user);
 }
