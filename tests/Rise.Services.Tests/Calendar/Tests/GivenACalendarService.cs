@@ -7,20 +7,23 @@ namespace Rise.Services.Tests.Calendar.Tests;
 public class GivenACalendarService
 {
     private readonly CalendarService _service;
+    private readonly FakeGetCalendarQuery _query;
+    private readonly FakeUserRepository _userRepository;
 
     public GivenACalendarService()
     {
-        // Gemeenschappelijke setup
-        var query = new FakeGetCalendarQuery();
-        _service = new CalendarService(query);
+        _query = new FakeGetCalendarQuery();
+        _userRepository = new FakeUserRepository();
+        _service = new CalendarService(_query, _userRepository);
     }
     
     [Fact]
     public async Task WhenUserRequestsCalendar_ThenCalendarShouldBeReturned()
     {
-        var user = new UserDto("user123", "TIAO-01");
+        var userId = "user123";
+        _userRepository.AddUser(userId, "TIAO-01");
         
-        var result = await _service.GetCalendarAsync(user);
+        var result = await _service.GetCalendarAsync(userId);
         
         result.IsSuccess.ShouldBeTrue();
         var calendar = result.Value;
