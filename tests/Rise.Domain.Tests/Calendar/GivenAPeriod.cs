@@ -33,7 +33,15 @@ public class GivenAPeriod
     {
         var period = new Period("2025-2026", PeriodType.Ep3, AValidDateRange);
 
-        period.ExamStartDate.ShouldBe(AValidDateRange.StartDate);
+        var expected = AValidDateRange.StartDate;
+        period.ExamStartDate.ShouldBe(expected);
+    }
+    
+    [Fact]
+    public void WhenNotEp3AndExamDateMissing_ThenExamStartDateIsSemStartDate()
+    {
+        Should.Throw<ArgumentException>(() => 
+            new Period("2025-2026", PeriodType.Sem2, AValidDateRange));
     }
 
     private static readonly DateRange AValidDateRange = new(
