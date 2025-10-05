@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Shared.Common;
