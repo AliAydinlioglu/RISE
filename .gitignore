@@ -17,3 +17,17 @@ src/Rise.Server/Rise.db
 src/Rise.Server/Rise.db-shm
 
 src/Rise.Server/Rise.db-wal
+
+.idea/.idea.Rise/.idea/copilot.data.migration.agent.xml
+
+.idea/.idea.Rise/.idea/copilot.data.migration.ask.xml
+
+.idea/.idea.Rise/.idea/copilot.data.migration.edit.xml
+
+.idea/indexLayout.xml
+
+.idea/projectSettingsUpdater.xml
+
+.idea/vcs.xml
+
+.idea/workspace.xml
