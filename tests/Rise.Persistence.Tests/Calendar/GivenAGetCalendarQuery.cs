@@ -44,6 +44,28 @@ public class GivenAGetCalendarQuery: IDisposable
         fallCourse.Exams.Count.ShouldBe(1);
     }
     
+    [Fact]
+    public async Task WhenNoCoursesForClassGroup_ThenReturnsEmptyCourseList()
+    {
+        await SeedTestDataAsync();
+
+        var result = await _query.ExecuteAsync("TIAO-02");
+
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.Courses.ShouldBeEmpty();
+    }
+    
+    [Fact]
+    public async Task WhenNoPeriodExists_ThenExceptionIsThrown()
+    {
+        var course = new Course("RISE", "Alice", "TIAO-01");
+        _context.Courses.Add(course);
+        await _context.SaveChangesAsync();
+
+        await Should.ThrowAsync<InvalidOperationException>(async () =>
+            await _query.ExecuteAsync("TIAO-01"));
+    }
+    
     private async Task SeedTestDataAsync()
     {
         var period = new Period(

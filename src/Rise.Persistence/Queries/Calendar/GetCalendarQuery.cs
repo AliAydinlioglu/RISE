@@ -15,6 +15,9 @@ public class GetCalendarQuery(ApplicationDbContext dbContext): IGetCalendarQuery
             .Where(it => it.DateRange.StartDate <= now && it.DateRange.EndDate >= now)
             .FirstOrDefaultAsync();
         
+        if (period is null)
+            throw new InvalidOperationException("No active period");
+        
         var courses = await dbContext.Courses
             .Where(it => it.ClassGroup == userClassGroup)
             .Include(it => it.Sessions)
@@ -25,7 +28,7 @@ public class GetCalendarQuery(ApplicationDbContext dbContext): IGetCalendarQuery
         var response = new CalendarResponse.Get
         {
             ClassGroup = userClassGroup,
-            AcademicYear = period!.AcademicYear,
+            AcademicYear = period.AcademicYear,
             Period = MapPeriod(period),
             Courses = courses.Select(it => MapCourse(it)).ToList()
         };
