@@ -5,7 +5,6 @@ namespace Rise.Domain.StudentActivities;
 public class StudentActivity : Entity
 {
     private readonly string _title = string.Empty;
-
     public string Title
     {
         get => _title;
@@ -15,7 +14,6 @@ public class StudentActivity : Entity
     public string Description { get; private init; }
 
     private readonly DateTime _date;
-
     public DateTime Date
     {
         get => _date;
@@ -23,7 +21,6 @@ public class StudentActivity : Entity
     }
 
     private readonly DateTime _startTime;
-
     public DateTime StartTime
     {
         get => _startTime;
@@ -31,15 +28,12 @@ public class StudentActivity : Entity
     }
 
     private readonly DateTime _endTime;
-
     public DateTime EndTime
     {
         get => _endTime;
         private init => _endTime = Guard.Against.NullOrOutOfSQLDateRange(value);
     }
-
     public string ImageUrl { get; private init; }
-
     public Location Location { get; set; }
     public StudentClub StudentClub { get; set; }
 
