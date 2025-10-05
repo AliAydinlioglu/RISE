@@ -23,6 +23,9 @@ public class StudentActivitiesService(ApplicationDbContext dbContext, ISessionCo
                 Title = sa.Title,
                 Description = sa.Description,
                 Date = sa.Date,
+                StartTime = sa.StartTime,
+                EndTime = sa.EndTime,
+                ImageUrl = sa.ImageUrl,
                 Location = sa.Location,
                 StudentClub = sa.StudentClub
             })
