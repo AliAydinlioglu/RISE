@@ -40,5 +40,5 @@ public class GivenASession
             new Session(DayOfWeek.Monday, AValidDateRange, "Schoonmeersen", null!));
     }
 
-    private static readonly TimeRange AValidDateRange = new TimeRange(new TimeOnly(8, 30), new TimeOnly(10, 30));
+    private static readonly TimeRange AValidDateRange = new(new TimeOnly(8, 30), new TimeOnly(10, 30));
 }

@@ -1,7 +1,6 @@
 using Ardalis.Result;
 using Rise.Services.Calendar;
 using Rise.Shared.Calendar;
-using Rise.Shared.Identity;
 
 namespace Rise.Services.Tests.Calendar.Tests;
 

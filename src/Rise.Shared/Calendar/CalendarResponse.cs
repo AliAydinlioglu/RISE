@@ -1,6 +1,6 @@
 namespace Rise.Shared.Calendar;
 
-public static partial class CalendarResponse
+public static class CalendarResponse
 {
     public class Get
     {

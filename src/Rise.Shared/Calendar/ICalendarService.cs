@@ -1,5 +1,3 @@
-using Rise.Shared.Identity;
-
 namespace Rise.Shared.Calendar;
 
 public interface ICalendarService

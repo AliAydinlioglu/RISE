@@ -1,4 +1,3 @@
-using Rise.Domain.Calendar;
 using Rise.Domain.Common;
 
 namespace Rise.Domain.Tests.Common;

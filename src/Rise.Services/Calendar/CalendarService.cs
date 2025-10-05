@@ -1,5 +1,4 @@
 using Rise.Shared.Calendar;
-using Rise.Shared.Identity;
 using Rise.Shared.User;
 
 namespace Rise.Services.Calendar;
