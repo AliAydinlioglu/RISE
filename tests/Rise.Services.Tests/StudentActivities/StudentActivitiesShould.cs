@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
+using Rise.Domain.StudentActivities;
 using Rise.Persistence;
 using Rise.Services.StudentActivities;
 using Rise.Shared.Locations;
@@ -21,46 +22,34 @@ public class StudentActivitiesShould
         
         using var dbContext = new ApplicationDbContext(options);
 
-        var studentClubDto = new StudentClubDto.Summary
-        {
-            Id = 1,
-            Name = "KSA",
-        };
-        var locationDto = new LocationDto.Index
-        {
-            Id = 1,
-            Name="Schoonmeersen",
-            Street = "Street",
-            HouseNumber = "152",
-            City = "City",
-            Postcode = 9100
-        };
-        var activity1 = new StudentActivityDto.Index
-        {
-            Id = 1,
-            Title = "Cantus",
-            Description = "Desc1",
-            Date = new DateTime(2025, 9, 10),
-            StartTime = new DateTime(2025, 9, 10, 17, 0, 0),
-            EndTime = new DateTime(2025, 9, 10, 23, 0, 0),
-            Location = locationDto,
-            StudentClub = studentClubDto
-        };
-        var activity2 = new StudentActivityDto.Index
-        {
-            Id = 2,
-            Title = "Quiz",
-            Description = "Desc2",
-            Date = new DateTime(2025, 10, 10),
-            StartTime = new DateTime(2025, 10, 10, 18, 0, 0),
-            EndTime = new DateTime(2025, 10, 10, 22, 0, 0),
-            Location = locationDto,
-            StudentClub = studentClubDto
-        };
+        var studentClub = new StudentClub();
+        var location = new Location();
+        var studentActivity1 = new StudentActivity(
+            "Cantus",
+            "Desc1",
+            new DateTime(2025, 9, 10),
+            new DateTime(2025, 9, 10, 17, 0, 0),
+            new DateTime(2025, 9, 10, 23, 0, 0),
+            "/images/cantus.png",
+            location,
+            studentClub
+        );
+        
+        var studentActivity2 = new StudentActivity(
+            "Quiz",
+            "Desc2",
+            new DateTime(2025, 10, 10),
+            new DateTime(2025, 10, 10, 18, 0, 0),
+            new DateTime(2025, 10, 10, 22, 0, 0),
+            "/images/quiz.png",
+            location,
+            studentClub
+        );
+       
 
-        dbContext.Location.Add(locationDto);
-        dbContext.StudentClub.Add(studentClubDto);
-        dbContext.StudentActivities.AddRange(activity1, activity2);
+        dbContext.Location.Add(location);
+        dbContext.StudentClub.Add(studentClub);
+        dbContext.StudentActivities.AddRange(studentActivity1, studentActivity2);
         await dbContext.SaveChangesAsync();
 
         var service = new StudentActivitiesService(dbContext, null);
@@ -71,7 +60,7 @@ public class StudentActivitiesShould
         // Assert
         result.IsSuccess.ShouldBeTrue();
         result.Value.Count().ShouldBe(2);
-        result.Value.Any(a => a.Name == "Cantus").ShouldBeTrue();
-        result.Value.Any(a => a.Name == "Quiz").ShouldBeTrue();
+        result.Value.Any(a => a.Title == "Cantus").ShouldBeTrue();
+        result.Value.Any(a => a.Title == "Quiz").ShouldBeTrue();
     }
 }
