@@ -23,6 +23,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Technician> Technicians => Set<Technician>();
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<Deadline> Deadlines => Set<Deadline>();
+    public DbSet<Exam> Exams => Set<Exam>();
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
