@@ -1,7 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Rise.Persistence;
+using Rise.Persistence.Queries.Calendar;
+using Rise.Services.Calendar;
 using Rise.Services.Products;
 using Rise.Services.Projects;
+using Rise.Shared.Calendar;
 using Rise.Shared.Products;
 using Rise.Shared.Projects;
 
@@ -11,8 +14,13 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        // queries
+        services.AddScoped<IGetCalendarQuery, GetCalendarQuery>();
+        
+        // Services
         services.AddScoped<IProductService, ProductService>();        
         services.AddScoped<IProjectService, ProjectService>();        
+        services.AddScoped<ICalendarService, CalendarService>();        
         services.AddTransient<DbSeeder>();       
         
         // Add other application services here.
