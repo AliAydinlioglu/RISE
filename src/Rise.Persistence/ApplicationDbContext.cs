@@ -21,6 +21,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Technician> Technicians => Set<Technician>();
+    public DbSet<Period> Periods => Set<Period>();
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<Deadline> Deadlines => Set<Deadline>();
     public DbSet<Exam> Exams => Set<Exam>();
