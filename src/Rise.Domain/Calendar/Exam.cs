@@ -8,6 +8,7 @@ public class Exam : Entity
     public string Room { get; private set; }
 
     public int CourseId { get; private set; }
+    public Course Course { get; private set; } = null!;
 
     private Exam() { }
 
