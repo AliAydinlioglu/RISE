@@ -4,42 +4,25 @@ namespace Rise.Domain.StudentActivities;
 
 public class StudentActivity : Entity
 {
-    private readonly string _title = string.Empty;
-    public string Title
-    {
-        get => _title;
-        private init => _title = Guard.Against.NullOrWhiteSpace(value);
-    }
-
-    public string Description { get; private init; }
-
-    private readonly DateTime _date;
-    public DateTime Date
-    {
-        get => _date;
-        private init => _date = Guard.Against.NullOrOutOfSQLDateRange(value);
-    }
-
-    private readonly DateTime _startTime;
-    public DateTime StartTime
-    {
-        get => _startTime;
-        private init => _startTime = Guard.Against.NullOrOutOfSQLDateRange(value);
-    }
-
-    private readonly DateTime _endTime;
-    public DateTime EndTime
-    {
-        get => _endTime;
-        private init => _endTime = Guard.Against.NullOrOutOfSQLDateRange(value);
-    }
-    public string ImageUrl { get; private init; }
+    public string Title { get; }
+    public string Description { get; }
+    public DateTime Date { get; }
+    public DateTime StartTime { get; }
+    public DateTime EndTime { get; }
+    public string ImageUrl { get; }
     public Location Location { get; set; }
     public StudentClub StudentClub { get; set; }
 
     public StudentActivity(string title, string description, DateTime date, DateTime startTime, DateTime endTime,
         string imageUrl, Location location, StudentClub studentClub)
     {
+        Guard.Against.NullOrWhiteSpace(title);
+        Guard.Against.NullOrOutOfSQLDateRange(date);
+        Guard.Against.NullOrOutOfSQLDateRange(startTime);
+        Guard.Against.NullOrOutOfSQLDateRange(endTime);
+        Guard.Against.Null(location);
+        Guard.Against.Null(studentClub);
+
         Title = title;
         Description = description;
         Date = date;
@@ -47,13 +30,14 @@ public class StudentActivity : Entity
         EndTime = endTime;
         ValidateTimes();
         ImageUrl = imageUrl;
-        Location = Guard.Against.Null(location);
-        StudentClub = Guard.Against.Null(studentClub);
+        Location = location;
+        StudentClub = studentClub;
+
     }
-    
+
     private void ValidateTimes()
     {
-        if (_startTime >= _endTime)
+        if (StartTime >= EndTime)
             throw new InvalidTimeRangeException("Start time must be before end time.");
     }
 }
