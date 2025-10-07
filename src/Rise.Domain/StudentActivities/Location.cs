@@ -2,11 +2,11 @@ namespace Rise.Domain.StudentActivities;
 
 public class Location : Entity
 {
-    public string Name { get; init; }
-    public string Street { get; init; }
-    public int HouseNumber { get; init; }
-    public int Postcode { get; init; }
-    public string City { get; init; }
+    public string Name { get;}
+    public string Street { get; }
+    public int HouseNumber { get; }
+    public int Postcode { get; }
+    public string City { get; }
 
     public Location(string name, string street, int houseNumber, int postcode, string city)
     {

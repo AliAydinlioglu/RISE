@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Shared.Common;
+using Rise.Shared.Locations;
 using Rise.Shared.StudentActivities;
+using Rise.Shared.StudentClubs;
 
 namespace Rise.Services.StudentActivities;
 
@@ -27,8 +29,20 @@ public class StudentActivitiesService(ApplicationDbContext dbContext, ISessionCo
                 StartTime = sa.StartTime,
                 EndTime = sa.EndTime,
                 ImageUrl = sa.ImageUrl,
-                Location = sa.Location,
-                StudentClub = sa.StudentClub
+                Location = new LocationDto.Index
+                {
+                    Id = sa.Location.Id,
+                    Name = sa.Location.Name,
+                    Street = sa.Location.Street,
+                    HouseNumber = sa.Location.HouseNumber,
+                    Postcode = sa.Location.Postcode,
+                    City = sa.Location.City
+                },
+                StudentClub = new StudentClubDto.Summary
+                {
+                    Id = sa.StudentClub.Id,
+                    Name = sa.StudentClub.Name
+                }
             })
             .ToListAsync(ctx);
         
