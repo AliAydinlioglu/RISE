@@ -63,7 +63,7 @@ public class StudentActivitiesShould
         dbContext.StudentActivities.AddRange(studentActivity1, studentActivity2);
         await dbContext.SaveChangesAsync();
 
-        var service = new StudentActivitiesService(dbContext, null);
+       IStudentActivitiesService service = new StudentActivitiesService(dbContext, null);
 
         // Act
         var result = await service.GetIndexAsync(

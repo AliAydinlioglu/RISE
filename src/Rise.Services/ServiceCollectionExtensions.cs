@@ -2,8 +2,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Rise.Persistence;
 using Rise.Services.Products;
 using Rise.Services.Projects;
+using Rise.Services.StudentActivities;
 using Rise.Shared.Products;
 using Rise.Shared.Projects;
+using Rise.Shared.StudentActivities;
 
 namespace Rise.Services;
 
@@ -16,6 +18,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<DbSeeder>();       
         
         // Add other application services here.
+        services.AddScoped<IStudentActivitiesService, StudentActivitiesService>();
         return services;
     }
 }
