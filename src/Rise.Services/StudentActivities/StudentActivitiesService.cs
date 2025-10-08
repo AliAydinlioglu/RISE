@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Shared.Common;
@@ -13,7 +14,10 @@ public class StudentActivitiesService(ApplicationDbContext dbContext, ISessionCo
     public async Task<Result<StudentActivityResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request,
         CancellationToken ctx)
     {
-        var query = dbContext.StudentActivities.AsQueryable();
+        var query = dbContext.StudentActivities
+            .Include(sa => sa.Location)
+            .Include(sa => sa.StudentClub)
+            .AsQueryable();
 
         var totalCount = await query.CountAsync(ctx);
         

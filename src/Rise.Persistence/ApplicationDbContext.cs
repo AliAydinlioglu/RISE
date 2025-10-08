@@ -22,6 +22,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Technician> Technicians => Set<Technician>();
     public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();
+    public DbSet<Location> Locations => Set<Location>();
+    public DbSet<StudentClub> StudentClubs => Set<StudentClub>();
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         // All columns in the database have a maxlength of 4000.
