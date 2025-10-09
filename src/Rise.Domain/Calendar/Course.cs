@@ -6,8 +6,8 @@ public class Course : Entity
     public string Lecturer { get; private set; }
     public string ClassGroup { get; private set; }
     
-    private readonly List<Session> _sessions = new();
-    public IReadOnlyCollection<Session> Sessions => _sessions.AsReadOnly();
+    private readonly List<Lesson> _lessons = new();
+    public IReadOnlyCollection<Lesson> Lessons => _lessons.AsReadOnly();
 
     private readonly List<Deadline> _deadlines = new();
     public IReadOnlyCollection<Deadline> Deadlines => _deadlines.AsReadOnly();

@@ -1,6 +1,9 @@
 namespace Rise.Domain.Calendar;
 
-public class Session : Entity
+/// <summary>
+/// Represents a scheduled lesson for a specific course within the academic calendar.
+/// </summary>
+public class Lesson : Entity
 {
     public DayOfWeek DayOfWeek { get; private set; }
     public TimeRange TimeRange { get; private set; }
@@ -10,9 +13,9 @@ public class Session : Entity
     public int CourseId { get; private set; }
     public Course Course { get; private set; } = null!;
 
-    private Session() { }
+    private Lesson() { }
 
-    public Session(DayOfWeek dayOfWeek, TimeRange timeRange, string campus, string room)
+    public Lesson(DayOfWeek dayOfWeek, TimeRange timeRange, string campus, string room)
     {
         DayOfWeek = dayOfWeek;
         TimeRange = Guard.Against.Null(timeRange);
