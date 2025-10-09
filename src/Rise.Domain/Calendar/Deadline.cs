@@ -1,5 +1,8 @@
 namespace Rise.Domain.Calendar;
 
+/// <summary>
+/// Represents a due date for a specific academic task or assignment within a course
+/// </summary>
 public class Deadline : Entity
 {
     public string TaskTitle { get; private set; }
