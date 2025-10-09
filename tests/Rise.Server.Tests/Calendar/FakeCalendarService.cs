@@ -11,9 +11,9 @@ public class FakeCalendarService : ICalendarService
         {
             ClassGroup = "TIAO-01",
             AcademicYear = "2024-2025",
-            Period = new CalendarResponse.PeriodInfo
+            AcademicSemester = new CalendarResponse.AcademicSemesterInfo
             {
-                PeriodId = "7803f803-c2cf-40f9-8c64-9daa5f2e9c87",
+                AcademicSemesterId = "7803f803-c2cf-40f9-8c64-9daa5f2e9c87",
                 Type = "SEM1",
                 StartDate = DateTimeOffset.Parse("2025-09-22T00:00:00+00:00"),
                 EndDate = DateTimeOffset.Parse("2025-12-14T00:00:00+00:00"),

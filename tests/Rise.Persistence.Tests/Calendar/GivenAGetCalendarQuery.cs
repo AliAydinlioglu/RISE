@@ -32,7 +32,7 @@ public class GivenAGetCalendarQuery: IDisposable
         
         calendar.ClassGroup.ShouldBe("TIAO-01");
         calendar.AcademicYear.ShouldBe("2024-2025");
-        calendar.Period.Type.ShouldBe("SEM1");
+        calendar.AcademicSemester.Type.ShouldBe("SEM1");
         calendar.Courses.Count.ShouldBe(2);
 
         var riseCourse = calendar.Courses.First(c => c.CourseTitle == "RISE");
@@ -56,7 +56,7 @@ public class GivenAGetCalendarQuery: IDisposable
     }
     
     [Fact]
-    public async Task WhenNoPeriodExists_ThenExceptionIsThrown()
+    public async Task WhenNoAcademicSemesterExists_ThenExceptionIsThrown()
     {
         var course = new Course("RISE", "Alice", "TIAO-01");
         _context.Courses.Add(course);
@@ -68,16 +68,16 @@ public class GivenAGetCalendarQuery: IDisposable
     
     private async Task SeedTestDataAsync()
     {
-        var period = new Period(
+        var academicSemester = new AcademicSemester(
             "2024-2025",
-            PeriodType.Sem1,
+            SemesterType.Sem1,
             new DateRange(
                 DateTimeOffset.UtcNow.AddDays(-30),
                 DateTimeOffset.UtcNow.AddDays(30)
             ),
             DateTimeOffset.UtcNow.AddDays(40)
         );
-        _context.Periods.Add(period);
+        _context.AcademicSemesters.Add(academicSemester);
 
         var riseCourse = new Course("RISE", "Alice", "TIAO-01");
         var riseSession1 = new Session(

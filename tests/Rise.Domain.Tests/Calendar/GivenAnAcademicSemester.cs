@@ -3,20 +3,20 @@ using Rise.Domain.Common;
 
 namespace Rise.Domain.Tests.Calendar;
 
-public class GivenAPeriod
+public class GivenAnAcademicSemester
 {
     [Fact]
     public void WhenAcademicYearIsEmpty_ThenAnExceptionIsThrown()
     {
         Should.Throw<ArgumentException>(() =>
-            new Period("", PeriodType.Sem1, AValidDateRange, AValidExamStartDate));
+            new AcademicSemester("", SemesterType.Sem1, AValidDateRange, AValidExamStartDate));
     }
     
     [Fact]
     public void WhenAcademicYearIsNull_ThenAnExceptionIsThrown()
     {
         Should.Throw<ArgumentException>(() =>
-            new Period(null!, PeriodType.Sem1, AValidDateRange, AValidExamStartDate));
+            new AcademicSemester(null!, SemesterType.Sem1, AValidDateRange, AValidExamStartDate));
     }
 
     [Fact]
@@ -25,23 +25,23 @@ public class GivenAPeriod
         var examStartDate = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         Should.Throw<ArgumentNullException>(() =>
-            new Period("2024-2025", PeriodType.Sem1, null!, examStartDate));
+            new AcademicSemester("2024-2025", SemesterType.Sem1, null!, examStartDate));
     }
     
     [Fact]
     public void WhenEp3_ThenExamStartDateIsSemStartDate()
     {
-        var period = new Period("2025-2026", PeriodType.Ep3, AValidDateRange);
+        var academicSemester = new AcademicSemester("2025-2026", SemesterType.Ep3, AValidDateRange);
 
         var expected = AValidDateRange.StartDate;
-        period.ExamStartDate.ShouldBe(expected);
+        academicSemester.ExamStartDate.ShouldBe(expected);
     }
     
     [Fact]
     public void WhenNotEp3AndExamDateMissing_ThenExamStartDateIsSemStartDate()
     {
         Should.Throw<ArgumentException>(() => 
-            new Period("2025-2026", PeriodType.Sem2, AValidDateRange));
+            new AcademicSemester("2025-2026", SemesterType.Sem2, AValidDateRange));
     }
 
     private static readonly DateRange AValidDateRange = new(

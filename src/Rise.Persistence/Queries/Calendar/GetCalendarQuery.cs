@@ -11,12 +11,12 @@ public class GetCalendarQuery(ApplicationDbContext dbContext): IGetCalendarQuery
     {
         var now = DateTime.UtcNow;
         
-        var period = await dbContext.Periods
+        var academicSemester = await dbContext.AcademicSemesters
             .Where(it => it.DateRange.StartDate <= now && it.DateRange.EndDate >= now)
             .FirstOrDefaultAsync();
         
-        if (period is null)
-            throw new InvalidOperationException("No active period");
+        if (academicSemester is null)
+            throw new InvalidOperationException("No active semester");
         
         var courses = await dbContext.Courses
             .Where(it => it.ClassGroup == userClassGroup)
@@ -28,23 +28,23 @@ public class GetCalendarQuery(ApplicationDbContext dbContext): IGetCalendarQuery
         var response = new CalendarResponse.Get
         {
             ClassGroup = userClassGroup,
-            AcademicYear = period.AcademicYear,
-            Period = MapPeriod(period),
+            AcademicYear = academicSemester.AcademicYear,
+            AcademicSemester = MapAcademicSemester(academicSemester),
             Courses = courses.Select(it => MapCourse(it)).ToList()
         };
         
         return Result.Success(response);
     }
     
-    private static CalendarResponse.PeriodInfo MapPeriod(Period period)
+    private static CalendarResponse.AcademicSemesterInfo MapAcademicSemester(AcademicSemester academicSemester)
     {
-        return new CalendarResponse.PeriodInfo
+        return new CalendarResponse.AcademicSemesterInfo
         {
-            PeriodId = period.Id.ToString(),
-            Type = period.Type.ToString().ToUpperInvariant(),
-            StartDate = period.DateRange.StartDate,
-            EndDate = period.DateRange.EndDate,
-            ExamStartDate = period.ExamStartDate
+            AcademicSemesterId = academicSemester.Id.ToString(),
+            Type = academicSemester.Type.ToString().ToUpperInvariant(),
+            StartDate = academicSemester.DateRange.StartDate,
+            EndDate = academicSemester.DateRange.EndDate,
+            ExamStartDate = academicSemester.ExamStartDate
         };
     }
 

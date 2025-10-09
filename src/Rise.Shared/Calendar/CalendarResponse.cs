@@ -6,13 +6,13 @@ public static class CalendarResponse
     {
         public string ClassGroup { get; set; }
         public string AcademicYear { get; set; }
-        public PeriodInfo Period { get; set; }
+        public AcademicSemesterInfo AcademicSemester { get; set; }
         public List<CourseInfo> Courses { get; set; } = new();
     }
 
-    public class PeriodInfo
+    public class AcademicSemesterInfo
     {
-        public string PeriodId { get; set; }
+        public string AcademicSemesterId { get; set; }
         public string Type { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
