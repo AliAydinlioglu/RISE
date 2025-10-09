@@ -1,5 +1,8 @@
 namespace Rise.Domain.Calendar;
 
+/// <summary>
+/// Represents a scheduled exam for a specific course within the academic calendar.
+/// </summary>
 public class Exam : Entity
 {
     public string Title { get; private set; }
