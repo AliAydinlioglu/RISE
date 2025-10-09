@@ -39,7 +39,7 @@ public class GivenACalendarService
 
         var riseCourse = calendar.Courses[0];
         riseCourse.CourseTitle.ShouldBe("RISE");
-        riseCourse.Sessions.Count.ShouldBe(2);
+        riseCourse.Lessons.Count.ShouldBe(2);
 
         var fallCourse = calendar.Courses[1];
         fallCourse.CourseTitle.ShouldBe("FALL");

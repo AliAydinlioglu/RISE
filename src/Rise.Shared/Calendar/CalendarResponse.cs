@@ -24,12 +24,12 @@ public static class CalendarResponse
         public string CourseId { get; set; }
         public string CourseTitle { get; set; }
         public string Lecturer { get; set; }
-        public List<SessionInfo> Sessions { get; set; } = new();
+        public List<LessonInfo> Lessons { get; set; } = new();
         public List<DeadlineInfo> Deadlines { get; set; } = new();
         public List<ExamInfo> Exams { get; set; } = new();
     }
 
-    public class SessionInfo
+    public class LessonInfo
     {
         public string Day { get; set; }
         public string StartTime { get; set; }

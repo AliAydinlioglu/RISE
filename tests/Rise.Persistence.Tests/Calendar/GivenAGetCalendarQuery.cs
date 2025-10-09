@@ -37,7 +37,7 @@ public class GivenAGetCalendarQuery: IDisposable
 
         var riseCourse = calendar.Courses.First(c => c.CourseTitle == "RISE");
         riseCourse.Lecturer.ShouldBe("Alice");
-        riseCourse.Sessions.Count.ShouldBe(2);
+        riseCourse.Lessons.Count.ShouldBe(2);
 
         var fallCourse = calendar.Courses.First(c => c.CourseTitle == "FALL");
         fallCourse.Deadlines.Count.ShouldBe(1);
@@ -80,13 +80,13 @@ public class GivenAGetCalendarQuery: IDisposable
         _context.AcademicSemesters.Add(academicSemester);
 
         var riseCourse = new Course("RISE", "Alice", "TIAO-01");
-        var riseSession1 = new Session(
+        var riseLesson1 = new Lesson(
             DayOfWeek.Monday,
             new TimeRange(new TimeOnly(8, 30), new TimeOnly(10, 30)),
             "Schoonmeersen",
             "GSCHB.2.001"
         );
-        var riseSession2 = new Session(
+        var riseLesson2 = new Lesson(
             DayOfWeek.Thursday,
             new TimeRange(new TimeOnly(10, 45), new TimeOnly(13, 0)),
             "Schoonmeersen",
@@ -94,7 +94,7 @@ public class GivenAGetCalendarQuery: IDisposable
         );
         
         _context.Courses.Add(riseCourse);
-        _context.Sessions.AddRange(riseSession1, riseSession2);
+        _context.Lessons.AddRange(riseLesson1, riseLesson2);
 
         var fallCourse = new Course("FALL", "Bob", "TIAO-01");
         var deadline = new Deadline(
@@ -115,8 +115,8 @@ public class GivenAGetCalendarQuery: IDisposable
 
         await _context.SaveChangesAsync();
 
-        riseSession1.GetType().GetProperty("CourseId")!.SetValue(riseSession1, riseCourse.Id);
-        riseSession2.GetType().GetProperty("CourseId")!.SetValue(riseSession2, riseCourse.Id);
+        riseLesson1.GetType().GetProperty("CourseId")!.SetValue(riseLesson1, riseCourse.Id);
+        riseLesson2.GetType().GetProperty("CourseId")!.SetValue(riseLesson2, riseCourse.Id);
         deadline.GetType().GetProperty("CourseId")!.SetValue(deadline, fallCourse.Id);
         exam.GetType().GetProperty("CourseId")!.SetValue(exam, fallCourse.Id);
 

@@ -24,7 +24,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     
     public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
     public DbSet<Course> Courses => Set<Course>();
-    public DbSet<Session> Sessions => Set<Session>();
+    public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Deadline> Deadlines => Set<Deadline>();
     public DbSet<Exam> Exams => Set<Exam>();
   

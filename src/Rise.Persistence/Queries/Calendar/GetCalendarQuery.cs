@@ -20,7 +20,7 @@ public class GetCalendarQuery(ApplicationDbContext dbContext): IGetCalendarQuery
         
         var courses = await dbContext.Courses
             .Where(it => it.ClassGroup == userClassGroup)
-            .Include(it => it.Sessions)
+            .Include(it => it.Lessons)
             .Include(it => it.Deadlines)
             .Include(it => it.Exams)
             .ToListAsync();
@@ -55,21 +55,21 @@ public class GetCalendarQuery(ApplicationDbContext dbContext): IGetCalendarQuery
             CourseId = course.Id.ToString(),
             CourseTitle = course.Title,
             Lecturer = course.Lecturer,
-            Sessions = course.Sessions.Select(it => MapSession(it)).ToList(),
+            Lessons = course.Lessons.Select(it => MapLesson(it)).ToList(),
             Deadlines = course.Deadlines.Select(it => MapDeadline(it)).ToList(),
             Exams = course.Exams.Select(it => MapExam(it)).ToList()
         };
     }
     
-    private static CalendarResponse.SessionInfo MapSession(Session session)
+    private static CalendarResponse.LessonInfo MapLesson(Lesson lesson)
     {
-        return new CalendarResponse.SessionInfo
+        return new CalendarResponse.LessonInfo
         {
-            Day = session.DayOfWeek.ToString(),
-            StartTime = session.TimeRange.StartTime.ToString("HH:mm"),
-            EndTime = session.TimeRange.EndTime.ToString("HH:mm"),
-            Campus = session.Campus,
-            Room = session.Room
+            Day = lesson.DayOfWeek.ToString(),
+            StartTime = lesson.TimeRange.StartTime.ToString("HH:mm"),
+            EndTime = lesson.TimeRange.EndTime.ToString("HH:mm"),
+            Campus = lesson.Campus,
+            Room = lesson.Room
         };
     }
     

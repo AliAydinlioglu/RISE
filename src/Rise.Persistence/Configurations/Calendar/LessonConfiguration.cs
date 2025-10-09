@@ -5,9 +5,9 @@ using Rise.Domain.Common;
 
 namespace Rise.Persistence.Configurations.Calendar;
 
-internal class SessionConfiguration: EntityConfiguration<Session>
+internal class LessonConfiguration: EntityConfiguration<Lesson>
 {
-    public override void Configure(EntityTypeBuilder<Session> builder)
+    public override void Configure(EntityTypeBuilder<Lesson> builder)
     {
         base.Configure(builder);
 

@@ -26,7 +26,7 @@ public class FakeCalendarService : ICalendarService
                     CourseId = "37eff00d-3430-4c05-b7e5-bae3334aa7c9",
                     CourseTitle = "RISE",
                     Lecturer = "Alice",
-                    Sessions = new List<CalendarResponse.SessionInfo>
+                    Lessons = new List<CalendarResponse.LessonInfo>
                     {
                         new()
                         {
@@ -45,7 +45,7 @@ public class FakeCalendarService : ICalendarService
                     CourseId = "11bc4392-d0d7-4d55-b5b1-8a76bdcd68a2",
                     CourseTitle = "FALL",
                     Lecturer = "Bob",
-                    Sessions = new List<CalendarResponse.SessionInfo>
+                    Lessons = new List<CalendarResponse.LessonInfo>
                     {
                         new()
                         {
