@@ -10,7 +10,7 @@ internal class DeadlineConfiguration: EntityConfiguration<Deadline>
         base.Configure(builder);
         
         builder.Property(it => it.TaskTitle).IsRequired().HasMaxLength(250);
-        builder.Property(it => it.TaskDescription).HasMaxLength(1_000);
+        builder.Property(it => it.TaskDescription);
         builder.Property(it => it.DeadlineTimestamp).IsRequired();
     }
 }
