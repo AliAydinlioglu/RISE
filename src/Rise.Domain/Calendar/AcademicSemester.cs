@@ -1,15 +1,18 @@
 namespace Rise.Domain.Calendar;
 
-public class Period : Entity
+/// <summary>
+/// Represents a defined academic semester within an academic year, including its duration and exam schedule.
+/// </summary>
+public class AcademicSemester : Entity
 {
     public string AcademicYear { get; private set; }
-    public PeriodType Type { get; private set; }
+    public SemesterType Type { get; private set; }
     public DateRange DateRange { get; private set; }
     public DateTimeOffset ExamStartDate { get; private set; }
     
-    private Period() {  }
+    private AcademicSemester() {  }
 
-    public Period(string academicYear, PeriodType type, DateRange dateRange, DateTimeOffset? examStartDate = null)
+    public AcademicSemester(string academicYear, SemesterType type, DateRange dateRange, DateTimeOffset? examStartDate = null)
     {
         AcademicYear = Guard.Against.NullOrWhiteSpace(academicYear);
         Type = type;
@@ -20,18 +23,18 @@ public class Period : Entity
     }
 }
 
-public enum PeriodType
+public enum SemesterType
 {
     Sem1 = 0,
     Sem2 = 1,
     Ep3 = 2
 }
 
-public static class PeriodGuards
+public static class AcademicSemesterGuards
 {
-    public static void ExamStartDateRequiredUnlessEp3(this IGuardClause guardClause, PeriodType type, DateTimeOffset? examStartDate)
+    public static void ExamStartDateRequiredUnlessEp3(this IGuardClause guardClause, SemesterType type, DateTimeOffset? examStartDate)
     {
-        if (type != PeriodType.Ep3 && examStartDate is null)
+        if (type != SemesterType.Ep3 && examStartDate is null)
             throw new ArgumentException("ExamStartDate is required unless type is EP3");
     }
 }

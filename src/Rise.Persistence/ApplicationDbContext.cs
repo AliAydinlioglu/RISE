@@ -22,7 +22,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Technician> Technicians => Set<Technician>();
     
-    public DbSet<Period> Periods => Set<Period>();
+    public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<Deadline> Deadlines => Set<Deadline>();

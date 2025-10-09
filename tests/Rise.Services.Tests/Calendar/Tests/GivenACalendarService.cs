@@ -34,7 +34,7 @@ public class GivenACalendarService
 
         calendar.ClassGroup.ShouldBe("TIAO-01");
         calendar.AcademicYear.ShouldBe("2024-2025");
-        calendar.Period.Type.ShouldBe("SEM1");
+        calendar.AcademicSemester.Type.ShouldBe("SEM1");
         calendar.Courses.Count.ShouldBe(2);
 
         var riseCourse = calendar.Courses[0];
