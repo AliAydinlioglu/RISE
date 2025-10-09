@@ -1,5 +1,8 @@
 namespace Rise.Domain.Calendar;
 
+/// <summary>
+/// Represents an academic course taught within a specific class group and led by a lecturer.
+/// </summary>
 public class Course : Entity
 {
     public string Title { get; private set; }
