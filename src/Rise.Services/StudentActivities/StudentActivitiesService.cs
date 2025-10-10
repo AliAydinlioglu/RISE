@@ -56,4 +56,45 @@ public class StudentActivitiesService(ApplicationDbContext dbContext, ISessionCo
             TotalCount = totalCount,
         });
     }
+
+    public async Task<Result<StudentActivityResponse.Detail>> GetDetailByIdAsync(int id, CancellationToken ctx)
+    {
+        var studentActivity = await dbContext.StudentActivities
+            .Include(sa => sa.Location)
+            .Include(sa => sa.StudentClub)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(sa => sa.Id == id, ctx);
+
+        if (studentActivity == null)
+            return Result.NotFound($"Student activity with ID {id} not found.");
+
+        var detail = new StudentActivityDto.Detail
+        {
+            Id = studentActivity.Id,
+            Title = studentActivity.Title,
+            Description = studentActivity.Description,
+            Date = studentActivity.Date,
+            StartTime = studentActivity.StartTime,
+            EndTime = studentActivity.EndTime,
+            ImageUrl = studentActivity.ImageUrl,
+            Location = new LocationDto.Index
+            {
+                Id = studentActivity.Location.Id,
+                Name = studentActivity.Location.Name,
+                Street = studentActivity.Location.Street,
+                HouseNumber = studentActivity.Location.HouseNumber,
+                Postcode = studentActivity.Location.Postcode,
+                City = studentActivity.Location.City
+            },
+            StudentClub = new StudentClubDto.Index
+            {
+                Id = studentActivity.StudentClub.Id,
+                Name = studentActivity.StudentClub.Name,
+                Description = studentActivity.StudentClub.Description,
+                LogoUrl = studentActivity.StudentClub.LogoUrl
+            }
+        };
+
+        return Result.Success(new StudentActivityResponse.Detail { StudentActivity = detail });
+    }
 }

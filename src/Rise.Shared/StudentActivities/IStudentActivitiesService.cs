@@ -6,4 +6,6 @@ public interface IStudentActivitiesService
 {
     Task<Result<StudentActivityResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request,
         CancellationToken ctx);
+    
+    Task<Result<StudentActivityResponse.Detail>> GetDetailByIdAsync(int id, CancellationToken ctx);
 }
