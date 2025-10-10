@@ -7,4 +7,5 @@ public static partial class StudentActivityResponse
         public IEnumerable<StudentActivityDto.Index> StudentActivities { get; set; } = [];
         public int TotalCount { get; set; }
     }
+  
 }
