@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
+using Rise.Domain.StudentActivities;
 
 namespace Rise.Persistence;
 /// <summary>
@@ -19,6 +20,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         await UsersAsync();
         await ProductsAsync();
         await ProjectsAsync();
+        await StudentActivitiesAsync();
     }
 
     private async Task RolesAsync()
@@ -142,8 +144,47 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
             new("E-commerce Platform", technicians[rnd.Next(technicians.Count)], addresses[3]),
             new("CRM Integration", technicians[rnd.Next(technicians.Count)], addresses[4])
         };
-
+        
+        
+        
         dbContext.Projects.AddRange(projects);
+        await dbContext.SaveChangesAsync();
+    }
+    
+    private async Task StudentActivitiesAsync()
+    {
+        if (dbContext.StudentActivities.Any())
+            return;
+        
+       
+        var locations = new List<Location>
+        {
+            new Location("Schoonmeersen", "Valentin Vaerwyckweg", 1, 9000, "Gent"),
+            new Location("Campus Gent - Sint-Pietersplein", "Sint-Pietersplein", 7, 9000, "Gent"),
+            new Location("Campus Gent - Ledeganck", "Karel Lodewijk Ledeganckstraat", 35, 9000, "Gent"),
+            new Location("Stadshal Gent", "Emile Braunplein", 1, 9000, "Gent"),
+            new Location("NTGent - Voorplein", "Sint-Baafsplein", 17, 9000, "Gent")
+        };
+
+        var studentClubs = new List<StudentClub>
+        {
+            new StudentClub("Club A", "Club A Description", "images/clubA.png"),
+            new StudentClub("Club B", "Club B Description", "images/clubB.png"),
+            new StudentClub("Club C", "Club C Description", "images/clubC.png"),
+            new StudentClub("Club D", "Club D Description", "images/clubD.png"),
+            new StudentClub("Club E", "Club E Description", "images/clubE.png")
+        };
+        
+        var studentActivities = new List<StudentActivity>
+        {
+            new StudentActivity("Activity 1", "Description for Activity 1", new DateTime(2023, 11, 15), new DateTime(2023, 11, 15, 10, 0, 0), new DateTime(2023, 11, 15, 12, 0, 0), "images/activity1.png", locations[0], studentClubs[0]),
+            new StudentActivity("Activity 2", "Description for Activity 2", new DateTime(2023, 12, 5), new DateTime(2023, 12, 5, 14, 0, 0), new DateTime(2023, 12, 5, 16, 0, 0), "images/activity2.png", locations[1], studentClubs[1]),
+            new StudentActivity("Activity 3", "Description for Activity 3", new DateTime(2024, 1, 20), new DateTime(2024, 1, 20, 9, 0, 0), new DateTime(2024, 1, 20, 11, 0, 0), "images/activity3.png", locations[2], studentClubs[2]),
+            new StudentActivity("Activity 4", "Description for Activity 4", new DateTime(2024, 2, 10), new DateTime(2024, 2, 10, 13, 0, 0), new DateTime(2024, 2, 10, 15, 0, 0), "images/activity4.png", locations[3], studentClubs[3]),
+            new StudentActivity("Activity 5", "Description for Activity 5", new DateTime(2024, 3, 25), new DateTime(2024, 3, 25, 11, 0, 0), new DateTime(2024, 3, 25, 13, 0, 0), "images/activity5.png", locations[4], studentClubs[4])
+        };
+
+        dbContext.StudentActivities.AddRange(studentActivities);
         await dbContext.SaveChangesAsync();
     }
 }
