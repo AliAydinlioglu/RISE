@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Endpoints\NewFolder\**" />
+    <Content Remove="Endpoints\NewFolder\**" />
+    <EmbeddedResource Remove="Endpoints\NewFolder\**" />
+    <None Remove="Endpoints\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="FastEndpoints" />
     <Using Include="Ardalis.Result" />
     <Using Include="Serilog" />

@@ -1,0 +1,11 @@
+﻿using Rise.Shared.Common;
+
+namespace Rise.Shared.Navigation;
+
+/// <summary>
+/// Provides methods for managing navigation-related operations.
+/// </summary>
+public interface INavigationService
+{
+    Task<Result<NavigationResponse.Get>> GetAsync(QueryRequest.SkipTake req, CancellationToken ct);
+}
