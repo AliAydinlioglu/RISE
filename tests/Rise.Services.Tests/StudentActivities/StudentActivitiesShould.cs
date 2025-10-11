@@ -13,28 +13,30 @@ namespace Rise.Services.Tests.StudentActivities;
 
 public class StudentActivitiesShould
 {
-   [Fact]
+    [Fact]
     public async Task GetAllStudentActivities_ReturnsAllActivities()
     {
         // Arrange
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: nameof(GetAllStudentActivities_ReturnsAllActivities)) // Do NOT use InMemoryDatabase... it's not reliable. Use a real database and come up with a strategy to clean up the database between tests.
+            .UseInMemoryDatabase(
+                databaseName: nameof(
+                    GetAllStudentActivities_ReturnsAllActivities)) // Do NOT use InMemoryDatabase... it's not reliable. Use a real database and come up with a strategy to clean up the database between tests.
             .Options;
-        
+
         using var dbContext = new ApplicationDbContext(options);
 
         var studentClub = new StudentClub(
             "Club A",
             "A student club description",
             "/images/clubA.png"
-            );
+        );
         var location = new Location(
             "Test Location",
             "Test street",
             42,
             1234,
             "Test City");
-        
+
         var studentActivity1 = new StudentActivity(
             "Cantus",
             "Desc1",
@@ -45,7 +47,7 @@ public class StudentActivitiesShould
             location,
             studentClub
         );
-        
+
         var studentActivity2 = new StudentActivity(
             "Quiz",
             "Desc2",
@@ -56,18 +58,18 @@ public class StudentActivitiesShould
             location,
             studentClub
         );
-       
+
 
         dbContext.Locations.Add(location);
         dbContext.StudentClubs.Add(studentClub);
         dbContext.StudentActivities.AddRange(studentActivity1, studentActivity2);
         await dbContext.SaveChangesAsync();
 
-       IStudentActivitiesService service = new StudentActivitiesService(dbContext, null);
+        IStudentActivitiesService service = new StudentActivitiesService(dbContext, null);
 
         // Act
         var result = await service.GetIndexAsync(
-            new QueryRequest.SkipTake {}, 
+            new QueryRequest.SkipTake { },
             CancellationToken.None);
 
         // Assert
@@ -76,13 +78,13 @@ public class StudentActivitiesShould
         result.Value.TotalCount.ShouldBe(2);
         result.Value.StudentActivities.Any(a => a.Title == "Cantus").ShouldBeTrue();
         result.Value.StudentActivities.Any(a => a.Title == "Quiz").ShouldBeTrue();
-        
-        
+
+
         var activityCantus = result.Value.StudentActivities.FirstOrDefault(a => a.Title == "Cantus");
         activityCantus.ShouldNotBeNull();
         activityCantus.Description.ShouldBe("Desc1");
         activityCantus.Date.ShouldBe(new DateTime(2025, 9, 10));
-        activityCantus.StartTime.ShouldBe(new DateTime(2025, 9, 10, 17 , 0, 0));
+        activityCantus.StartTime.ShouldBe(new DateTime(2025, 9, 10, 17, 0, 0));
         activityCantus.EndTime.ShouldBe(new DateTime(2025, 9, 10, 23, 0, 0));
         activityCantus.ImageUrl.ShouldBe("/images/cantus.png");
         activityCantus.Location.Name.ShouldBe("Test Location");
@@ -102,16 +104,15 @@ public class StudentActivitiesShould
     }
 
     [Fact]
-    public async Task GetStudentActivites_CorrectPagination()
+    public async Task GetAllStudentActivities_CorrectPagination()
     {
-        
         const int AMOUNT_OF_ACTIVITIES = 5;
         const int SKIP = 1;
         const int TAKE = 2;
-        
+
         // Arrange
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: nameof(GetStudentActivites_CorrectPagination))
+            .UseInMemoryDatabase(databaseName: nameof(GetAllStudentActivities_CorrectPagination))
             .Options;
 
         using var dbContext = new ApplicationDbContext(options);
@@ -140,7 +141,7 @@ public class StudentActivitiesShould
         await dbContext.SaveChangesAsync();
 
         var service = new StudentActivitiesService(dbContext, null);
-        
+
         //Act
         var result = await service.GetIndexAsync(
             new QueryRequest.SkipTake { Skip = SKIP, Take = TAKE },
@@ -153,5 +154,105 @@ public class StudentActivitiesShould
         result.Value.StudentActivities.Any(a => a.Title == "ActivityTest2").ShouldBeTrue();
         result.Value.StudentActivities.Any(a => a.Title == "ActivityTest3").ShouldBeTrue();
         result.Value.StudentActivities.Any(a => a.Title == "ActivityTest1").ShouldBeFalse();
+    }
+
+
+    [Fact]
+    public async Task GetStudentActivitiesById_Returns()
+    {
+        const int AMOUNT_OF_ACTIVITIES = 5;
+        const int TO_TEST_ACTIVITY_ID = 2;
+
+        // Arrange
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: nameof(GetStudentActivitiesById_Returns))
+            .Options;
+
+        using var dbContext = new ApplicationDbContext(options);
+
+        var studentClub = new StudentClub("Club A", "A student club description", "/images/clubA.png");
+        var location = new Location("Test Location", "Test street", 42, 1234, "Test City");
+
+        var activities = new List<StudentActivity>();
+        for (var i = 1; i <= AMOUNT_OF_ACTIVITIES; i++)
+        {
+            var date = new DateTime(2025, 9, 10 + i);
+            activities.Add(new StudentActivity(
+                $"ActivityTest{i}",
+                $"DescTest{i}",
+                date,
+                new DateTime(date.Year, date.Month, date.Day, 18, 0, 0),
+                new DateTime(date.Year, date.Month, date.Day, 22, 0, 0),
+                $"/images/activity{i}.png",
+                location,
+                studentClub));
+        }
+
+        dbContext.Locations.Add(location);
+        dbContext.StudentClubs.Add(studentClub);
+        dbContext.StudentActivities.AddRange(activities);
+        await dbContext.SaveChangesAsync();
+
+        var service = new StudentActivitiesService(dbContext, null);
+
+        //Act
+        var result = await service.GetDetailByIdAsync(TO_TEST_ACTIVITY_ID, CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.StudentActivity.ShouldNotBeOfType(typeof(Array));
+        result.Value.StudentActivity.Id.ShouldBe(TO_TEST_ACTIVITY_ID);
+        result.Value.StudentActivity.Title.ShouldBe($"ActivityTest{TO_TEST_ACTIVITY_ID}");
+        result.Value.StudentActivity.Description.ShouldBe($"DescTest{TO_TEST_ACTIVITY_ID}");
+        result.Value.StudentActivity.ImageUrl.ShouldBe($"/images/activity{TO_TEST_ACTIVITY_ID}.png");
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(999)]
+    [InlineData(6)]
+    public async Task GetStudentActivitiesById_Invalid(int invalidId)
+    {
+        const int AMOUNT_OF_ACTIVITIES = 5;
+        // Arrange
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: nameof(GetStudentActivitiesById_Invalid))
+            .Options;
+
+        using var dbContext = new ApplicationDbContext(options);
+
+        var studentClub = new StudentClub("Club A", "A student club description", "/images/clubA.png");
+        var location = new Location("Test Location", "Test street", 42, 1234, "Test City");
+
+        var activities = new List<StudentActivity>();
+        for (var i = 1; i <= AMOUNT_OF_ACTIVITIES; i++)
+        {
+            var date = new DateTime(2025, 9, 10 + i);
+            activities.Add(new StudentActivity(
+                $"ActivityTest{i}",
+                $"DescTest{i}",
+                date,
+                new DateTime(date.Year, date.Month, date.Day, 18, 0, 0),
+                new DateTime(date.Year, date.Month, date.Day, 22, 0, 0),
+                $"/images/activity{i}.png",
+                location,
+                studentClub));
+        }
+
+        dbContext.Locations.Add(location);
+        dbContext.StudentClubs.Add(studentClub);
+        dbContext.StudentActivities.AddRange(activities);
+        await dbContext.SaveChangesAsync();
+
+        var service = new StudentActivitiesService(dbContext, null);
+
+       
+        // Act
+        var result = await service.GetDetailByIdAsync(invalidId, CancellationToken.None);
+        
+        // Assert
+        result.IsSuccess.ShouldBeFalse();
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 }

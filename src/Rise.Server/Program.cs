@@ -85,6 +85,7 @@ try
                 ep.PreProcessor<GlobalRequestLogger>(Order.Before);
                 ep.PostProcessor<GlobalResponseSender>(Order.Before);
                 ep.PostProcessor<GlobalResponseLogger>(Order.Before);
+                
             };
         })
         .UseSwaggerGen();
