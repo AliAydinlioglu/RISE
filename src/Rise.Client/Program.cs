@@ -40,8 +40,8 @@ try
     {
         client.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
     });
-
     await builder.Build().RunAsync();
+
 }           
 catch (Exception ex)
 {

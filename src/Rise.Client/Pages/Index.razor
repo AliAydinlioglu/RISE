@@ -1,9 +1,13 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@using Rise.Client.Components
 
-<h1>Hello, world!</h1>
+<div class="app-container">
+<Header Title="Campus App" />
+    
+    <main class="main-content">
+        <h3>Welkom op de Home Page</h3>
+    </main>
 
-<p>Welcome to your new app.</p>
-
-<p>After a user authenticates, the navigation menu shows a link to the <a href="private-page">Private Page</a>.</p>
+<Footer NavItems="@navItems" />
+</div>

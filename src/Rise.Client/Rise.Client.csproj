@@ -23,5 +23,23 @@
     <ItemGroup>
       <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Content Update="wwwroot\favicon.ico">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\favicon.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\index.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\logo_black_bg.jpg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\logo_white_bg.jpg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 
 </Project>
