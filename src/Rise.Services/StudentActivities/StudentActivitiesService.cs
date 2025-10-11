@@ -66,7 +66,9 @@ public class StudentActivitiesService(ApplicationDbContext dbContext, ISessionCo
             .FirstOrDefaultAsync(sa => sa.Id == id, ctx);
 
         if (studentActivity == null)
-            return Result.NotFound($"Student activity with ID {id} not found.");
+            return Result.Invalid(
+                new ValidationError("StudentActivity.NotFound",$"Student activity with ID {id} not found.","400", ValidationSeverity.Error)
+                );
 
         var detail = new StudentActivityDto.Detail
         {
