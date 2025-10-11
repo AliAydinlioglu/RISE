@@ -10,8 +10,8 @@ public class NavigationDto
     /// </summary>
     public class Get
     {
-        public required int Id { get; set; }
-        public required string Name { get; set; }
-        public required string Description { get; set; }
+        public required string Label { get; set; }
+        public required string Icon { get; set; }
+        public required string Url { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Rise.Domain.Navigations;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 
@@ -19,6 +20,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
 {
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Project> Projects => Set<Project>();
+    public DbSet<RoleNavigationItem> RoleNavigationItems => Set<RoleNavigationItem>();
+    public DbSet<PlatformType> PlatformTypes => Set<PlatformType>();
+    public DbSet<NavigationItem> NavigationItems => Set<NavigationItem>();
     public DbSet<Technician> Technicians => Set<Technician>();
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
