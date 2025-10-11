@@ -1,0 +1,481 @@
+body {
+ color: #000;
+}
+
+:root {
+    --teal-hogent: #16b0a5;
+    --pink-hogent: #f19da0;
+    --orange-hogent: #fabc32;
+    --orangebrown-hogent: #ef8766;
+    --purple-hogent: #bb90bd;
+    --blue-hogent: #4ca2d5;
+    --green-hogent: #a5ca72;
+    --brown-hogent: #d8b083;
+    --grey-hogent: #c0bbaf;
+    --yellow-hogent: #f4de00;
+  	--black-hogent: #1b1e23;
+}
+.parent{
+    position: relative;
+}
+.columnsLayer {
+    position: absolute;
+    top: 100%;
+    left: 5%;
+}
+
+.letter-background {
+    background-color: #fff;
+    padding: 0 0 20px 0;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    z-index:10;
+}
+.letter-background::after {
+    z-index:-10;
+    content: attr(data-letter-background);
+    display: block;
+    line-height: 1;
+    position: absolute;
+    bottom: -100px;
+    right: -50px;
+    font-size:28rem;
+    font-weight:bold;
+    font-family: 'code_pro_blackregular';
+}
+
+/* kleuren */
+.c-teal {
+  color: #16b0a5 !important;
+}
+
+.c-pink {
+  color: #f19da0 !important;
+}
+
+.c-orange {
+  color: #fabc32 !important;
+}
+
+.c-orangebrown {
+  color: #ef8766 !important;
+}
+
+.c-purple {
+  color: #bb90bd !important;
+}
+
+.c-blue {
+  color: #4ca2d5 !important;
+}
+
+.c-green {
+  color: #a5ca72 !important;
+}
+
+.c-brown {
+  color: #d8b083 !important;
+}
+
+.c-grey {
+  color: #c0bbaf !important;
+}
+
+.c-yellow {
+  color: #f4de00 !important;
+}
+
+/* extra margin */
+.mb-25 {
+    margin-bottom: 25px !important;
+}
+
+.mb-50 {
+    margin-bottom: 50px !important;
+}
+
+.mb-75 {
+    margin-bottom: 75px !important;
+}
+
+.mb-100 {
+    margin-bottom: 100px !important;
+}
+
+.mb-125 {
+    margin-bottom: 125px !important;
+}
+
+.mb-150 {
+    margin-bottom: 150px !important;
+}
+
+.mt-25 {
+    margin-top: 25px !important;
+}
+
+.mt-50 {
+    margin-top: 50px !important;
+}
+
+.mt-75 {
+    margin-top: 75px !important;
+}
+
+.mt-100 {
+    margin-top: 100px !important;
+}
+
+.mt-125 {
+    margin-top: 125px !important;
+}
+
+.mt-150 {
+    margin-top: 150px !important;
+}
+
+p:not(.lead) {
+    font-size: 0.9rem;
+    line-height: 1.6rem;
+}
+
+.blackbox > div.container > p {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    color: white;
+}
+
+.blackbox > div.container > h1, .blackbox > div.container > h2, .blackbox > div.container > h3, .blackbox > div.container > h4, .blackbox > div.container > h5 {
+    color: white;
+}
+
+#htmlContentInHeader > p {
+    font-size: 1rem;
+    line-height: 1.8rem;
+}
+
+/* black titles */
+h1,h2,h3,h4,h5,h6 {
+    color: #000;
+    font-weight: 800;
+}
+
+/* opsommingen */
+ul {
+  padding-left:20px
+}
+
+ul.categories > li > a {
+  color: black;
+}
+
+/* hyperlink */
+a, .btn-link {
+    color: black;
+    text-decoration: underline;
+}
+a:hover, button.btn.btn-sm.btn-link:hover {
+  color: #c3bbaf;
+  background-color: transparent; /* Geen achtergrondkleur bij click */
+}
+
+button.btn.btn-sm.btn-link:active {
+  background-color: transparent; /* Geen achtergrondkleur bij click */
+}
+
+a.nav-link, a.dropdown-item, a.list-group-item {
+    text-decoration: none;
+}
+
+#footer a {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
+.navbar-nav .dropdown-menu .dropdown-item:focus, .navbar-nav .dropdown-menu .dropdown-item:hover {
+    color: black;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+/* global font-size */
+body {
+    font-size: 0.9rem;
+}
+
+h2 {
+  font-size: 1rem;
+}
+
+/* left nav ul li items -> left-padding = 0 */
+nav > ul > li.nav-item > a.nav-link {
+    padding-left: 0
+}
+
+/* left nav focus link */
+nav > ul > li.nav-item a {
+    color: #616161;
+}
+nav > ul > li.nav-item > a.nav-link.active {
+    color: black;
+    font-weight: 600;
+}
+nav > ul > li.nav-item > a.nav-link:hover {
+    text-decoration: underline;
+}
+/* sub menu in left nav */
+nav > ul > li.nav-item > ul.nav > li.nav-item > a.nav-link.active {
+    color: black;
+    font-weight: 600;
+}
+
+/* overlay big menu dropdown picture */
+.mask-base-1--style-1 {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.mega-dropdown-menu .megadropdown-links .dropdown-item {
+    text-transform: initial;
+}
+
+.top-navbar .top-navbar-menu > ul.top-menu > li > a {
+    display: block;
+    padding: 0.575rem 0.625rem;
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.7rem;
+}
+.top-navbar .top-navbar-menu > ul.top-menu > li > a:hover {
+    color: rgba(0, 0, 0, 1);
+}
+
+/* top navbar */
+.top-navbar {
+    border:0;
+}
+
+/* search form */
+.form-control, .form-control > .btn {
+    /* border: 1px; */
+    font-size: 0.750rem;
+}
+
+/* forms */
+.radio label {
+line-height: 1.2rem !important;
+}
+
+.checkbox-color input:checked ~ label:after {
+    content: "\f00c";
+    font-family: "FontAwesome";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+}
+
+/* topnav items */
+ul.top-menu > li a {
+    text-decoration: none;
+}
+
+/* hyperlinks in button */
+a.btn {
+    text-decoration: none;
+}
+
+.btn-styled {
+ 	 text-transform: none !important;
+}
+
+.btn:focus {
+	background: grey
+}
+
+/* Cards */
+.card-inverse *:not(.btn):not(.alert):not(.form-control):not(.heading):not(a) {
+  color:#fff
+}
+
+/* social-media */
+#footer ul.social-media > li > a {
+    font-size:2.0rem;
+}
+
+/* media queries */
+@media screen and (max-width: 991px) {
+  #leftCol, #rightCol {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+/* login form ESC+L */
+#txtUsername, #txtPassword, #txtEmail {
+    border: 1px #e6e6e6 solid;
+}
+#cbRememberMe {
+    opacity: 1;
+}
+
+/* Tabellen */
+.table thead th {
+  color:#fff
+}
+
+.table thead tr {
+  background-color:#000
+}
+
+
+.table tbody td {
+  color: #000;
+}
+
+/* Tabs */
+.tabs--style-2 .nav-tabs .nav-item.show .nav-link,
+.tabs--style-2 .nav-tabs .nav-link.active,
+.tabs--style-2 .nav-tabs .nav-link:hover {
+  border-bottom: 1px solid #16b0a5;
+  color: #16b0a5;
+}
+
+/* achtergrondletters */
+.bg-letter {
+	font-size:10rem;
+	font-family:code_pro_blackregular;
+	position:absolute;
+	top:-100px;
+}
+
+.title-over-letter {
+	position:relative;
+	line-height:1;
+	margin-bottom: 50px;
+}
+
+/* colors */
+.bg-teal-hogent {
+    background-color: #16b0a5 !important;
+    color: #fff!important;
+}
+.bg-pink-hogent {
+    background-color: #f19da0 !important;
+    color: #fff!important;
+}
+.bg-orange-hogent {
+    background-color: #fabc32 !important;
+    color: #fff!important;
+}
+.bg-orangebrown-hogent {
+    background-color: #ef8766 !important;
+    color: #fff!important;
+}
+.bg-purple-hogent {
+    background-color: #bb90bd !important;
+    color: #fff!important;
+}
+.bg-blue-hogent {
+    background-color: #4ca2d5 !important;
+    color: #fff!important;
+}
+.bg-green-hogent {
+    background-color: #a5ca72 !important;
+    color: #fff!important;
+}
+.bg-brown-hogent {
+    background-color: #d8b083 !important;
+    color: #fff!important;
+}
+.bg-grey-hogent {
+    background-color: #c0bbaf !important;
+    color: #fff!important;
+}
+.bg-yellow-hogent {
+    background-color: #f4de00 !important;
+}
+.bg-black-hogent {
+    background-color: #1b1e23 !important;
+}
+
+/* hogent buttons */
+.btn-teal-hogent, .btn-teal-hogent:focus, .btn-teal-hogent:hover {
+    color: #fff;
+    background-color: #16b0a5;
+    border-color: #16b0a5;
+}
+.btn-pink-hogent, .btn-pink-hogent:focus, .btn-pink-hogent:hover  {
+    color: #fff;
+    background-color: #f19da0;
+    border-color: #f19da0;
+}
+.btn-orange-hogent, .btn-orange-hogent:focus, .btn-orange-hogent:hover {
+    color: #fff;
+    background-color: #fabc32;
+    border-color: #fabc32;
+}
+.btn-orangebrown-hogent, .btn-orangebrown-hogent:focus, .btn-orangebrown-hogent:hover {
+    color: #fff;
+    background-color: #ef8766;
+    border-color: #ef8766;
+}
+.btn-purple-hogent, .btn-purple-hogent:focus, .btn-purple-hogent:hover {
+    color: #fff;
+    background-color: #bb90bd;
+    border-color: #bb90bd;
+}
+.btn-blue-hogent, .btn-blue-hogent:focus, .btn-blue-hogent:hover {
+    color: #fff;
+    background-color: #4ca2d5;
+    border-color: #4ca2d5;
+}
+.btn-green-hogent, .btn-green-hogent:focus, .btn-green-hogent:hover {
+    color: #fff;
+    background-color: #a5ca72;
+    border-color: #a5ca72;
+}
+.btn-brown-hogent, .btn-brown-hogent:focus, .btn-brown-hogent:hover {
+    color: #fff;
+    background-color: #d8b083;
+    border-color: #d8b083;
+}
+.btn-grey-hogent, .btn-grey-hogent:focus, .btn-grey-hogent:hover {
+    color: #fff;
+    background-color: #c0bbaf;
+    border-color: #c0bbaf;
+}
+.btn-yellow-hogent, .btn-yellow-hogent:focus, .btn-yellow-hogent:hover {
+    color: #000;
+    background-color: #f4de00;
+    border-color: #f4de00;
+}
+
+/* pagination */
+.pagination > .active .page-link, .pagination > .active .page-link:focus, .pagination > .active .page-link:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #000000;
+    border-color: #000000;
+}
+
+/* dsp_content_list.cfm */
+dt.title {
+    color: #000;
+    font-weight: 800;
+    font-size: 1.75rem;
+    font-family: "Montserrat", sans-serif;
+    line-height: 1.46;
+}
+
+.page-link, .text_decoration_none {
+    text-decoration: none;
+}
+
+.list-group-item {
+    padding: 0.8rem;
+  	color: #475057;
+}
