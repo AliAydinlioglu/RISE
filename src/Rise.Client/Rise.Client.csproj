@@ -25,6 +25,15 @@
     </ItemGroup>
     
     <ItemGroup>
+      <Content Update="wwwroot\css\app.css">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\css\code_pro_black-webfont.woff2">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="wwwroot\css\hogent.css">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Update="wwwroot\favicon.ico">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
