@@ -3,9 +3,9 @@
     [Parameter] public List<NavItemModel> NavItems { get; set; } = new();
 }
 
-<nav class="nav-footer">
+<nav class="nav-grid">
     @foreach (var item in NavItems)
     {
-        <NavItem Icon="@item.Icon" Label="@item.Label" Link="@item.Link" navClass="nav-item" />
+        <NavItem Icon="@item.Icon" Label="@item.Label" Link="@item.Link" navClass="nav-card" />
     }
 </nav>
