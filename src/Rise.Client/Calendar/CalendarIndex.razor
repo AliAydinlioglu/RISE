@@ -1,0 +1,81 @@
+@page "/kalender"
+@using Rise.Client.Components
+
+<PageTitle>Kalender</PageTitle>
+
+<h1 class="title is-uppercase">Kalender</h1>
+
+@if (!_calendarItems.Any())
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="box mb-5">
+        <div class="level is-mobile mb-4">
+            <div class="level-left">
+                <button class="button is-ghost has-text-white" @onclick="PreviousWeek">
+                    <span class="icon">
+                        <i class="fas fa-chevron-left"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="level-item">
+                <p class="title is-4 is-capitalized has-text-centered">
+                    @_selectedDate.ToString("MMMM yyyy")
+                </p>
+            </div>
+            <div class="level-right">
+                <button class="button is-ghost has-text-white" @onclick="NextWeek">
+                    <span class="icon">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div class="columns is-mobile is-gapless">
+            @foreach (var day in GetSchooldaysOfCurrentWeek())
+            {
+                var isSelected = day.Date == _selectedDate.Date;
+                <div class="column is-flex is-justify-content-center is-align-items-center">
+                    <button @onclick="() => _selectedDate = day">
+                        <div class="has-text-centered">
+                            <p class="is-size-7 has-text-weight-semibold is-capitalized mb-2">
+                                @day.ToString("ddd")
+                            </p>
+                            <div class="@(isSelected ? "has-background-white has-text-black" : string.Empty) 
+                                        is-inline-flex is-justify-content-center is-align-items-center"
+                                 style="width: 2.5rem; height: 2.5rem; border-radius: 50%;">
+                                <span class="has-text-weight-bold">@day.Day</span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="calendar-events">
+        @{
+            var eventsForDay = GetItemsForSelectedDate().ToList();
+
+            if (eventsForDay.Any())
+            {
+                foreach (var item in eventsForDay)
+                {
+                    <Card Date="@item.Date"
+                          Title="@item.Title"
+                          Description="@item.Description"
+                          CardHeader="@item.Header"
+                    />
+                }
+            }
+            else
+            {
+                <div class="notification is -light">
+                    <p class="has - text - centered">Geen evenementen voor deze dag</p>
+                </div>
+            }
+        }
+    </div>
+}
