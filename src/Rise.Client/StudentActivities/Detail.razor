@@ -1,0 +1,13 @@
+@page "/StudentActivities/{Id?}"
+
+
+<h3>@studentActivity.Title</h3>
+
+<p><b>Organisator:</b> @studentActivity.StudentClub.Name</p>
+<p><b>Datum:</b> @studentActivity.Date.LocalDateTime.ToString("dd-MM-yyyy")</p>
+<p><b>Tijd:</b> @studentActivity.StartTime.ToString(@"hh\:mm") - @studentActivity.EndTime.ToString(@"hh\:mm")</p>
+<p><b>Locatie:</b> @studentActivity.Location</p>
+<p>
+    <b>Beschrijving:</b>
+    @studentActivity.Description
+</p>
