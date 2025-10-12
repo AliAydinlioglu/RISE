@@ -1,0 +1,22 @@
+@page "/StudentActivities"
+@using Rise.Client.Components
+
+<PageTitle>StudentActivities</PageTitle>
+
+<h1 class="title">StudentActivities</h1>
+
+@if (studentActivities == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var studentActivity in studentActivities)
+    {
+        <a href="/StudentActivities/@studentActivity.Id">
+        <Card Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title" >
+            <StudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name" StartTime="studentActivity.StartTime" EndTime="studentActivity.EndTime" Location="studentActivity.Location"   />
+        </Card>
+        </a>
+    }
+}
