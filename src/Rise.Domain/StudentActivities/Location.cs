@@ -16,6 +16,5 @@ public class Location : Entity
         HouseNumber = Guard.Against.NegativeOrZero(houseNumber);
         Postcode = Guard.Against.BetweenMinAndMax(postcode, 1000, 9999);
         City =  Guard.Against.NullOrWhiteSpace(city);
-        ;
     }
 }
