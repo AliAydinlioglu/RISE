@@ -1,0 +1,19 @@
+@using Rise.Client.Components
+<div class="calendar-events">
+    @if (Items != null && Items.Any())
+    {
+        @foreach (var item in Items)
+        {
+            <Card Date="@item.Date"
+                  Title="@item.Title"
+                  Description="@item.Description"
+                  CardHeader="@item.Header" />
+        }
+    }
+    else
+    {
+        <div class="notification is-light">
+            <p class="has-text-centered">@EmptyMessage</p>
+        </div>
+    }
+</div>
