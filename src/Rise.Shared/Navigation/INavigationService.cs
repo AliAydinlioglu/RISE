@@ -8,5 +8,5 @@ namespace Rise.Shared.Navigation;
 /// </summary>
 public interface INavigationService
 {
-    Task<Result<NavigationResponse.Get>> GetAsync(ClaimsPrincipal? principal, QueryRequest.SkipTake req, CancellationToken ct);
+    Task<Result<NavigationResponse.Get>> GetAsync(QueryRequest.SkipTake req, CancellationToken ct);
 }

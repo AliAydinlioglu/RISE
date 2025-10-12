@@ -8,6 +8,5 @@ public class NavigationResponse
     public class Get
     {
         public IEnumerable<NavigationDto.Get> NavigationItems { get; set; } = [];
-        public int TotalCount { get; set; }
     }
 }

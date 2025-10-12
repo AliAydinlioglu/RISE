@@ -1,6 +1,6 @@
-namespace Rise.Domain.Navigations;
+namespace Rise.Domain.Navigation;
 
-public class NavigationItem : Entity
+public class NavigationItem : Entity<int>
 {
     public string Label { get; private set; }
     public string Icon { get; private set; }

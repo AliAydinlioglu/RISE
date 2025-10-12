@@ -3,7 +3,7 @@ namespace Rise.Domain.Projects;
 /// <summary>
 /// A project is something that a technician is working on.
 /// </summary>
-public class Project : Entity
+public class Project : Entity<int>
 {
     private string _name = string.Empty;
 

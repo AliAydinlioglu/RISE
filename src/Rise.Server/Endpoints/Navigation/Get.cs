@@ -10,8 +10,7 @@ namespace Rise.Server.Endpoints.Navigation
     /// See https://fast-endpoints.com/
     /// </summary>
     /// <param name="navigationService"></param>
-    public class Get( INavigationService navigationService, ISessionContextProvider sessionContextProvider) 
-        : Endpoint<QueryRequest.SkipTake, Result<NavigationResponse.Get>>
+    public class Get( INavigationService navigationService) : Endpoint<QueryRequest.SkipTake, Result<NavigationResponse.Get>>
     {
         public override void Configure()
         {
@@ -20,7 +19,7 @@ namespace Rise.Server.Endpoints.Navigation
 
         public override async Task<Result<NavigationResponse.Get>> ExecuteAsync(QueryRequest.SkipTake req, CancellationToken ct)
         {
-            return await navigationService.GetAsync(sessionContextProvider.User, req, ct);
+            return await navigationService.GetAsync(req, ct);
         }
     }
 }

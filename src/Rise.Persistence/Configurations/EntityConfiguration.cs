@@ -8,7 +8,8 @@ namespace Rise.Persistence.Configurations;
 /// Base configuration for an <see cref="Entity"/>
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
-internal class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : Entity
+/// <typeparam name="TId"></typeparam>
+internal class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : EntityBase
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
