@@ -21,6 +21,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Rise.Domain\Rise.Domain.csproj" />
       <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
     </ItemGroup>
 
