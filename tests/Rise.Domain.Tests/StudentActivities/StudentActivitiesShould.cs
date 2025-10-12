@@ -1,4 +1,5 @@
 using NSubstitute;
+using Rise.Domain.Common;
 using Rise.Domain.Exceptions;
 using Rise.Domain.StudentActivities;
 
@@ -8,16 +9,16 @@ public class StudentActivitiesShould
 {
     Location _location = Substitute.For<Location>();
     StudentClub _studentClub = Substitute.For<StudentClub>();
-    
+
     [Fact]
     public void BeCreated()
     {
         var sa = new StudentActivity(
             "Cantus",
             "A singing event",
-            new DateTime(2025, 9, 10),
-            new DateTime(2025, 9, 10, 17, 0, 0),
-            new DateTime(2025, 9, 10, 23, 0, 0),
+            new DateTimeOffset(new DateTime(2025, 9, 10), TimeSpan.Zero),
+            new TimeRange(new TimeOnly(17, 0, 0),
+                new TimeOnly(23, 0, 0)),
             "/images/cantus.png",
             _location,
             _studentClub
@@ -25,75 +26,76 @@ public class StudentActivitiesShould
 
         sa.Title.ShouldBe("Cantus");
         sa.Description.ShouldBe("A singing event");
-        sa.Date.ShouldBe(new DateTime(2025, 9, 10));
-        sa.StartTime.ShouldBe(new DateTime(2025, 9, 10, 17, 0, 0));
-        sa.EndTime.ShouldBe(new DateTime(2025, 9, 10, 23, 0, 0));
+        sa.Date.ShouldBe(new DateTimeOffset(new DateTime(2025, 9, 10), TimeSpan.Zero));
+        sa.TimeRange.ShouldBe(new TimeRange(new TimeOnly(17, 0, 0),
+            new TimeOnly(23, 0, 0)));
         sa.ImageUrl.ShouldBe("/images/cantus.png");
         sa.Location.ShouldNotBeNull();
         sa.StudentClub.ShouldNotBeNull();
     }
 
     [Theory]
-    [InlineData("2025-09-10T20:00:00", "2025-09-10T18:00:00", "Start time must be before end time.")]
-    [InlineData("2025-09-10T23:59:59", "2025-09-10T23:00:00", "Start time must be before end time.")]
-    [InlineData("2025-09-11T09:00:00", "2025-09-10T18:00:00", "Start time must be before end time.")]
-    [InlineData("2025-09-11T09:00:00", "2025-09-11T09:00:00", "Start time must be before end time.")]
+    [InlineData("20:00:00", "18:00:00", "EndTime must be after StartTime")]
+    [InlineData("23:59:59", "23:00:00", "EndTime must be after StartTime")]
+    [InlineData("23:59:59", "0:00:00", "EndTime must be after StartTime")]
+    [InlineData("09:00:00", "09:00:00", "EndTime must be after StartTime")]
     public void ThrowExceptionWhenStartTimeIsAfterOrEqualsEndTime(
         string startTimeStr, string endTimeStr, string expectedErrorMessage)
     {
-        var startTime = DateTime.Parse(startTimeStr);
-        var endTime = DateTime.Parse(endTimeStr);
-        var date = startTime.Date;
+        var date = DateTimeOffset.Parse(startTimeStr);
 
         var exception = Should.Throw<InvalidTimeRangeException>(() => new StudentActivity(
             "Invalid Event",
             "An event with invalid time range",
             date,
-            startTime,
-            endTime,
+            new TimeRange (TimeOnly.Parse(startTimeStr), TimeOnly.Parse(endTimeStr)),
             "/images/event.png",
             _location,
             _studentClub
         ));
-        
+
         exception.GetType().ShouldBe(typeof(InvalidTimeRangeException));
         exception.Message.ShouldBe(expectedErrorMessage);
     }
     
+   
+
     [Theory]
-    [InlineData(null,"2025-09-10T00:00:00" , "2025-09-10T20:00:00", "2025-09-10T23:00:00",false ,false, typeof(ArgumentNullException))]
-    [InlineData("","2025-09-10T00:00:00" , "2025-09-10T20:00:00", "2025-09-10T23:00:00",false ,false, typeof(ArgumentException))]
-    [InlineData("   ","2025-09-10T00:00:00" , "2025-09-10T20:00:00", "2025-09-10T23:00:00",false ,false, typeof(ArgumentException))]
-    [InlineData("Valid title",null , "2025-09-10T20:00:00", "2025-09-10T23:00:00",false ,false, typeof(ArgumentOutOfRangeException))]
-    [InlineData("Valid title","2025-09-10T00:00:00" , null, "2025-09-10T23:00:00",false ,false, typeof(ArgumentOutOfRangeException))]
-    [InlineData("Valid title","2025-09-10T00:00:00" , "2025-09-10T23:00:00", null,false ,false, typeof(ArgumentOutOfRangeException))]
-    [InlineData("Valid title","2025-09-10T00:00:00" , "2025-09-10T23:00:00", "2025-09-10T23:59:00",true ,false, typeof(ArgumentNullException))]
-    [InlineData("Valid title","2025-09-10T00:00:00" , "2025-09-10T23:00:00", "2025-09-10T23:59:00",false ,true, typeof(ArgumentNullException))]
+    [InlineData(null, "2025-09-10T00:00:00", false, false, false,
+        typeof(ArgumentNullException))]
+    [InlineData("", "2025-09-10T00:00:00", false, false, false,
+        typeof(ArgumentException))]
+    [InlineData("   ", "2025-09-10T00:00:00", false, false, false,
+        typeof(ArgumentException))]
+    [InlineData("Valid title", null, false, false, false,
+        typeof(ArgumentOutOfRangeException))]
+    [InlineData("Valid title", "2025-09-10T00:00:00", true, false, false,
+        typeof(ArgumentNullException))]
+    [InlineData("Valid title", "2025-09-10T00:00:00", false, true, false,
+        typeof(ArgumentNullException))]
+    [InlineData("Valid title", "2025-09-10T00:00:00", false, false, true,
+        typeof(ArgumentNullException))]
     public void ThrowExceptionWhenRequiredFieldIsNullOrEmpty(
-        string title, string? dateStr, string startTimeStr, string endTimeStr, bool isLocationNull, bool isStudentClubNull, Type expectedExceptionType)
+        string title, string? dateStr, bool isTimeRangeNull, bool isLocationNull,
+        bool isStudentClubNull, Type expectedExceptionType)
     {
-        var startTime = string.IsNullOrWhiteSpace(startTimeStr) ? DateTime.MinValue : DateTime.Parse(startTimeStr);
-        var endTime = string.IsNullOrWhiteSpace(endTimeStr) ? DateTime.MinValue : DateTime.Parse(endTimeStr);
+        var TEST_TIMERANGE = new TimeRange(new TimeOnly(20, 0, 0), new TimeOnly(23, 0, 0));
         var date = string.IsNullOrWhiteSpace(dateStr) ? DateTime.MinValue : DateTime.Parse(dateStr);
 
 
         var location = isLocationNull ? null! : _location;
         var studentClub = isStudentClubNull ? null! : _studentClub;
-        
-        var exception =  Should.Throw<Exception>(() => new StudentActivity(
+
+        var exception = Should.Throw<Exception>(() => new StudentActivity(
             title,
             "An event with missing required fields",
             date,
-            startTime,
-            endTime,
+            isTimeRangeNull ? null : TEST_TIMERANGE,
             "/images/event.png",
             location,
             studentClub
         ));
-       
-        exception.GetType().ShouldBe(expectedExceptionType);
-       
-       
-    }
 
+        exception.GetType().ShouldBe(expectedExceptionType);
+    }
 }

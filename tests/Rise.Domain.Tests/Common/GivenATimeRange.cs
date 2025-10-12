@@ -1,4 +1,5 @@
 using Rise.Domain.Common;
+using Rise.Domain.Exceptions;
 
 namespace Rise.Domain.Tests.Common;
 
@@ -10,7 +11,7 @@ public class GivenATimeRange
         var start = new TimeOnly(10, 0);
         var end = new TimeOnly(8, 30);
 
-        Should.Throw<ArgumentException>(() => new TimeRange(start, end));
+        Should.Throw<InvalidTimeRangeException>(() => new TimeRange(start, end));
     }
 
 }

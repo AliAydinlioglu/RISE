@@ -8,7 +8,7 @@ public class Location : Entity
     public int Postcode { get; private set; }
     public string City { get; private set; }
     
-    private Location() { }
+    public Location() { }
     public Location(string name, string street, int houseNumber, int postcode, string city)
     {
         Name = name;

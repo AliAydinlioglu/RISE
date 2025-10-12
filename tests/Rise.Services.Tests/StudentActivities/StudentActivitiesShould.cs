@@ -58,8 +58,8 @@ public class StudentActivitiesShould
         activityCantus.ShouldNotBeNull();
         activityCantus.Description.ShouldBe("Desc1");
         activityCantus.Date.ShouldBe(new DateTime(2025, 9, 10));
-        activityCantus.StartTime.ShouldBe(new DateTime(2025, 9, 10, 18, 0, 0));
-        activityCantus.EndTime.ShouldBe(new DateTime(2025, 9, 10, 22, 0, 0));
+        activityCantus.StartTime.ShouldBe(new TimeOnly( 18, 0, 0));
+        activityCantus.EndTime.ShouldBe(new TimeOnly( 22, 0, 0));
         activityCantus.ImageUrl.ShouldBe("/images/cantus.png");
         activityCantus.Location.Name.ShouldBe("Test Location");
         activityCantus.StudentClub.Name.ShouldBe("Club A");
@@ -68,8 +68,8 @@ public class StudentActivitiesShould
         activityQuiz.ShouldNotBeNull();
         activityQuiz.Description.ShouldBe("Desc2");
         activityQuiz.Date.ShouldBe(new DateTime(2025, 10, 10));
-        activityQuiz.StartTime.ShouldBe(new DateTime(2025, 10, 10, 18, 0, 0));
-        activityQuiz.EndTime.ShouldBe(new DateTime(2025, 10, 10, 22, 0, 0));
+        activityQuiz.StartTime.ShouldBe(new TimeOnly( 18, 0, 0));
+        activityQuiz.EndTime.ShouldBe(new TimeOnly( 22, 0, 0));
         activityQuiz.ImageUrl.ShouldBe("/images/quiz.png");
         activityQuiz.Location.Name.ShouldBe("Test Location");
         activityQuiz.StudentClub.Name.ShouldBe("Club A");
@@ -188,7 +188,7 @@ public class StudentActivitiesShould
 
         // Assert
         result.IsSuccess.ShouldBeFalse();
-        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.NotFound);
     }
     
     

@@ -1,3 +1,4 @@
+using Rise.Domain.Common;
 using Rise.Domain.StudentActivities;
 
 namespace Rise.Services.Tests.StudentActivities;
@@ -18,8 +19,8 @@ public static class StudentActivityTestDataFactory
     public static StudentActivity CreateStudentActivity(string title, string description, DateTime date,  Location location, StudentClub club) 
     {
         return new(title, description, date,
-            new DateTime(date.Year, date.Month, date.Day, 18, 0, 0),
-            new DateTime(date.Year, date.Month, date.Day, 22, 0, 0),
+            new TimeRange(new TimeOnly(18, 0, 0),
+            new TimeOnly( 22, 0, 0)),
             $"/images/{title.ToLower()}.png", location, club);
     }
     
