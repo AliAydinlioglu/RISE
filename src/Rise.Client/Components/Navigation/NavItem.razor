@@ -4,10 +4,13 @@
     [Parameter]
     public string Label { get; set; } = "";
     [Parameter] 
-    public string Link { get; set; } = "";
+    public string Link { get; set; } = "#";
+    [Parameter]
+    public string navClass { get; set; } = "nav-item"; //nav-card
 }
 
-<div class="nav-item">
+
+<a class="@navClass" href="@Link">
     <img src="@Icon"/>
-    <label class="nav-label">@Label</label>
-</div>
+    <label>@Label</label>
+</a>
