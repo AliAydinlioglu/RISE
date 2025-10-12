@@ -51,7 +51,7 @@ public class StudentActivityService(ApplicationDbContext dbContext, ISessionCont
         return Result.Success(new StudentActivityResponse.Detail { StudentActivity = detail });
     }
 
-    private StudentActivityDto.Index ToIndexDto(StudentActivity sa)
+    private static StudentActivityDto.Index ToIndexDto(StudentActivity sa)
     {
         return new StudentActivityDto.Index
         {
@@ -67,7 +67,7 @@ public class StudentActivityService(ApplicationDbContext dbContext, ISessionCont
         };
     }
 
-    private StudentActivityDto.Detail ToDetailDto(StudentActivity sa)
+    private static StudentActivityDto.Detail ToDetailDto(StudentActivity sa)
     {
         return new StudentActivityDto.Detail
         {
@@ -84,7 +84,7 @@ public class StudentActivityService(ApplicationDbContext dbContext, ISessionCont
     }
     
     
-    private LocationDto.Index ToLocationDto(Location loc)
+    private static LocationDto.Index ToLocationDto(Location loc)
     {
         return new LocationDto.Index
         {
@@ -98,7 +98,7 @@ public class StudentActivityService(ApplicationDbContext dbContext, ISessionCont
         
     }
 
-    private StudentClubDto.Index ToStudentClubIndexDto(StudentClub club)
+    private static StudentClubDto.Index ToStudentClubIndexDto(StudentClub club)
     {
         return new StudentClubDto.Index
         {
@@ -109,7 +109,7 @@ public class StudentActivityService(ApplicationDbContext dbContext, ISessionCont
         };
     }
 
-    private StudentClubDto.Summary toStudentClubSummaryDto(StudentClub club)
+    private static StudentClubDto.Summary toStudentClubSummaryDto(StudentClub club)
     {
         return new StudentClubDto.Summary
         {
