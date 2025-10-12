@@ -9,9 +9,9 @@ namespace Rise.Persistence.Triggers;
 /// It works across various databases (e.g., swapping from Microsoft SQL Server to MariaDB).
 /// More info: https://github.com/koenbeuk/EntityFrameworkCore.Triggered
 /// </summary>
-public class EntityBeforeSaveTrigger(ApplicationDbContext dbContext) : IBeforeSaveTrigger<Entity>
+public class EntityBeforeSaveTrigger(ApplicationDbContext dbContext) : IBeforeSaveTrigger<EntityBase> 
 {
-    public Task BeforeSave(ITriggerContext<Entity> context, CancellationToken cancellationToken)
+    public Task BeforeSave(ITriggerContext<EntityBase> context, CancellationToken cancellationToken)
     {
         var entity = context.Entity;
         var currentTime = DateTime.UtcNow;

@@ -2,36 +2,30 @@ namespace Rise.Domain.Common;
 
 /// <summary>
 /// Entity Base Class, all entities should inherit from this. (read: Entity = Row in SQL terms)
+/// <para>
+/// TId is provided to make this base class more flexible with the type of Primary Key.
+/// It makes it possible to define the PK as whatever type needed, even combined keys.
+/// </para>
 /// </summary>
-public abstract class Entity
+public abstract class Entity<TId> : EntityBase
 {
     /// <summary>
     /// Primary Key of the <see cref="Entity"/>
     /// </summary>
-    public int Id { get; protected set; }
-    /// <summary>
-    /// Date of the initial creation.
-    /// </summary>
-    public DateTime CreatedAt { get; set; }
-    /// <summary>
-    /// Date of the last update.
-    /// </summary>
-    public DateTime UpdatedAt { get; set; }
-    /// <summary>
-    /// Soft Delete indicator, instead of deleting rows, we flag them as deleted.
-    /// </summary>
-    public bool IsDeleted { get; set; }
+    public TId Id { get; protected set; }
 
-    protected Entity() {}
+    protected Entity()
+    {
+    }
 
-    protected Entity(int id)
+    protected Entity(TId id)
     {
         Id = id;
     }
 
     public override bool Equals(object? obj)
     {
-        if (obj is not Entity other)
+        if (obj is not Entity<TId> other)
             return false;
 
         if (ReferenceEquals(this, other))
@@ -40,13 +34,14 @@ public abstract class Entity
         if (GetType() != other.GetType())
             return false;
 
-        if (Id.Equals(default) || other.Id.Equals(default))
+        if (EqualityComparer<TId>.Default.Equals(Id, default) ||
+            EqualityComparer<TId>.Default.Equals(other.Id, default))
             return false;
 
-        return Id.Equals(other.Id);
+        return EqualityComparer<TId>.Default.Equals(Id, other.Id);
     }
 
-    public static bool operator ==(Entity a, Entity b)
+    public static bool operator ==(Entity<TId> a, Entity<TId> b)
     {
         if (a is null && b is null)
             return true;
@@ -57,13 +52,7 @@ public abstract class Entity
         return a.Equals(b);
     }
 
-    public static bool operator !=(Entity a, Entity b)
-    {
-        return !(a == b);
-    }
+    public static bool operator !=(Entity<TId> a, Entity<TId> b) => !(a == b);
 
-    public override int GetHashCode()
-    {
-        return (GetType().ToString() + Id).GetHashCode();
-    }
+    public override int GetHashCode() => (GetType().ToString() + Id).GetHashCode();
 }

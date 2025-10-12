@@ -1,6 +1,6 @@
 ﻿namespace Rise.Domain.Products;
 
-public class Product : Entity
+public class Product : Entity<int>
 {
     private string _name = string.Empty;
     public required string Name

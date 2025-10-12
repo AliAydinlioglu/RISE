@@ -5,7 +5,7 @@ namespace Rise.Domain.Projects;
 /// This is a domain entity and seperated from the <see cref="IdentityUser"/> the link is made via the <see cref="AccountId"/>.
 /// So we can swap out the identity provider without changing the domain.
 /// </summary>
-public class Technician : Entity
+public class Technician : Entity<int>
 {
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
