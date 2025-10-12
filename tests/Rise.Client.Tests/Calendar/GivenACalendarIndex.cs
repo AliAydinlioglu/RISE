@@ -1,3 +1,4 @@
+using Rise.Client.Calendar.Fakers;
 using Rise.Client.Components;
 using Rise.Shared;
 using Rise.Shared.Calendar;
@@ -41,8 +42,7 @@ public class GivenACalendarIndex : TestContext
     {
         var cut = RenderCalendarComponent();
 
-        var dayButtons = cut.FindAll(".columns.is-mobile .column");
-        dayButtons.Count.ShouldBe(5);
+        cut.GetDayColumnsCount().ShouldBe(5);
     }
     
     [Fact]
@@ -50,8 +50,7 @@ public class GivenACalendarIndex : TestContext
     {
         var cut = RenderCalendarComponent();
         
-        var selectedDay = cut.Find(".has-background-white.has-text-black");
-        selectedDay.TextContent.Trim().ShouldBe("13");
+        cut.GetSelectedDayNumber().ShouldBe("13");
     }
 
     [Fact]
@@ -59,10 +58,9 @@ public class GivenACalendarIndex : TestContext
     {
         var cut = RenderCalendarComponent();
 
-        cut.FindAll(".button.is-ghost")[0].Click();
+        cut.NavigateToPreviousWeek();
 
-        var selectedDay = cut.Find(".has-background-white.has-text-black");
-        selectedDay.TextContent.Trim().ShouldBe("6");
+        cut.GetSelectedDayNumber().ShouldBe("6");
     }
 
     [Fact]
@@ -70,10 +68,9 @@ public class GivenACalendarIndex : TestContext
     {
         var cut = RenderCalendarComponent();
 
-        cut.FindAll(".button.is-ghost")[1].Click();
+        cut.NavigateToNextWeek();
 
-        var selectedDay = cut.Find(".has-background-white.has-text-black");
-        selectedDay.TextContent.Trim().ShouldBe("20");
+        cut.GetSelectedDayNumber().ShouldBe("20");
     }
 
     [Fact]
@@ -81,11 +78,9 @@ public class GivenACalendarIndex : TestContext
     {
         var cut = RenderCalendarComponent();
 
-        var dayButtons = cut.FindAll(".column button");
-        dayButtons[4].Click();
+        cut.ClickDay(4);
 
-        var selectedDay = cut.Find(".has-background-white.has-text-black");
-        selectedDay.TextContent.Trim().ShouldBe("15");
+        cut.GetSelectedDayNumber().ShouldBe("15");
     }
     
     [Fact]
@@ -102,17 +97,130 @@ public class GivenACalendarIndex : TestContext
     {
         var cut = RenderCalendarComponent();
 
-        var dayButtons = cut.FindAll(".column button");
-        dayButtons[4].Click();
+        cut.ClickDay(4);
 
         var notification = cut.Find(".notification");
         notification.TextContent.ShouldContain("Geen evenementen voor deze dag");
     }
     
+    [Fact]
+    public void WhenCalendarIsLoaded_ThenTitleShouldBeKalender()
+    {
+        var cut = RenderCalendarComponent();
+
+        cut.GetTitle().ShouldBe("Kalender");
+    }
+    
+    [Fact]
+    public void WhenCarouselIsLoaded_Then1DotShouldBeShownForEveryTab()
+    {
+        var cut = RenderCalendarComponent();
+
+        cut.GetDots().Count.ShouldBe(3);
+    }
+    
+    [Fact]
+    public void WhenCarouselIsLoaded_ThenFirstDotShouldBeActive()
+    {
+        var cut = RenderCalendarComponent();
+        
+        cut.IsDotActive(CalendarView.Kalender).ShouldBeTrue();
+    }
+    
+    [Fact]
+    public void WhenSwitchingBetweenViews_ThenTitleAndActiveDotShouldUpdateAccordingly()
+    {
+        var cut = RenderCalendarComponent();
+        
+        // Initial state: Kalender
+        cut.GetTitle().ShouldBe("Kalender");
+        cut.IsDotActive(CalendarView.Kalender).ShouldBeTrue();
+        cut.IsDotActive(CalendarView.Lessenrooster).ShouldBeFalse();
+        cut.IsDotActive(CalendarView.Deadlines).ShouldBeFalse();
+
+        // Ga naar Lessenrooster
+        cut.SwitchToView(CalendarView.Lessenrooster);
+        cut.GetTitle().ShouldBe("Lessenrooster");
+        cut.IsDotActive(CalendarView.Kalender).ShouldBeFalse();
+        cut.IsDotActive(CalendarView.Lessenrooster).ShouldBeTrue();
+        cut.IsDotActive(CalendarView.Deadlines).ShouldBeFalse();
+
+        // Ga naar Deadlines
+        cut.SwitchToView(CalendarView.Deadlines);
+        cut.GetTitle().ShouldBe("Deadlines");
+        cut.IsDotActive(CalendarView.Kalender).ShouldBeFalse();
+        cut.IsDotActive(CalendarView.Lessenrooster).ShouldBeFalse();
+        cut.IsDotActive(CalendarView.Deadlines).ShouldBeTrue();
+
+        // Ga terug naar Kalender
+        cut.SwitchToView(CalendarView.Kalender);
+        cut.GetTitle().ShouldBe("Kalender");
+        cut.IsDotActive(CalendarView.Kalender).ShouldBeTrue();
+        cut.IsDotActive(CalendarView.Lessenrooster).ShouldBeFalse();
+        cut.IsDotActive(CalendarView.Deadlines).ShouldBeFalse();
+    }
+    
+    [Fact]
+    public void WhenOnDeadlinesView_ThenWeekHeaderShouldNotBeVisible()
+    {
+        var cut = RenderCalendarComponent();
+
+        cut.SwitchToView(CalendarView.Deadlines);
+
+        cut.GetWeekHeaderCount().ShouldBe(0);
+    }
+    
+    [Fact]
+    public void WhenOnLessenroosterView_ThenOnlyCoursesForSelectedDateShouldBeShown()
+    {
+        var cut = RenderCalendarComponent();
+
+        cut.SwitchToView(CalendarView.Lessenrooster);
+
+        cut.GetCardsInVisibleView().Length.ShouldBe(1);
+    }
+    
+    [Fact]
+    public void WhenOnLessenroosterViewAndNoDayHasLessons_ThenEmptyMessageShouldBeShown()
+    {
+        var cut = RenderCalendarComponent();
+
+        cut.SwitchToView(CalendarView.Lessenrooster);
+        cut.ClickDay(4);
+
+        var notification = cut.GetNotificationInVisibleView();
+        notification?.TextContent.ShouldContain("Geen lessen voor deze dag");
+    }
+    
+    [Fact]
+    public void WhenOnDeadlinesView_ThenAllDeadlinesShouldBeShownOrderedByDate()
+    {
+        var cut = RenderCalendarComponent();
+
+        cut.SwitchToView(CalendarView.Deadlines);
+
+        var visibleItem = cut.GetVisibleCarouselItem();
+        var deadlineCards = visibleItem.QuerySelectorAll(".box");
+        deadlineCards.Length.ShouldBe(1);
+    }
+    
+    [Fact]
+    public void WhenOnDeadlinesViewAndNoDeadlinesExist_ThenEmptyMessageShouldBeShown()
+    {
+        var calendarServiceMock = new FakeCalendarServiceWithoutDeadlines();
+        Services.AddScoped<ICalendarService>(_ => calendarServiceMock);
+    
+        var cut = RenderComponent<CalendarIndex>();
+
+        cut.SwitchToView(CalendarView.Deadlines);
+
+        var notification = cut.Find(".notification");
+        notification.TextContent.ShouldContain("Geen deadlines beschikbaar");
+    }
+    
     private IRenderedComponent<CalendarIndex> RenderCalendarComponent()
     {
         var calendarServiceMock = new FakeCalendarService(false);
-        
         Services.AddScoped<ICalendarService>(_ => calendarServiceMock);
         
         return RenderComponent<CalendarIndex>();
