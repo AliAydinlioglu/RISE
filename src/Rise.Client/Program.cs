@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Rise.Client;
 using Rise.Client.Identity;
 using Rise.Client.Products;
+using Rise.Client.StudentActivities;
 using Rise.Shared.Products;
+using Rise.Shared.StudentActivities;
 
 try
 {
@@ -37,6 +39,11 @@ try
         .AddHttpMessageHandler<CookieHandler>();
 
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
+    {
+        client.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
+    });
+    
+    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client =>
     {
         client.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
     });
