@@ -5,40 +5,23 @@ namespace Rise.Domain.StudentActivities;
 public class StudentActivity : Entity
 {
     public string Title { get; private set; }
-    public string Description { get; private set; }
-    public DateTime Date { get; private set; }
-    public DateTime StartTime { get; private set; }
-    public DateTime EndTime { get; private set; }
-    public string ImageUrl { get; private set; }
+    public string? Description { get; private set; }
+    public DateTimeOffset Date { get; private set; }
+    public TimeRange TimeRange { get; private set; }
+    public string? ImageUrl { get; private set; }
     public Location Location { get; set; }
     public StudentClub StudentClub { get; set; }
 
-    public StudentActivity(){}
-    public StudentActivity(string title, string description, DateTime date, DateTime startTime, DateTime endTime,
+    private StudentActivity(){}
+    public StudentActivity(string title, string description, DateTimeOffset date, TimeRange timeRange,
         string imageUrl, Location location, StudentClub studentClub)
     {
-        Guard.Against.NullOrWhiteSpace(title);
-        Guard.Against.NullOrOutOfSQLDateRange(date);
-        Guard.Against.NullOrOutOfSQLDateRange(startTime);
-        Guard.Against.NullOrOutOfSQLDateRange(endTime);
-        Guard.Against.Null(location);
-        Guard.Against.Null(studentClub);
-
-        Title = title;
+        Title = Guard.Against.NullOrWhiteSpace(title);
         Description = description;
-        Date = date;
-        StartTime = startTime;
-        EndTime = endTime;
-        ValidateTimes();
+        Date = Guard.Against.NullOrOutOfSQLDateRange(date.UtcDateTime);
+        TimeRange = Guard.Against.Null(timeRange);
         ImageUrl = imageUrl;
-        Location = location;
-        StudentClub = studentClub;
-
-    }
-
-    private void ValidateTimes()
-    {
-        if (StartTime >= EndTime)
-            throw new InvalidTimeRangeException("Start time must be before end time.");
+        Location = Guard.Against.Null(location);
+        StudentClub = Guard.Against.Null(studentClub);
     }
 }

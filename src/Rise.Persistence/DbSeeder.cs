@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Rise.Domain.Common;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.StudentActivities;
@@ -175,16 +176,15 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
             new StudentClub("Club E", "Club E Description", "images/clubE.png")
         };
         
-        var studentActivities = new List<StudentActivity>
-        {
-            new StudentActivity("Activity 1", "Description for Activity 1", new DateTime(2023, 11, 15), new DateTime(2023, 11, 15, 10, 0, 0), new DateTime(2023, 11, 15, 12, 0, 0), "images/activity1.png", locations[0], studentClubs[0]),
-            new StudentActivity("Activity 2", "Description for Activity 2", new DateTime(2023, 12, 5), new DateTime(2023, 12, 5, 14, 0, 0), new DateTime(2023, 12, 5, 16, 0, 0), "images/activity2.png", locations[1], studentClubs[1]),
-            new StudentActivity("Activity 3", "Description for Activity 3", new DateTime(2024, 1, 20), new DateTime(2024, 1, 20, 9, 0, 0), new DateTime(2024, 1, 20, 11, 0, 0), "images/activity3.png", locations[2], studentClubs[2]),
-            new StudentActivity("Activity 4", "Description for Activity 4", new DateTime(2024, 2, 10), new DateTime(2024, 2, 10, 13, 0, 0), new DateTime(2024, 2, 10, 15, 0, 0), "images/activity4.png", locations[3], studentClubs[3]),
-            new StudentActivity("Activity 5", "Description for Activity 5", new DateTime(2024, 3, 25), new DateTime(2024, 3, 25, 11, 0, 0), new DateTime(2024, 3, 25, 13, 0, 0), "images/activity5.png", locations[4], studentClubs[4])
-        };
 
-        dbContext.StudentActivities.AddRange(studentActivities);
+        dbContext.StudentActivities.AddRange( new List<StudentActivity>
+        {
+            new StudentActivity("Activity 1", "Description for Activity 1", new DateTime(2023, 11, 15), new TimeRange (new TimeOnly( 10, 0  ), new TimeOnly(12, 0)), "images/activity1.png", locations[0], studentClubs[0]),
+            new StudentActivity("Activity 2", "Description for Activity 2", new DateTime(2023, 12, 5), new TimeRange (new TimeOnly (14, 0, 0 ), new TimeOnly( 16, 0, 0)), "images/activity2.png", locations[1], studentClubs[1]),
+            new StudentActivity("Activity 3", "Description for Activity 3", new DateTime(2024, 1, 20), new TimeRange (new TimeOnly ( 9, 0, 0 ), new TimeOnly( 11, 0, 0)), "images/activity3.png", locations[2], studentClubs[2]),
+            new StudentActivity("Activity 4", "Description for Activity 4", new DateTime(2024, 2, 10), new TimeRange (new TimeOnly ( 13, 0, 0 ), new TimeOnly( 15, 0, 0)), "images/activity4.png", locations[3], studentClubs[3]),
+            new StudentActivity("Activity 5", "Description for Activity 5", new DateTime(2024, 3, 25), new TimeRange (new TimeOnly ( 11, 0, 0 ), new TimeOnly( 13, 0, 0)), "images/activity5.png", locations[4], studentClubs[4])
+        });
         await dbContext.SaveChangesAsync();
     }
 }

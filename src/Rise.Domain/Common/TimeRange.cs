@@ -9,7 +9,7 @@ public class TimeRange : ValueObject
 
     public TimeRange(TimeOnly startTime, TimeOnly endTime)
     {
-        if (endTime < startTime)
+        if (endTime <= startTime)
             throw new ArgumentException("EndTime must be after StartTime", nameof(endTime));
 
         StartTime = startTime;
