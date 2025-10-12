@@ -29,7 +29,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<DbSeeder>();       
         
         // Add other application services here.
-        services.AddScoped<IStudentActivitiesService, StudentActivitiesService>();
+        services.AddScoped<IStudentActivityService, StudentActivityService>();
         return services;
     }
 }

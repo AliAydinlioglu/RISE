@@ -2,7 +2,7 @@ using Rise.Shared.Common;
 
 namespace Rise.Shared.StudentActivities;
 
-public interface IStudentActivitiesService
+public interface IStudentActivityService
 {
     Task<Result<StudentActivityResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request,
         CancellationToken ctx);

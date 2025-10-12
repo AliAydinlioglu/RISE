@@ -41,7 +41,7 @@ public class StudentActivitiesShould
         dbContext.StudentActivities.AddRange(studentActivity1, studentActivity2);
         await dbContext.SaveChangesAsync();
 
-        IStudentActivitiesService service = new StudentActivitiesService(dbContext, null);
+        IStudentActivityService service = new StudentActivityService(dbContext, null);
 
         // Act
         var result = await service.GetIndexAsync(new QueryRequest.SkipTake { }, CancellationToken.None);
@@ -101,7 +101,7 @@ public class StudentActivitiesShould
         dbContext.StudentActivities.AddRange(activities);
         await dbContext.SaveChangesAsync();
 
-        var service = new StudentActivitiesService(dbContext, null);
+        var service = new StudentActivityService(dbContext, null);
 
         //Act
         var result = await service.GetIndexAsync(
@@ -141,7 +141,7 @@ public class StudentActivitiesShould
         dbContext.StudentActivities.AddRange(activities);
         await dbContext.SaveChangesAsync();
 
-        var service = new StudentActivitiesService(dbContext, null);
+        var service = new StudentActivityService(dbContext, null);
 
         //Act
         var result = await service.GetDetailByIdAsync(TO_TEST_ACTIVITY_ID, CancellationToken.None);
@@ -180,7 +180,7 @@ public class StudentActivitiesShould
         dbContext.StudentActivities.AddRange(activities);
         await dbContext.SaveChangesAsync();
 
-        var service = new StudentActivitiesService(dbContext, null);
+        var service = new StudentActivityService(dbContext, null);
 
 
         // Act

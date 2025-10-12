@@ -3,7 +3,7 @@ using Rise.Shared.StudentActivities;
 
 namespace Rise.Server.Endpoints.StudentActivities;
 
-public class Detail(IStudentActivitiesService studentActivitiesService) : Endpoint<StudentActivityRequest.Detail, Result<StudentActivityResponse.Detail>>
+public class Detail(IStudentActivityService studentActivityService) : Endpoint<StudentActivityRequest.Detail, Result<StudentActivityResponse.Detail>>
 {
     public override void Configure()
     {
@@ -14,7 +14,7 @@ public class Detail(IStudentActivitiesService studentActivitiesService) : Endpoi
     public override Task<Result<StudentActivityResponse.Detail>> ExecuteAsync(StudentActivityRequest.Detail req, CancellationToken ctx)
     {
         
-        return studentActivitiesService.GetDetailByIdAsync(req.Id, ctx);
+        return studentActivityService.GetDetailByIdAsync(req.Id, ctx);
     }
     
 }
