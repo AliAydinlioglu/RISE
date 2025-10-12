@@ -1,7 +1,7 @@
 using Ardalis.Result;
 using Rise.Shared.Calendar;
 
-namespace Rise.Client.Calendar;
+namespace Rise.Client.Calendar.Fakers;
 
 public class FakeCalendarService(bool withDelay) : ICalendarService
 {
