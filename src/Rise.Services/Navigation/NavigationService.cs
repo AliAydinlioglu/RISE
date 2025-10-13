@@ -14,9 +14,9 @@ public class NavigationService(
     ISessionContextProvider sessionContextProvider,
     RoleManager<IdentityRole> roleManager) : INavigationService
 {
-    public async Task<Result<NavigationResponse.Get>> GetAsync( QueryRequest.SkipTake req, CancellationToken ct)
+    public async Task<Result<NavigationResponse.Get>> GetAsync(QueryRequest.SkipTake req, CancellationToken ct)
     {
-        var roleGuid = await GetRoleGuidStringAsync(sessionContextProvider.User);
+        var roleGuid = new Guid(await GetRoleGuidStringAsync(sessionContextProvider.User));
         
         var navigationItems = await dbContext.RoleNavigationItems
             .AsNoTracking()
@@ -42,7 +42,7 @@ public class NavigationService(
     /// </summary>
     /// <param name="principal">User in context</param>
     /// <returns>Role GUID as a string</returns>
-    /// TODO: Move to UserService when implemented
+    /// TODO: Move to authenticationService when implemented
     private async Task<string> GetRoleGuidStringAsync(ClaimsPrincipal? principal)
     {
         if (principal == null)

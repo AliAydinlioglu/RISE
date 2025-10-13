@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductService, ProductService>();        
         services.AddScoped<IProjectService, ProjectService>();
         services.AddScoped<INavigationService, NavigationService>();
-        services.AddTransient<DbSeeder>();       
+        services.AddTransient<DbSeeder>();
         
         // Add other application services here.
         return services;

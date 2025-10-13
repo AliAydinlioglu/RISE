@@ -1,3 +1,5 @@
+using Rise.Domain.Identity;
+
 namespace Rise.Domain.Navigation;
 
 public class RoleNavigationItem : Entity<RoleNavigationItemId>
@@ -5,12 +7,13 @@ public class RoleNavigationItem : Entity<RoleNavigationItemId>
     public int SequenceNr { get; private set; }
     
     public NavigationItem NavigationItem { get; init; } = null!;
+    public Role Role { get; init; } = null!;
     
     private RoleNavigationItem() {}
-
-    public RoleNavigationItem(RoleNavigationItemId id, int sequenceNr)
+    
+    public RoleNavigationItem(Guid roleId, int navigationItemId, int sequenceNr)
     {
-        Id = id;
+        Id = new RoleNavigationItemId(roleId, navigationItemId);
         SequenceNr = Guard.Against.NegativeOrZero(sequenceNr);
     }
 }

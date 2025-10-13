@@ -5,14 +5,14 @@ public class RoleNavigationItemId : ValueObject
     /// <summary>
     /// Link to the <see cref="IdentityRole"/> role
     /// </summary>
-    public string RoleId { get; private set; }
+    public Guid RoleId { get; private set; }
     public int NavigationItemId { get; private set; }
     
     private RoleNavigationItemId() {}
     
-    public RoleNavigationItemId(string roleId, int navigationItemId)
+    public RoleNavigationItemId(Guid roleId, int navigationItemId)
     {
-        RoleId = Guard.Against.RoleIdNullOrWhitespaceOrInvalidGuid(roleId);
+        RoleId = Guard.Against.Null(roleId);
         NavigationItemId = Guard.Against.NegativeOrZero(navigationItemId);
     }
 
@@ -20,19 +20,5 @@ public class RoleNavigationItemId : ValueObject
     {
         yield return RoleId;
         yield return NavigationItemId;
-    }
-}
-
-public static class RoleNavigationItemGuards
-{
-    public static string RoleIdNullOrWhitespaceOrInvalidGuid(this IGuardClause guardClause, string roleId)
-    {
-        if (string.IsNullOrWhiteSpace(roleId))
-            throw new ArgumentException("RoleId cannot be null or empty", nameof(roleId));
-
-        if (!Guid.TryParse(roleId, out var roleGuid))
-            throw new ArgumentException("RoleId is in an invalid form", nameof(roleId));
-
-        return roleId;
     }
 }
