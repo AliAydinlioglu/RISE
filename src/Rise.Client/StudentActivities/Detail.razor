@@ -1,33 +1,42 @@
 @page "/StudentActivities/{Id?}"
 @using Rise.Client.Components
 
-<div class="container is-widescreen">
-<HeadTitle>@Title</HeadTitle>
+<div class="container is-widescreen detail-sa   ">
+    <a href="/StudentActivities" class="has-text-black hover:has-text-underline">
+        <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span>Terug naar activiteiten</span>
+    </a>
+    <div class="section">
+        <HeadTitle>@Title</HeadTitle>
 
-<section class="section">
-    
-    <p><b>Organisator:</b> @StudentClubName</p>
-    <table>
+        <div class="content">
+            <div class="box">
+                <div class="field">
+                    <label class="label">Organisator:</label>
+                    <p class="is-size-6">@StudentClubName</p>
+                </div>
 
-        <tr>
-            <td rowspan="2" class="mr-2"><b>Datum:</b></td>
-            <td>@LocalDateString</td>
-        </tr>
-        <tr>
-            <td>@TimeString</td>
-        </tr>
-        <tr>
-            <td rowspan="2" class="mr-2"><b>Locatie:</b></td>
-            <td>@LocationName</td>
-        </tr>
-        <tr>
-            <td>@Address</td>
-        </tr>
-    </table>
+                <div class="field">
+                    <label class="label">Datum & Tijd:</label>
+                    <p class="is-size-6">@LocalDateString</p>
+                    <p class="is-size-6 has-text-grey">@TimeString</p>
+                </div>
 
-    <p>
-        <b>Beschrijving:</b><br/>
-        @Description
-    </p>
-</section>
+                <div class="field">
+                    <label class="label">Locatie:</label>
+                    <p class="is-size-6">@LocationName</p>
+                    <p class="is-size-6 has-text-grey">@Address</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Beschrijving:</label>
+                    <div class="content">
+                        <p>@Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
