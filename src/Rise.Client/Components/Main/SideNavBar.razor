@@ -13,31 +13,31 @@
     <nav class="side-navbar @(_isOpen ? "open" : "")">
         <div class="sidebar-header">
             <div class="sidebar-header-content">
-                <h2 class="sidebar-title">@CurrentPage</h2>
+                <h2 class="sidebar-title">@GetCurrentPageName()</h2>
             </div>
         </div>
 
         <ul class="sidebar-menu">
             <li class="sidebar-menu-item">
-                <a href="/" class="sidebar-link">Home</a>
+                <a href="/" class="sidebar-link" @onclick="CloseSidebar">Home</a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="/nieuws" class="sidebar-link">Nieuws</a>
+                <a href="/nieuws" class="sidebar-link" @onclick="CloseSidebar">Nieuws</a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="/rooster" class="sidebar-link">Rooster</a>
+                <a href="/kalender" class="sidebar-link" @onclick="CloseSidebar">Kalender</a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="/vakken" class="sidebar-link">Vakken</a>
+                <a href="/vakken" class="sidebar-link" @onclick="CloseSidebar">Vakken</a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="/studentenleven" class="sidebar-link">Studentenleven</a>
+                <a href="/studentenleven" class="sidebar-link" @onclick="CloseSidebar">Studentenleven</a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="/campus" class="sidebar-link">Campus</a>
+                <a href="/campus" class="sidebar-link" @onclick="CloseSidebar">Campus</a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="/contact" class="sidebar-link">Contact</a>
+                <a href="/contact" class="sidebar-link" @onclick="CloseSidebar">Contact</a>
             </li>
         </ul>
     </nav>
@@ -50,12 +50,53 @@
 </div>
 
 @code {
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+    
     private bool _isOpen;
-    [Parameter] public string CurrentPage { get; set; } = "Campus App";
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _isOpen = false;
+        StateHasChanged();
+    }
 
     private void ToggleSidebar()
     {
         _isOpen = !_isOpen;
     }
-}
 
+    private void CloseSidebar()
+    {
+        _isOpen = false;
+    }
+
+    private string GetCurrentPageName()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var path = uri.AbsolutePath.TrimStart('/');
+        
+        if (string.IsNullOrEmpty(path) || path == "/")
+            return "Home";
+        
+        return path switch
+        {
+            "nieuws" => "Nieuws",
+            "kalender" => "Kalender",
+            "vakken" => "Vakken",
+            "studentenleven" => "Studentenleven",
+            "campus" => "Campus",
+            "contact" => "Contact",
+            _ => "Campus App"
+        };
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}

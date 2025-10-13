@@ -24,3 +24,5 @@ public partial class Index
         new NavItemModel("Contact", _contact, "/contact")
     };
 }
+
+
