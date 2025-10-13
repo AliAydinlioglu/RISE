@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Rise.Domain.Identity;
 
 namespace Rise.Persistence.Configurations.Identity;
 
@@ -9,7 +10,7 @@ namespace Rise.Persistence.Configurations.Identity;
 /// </summary>
 internal class IdentityConfiguration :
     IEntityTypeConfiguration<IdentityUser>,
-    IEntityTypeConfiguration<IdentityRole>,
+    IEntityTypeConfiguration<Role>,
     IEntityTypeConfiguration<IdentityUserRole<string>>,
     IEntityTypeConfiguration<IdentityUserClaim<string>>,
     IEntityTypeConfiguration<IdentityUserLogin<string>>,
@@ -27,7 +28,7 @@ internal class IdentityConfiguration :
     public void Configure(EntityTypeBuilder<IdentityUser> builder)
         => builder.ToTable("Users");
 
-    public void Configure(EntityTypeBuilder<IdentityRole> builder)
+    public void Configure(EntityTypeBuilder<Role> builder)
         => builder.ToTable("Roles");
 
     public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)

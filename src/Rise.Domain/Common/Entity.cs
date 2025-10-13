@@ -41,7 +41,7 @@ public abstract class Entity<TId> : EntityBase
         return EqualityComparer<TId>.Default.Equals(Id, other.Id);
     }
 
-    public static bool operator ==(Entity<TId> a, Entity<TId> b)
+    public static bool operator ==(Entity<TId>? a, Entity<TId>? b)
     {
         if (a is null && b is null)
             return true;

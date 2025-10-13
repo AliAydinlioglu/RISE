@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-using Rise.Services.Identity;
-using Rise.Shared.Navigation;
+﻿using Rise.Shared.Navigation;
 using Rise.Shared.Common;
 
 namespace Rise.Server.Endpoints.Navigation
@@ -14,7 +12,7 @@ namespace Rise.Server.Endpoints.Navigation
     {
         public override void Configure()
         {
-            Get("/api/navigation");
+            Get("/api/v1/navigation");
         }
 
         public override async Task<Result<NavigationResponse.Get>> ExecuteAsync(QueryRequest.SkipTake req, CancellationToken ct)
