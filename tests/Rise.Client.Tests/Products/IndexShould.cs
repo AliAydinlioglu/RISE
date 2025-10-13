@@ -1,7 +1,6 @@
 ﻿using Rise.Shared.Products;
-using Xunit.Abstractions;
 using Shouldly;
-using System.Collections.Generic;
+using Xunit.Abstractions;
 
 namespace Rise.Client.Products;
 

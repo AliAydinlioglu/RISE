@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Rise.Client;
+using Rise.Client.Calendar;
 using Rise.Client.Identity;
 using Rise.Client.Products;
+using Rise.Shared;
+using Rise.Shared.Calendar;
 using Rise.Shared.Products;
 
 try
@@ -36,12 +39,15 @@ try
     builder.Services.AddHttpClient("SecureApi",opt => opt.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001"))
         .AddHttpMessageHandler<CookieHandler>();
 
+    builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {
         client.BaseAddress = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
     });
-    await builder.Build().RunAsync();
+    // TODO: Add baseurl once we couple FE to BE
+    builder.Services.AddHttpClient<ICalendarService, CalendarService>();
 
+    await builder.Build().RunAsync();
 }           
 catch (Exception ex)
 {

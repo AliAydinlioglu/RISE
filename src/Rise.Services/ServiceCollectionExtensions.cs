@@ -5,6 +5,7 @@ using Rise.Services.Calendar;
 using Rise.Services.Products;
 using Rise.Services.Projects;
 using Rise.Services.User;
+using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Shared.Products;
 using Rise.Shared.Projects;
