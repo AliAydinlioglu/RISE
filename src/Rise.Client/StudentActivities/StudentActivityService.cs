@@ -8,7 +8,7 @@ public class StudentActivityService(HttpClient httpClient) : IStudentActivitySer
 {
     public async Task<Result<StudentActivityResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request, CancellationToken ctx)
     {
-        var result = await httpClient.GetFromJsonAsync<Result<StudentActivityResponse.Index>>("/api/student-activities", cancellationToken: ctx);
+        var result = await httpClient.GetFromJsonAsync<Result<StudentActivityResponse.Index>>($"/api/student-activities?skip={request.Skip}&take={request.Take}", cancellationToken: ctx);
         return result!;
     }
 

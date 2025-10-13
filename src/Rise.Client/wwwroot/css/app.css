@@ -47,6 +47,21 @@ h1:focus {
     outline: none;
 }
 
+.pagination-next,.pagination-previous{
+    color: white;
+    background: black;
+}
+
+.pagination-link.is-current{
+    background: black;
+    color: white;
+    border-color: black;
+}
+.pagination-link{
+    border-color: black;
+    color: black;
+}
+
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;
