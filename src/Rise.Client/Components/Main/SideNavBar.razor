@@ -1,0 +1,61 @@
+<div class="sidebar-container">
+    <!-- Hamburger Button - only visible when sidebar is closed -->
+    @if (!_isOpen)
+    {
+        <button class="hamburger-btn" @onclick="ToggleSidebar">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    }
+
+    <!-- Side Navigation -->
+    <nav class="side-navbar @(_isOpen ? "open" : "")">
+        <div class="sidebar-header">
+            <div class="sidebar-header-content">
+                <h2 class="sidebar-title">@CurrentPage</h2>
+            </div>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="/" class="sidebar-link">Home</a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/nieuws" class="sidebar-link">Nieuws</a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/rooster" class="sidebar-link">Rooster</a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/vakken" class="sidebar-link">Vakken</a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/studentenleven" class="sidebar-link">Studentenleven</a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/campus" class="sidebar-link">Campus</a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/contact" class="sidebar-link">Contact</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Overlay -->
+    @if (_isOpen)
+    {
+        <div class="sidebar-overlay" @onclick="ToggleSidebar"></div>
+    }
+</div>
+
+@code {
+    private bool _isOpen;
+    [Parameter] public string CurrentPage { get; set; } = "Campus App";
+
+    private void ToggleSidebar()
+    {
+        _isOpen = !_isOpen;
+    }
+}
+

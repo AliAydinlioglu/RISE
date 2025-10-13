@@ -1,0 +1,136 @@
+/* Sidebar Container */
+.sidebar-container {
+    position: relative;
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+    position: fixed;
+    top: 70px;
+    left: 10px;
+    z-index: 1100;
+    background-color: black;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+.hamburger-btn:hover {
+    background-color: rgba(0, 0, 0, 0.86);
+    transform: scale(1.05);
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Side Navigation */
+.side-navbar {
+    position: fixed;
+    top: 60px;
+    left: -320px;
+    width: 280px;
+    height: calc(100vh - 60px);
+    background-color: black;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+    font-family: "Montserrat", sans-serif;
+}
+
+.side-navbar.open {
+    left: 0;
+}
+
+
+.sidebar-title {
+    border-bottom-color: white;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 10px;
+    
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+.sidebar-menu-item {
+    margin: 0;
+}
+
+.sidebar-link {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(22, 176, 165, 0.1);
+    border-left-color: var(--teal-hogent, #16b0a5);
+    color: var(--teal-hogent, #16b0a5);
+    text-decoration: none;
+}
+
+/* Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 60px);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hamburger-btn {
+        left: 120px;
+    }
+
+    .side-navbar {
+        width: 250px;
+        left: -270px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hamburger-btn {
+        left: 90px;
+    }
+
+    .side-navbar {
+        width: 80vw;
+        left: -85vw;
+    }
+}

@@ -34,19 +34,13 @@
       <Content Update="wwwroot\css\hogent.css">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Update="wwwroot\favicon.ico">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="wwwroot\favicon.png">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <Content Update="wwwroot\index.html">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Update="wwwroot\logo_black_bg.jpg">
+      <Content Update="wwwroot\Images\favicon.ico">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-      <Content Update="wwwroot\logo_white_bg.jpg">
+      <Content Update="wwwroot\Images\favicon.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

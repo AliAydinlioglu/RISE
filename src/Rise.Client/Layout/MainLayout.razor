@@ -1,10 +1,11 @@
 ﻿@inherits LayoutComponentBase
-@using Rise.Client.Components;
-<div>
-    <main>
-        <section class="section">
-            @Body
-        </section>
+@using Rise.Client.Components.Main
+
+<div class="main-layout">
+    <Header></Header>
+    <SideNavBar CurrentPage="Campus App" />
+    
+    <main class="content">
+        
     </main>
 </div>
-

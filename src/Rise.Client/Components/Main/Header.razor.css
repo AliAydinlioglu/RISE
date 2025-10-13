@@ -1,0 +1,107 @@
+.header-hogent {
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0.75rem;
+    border-bottom-color: white;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    margin-top: calc(-50vw + 50%);
+}
+
+.header-left {
+    line-height: 1;
+    display: inline-block;
+    color: white;
+    font-weight: 900;
+    font-size: 1.75rem;
+    font-family: "Montserrat", sans-serif;
+   
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-icon-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.header-icon-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-icon-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: var(--orange-hogent, #fabc32);
+    color: var(--black-hogent, #1b1e23);
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 0.15rem 0.4rem;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+    line-height: 1;
+}
+
+.profile-btn-hogent {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: opacity 0.3s ease;
+}
+
+.profile-btn-hogent:hover {
+    opacity: 0.8;
+}
+
+.profile-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--teal-hogent, #16b0a5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .header-hogent {
+        padding: 0.5rem 1rem;
+    }
+
+    .header-right {
+        gap: 0.5rem;
+    }
+}
