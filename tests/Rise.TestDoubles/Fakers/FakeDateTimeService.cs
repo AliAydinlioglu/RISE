@@ -1,6 +1,6 @@
 using Rise.Shared;
 
-namespace Rise.Client;
+namespace Rise.TestDoubles.Fakers;
 
 public class FakeDateTimeService(DateTime fixedDateTime) : IDateTimeService
 {

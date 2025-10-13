@@ -9,6 +9,9 @@ public class Course : Entity
     public string Lecturer { get; private set; }
     public string ClassGroup { get; private set; }
     
+    public int AcademicSemesterId { get; private set; }
+    public AcademicSemester AcademicSemester { get; private set; } = null!;
+    
     private readonly List<Lesson> _lessons = new();
     public IReadOnlyCollection<Lesson> Lessons => _lessons.AsReadOnly();
 
@@ -20,11 +23,27 @@ public class Course : Entity
 
     private Course() { }
 
-    public Course(string title, string lecturer, string classGroup)
+    public Course(string title, string lecturer, string classGroup, AcademicSemester academicSemester)
     {
         Title = Guard.Against.NullOrWhiteSpace(title);
         Lecturer = Guard.Against.NullOrWhiteSpace(lecturer);
         ClassGroup = Guard.Against.NullOrWhiteSpace(classGroup);
+        AcademicSemester = Guard.Against.Null(academicSemester);
+    }
+    
+    public void AddLesson(Lesson lesson)
+    {
+        _lessons.Add(lesson);
+    }
+    
+    public void AddDeadline(Deadline deadline)
+    {
+        _deadlines.Add(deadline);
+    }
+    
+    public void AddExam(Exam exam)
+    {
+        _exams.Add(exam);
     }
 
 }

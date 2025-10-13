@@ -2,6 +2,7 @@ using Rise.Client.Calendar.Fakers;
 using Rise.Client.Components;
 using Rise.Shared;
 using Rise.Shared.Calendar;
+using Rise.TestDoubles.Fakers;
 using Shouldly;
 using Xunit.Abstractions;
 

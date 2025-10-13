@@ -14,6 +14,11 @@ internal class CourseConfiguration: EntityConfiguration<Course>
         builder.Property(it => it.Lecturer).IsRequired().HasMaxLength(250);
         builder.Property(it => it.ClassGroup).IsRequired().HasMaxLength(50);
         
+        builder.HasOne(it => it.AcademicSemester)
+            .WithMany()
+            .HasForeignKey(it => it.AcademicSemesterId)
+            .OnDelete(DeleteBehavior.Restrict);
+        
         builder.HasMany(it => it.Lessons)
             .WithOne(it => it.Course)
             .HasForeignKey(it => it.CourseId)

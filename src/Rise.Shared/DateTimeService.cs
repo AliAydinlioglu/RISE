@@ -1,6 +1,4 @@
-using Rise.Shared;
-
-namespace Rise.Client;
+namespace Rise.Shared;
 
 public class DateTimeService : IDateTimeService
 {

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Common;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
-using Rise.Domain.StudentActivities;
 
 namespace Rise.Persistence;
 /// <summary>
@@ -22,6 +21,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         await ProductsAsync();
         await ProjectsAsync();
         await StudentActivitiesAsync();
+        await CalendarSeeder.Seed(dbContext);
     }
 
     private async Task RolesAsync()

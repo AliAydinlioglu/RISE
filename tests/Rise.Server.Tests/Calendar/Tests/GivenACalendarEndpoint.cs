@@ -20,6 +20,7 @@ public class GivenACalendarEndpoint
         result.IsSuccess.ShouldBeTrue();
     }
 
+    // TODO: test should be green when auth is implemented
     [Fact]
     public async Task WhenCallingEndpointAsNonAuthorizedUser_ThenReturnsUnauthorized()
     {

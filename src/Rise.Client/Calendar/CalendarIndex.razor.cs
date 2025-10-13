@@ -18,9 +18,7 @@ public partial class CalendarIndex
 
     protected override async Task OnInitializedAsync()
     {
-        // TODO: uncomment line below once full integration is done (for now mock data)
-        // _selectedDate = DateTimeService.Today;
-        _selectedDate = new DateTime(2024, 11, 13);
+        _selectedDate = DateTimeService.Today;
 
         var result = await CalendarService.GetCalendarAsync(DummyUserId);
         _calendarItems = result.Value.ToCalendarListItems();
