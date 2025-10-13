@@ -44,7 +44,7 @@
     height: calc(100vh - 60px);
     background-color: black;
     box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
-    transition: left 0.3s ease;
+    transition: left 0.3s ease, width 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
     font-family: "Montserrat", sans-serif;
@@ -68,7 +68,7 @@
     justify-content: center;
     padding-top: 40px;
     padding-bottom: 10px;
-    
+
 }
 
 /* Sidebar Menu */
@@ -107,30 +107,113 @@
     left: 0;
     width: 100vw;
     height: calc(100vh - 60px);
-    background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
     cursor: pointer;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .hamburger-btn {
-        left: 120px;
+/* Tablet responsive (max-width: 992px) */
+@media (max-width: 992px) {
+    .side-navbar {
+        width: 260px;
+        left: -280px;
     }
 
-    .side-navbar {
-        width: 250px;
-        left: -270px;
+    .sidebar-title {
+        font-size: 1.3rem;
+    }
+
+    .sidebar-link {
+        font-size: 0.95rem;
+        padding: 0.9rem 1.2rem;
     }
 }
 
-@media (max-width: 480px) {
+/* Mobile responsive (max-width: 768px) */
+@media (max-width: 768px) {
     .hamburger-btn {
-        left: 90px;
+        top: 65px;
+        left: 8px;
+        padding: 0.65rem;
+    }
+
+    .hamburger-line {
+        width: 22px;
+        height: 2.5px;
     }
 
     .side-navbar {
-        width: 80vw;
-        left: -85vw;
+        width: 240px;
+        left: -260px;
+        top: 55px;
+        height: calc(100vh - 55px);
+    }
+
+    .sidebar-overlay {
+        top: 55px;
+        height: calc(100vh - 55px);
+    }
+
+    .sidebar-header-content {
+        padding: 0.9rem 1.2rem;
+    }
+
+    .sidebar-title {
+        font-size: 1.2rem;
+    }
+
+    .sidebar-link {
+        font-size: 0.9rem;
+        padding: 0.85rem 1rem;
+    }
+
+@media (max-width: 480px) {
+    .hamburger-btn {
+        top: 62px;
+        left: 5px;
+        padding: 0.6rem;
+    }
+
+    .hamburger-line {
+        width: 20px;
+        height: 2px;
+    }
+
+    .side-navbar {
+        width: 75vw;
+        max-width: 280px;
+        left: -80vw;
+    }
+
+    .sidebar-header-content {
+        padding: 0.8rem 1rem;
+    }
+
+    .sidebar-title {
+        font-size: 1.1rem;
+    }
+
+    .sidebar-link {
+        font-size: 0.85rem;
+        padding: 0.8rem 1rem;
+    }
+}
+
+/* Very small mobile (max-width: 360px) */
+@media (max-width: 360px) {
+    .hamburger-btn {
+        padding: 0.5rem;
+    }
+
+    .side-navbar {
+        width: 85vw;
+    }
+
+    .sidebar-title {
+        font-size: 1rem;
+    }
+
+    .sidebar-link {
+        font-size: 0.8rem;
+        padding: 0.75rem 0.9rem;
     }
 }
