@@ -1,13 +1,33 @@
 @page "/StudentActivities/{Id?}"
+@using Rise.Client.Components
 
+<div class="container is-widescreen">
+<HeadTitle>@Title</HeadTitle>
 
-<h3>@studentActivity.Title</h3>
+<section class="section">
+    
+    <p><b>Organisator:</b> @StudentClubName</p>
+    <table>
 
-<p><b>Organisator:</b> @studentActivity.StudentClub.Name</p>
-<p><b>Datum:</b> @studentActivity.Date.LocalDateTime.ToString("dd-MM-yyyy")</p>
-<p><b>Tijd:</b> @studentActivity.StartTime.ToString(@"hh\:mm") - @studentActivity.EndTime.ToString(@"hh\:mm")</p>
-<p><b>Locatie:</b> @studentActivity.Location</p>
-<p>
-    <b>Beschrijving:</b>
-    @studentActivity.Description
-</p>
+        <tr>
+            <td rowspan="2" class="mr-2"><b>Datum:</b></td>
+            <td>@LocalDateString</td>
+        </tr>
+        <tr>
+            <td>@TimeString</td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="mr-2"><b>Locatie:</b></td>
+            <td>@LocationName</td>
+        </tr>
+        <tr>
+            <td>@Address</td>
+        </tr>
+    </table>
+
+    <p>
+        <b>Beschrijving:</b><br/>
+        @Description
+    </p>
+</section>
+</div>
