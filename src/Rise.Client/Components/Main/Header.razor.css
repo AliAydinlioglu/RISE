@@ -24,7 +24,7 @@
     font-weight: 900;
     font-size: 1.75rem;
     font-family: "Montserrat", sans-serif;
-   
+
 }
 
 .header-right {
@@ -96,12 +96,69 @@
     font-size: 0.9rem;
 }
 
+/* Tablet responsive (max-width: 992px) */
+@media (max-width: 992px) {
+    .header-hogent {
+        padding: 0.75rem 1rem;
+    }
+
+    .hogent-logo {
+        height: 40px;
+    }
+
+    .header-right {
+        gap: 0.75rem;
+    }
+}
+
+/* Mobile responsive (max-width: 768px) */
 @media (max-width: 768px) {
     .header-hogent {
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 0.75rem;
+        height: 55px;
+    }
+
+    .hogent-logo {
+        height: 35px;
     }
 
     .header-right {
         gap: 0.5rem;
+    }
+
+    .header-icon-btn {
+        padding: 0.4rem;
+    }
+
+    .header-icon-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Small mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .header-hogent {
+        padding: 0.5rem;
+    }
+
+    .hogent-logo {
+        height: 30px;
+    }
+
+    .header-right {
+        gap: 0.25rem;
+    }
+
+    .notification-badge {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.3rem;
+        min-width: 16px;
     }
 }
