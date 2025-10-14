@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Rise.Domain.StudentActivities;
 using Rise.Shared.Locations;
 
 namespace Rise.Client.Components;
@@ -22,7 +21,7 @@ public partial class StudentActivitiesCardContent : Card
         base.OnParametersSet();
         LocationString = Location.Name != string.Empty 
             ? $"{Location.Name}" 
-            : $"{Location.Street} {Location.HouseNumber}, {Location.Postcode} {Location.City}";
+            : $"{Location.Street} {Location.HouseNumber} {Location.BusNumber}, {Location.Postcode} {Location.City}";
         TimeRangeString = $"{StartTime} - {EndTime}";
     }
 }

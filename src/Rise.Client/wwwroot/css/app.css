@@ -11,38 +11,6 @@ html, body {
     color: black;
 }
 
-
-.card,.card-content {
-    border-radius: 0;
-    border-end-end-radius: 0 !important;
-    border-end-start-radius: 0 !important;
-}
-.card-content{
-    background: white;
-    border: 1px solid black;
-    color: black;
-}
-.card-content .title, .card-content .subtitle{
-    color:black;
-}
-.columns.is-multiline {
-    align-items: stretch;
-}
-
-.column .card {
-    height: 100%;
-}
-
-.column .card .card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-section.student-activities{
-    max-width: 1500px   ;
-    margin: 0 auto;
-}
 h1:focus {
     outline: none;
 }
@@ -62,14 +30,6 @@ h1:focus {
     color: black;
 }
 
-.detail-sa .content, .detail-sa .box, .detail-sa .box-content, .detail-sa .label{
-    background: white;
-    color: black;
-}
-
-.detail-sa a:hover{
-    text-decoration: underline;
-}
 
 #blazor-error-ui {
     color-scheme: light only;
