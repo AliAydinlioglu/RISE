@@ -93,7 +93,8 @@ public class StudentActivityService(ApplicationDbContext dbContext, ISessionCont
             Street = loc.Street,
             HouseNumber = loc.HouseNumber,
             City = loc.City,
-            Postcode = loc.Postcode
+            Postcode = loc.Postcode,
+            BusNumber = loc.BusNumber
         };
         
     }

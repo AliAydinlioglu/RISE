@@ -10,6 +10,8 @@ public static class LocationDto
         public required int HouseNumber { get; set; }
         public required string City { get; set; }
         public required int Postcode { get; set; }
+        
+        public string? BusNumber { get; set; } = String.Empty;
 
     }
 }

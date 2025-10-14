@@ -160,11 +160,11 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
        
         var locations = new List<Location>
         {
-            new Location("Schoonmeersen", "Valentin Vaerwyckweg", 1, 9000, "Gent"),
-            new Location("Campus Gent - Sint-Pietersplein", "Sint-Pietersplein", 7, 9000, "Gent"),
-            new Location("Campus Gent - Ledeganck", "Karel Lodewijk Ledeganckstraat", 35, 9000, "Gent"),
-            new Location("Stadshal Gent", "Emile Braunplein", 1, 9000, "Gent"),
-            new Location("NTGent - Voorplein", "Sint-Baafsplein", 17, 9000, "Gent")
+            new Location("Schoonmeersen", "Valentin Vaerwyckweg", 1, 9000, "Gent","B"),
+            new Location("Campus Gent - Sint-Pietersplein", "Sint-Pietersplein", 7, 9000, "Gent",""),
+            new Location("Campus Gent - Ledeganck", "Karel Lodewijk Ledeganckstraat", 35, 9000, "Gent",""),
+            new Location("Stadshal Gent", "Emile Braunplein", 1, 9000, "Gent",""),
+            new Location("NTGent - Voorplein", "Sint-Baafsplein", 17, 9000, "Gent","")
         };
 
         var studentClubs = new List<StudentClub>

@@ -13,9 +13,10 @@ public class LocationShould
         var houseNumber = 123;
         var postcode = 5678;
         var city = "Test City";
+        var busNumber = "A";
 
         // Act
-        var location = new Location(name, street, houseNumber, postcode, city);
+        var location = new Location(name, street, houseNumber, postcode, city,busNumber);
 
         // Assert
         location.Name.ShouldBe(name);
@@ -23,6 +24,7 @@ public class LocationShould
         location.HouseNumber.ShouldBe(houseNumber);
         location.Postcode.ShouldBe(postcode);
         location.City.ShouldBe(city);
+        location.BusNumber.ShouldBe(busNumber);
     }
 
     [Theory]
@@ -43,7 +45,7 @@ public class LocationShould
     {
         
         // Assert
-        Should.Throw<ArgumentException>(() =>  new Location("", street, houseNumber, postcode, city));
+        Should.Throw<ArgumentException>(() =>  new Location("", street, houseNumber, postcode, city, ""));
     }
     
   

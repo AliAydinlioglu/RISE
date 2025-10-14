@@ -12,7 +12,7 @@ public static class StudentActivityTestDataFactory
 
     public static Location CreateDefaultLocation()
     { 
-        return new("Test Location", "Test street", 42, 1234, "Test City");
+        return new("Test Location", "Test street", 42, 1234, "Test City", "B");
     }
         
     
