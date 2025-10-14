@@ -51,12 +51,13 @@
 
 @code {
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
-    
+
     private bool _isOpen;
 
     protected override void OnInitialized()
     {
         NavigationManager.LocationChanged += OnLocationChanged;
+        //OpenSidebar();
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
@@ -73,6 +74,10 @@
     private void CloseSidebar()
     {
         _isOpen = false;
+    }
+    private void OpenSidebar()
+    {
+        _isOpen = true;
     }
 
     private string GetCurrentPageName()
