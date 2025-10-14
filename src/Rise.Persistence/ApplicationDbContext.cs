@@ -22,7 +22,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
 {
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Project> Projects => Set<Project>();
-    public DbSet<RoleNavigationItem> RoleNavigationItems => Set<RoleNavigationItem>();
+    public DbSet<RoleNavigationItemContentLocation> RoleNavigationItems => Set<RoleNavigationItemContentLocation>();
     public DbSet<NavigationItem> NavigationItems => Set<NavigationItem>();
     public DbSet<Technician> Technicians => Set<Technician>();
     public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();

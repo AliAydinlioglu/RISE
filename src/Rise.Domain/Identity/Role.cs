@@ -6,8 +6,8 @@ public class Role : Entity<Guid>
 {
     public string Name { get; private set; } = null!;
     
-    private readonly List<RoleNavigationItem>  _roleNavigationItems = [];
-    public IReadOnlyList<RoleNavigationItem> RoleNavigationItems => _roleNavigationItems.AsReadOnly();
+    private readonly List<RoleNavigationItemContentLocation>  _roleNavigationItems = [];
+    public IReadOnlyList<RoleNavigationItemContentLocation> RoleNavigationItems => _roleNavigationItems.AsReadOnly();
     
     private Role() {}
 

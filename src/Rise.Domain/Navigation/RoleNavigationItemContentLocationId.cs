@@ -1,24 +1,27 @@
 namespace Rise.Domain.Navigation;
 
-public class RoleNavigationItemId : ValueObject
+public class RoleNavigationItemContentLocationId : ValueObject
 {
     /// <summary>
     /// Link to the <see cref="IdentityRole"/> role
     /// </summary>
     public Guid RoleId { get; private set; }
     public int NavigationItemId { get; private set; }
+    public int ContentLocationId { get; private set; }
     
-    private RoleNavigationItemId() {}
+    private RoleNavigationItemContentLocationId() {}
     
-    public RoleNavigationItemId(Guid roleId, int navigationItemId)
+    public RoleNavigationItemContentLocationId(Guid roleId, int navigationItemId, int contentLocationId)
     {
         RoleId = Guard.Against.Null(roleId);
         NavigationItemId = Guard.Against.NegativeOrZero(navigationItemId);
+        ContentLocationId = Guard.Against.NegativeOrZero(contentLocationId);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return RoleId;
         yield return NavigationItemId;
+        yield return ContentLocationId;
     }
 }
