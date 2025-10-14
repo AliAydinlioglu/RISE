@@ -9,21 +9,25 @@ public partial class CalendarIndex
     private const string DummyUserId = "1";
 
     private IEnumerable<CalendarViewItem> _calendarItems = [];
-    private DateTime _selectedDate;
-    private int _currentView;
-    private List<RenderFragment> _carouselItems = [];
+    private bool _isLoading;
+    
+    protected DateTime _selectedDate;
+    protected int _currentView;
+    protected List<RenderFragment> _carouselItems = [];
 
     [Inject] public required ICalendarService CalendarService { get; set; }
     [Inject] public required IDateTimeService DateTimeService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        _isLoading = true;
         _selectedDate = DateTimeService.Today;
 
         var result = await CalendarService.GetCalendarAsync(DummyUserId);
         _calendarItems = result.Value.ToCalendarListItems();
-        
         InitializeCarouselItems();
+        
+        _isLoading = false;
     }
 
     private void InitializeCarouselItems()
@@ -36,16 +40,10 @@ public partial class CalendarIndex
         };
     }
 
-    private void PreviousWeek()
+    private void SetDateRelativeToCurrentDate(int days)
     {
-        _selectedDate = _selectedDate.AddDays(-7);
-        InitializeCarouselItems();
-    }
-
-    private void NextWeek()
-    {
-        _selectedDate = _selectedDate.AddDays(7);
-        InitializeCarouselItems();
+        _selectedDate = _selectedDate.AddDays(days);
+        _selectedDate = CalendarHelpers.GetMondayOfWeek(_selectedDate);
     }
 
     private IEnumerable<CalendarViewItem> GetItemsForSelectedDate()
@@ -54,25 +52,25 @@ public partial class CalendarIndex
         return _calendarItems.Where(i => i.Date.Date == targetDate);
     }
 
-    private IEnumerable<CalendarViewItem> GetCoursesForSelectedDate()
+    protected IEnumerable<CalendarViewItem> GetCoursesForSelectedDate()
     {
         return GetItemsForSelectedDate()
             .Where(i => i.Type == CalendarViewItem.CalendarEventType.Course);
     }
 
-    private IEnumerable<CalendarViewItem> GetAllDeadlines()
+    protected IEnumerable<CalendarViewItem> GetAllDeadlines()
     {
         return _calendarItems
             .Where(i => i.Type == CalendarViewItem.CalendarEventType.Deadline)
             .OrderBy(i => i.Date);
     }
-    
-    private void OnViewChanged(int newIndex)
+
+    protected void OnViewChanged(int newIndex)
     {
         _currentView = newIndex;
     }
 
-    private string GetCurrentViewTitle()
+    protected string GetCurrentViewTitle()
     {
         return _currentView switch
         {

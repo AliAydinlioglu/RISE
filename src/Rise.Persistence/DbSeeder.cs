@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Common;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
+using Rise.Domain.StudentActivities;
+using Rise.Persistence.SeedData;
 
 namespace Rise.Persistence;
 /// <summary>

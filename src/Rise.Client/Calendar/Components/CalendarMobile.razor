@@ -1,0 +1,32 @@
+@using Rise.Client.Components
+@inherits CalendarIndex
+
+<div class="mb-4">
+    <h1 class="title is-uppercase mb-2">@GetCurrentViewTitle()</h1>
+    <p class="subtitle is-6 has-text-grey-light">
+        Swipe om te wisselen tussen tabbladen
+    </p>
+</div>
+<div class="tabs is-centered mb-4">
+    <ul>
+        <li class="@(_currentView == 0 ? "is-active" : "")">
+            <a @onclick="() => OnViewChanged(0)">
+                <span class="icon is-small"><i class="fas fa-calendar"></i></span>
+                <span>Kalender</span>
+            </a>
+        </li>
+        <li class="@(_currentView == 1 ? "is-active" : "")">
+            <a @onclick="() => OnViewChanged(1)">
+                <span class="icon is-small"><i class="fas fa-book"></i></span>
+                <span>Lessenrooster</span>
+            </a>
+        </li>
+        <li class="@(_currentView == 2 ? "is-active" : "")">
+            <a @onclick="() => OnViewChanged(2)">
+                <span class="icon is-small"><i class="fas fa-flag"></i></span>
+                <span>Deadlines</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<Carousel Items="_carouselItems" CurrentIndex="_currentView" CurrentIndexChanged="OnViewChanged"/>

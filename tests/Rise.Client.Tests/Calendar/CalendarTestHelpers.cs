@@ -38,44 +38,15 @@ public static class CalendarTestHelpers
         dayButtons[dayIndex].Click();
     }
 
-    public static void NavigateToPreviousWeek(this IRenderedComponent<CalendarIndex> component)
-    {
-        component.FindAll(".button.is-ghost")[0].Click();
-    }
-
-    public static void NavigateToNextWeek(this IRenderedComponent<CalendarIndex> component)
-    {
-        component.FindAll(".button.is-ghost")[1].Click();
-    }
-
-    public static IHtmlCollection<IElement> GetCardsInVisibleView(this IRenderedComponent<CalendarIndex> component)
-    {
-        var visibleItem = component.GetVisibleCarouselItem();
-        return visibleItem.QuerySelectorAll(".p-0");
-    }
-
-    public static IElement? GetNotificationInVisibleView(this IRenderedComponent<CalendarIndex> component)
-    {
-        var visibleItem = component.GetVisibleCarouselItem();
-        return visibleItem.QuerySelector(".notification");
-    }
-
-    public static int GetWeekHeaderCount(this IRenderedComponent<CalendarIndex> component)
-    {
-        var visibleItem = component.GetVisibleCarouselItem();
-        return visibleItem.QuerySelectorAll(".box .mb-5").Length;
-    }
-
-    public static int GetDayColumnsCount(this IRenderedComponent<CalendarIndex> component)
-    {
-        var visibleItem = component.GetVisibleCarouselItem();
-        return visibleItem.QuerySelectorAll(".columns.is-mobile .column").Length;
-    }
-
     public static bool IsDotActive(this IRenderedComponent<CalendarIndex> component, CalendarView view)
     {
         var dots = component.GetDots();
         return dots[(int)view].ClassList.Contains("is-active");
+    }
+    
+    public static IElement GetBox(this IRenderedComponent<CalendarIndex> component, CalendarView view)
+    {
+        return component.FindAll(".column")[(int)view].Children[0];
     }
 }
 
@@ -83,5 +54,6 @@ public enum CalendarView
 {
     Kalender = 0,
     Lessenrooster = 1,
-    Deadlines = 2
+    Deadlines = 2,
+    Evenementen = 3
 }
