@@ -34,7 +34,7 @@ public partial class Detail
             Title = studentActivity.Title;
             Description = studentActivity.Description;
             Address =
-                $"{studentActivity.Location.Street} {studentActivity.Location.HouseNumber}, {studentActivity.Location.Postcode} {studentActivity.Location.City}";
+                $"{studentActivity.Location.Street} {studentActivity.Location.HouseNumber} {studentActivity.Location.BusNumber}, {studentActivity.Location.Postcode} {studentActivity.Location.City}";
             LocationName = studentActivity.Location.Name;
             TimeString = $"{studentActivity.StartTime:HH:mm} - {studentActivity.EndTime:HH:mm}";
             LocalDateString = studentActivity.Date.LocalDateTime.ToString("dd.MM.yyyy");

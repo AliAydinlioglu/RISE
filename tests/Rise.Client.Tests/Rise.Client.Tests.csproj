@@ -41,6 +41,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Rise.Client\Rise.Client.csproj" />
+      <ProjectReference Include="..\Rise.Services.Tests\Rise.Services.Tests.csproj" />
     </ItemGroup>
 
 </Project>
