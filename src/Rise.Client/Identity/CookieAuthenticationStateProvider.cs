@@ -31,34 +31,6 @@ namespace Rise.Client.Identity
         private readonly ClaimsPrincipal unauthenticated = new(new ClaimsIdentity());
 
         /// <summary>
-        /// Register a new user.
-        /// </summary>
-        /// <param name="email">The user's email address.</param>
-        /// <param name="password">The user's password.</param>
-        /// <returns>The result serialized to a <see cref="Result"/>.
-        /// </returns>
-        public async Task<Result> RegisterAsync(string email, string password, string confirmPassword)
-        {
-            try
-            {
-                var response = await httpClient.PostAsJsonAsync("/api/identity/accounts/register", new AccountRequest.Register
-                {
-                    Email = email,
-                    Password = password,
-                    ConfirmPassword = confirmPassword,
-                });
-            
-                var result = await response.Content.ReadFromJsonAsync<Result>();
-                return result!;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Could not register user.");
-                return Result.Error("An unknown error prevented registration from succeeding.");
-            }
-         }
-
-        /// <summary>
         /// User login.
         /// </summary>
         /// <param name="email">The user's email address.</param>
@@ -71,7 +43,6 @@ namespace Rise.Client.Identity
                 var response = await httpClient.PostAsJsonAsync("/api/identity/accounts/login", new AccountRequest.Login
                 {
                     Email = email,
-                    Password = password,
                 });
             
                 var result = await response.Content.ReadFromJsonAsync<Result>();
@@ -87,7 +58,7 @@ namespace Rise.Client.Identity
                 Log.Error(ex, "Could not login user.");
             }
 
-            return Result.Error("Invalid email and/or password.");
+            return Result.Error("Invalid email.");
         }
 
         /// <summary>

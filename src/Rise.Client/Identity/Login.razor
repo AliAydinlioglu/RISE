@@ -1,10 +1,13 @@
 @page "/login"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+
 
 <PageTitle>Login</PageTitle>
 
 <AuthorizeView>
     <Authorized Context="authContext">
-        <div class="notification">You're logged in as @authContext.User.Identity?.Name.</div>
+@*         <div class="notification">You're logged in as @authContext.User.Identity?.Name.</div>
         <div><strong>With the following claims:</strong>
             <div class="fixed-grid has-2-cols">
                 <div class="grid is-gap-1">
@@ -17,48 +20,48 @@
                     }
                 </div>
             </div>
-        </div>
+        </div> *@
     </Authorized>
+
     <NotAuthorized>
-        <div class="container">
-            @foreach (var error in _result.Errors)
-            {
-                <div class="notification is-danger">@error</div>
-            }
-        <div class="columns is-centered">
-            <section class="column is-one-third">
-                <EditForm Model="Model" OnValidSubmit="LoginUser" Context="formContext">
-                    <FluentValidationValidator/>
-                    <div class="field">
-                        <p class="control has-icons-left has-icons-right">
-                            <InputText @bind-Value="Model.Email" type="email" autocomplete="username" class="input" placeholder="Email"/>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                        </p>
-                        <ValidationMessage For="() => Model.Email" class="has-text-danger"/>
-                    </div>
-                    <div class="field">
-                        <p class="control has-icons-left">
-                            <InputText @bind-Value="Model.Password" class="input" type="password" placeholder="Password"/>
-                            <span class="icon is-small is-left">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                        </p>
-                        <ValidationMessage For="() => Model.Password" class="has-text-danger"/>
-                    </div>
-                    <div class="field is-grouped is-grouped-right">
-                        <p class="control">
-                            <button class="button is-light">Login</button>
-                        </p>
-                        <p class="control">
-                            <a href="register" class="button is-light">Register</a>
-                        </p>
-                    </div>
-                </EditForm>
-            </section>
+        <div class="login">
+            <div class="login-bg" style='background-image: url("/images/HOGENT bg1.jpg");'></div> @* hier moet de randomNumber var gebruikt worden om willekeurig background te tonen, maar is nog niet gelukt *@
+            <div class="login-overlay"></div>
+
+            <div class="login-center">
+                @foreach (var error in _result.Errors)
+                {
+                    <div class="notification is-danger">@error</div>
+                }
+
+                <section class="login-box">
+                    <EditForm Model="Model" OnValidSubmit="LoginUser" Context="formContext">
+                        @* <FluentValidationValidator /> *@
+
+                        <div class="text-field">
+                            <p class="control has-icons-right">
+                                <InputText @bind-Value="Model.Email"
+                                           type="email"
+                                           autocomplete="username"
+                                           class="input login-input"
+                                           placeholder="Email" />
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </p>
+                            @* <ValidationMessage For="() => Model.Email" class="has-text-danger" /> *@
+                        </div>
+
+                        <div class="button-field">
+                            <button type="submit" class="button login-button is-fullwidth">
+                                AANMELDEN
+                            </button>
+                        </div>
+                    </EditForm>
+                </section>
+            </div>
         </div>
-    </div>
 
     </NotAuthorized>
+
 </AuthorizeView>
