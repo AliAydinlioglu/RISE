@@ -1,5 +1,5 @@
 <div class="sidebar-container">
-    <!-- Hamburger Button - only visible when sidebar is closed -->
+    <!-- Hamburger Button-->
     @if (!_isOpen)
     {
         <button class="hamburger-btn" @onclick="ToggleSidebar">
@@ -93,10 +93,5 @@
             "contact" => "Contact",
             _ => "Campus App"
         };
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
