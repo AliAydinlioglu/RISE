@@ -5,21 +5,26 @@
 
 <PageTitle>Kalender</PageTitle>
 
-<h1 class="title is-uppercase">@GetCurrentViewTitle()</h1>
+<div class="container">
+    <div class="section">
+        <h1 class="title is-uppercase"> @GetCurrentViewTitle() </h1>
 
-@if (!_calendarItems.Any())
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <Carousel Items="_carouselItems"
-              CurrentIndex="_currentView"
-              CurrentIndexChanged="OnViewChanged"
-    />
-}
+        @if (!_calendarItems.Any())
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <Carousel Items="_carouselItems"
+                      CurrentIndex="_currentView"
+                      CurrentIndexChanged="OnViewChanged"
+            />
+        }
+    </div>
+</div>
 
 @code {
+
     private RenderFragment RenderCalendarView() => __builder =>
     {
         <WeekHeader SelectedDate="_selectedDate"
@@ -49,4 +54,5 @@ else
         <CalendarItemsList Items="GetAllDeadlines()"
                            EmptyMessage="Geen deadlines beschikbaar"/>
     };
+
 }
