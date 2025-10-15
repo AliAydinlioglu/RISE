@@ -15,12 +15,12 @@ public class NavigationServiceShould
     [InlineData(AppRoles.Public, ContentLocations.Header, 2)]
     [InlineData(AppRoles.Public, ContentLocations.Body, 3)]
     [InlineData(AppRoles.Public, ContentLocations.Footer, 1)]
-    [InlineData(AppRoles.Regular, ContentLocations.Header, 4)]
-    [InlineData(AppRoles.Regular, ContentLocations.Body, 1)]
-    [InlineData(AppRoles.Regular, ContentLocations.Footer, 2)]
-    [InlineData(AppRoles.Distance, ContentLocations.Header, 1)]
-    [InlineData(AppRoles.Distance, ContentLocations.Body, 2)]
-    [InlineData(AppRoles.Distance, ContentLocations.Footer, 3)]
+    [InlineData(AppRoles.RegularStudent, ContentLocations.Header, 4)]
+    [InlineData(AppRoles.RegularStudent, ContentLocations.Body, 1)]
+    [InlineData(AppRoles.RegularStudent, ContentLocations.Footer, 2)]
+    [InlineData(AppRoles.DistanceStudent, ContentLocations.Header, 1)]
+    [InlineData(AppRoles.DistanceStudent, ContentLocations.Body, 2)]
+    [InlineData(AppRoles.DistanceStudent, ContentLocations.Footer, 3)]
     public async Task ReturnNavItems_WhenRoleAndContentLocationAreSpecific(string roleIdString, string contentLocation, int expectedCount)
     {
         // Arrange
@@ -93,7 +93,7 @@ public class NavigationServiceShould
             ContentLocation = ContentLocations.Header
         };
 
-        var roleId = new Guid(AppRoles.Regular);
+        var roleId = new Guid(AppRoles.RegularStudent);
         
         // Act
         var result = await service.GetAsync(request, roleId, CancellationToken.None);
@@ -166,7 +166,7 @@ public class NavigationServiceShould
         
         var request = new NavigationRequest.Get { ContentLocation = ContentLocations.Header };
         
-        var roleId = new Guid(AppRoles.Regular);
+        var roleId = new Guid(AppRoles.RegularStudent);
 
         // Act
         var result = await service.GetAsync(request, roleId, CancellationToken.None);
@@ -191,8 +191,8 @@ public class NavigationServiceShould
         var identityRoles = new []
         {
             new ApplicationRole(AppRoles.Public, "Public"),
-            new ApplicationRole(AppRoles.Regular, "Regular"),
-            new ApplicationRole(AppRoles.Distance, "Distance"),
+            new ApplicationRole(AppRoles.RegularStudent, "Regular"),
+            new ApplicationRole(AppRoles.DistanceStudent, "Distance"),
         };
         
         var roles = new[]

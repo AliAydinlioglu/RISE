@@ -28,8 +28,8 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
             return;
 
         await roleManager.CreateAsync(new IdentityRole("Public"));
-        await roleManager.CreateAsync(new IdentityRole("Regular"));
-        await roleManager.CreateAsync(new IdentityRole("Distance"));
+        await roleManager.CreateAsync(new IdentityRole("RegularStudent"));
+        await roleManager.CreateAsync(new IdentityRole("DistanceStudent"));
     }
     
     private async Task  UsersAsync()

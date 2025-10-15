@@ -62,7 +62,7 @@ public class UserServiceShould
             Substitute.For<ILogger<RoleManager<ApplicationRole>>>()
         );
 
-        var role = new ApplicationRole(AppRoles.Regular, "Regular");
+        var role = new ApplicationRole(AppRoles.RegularStudent, "Regular");
         await roleManager.CreateAsync(role);
         
         var userService = new UserService(roleManager);
@@ -73,7 +73,7 @@ public class UserServiceShould
         var result = await userService.GetRoleIdAsync(claimsPrincipal);
 
         // Assert
-        result.ShouldBe(new Guid(AppRoles.Regular));
+        result.ShouldBe(new Guid(AppRoles.RegularStudent));
     }
     
     /// <summary>
