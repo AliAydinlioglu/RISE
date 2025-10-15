@@ -18,8 +18,6 @@ public class IndexShould: TestContext
     [Fact]
     public void ShowsStudentActivities()
     {
-
-		
         var cut = RenderComponent<Index>();
         cut.FindAll("[data-bunit='sa-index']").Count.ShouldBe(5);
     }

@@ -41,6 +41,4 @@ public class FakeStudentActivitiesService : IStudentActivityService
         var detailDto = StudentActivityService.ToDetailDto(studentActivity);
         return Task.FromResult(Result.Success(new StudentActivityResponse.Detail { StudentActivity = detailDto }));
     }
-
-
 }
