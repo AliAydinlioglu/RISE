@@ -1,0 +1,78 @@
+@page "/student-activities"
+@using Rise.Client.Components
+
+<PageTitle>StudentActivities</PageTitle>
+<div class="container is-widescreen">
+    <HeadTitle>Studenten activiteiten</HeadTitle>
+</div>
+<section class="section student-activities">
+    @if (studentActivities == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div class="is-flex columns  is-multiline  mb-4">
+            
+            @foreach (var studentActivity in studentActivities)
+            {
+           
+                <article data-bunit="sa-index" class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
+                
+                    <a href="/student-activities/@studentActivity.Id">
+                        <!-- Desktop/Tablet: Vertical Card -->
+                        <div class="is-hidden-mobile">
+                            <VerticalCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
+                                <StudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
+                                                              Date="studentActivity.Date.LocalDateTime"
+                                                              StartTime="studentActivity.StartTime"
+                                                              EndTime="studentActivity.EndTime"
+                                                              Location="studentActivity.Location"/>
+                            </VerticalCard>
+                        </div>
+
+                        <!-- Mobile: Regular Card -->
+                        <div class="is-hidden-tablet">
+                            <Card Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
+                                <StudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
+                                                              Date="studentActivity.Date.LocalDateTime"
+                                                              StartTime="studentActivity.StartTime"
+                                                              EndTime="studentActivity.EndTime"
+                                                              Location="studentActivity.Location"/>
+                            </Card>
+                        </div>
+                    </a>
+                </article>
+            
+            }
+        
+        </div>
+        <section class="section pagination-section"> 
+        
+            <nav class="pagination is-rounded is-centered" role="navigation">
+                <button class="pagination-previous" 
+                        disabled="@(currentPage <= 1)"
+                        @onclick="() => OnPageChangedAsync(currentPage - 1)">
+                    Previous
+                </button>
+                <button class="pagination-next" 
+                        disabled="@(currentPage >= totalPages)"
+                        @onclick="() => OnPageChangedAsync(currentPage + 1)">
+                    Next
+                </button>
+                <ul class="pagination-list">
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        var pageNumber = i;
+                        <li>
+                            <button class="pagination-link @(currentPage == pageNumber ? "is-current" : "")"
+                                    @onclick="() => OnPageChangedAsync(pageNumber)">
+                                @pageNumber
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </section>
+        }
+</section>

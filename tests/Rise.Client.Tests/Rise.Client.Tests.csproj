@@ -41,7 +41,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Rise.Client\Rise.Client.csproj" />
-      <ProjectReference Include="..\Rise.TestDoubles\Rise.TestDoubles.csproj" />
     </ItemGroup>
 
 </Project>

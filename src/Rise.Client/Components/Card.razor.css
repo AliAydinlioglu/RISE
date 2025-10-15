@@ -16,7 +16,7 @@
 
 .stacking-container-background {
     z-index: 0;
-    background-color: white;
+    background-color: black;
     container-type: inline-size;
 }
 
@@ -40,18 +40,26 @@
 .stacking-container-foreground p {
     line-height: 1;
     margin: 0;
-    color: black;
+    color: white;
 }
 
 .inner-date-square {
     width: 88%;
     height: 88%;
-    border: 5px solid black;
+    border: 5px solid white;
+}
+
+.box {
+    background: white;
+    border: 2px solid black;
+    border-radius: 0;
+    color: black;
 }
 
 @media screen and (max-width: 768px) {
     .square {
         width: 130px;
+        height: 100%;
     }
 
     .inner-date-square {
@@ -85,3 +93,5 @@
         width: 180px;
     }
 }
+
+

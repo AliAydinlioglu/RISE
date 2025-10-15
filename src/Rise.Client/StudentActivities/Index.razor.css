@@ -1,0 +1,9 @@
+section.student-activities{
+    max-width: 1500px   ;
+    margin: 0 auto;
+}
+
+
+.columns.is-multiline {
+    align-items: stretch;
+}
