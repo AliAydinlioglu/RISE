@@ -12,6 +12,8 @@ public partial class Login
     [Inject] public required IAccountManager AccountManager { get; set; }
     [Inject] public required NavigationManager Navigation { get; set; }
     private int randomNumber = new Random().Next(1, 9);
+    private string mockPassword = "A1b2C3!";
+    private string mockEmail = "admin@example.com";
 
     protected override async Task OnInitializedAsync()
     {
@@ -25,7 +27,9 @@ public partial class Login
     }
     public async Task LoginUser()
     {
-        _result = await AccountManager.LoginAsync(Model.Email!, Model.Password!);
+        //_result = await AccountManager.LoginAsync(Model.Email!, Model.Password!);
+        _result = await AccountManager.LoginAsync(mockEmail, mockPassword);
+
 
         //if (_result.IsSuccess && !string.IsNullOrEmpty(ReturnUrl))
         //{
