@@ -8,13 +8,13 @@ using Rise.Services.Projects;
 using Rise.Services.User;
 using Rise.Shared.Calendar;
 using Rise.Services.StudentActivities;
-using Rise.Shared.Identity;
 using Rise.Shared.Navigation;
 using Rise.Shared.Products;
 using Rise.Shared.Projects;
 using Rise.Shared.User;
 using Rise.Shared.StudentActivities;
 using Rise.Services.Identity;
+using Rise.Shared.Identity;
 
 namespace Rise.Services;
 

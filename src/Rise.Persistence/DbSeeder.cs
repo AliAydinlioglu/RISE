@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Common;
-using Rise.Domain.Navigation;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.StudentActivities;
