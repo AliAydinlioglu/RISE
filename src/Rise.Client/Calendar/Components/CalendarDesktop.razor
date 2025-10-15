@@ -1,37 +1,40 @@
+@using Rise.Client.Components
 @inherits CalendarIndex
 
-<h1 class="title is-uppercase mb-5">Kalender</h1>
-<div class="columns is-multiline is-variable is-4">
-    <!-- Top Left: Kalender -->
-    <div class="column is-half">
-        <MonthCalendar SelectedDate="_selectedDate"
-                       DateInView="_dateInView"
-                       DateInViewChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
-                       OnPreviousMonth="() => _dateInView = _dateInView.AddMonths(-1)"
-                       OnNextMonth="() => _dateInView = _dateInView.AddMonths(1)"/>
-    </div>
-
-    <!-- Top Right: Lessenrooster -->
-    <div class="column is-half">
-        <div class="box" style="height: 100%;">
-            <h2 class="title is-5 mb-4">Lessenrooster</h2>
-            <CalendarItemsList Items="GetCoursesForSelectedDate()" EmptyMessage="Geen lessen voor deze dag"/>
+<div class="container">
+    <HeadTitle>Kalender</HeadTitle>
+    <div class="columns is-multiline is-variable is-4 mt-2">
+        <!-- Top Left: Kalender -->
+        <div class="column is-half">
+            <MonthCalendar SelectedDate="_selectedDate"
+                           DateInView="_dateInView"
+                           DateInViewChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
+                           OnPreviousMonth="() => _dateInView = _dateInView.AddMonths(-1)"
+                           OnNextMonth="() => _dateInView = _dateInView.AddMonths(1)"/>
         </div>
-    </div>
 
-    <!-- Bottom Left: Deadlines -->
-    <div class="column is-half">
-        <div class="box" style="height: 100%;">
-            <h2 class="title is-5 mb-4">Deadlines</h2>
-            <CalendarItemsList Items="GetAllDeadlines()" EmptyMessage="Geen deadlines beschikbaar"/>
+        <!-- Top Right: Lessenrooster -->
+        <div class="column is-half">
+            <div class="box" style="height: 100%;">
+                <h2 class="title is-5 mb-4">Lessenrooster</h2>
+                <CalendarItemsList Items="GetCoursesForSelectedDate()" EmptyMessage="Geen lessen voor deze dag"/>
+            </div>
         </div>
-    </div>
 
-    <!-- Bottom Right: Evenementen -->
-    <div class="column is-half">
-        <div class="box" style="height: 100%;">
-            <h2 class="title is-5 mb-4">Evenementen</h2>
-            <CalendarItemsList Items="[]" EmptyMessage="Er staan geen evenementen ingepland vandaag"/>
+        <!-- Bottom Left: Deadlines -->
+        <div class="column is-half">
+            <div class="box" style="height: 100%;">
+                <h2 class="title is-5 mb-4">Deadlines</h2>
+                <CalendarItemsList Items="GetAllDeadlines()" EmptyMessage="Geen deadlines beschikbaar"/>
+            </div>
+        </div>
+
+        <!-- Bottom Right: Evenementen -->
+        <div class="column is-half">
+            <div class="box" style="height: 100%;">
+                <h2 class="title is-5 mb-4">Evenementen</h2>
+                <CalendarItemsList Items="[]" EmptyMessage="Er staan geen evenementen ingepland vandaag"/>
+            </div>
         </div>
     </div>
 </div>

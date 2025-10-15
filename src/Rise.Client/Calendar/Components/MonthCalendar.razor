@@ -34,7 +34,7 @@
                         <td>
                             @if (day != DateTime.MinValue)
                             {
-                                <button class="button is-ghost @(isSelected ? "has-background-white has-text-black" : "") @(isToday ? "has-text-weight-bold" : "")"
+                                <button class="button @(isSelected ? "has-background-white has-text-black" : "") @(isToday ? "has-text-weight-bold has-text-white" : "")"
                                         style="border-radius: 50%; width: 2.5rem; height: 2.5rem; @(isToday && !isSelected ? "border: 2px solid white;" : "")"
                                         @onclick="() => OnDateInViewChanged(day)">
                                     @day.Day

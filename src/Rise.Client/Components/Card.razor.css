@@ -57,6 +57,10 @@
     color: black;
 }
 
+.card-header {
+    color: #9c9c9c;
+}
+
 @media screen and (max-width: 768px) {
     .square {
         width: 130px;

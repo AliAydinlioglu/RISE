@@ -24,4 +24,14 @@
       <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Update="wwwroot\logo_black_bg.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\logo_white_bg.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    
+
 </Project>
