@@ -30,7 +30,21 @@ h1:focus {
     color: black;
 }
 
+.hero-body{
+    padding: 2rem 2rem;
+}
 
+header #navbarBasicExample{
+    background: black;
+    height: 75px;
+}
+
+.logo{
+    max-width: 150px;
+}
+.navbar-burger{
+    color: white;
+}
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;

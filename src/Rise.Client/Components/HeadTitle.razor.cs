@@ -5,5 +5,5 @@ namespace Rise.Client.Components;
 public partial class HeadTitle : ComponentBase
 {
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    
+    [Parameter] public string? SubTitle { get; set; }
 }

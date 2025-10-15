@@ -5,7 +5,7 @@
 }
 .card-content{
     background: white;
-    border: 1px solid black;
+    border: 3px solid black;
     color: black;
 }
 .card-content .title, .card-content .subtitle{
