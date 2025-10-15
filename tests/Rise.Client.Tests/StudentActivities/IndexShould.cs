@@ -1,11 +1,8 @@
-using Rise.Client.Products;
-using Rise.Shared.Products;
 using Rise.Shared.StudentActivities;
 using Shouldly;
 using Xunit.Abstractions;
-using Index = Rise.Client.StudentActivities.Index;
 
-namespace Xunit.StudentActivities;
+namespace Rise.Client.StudentActivities;
 
 public class IndexShould: TestContext
 {

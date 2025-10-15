@@ -1,7 +1,7 @@
 using Rise.Domain.Common;
 using Rise.Domain.StudentActivities;
 
-namespace Rise.Services.Tests.StudentActivities;
+namespace Rise.TestDoubles;
 
 public static class StudentActivityTestDataFactory
 {

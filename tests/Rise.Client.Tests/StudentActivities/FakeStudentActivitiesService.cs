@@ -1,12 +1,9 @@
 using Ardalis.Result;
-using Rise.Domain.StudentActivities;
-using Rise.Services.StudentActivities;
-using Rise.Services.Tests.StudentActivities;
 using Rise.Shared.Common;
-using Rise.Shared.Locations;
 using Rise.Shared.StudentActivities;
+using Rise.TestDoubles;
 
-namespace Xunit.StudentActivities;
+namespace Rise.Client.StudentActivities;
 
 public class FakeStudentActivitiesService : IStudentActivityService
 {
@@ -22,7 +19,7 @@ public class FakeStudentActivitiesService : IStudentActivityService
 
         var wrapper = new StudentActivityResponse.Index
         {
-            StudentActivities = studentActivities.Select(StudentActivityService.ToIndexDto).ToList(),
+            StudentActivities = studentActivities.Select(Services.StudentActivities.StudentActivityService.ToIndexDto).ToList(),
             TotalCount = 5,
         };
 
@@ -38,7 +35,7 @@ public class FakeStudentActivitiesService : IStudentActivityService
             StudentActivityTestDataFactory.CreateDefaultStudentClub()
         )[0];
         
-        var detailDto = StudentActivityService.ToDetailDto(studentActivity);
+        var detailDto = Services.StudentActivities.StudentActivityService.ToDetailDto(studentActivity);
         return Task.FromResult(Result.Success(new StudentActivityResponse.Detail { StudentActivity = detailDto }));
     }
 }
