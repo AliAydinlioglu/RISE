@@ -45,7 +45,7 @@ try
         .AddFastEndpoints(o =>
         {
             o.IncludeAbstractValidators = true; // Include validators from abstract classes (see https://docs.fluentvalidation.net/en/latest/).
-            o.Assemblies = [typeof(Rise.Shared.Products.ProductRequest).Assembly]; // Adds the validators from other assemblies
+            o.Assemblies = [typeof(Rise.Shared.Products.ProductRequest).Assembly,typeof(Rise.Shared.StudentActivities.StudentActivityRequest).Assembly ]; // Adds the validators from other assemblies
         })
         .SwaggerDocument(o =>
         {
@@ -64,7 +64,7 @@ try
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-            // dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
+            dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
 
             dbContext.Database.Migrate(); // Creates the database if it doesn't exist and applies all migrations. See Readme.md for more info.
             await dbSeeder.SeedAsync(); // Seeds the database with some test data.
@@ -85,6 +85,7 @@ try
                 ep.PreProcessor<GlobalRequestLogger>(Order.Before);
                 ep.PostProcessor<GlobalResponseSender>(Order.Before);
                 ep.PostProcessor<GlobalResponseLogger>(Order.Before);
+                
             };
         })
         .UseSwaggerGen();

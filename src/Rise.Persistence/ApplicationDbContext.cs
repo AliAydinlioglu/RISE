@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Rise.Domain.Calendar;
 using Rise.Domain.Navigation;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
+using Rise.Domain.StudentActivities;
 using Rise.Persistence.Configurations.Identity;
 
 namespace Rise.Persistence;
@@ -25,6 +27,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<NavigationItem> NavigationItems => Set<NavigationItem>();
     public DbSet<ContentLocation> ContentLocations => Set<ContentLocation>();
     public DbSet<Technician> Technicians => Set<Technician>();
+    public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();
+    public DbSet<Location> Locations => Set<Location>();
+    public DbSet<StudentClub> StudentClubs => Set<StudentClub>();
+    
+    public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
+    public DbSet<Course> Courses => Set<Course>();
+    public DbSet<Lesson> Lessons => Set<Lesson>();
+    public DbSet<Deadline> Deadlines => Set<Deadline>();
+    public DbSet<Exam> Exams => Set<Exam>();
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
