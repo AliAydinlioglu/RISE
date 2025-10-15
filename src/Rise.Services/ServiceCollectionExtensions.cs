@@ -8,11 +8,13 @@ using Rise.Services.Projects;
 using Rise.Services.User;
 using Rise.Shared.Calendar;
 using Rise.Services.StudentActivities;
+using Rise.Shared.Identity;
 using Rise.Shared.Navigation;
 using Rise.Shared.Products;
 using Rise.Shared.Projects;
 using Rise.Shared.User;
 using Rise.Shared.StudentActivities;
+using Rise.Services.Identity;
 
 namespace Rise.Services;
 
@@ -29,6 +31,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProjectService, ProjectService>();        
         services.AddScoped<ICalendarService, CalendarService>();        
         services.AddScoped<INavigationService, NavigationService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddTransient<DbSeeder>();
         
         // Add other application services here.

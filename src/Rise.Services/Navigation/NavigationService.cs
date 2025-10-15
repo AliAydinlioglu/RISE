@@ -8,6 +8,12 @@ public class NavigationService(ApplicationDbContext dbContext) : INavigationServ
 {
     public async Task<Result<NavigationResponse.Get>> GetAsync(NavigationRequest.Get req, Guid roleId, CancellationToken ct)
     {
+        if (req == null!)
+            return Result.Error("Request is NULL.");
+        
+        if (string.IsNullOrWhiteSpace(req.ContentLocation))
+            return Result.Error("ContentLocation is not given correctly.");
+        
         var navigationItems = await dbContext.RoleNavigationItems
             .AsNoTracking()
             .OrderBy(rni => rni.SequenceNr)
