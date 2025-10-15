@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using static System.String;
 
@@ -19,7 +20,7 @@ public partial class Card
     protected override void OnParametersSet()
     {
         DayOfMonth = Date.ToString("dd");
-        MonthAbbreviation = Date.ToString("MMM");
+        MonthAbbreviation = Date.ToString("MMM", new CultureInfo("nl-NL")).TrimEnd('.');
         BackgroundTitle = Concat(Title.Where(char.IsUpper)); 
         DateString = Date.ToString("dd.MM.yyyy");
     }

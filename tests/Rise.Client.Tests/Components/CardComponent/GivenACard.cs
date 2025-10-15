@@ -1,3 +1,4 @@
+using System.Globalization;
 using Shouldly;
 using Xunit.Abstractions;
 
@@ -35,6 +36,18 @@ public class GivenACard : TestContext
         cut.Find(".inner-date-square .is-size-1").TextContent.ShouldBe(expectedDay);
         cut.Find(".inner-date-square .is-size-3").TextContent.ShouldBe(expectedMonth);
     }
+    
+    [Fact]
+    public void WhenRenderingTheCard_ThenMonthShouldNotEndWithPoint()
+    {
+        DateTime date = new DateTime(2024, 11, 13);
+
+        var cut = RenderComponentCardComponent(dateInput: date);
+
+        cut.Find(".inner-date-square .is-size-3").TextContent.ShouldNotContain(".");
+
+    }
+
 
     [Theory]
     [MemberData(nameof(CardTestData.BackgroundTitleData), MemberType = typeof(CardTestData))]
