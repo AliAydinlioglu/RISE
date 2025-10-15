@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Rise.Domain.Navigation;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 
@@ -26,9 +27,9 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         if (dbContext.Roles.Any())
             return;
 
-        await roleManager.CreateAsync(new IdentityRole("Administrator"));
-        await roleManager.CreateAsync(new IdentityRole("Secretary"));
-        await roleManager.CreateAsync(new IdentityRole("Technician"));
+        await roleManager.CreateAsync(new IdentityRole("Public"));
+        await roleManager.CreateAsync(new IdentityRole("Regular"));
+        await roleManager.CreateAsync(new IdentityRole("Distance"));
     }
     
     private async Task  UsersAsync()

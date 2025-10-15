@@ -13,7 +13,7 @@ public class RoleNavigationItemContentLocationId : ValueObject
     
     public RoleNavigationItemContentLocationId(Guid roleId, int navigationItemId, int contentLocationId)
     {
-        RoleId = Guard.Against.Null(roleId);
+        RoleId = Guard.Against.NullOrEmpty(roleId);
         NavigationItemId = Guard.Against.NegativeOrZero(navigationItemId);
         ContentLocationId = Guard.Against.NegativeOrZero(contentLocationId);
     }

@@ -1,11 +1,12 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Rise.Domain.Identity;
+using Rise.Persistence.Configurations.Identity;
 using Rise.Shared.Identity;
 
 namespace Rise.Services.Identity;
 
-public class UserService(RoleManager<Role> roleManager) : IUserService
+public class UserService(RoleManager<ApplicationRole> roleManager) : IUserService
 {
     /// <summary>
     /// Decides which role guid is needed based on User
@@ -22,8 +23,6 @@ public class UserService(RoleManager<Role> roleManager) : IUserService
             return new Guid(AppRoles.Public);
         
         var role = await roleManager.FindByNameAsync(roleName!);
-        return role == null 
-            ? new Guid(AppRoles.Public) 
-            : role.Id;
+        return role?.Id ?? new Guid(AppRoles.Public);
     }
 }

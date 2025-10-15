@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Navigation;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
+using Rise.Persistence.Configurations.Identity;
 
 namespace Rise.Persistence;
 
@@ -16,12 +17,13 @@ namespace Rise.Persistence;
 /// See https://enterprisecraftsmanship.com/posts/should-you-abstract-database/
 /// </summary>
 /// <param name="opts"></param>
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : IdentityDbContext<IdentityUser>(opts)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : IdentityDbContext<IdentityUser<Guid>, ApplicationRole, Guid>(opts)
 {
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<RoleNavigationItemContentLocation> RoleNavigationItems => Set<RoleNavigationItemContentLocation>();
     public DbSet<NavigationItem> NavigationItems => Set<NavigationItem>();
+    public DbSet<ContentLocation> ContentLocations => Set<ContentLocation>();
     public DbSet<Technician> Technicians => Set<Technician>();
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
