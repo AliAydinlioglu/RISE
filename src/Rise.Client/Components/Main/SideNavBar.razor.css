@@ -30,7 +30,7 @@
     width: 25px;
     height: 3px;
     background-color: white;
-    border-radius: 2px;
+    border-radius: 3px;
     transition: all 0.3s ease;
 }
 
@@ -47,6 +47,9 @@
     overflow-y: auto;
     font-family: "Montserrat", sans-serif;  
     top: 80px;
+    border-top-color: white;
+    border-top-style: solid;
+    border-top-width: 2px;
 }
 
 .side-navbar.open {
