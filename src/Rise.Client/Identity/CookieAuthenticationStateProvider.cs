@@ -43,6 +43,7 @@ namespace Rise.Client.Identity
                 var response = await httpClient.PostAsJsonAsync("/api/identity/accounts/login", new AccountRequest.Login
                 {
                     Email = email,
+                    Password = password
                 });
             
                 var result = await response.Content.ReadFromJsonAsync<Result>();
