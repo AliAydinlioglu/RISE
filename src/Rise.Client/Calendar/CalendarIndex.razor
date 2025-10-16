@@ -1,27 +1,21 @@
 @page "/kalender"
-
 @using Rise.Client.Calendar.Components
-@using Rise.Client.Components
 
 <PageTitle>Kalender</PageTitle>
 
-<div class="container">
-    <div class="section">
-        <h1 class="title is-uppercase"> @GetCurrentViewTitle() </h1>
-
-        @if (!_calendarItems.Any())
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-            <Carousel Items="_carouselItems"
-                      CurrentIndex="_currentView"
-                      CurrentIndexChanged="OnViewChanged"
-            />
-        }
+@if (_isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="is-hidden-tablet">
+        <CalendarMobile />
     </div>
-</div>
+    <div class="is-hidden-mobile">
+        <CalendarDesktop />
+    </div>
+}
 
 @code {
 
@@ -30,10 +24,10 @@
         <WeekHeader SelectedDate="_selectedDate"
                     SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
                     Title="@_selectedDate.ToString("MMMM yyyy")"
-                    OnPreviousWeek="PreviousWeek"
-                    OnNextWeek="NextWeek"/>
+                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
 
-        <CalendarItemsList Items="GetItemsForSelectedDate()"
+        <CalendarItemsList Items="@GetItemsForSelectedDate()"
                            EmptyMessage="Geen evenementen voor deze dag"/>
     };
 
@@ -41,9 +35,9 @@
     {
         <WeekHeader SelectedDate="_selectedDate"
                     SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
-                    Title="@($"{_selectedDate.ToString("MMMM yyyy")}")"
-                    OnPreviousWeek="PreviousWeek"
-                    OnNextWeek="NextWeek"/>
+                    Title="@($"{_selectedDate:MMMM yyyy}")"
+                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
 
         <CalendarItemsList Items="GetCoursesForSelectedDate()"
                            EmptyMessage="Geen lessen voor deze dag"/>
@@ -54,5 +48,4 @@
         <CalendarItemsList Items="GetAllDeadlines()"
                            EmptyMessage="Geen deadlines beschikbaar"/>
     };
-
 }

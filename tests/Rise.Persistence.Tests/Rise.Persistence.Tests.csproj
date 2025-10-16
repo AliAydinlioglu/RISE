@@ -32,6 +32,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\Rise.Domain\Rise.Domain.csproj" />
       <ProjectReference Include="..\..\src\Rise.Persistence\Rise.Persistence.csproj" />
+      <ProjectReference Include="..\Rise.TestDoubles\Rise.TestDoubles.csproj" />
     </ItemGroup>
     
 </Project>

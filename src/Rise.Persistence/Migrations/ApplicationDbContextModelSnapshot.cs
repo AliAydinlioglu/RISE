@@ -276,6 +276,9 @@ namespace Rise.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AcademicSemesterId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ClassGroup")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -307,6 +310,8 @@ namespace Rise.Persistence.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AcademicSemesterId");
 
                     b.ToTable("Course", (string)null);
                 });
@@ -564,6 +569,147 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Technician", (string)null);
                 });
 
+            modelBuilder.Entity("Rise.Domain.StudentActivities.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("BusNumber")
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("HouseNumber")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Postcode")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.StudentActivities.StudentActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("StudentClubId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("StudentClubId");
+
+                    b.ToTable("StudentActivity", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.StudentActivities.StudentClub", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LogoUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StudentClub", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -640,6 +786,17 @@ namespace Rise.Persistence.Migrations
 
                     b.Navigation("DateRange")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>
+                {
+                    b.HasOne("Rise.Domain.Calendar.AcademicSemester", "AcademicSemester")
+                        .WithMany()
+                        .HasForeignKey("AcademicSemesterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AcademicSemester");
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Deadline", b =>
@@ -748,6 +905,49 @@ namespace Rise.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Technician");
+                });
+
+            modelBuilder.Entity("Rise.Domain.StudentActivities.StudentActivity", b =>
+                {
+                    b.HasOne("Rise.Domain.StudentActivities.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.StudentActivities.StudentClub", "StudentClub")
+                        .WithMany()
+                        .HasForeignKey("StudentClubId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.OwnsOne("Rise.Domain.Common.TimeRange", "TimeRange", b1 =>
+                        {
+                            b1.Property<int>("StudentActivityId")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<TimeOnly>("EndTime")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("EndTime");
+
+                            b1.Property<TimeOnly>("StartTime")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("StartTime");
+
+                            b1.HasKey("StudentActivityId");
+
+                            b1.ToTable("StudentActivity");
+
+                            b1.WithOwner()
+                                .HasForeignKey("StudentActivityId");
+                        });
+
+                    b.Navigation("Location");
+
+                    b.Navigation("StudentClub");
+
+                    b.Navigation("TimeRange")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
 using Rise.Domain.Common;
 using Rise.Persistence.Queries.Calendar;
+using Rise.TestDoubles.Fakers;
 
 namespace Rise.Persistence.Tests.Calendar;
 
@@ -9,6 +10,7 @@ public class GivenAGetCalendarQuery: IDisposable
 {
     private readonly ApplicationDbContext _context;
     private readonly GetCalendarQuery _query;
+    private readonly FakeDateTimeService _dateTimeService;
 
     public GivenAGetCalendarQuery()
     {
@@ -17,7 +19,8 @@ public class GivenAGetCalendarQuery: IDisposable
             .Options;
 
         _context = new ApplicationDbContext(options);
-        _query = new GetCalendarQuery(_context);
+        _dateTimeService = new FakeDateTimeService(new DateTime(2024, 11, 13));
+        _query = new GetCalendarQuery(_context, _dateTimeService);
     }
 
     [Fact]
@@ -58,7 +61,15 @@ public class GivenAGetCalendarQuery: IDisposable
     [Fact]
     public async Task WhenNoAcademicSemesterExists_ThenExceptionIsThrown()
     {
-        var course = new Course("RISE", "Alice", "TIAO-01");
+        var academicSemester = new AcademicSemester(
+            "2024-2025",
+            SemesterType.Sem1,
+            new DateRange(_dateTimeService.Now, _dateTimeService.Now.AddHours(1)),
+            _dateTimeService.Now
+        );
+        
+        _dateTimeService.SetDateTime(new DateTime(2025, 11, 13));
+        var course = new Course("RISE", "Alice", "TIAO-01", academicSemester);
         _context.Courses.Add(course);
         await _context.SaveChangesAsync();
 
@@ -72,14 +83,15 @@ public class GivenAGetCalendarQuery: IDisposable
             "2024-2025",
             SemesterType.Sem1,
             new DateRange(
-                DateTimeOffset.UtcNow.AddDays(-30),
-                DateTimeOffset.UtcNow.AddDays(30)
+                new DateTimeOffset(2024, 9, 22, 0, 0, 0, TimeSpan.Zero),
+                new DateTimeOffset(2025, 1, 31, 0, 0, 0, TimeSpan.Zero)
             ),
-            DateTimeOffset.UtcNow.AddDays(40)
+            new DateTimeOffset(2025, 1, 1, 0, 0, 0, TimeSpan.Zero)
         );
         _context.AcademicSemesters.Add(academicSemester);
+        await _context.SaveChangesAsync();
 
-        var riseCourse = new Course("RISE", "Alice", "TIAO-01");
+        var riseCourse = new Course("RISE", "Alice", "TIAO-01", academicSemester);
         var riseLesson1 = new Lesson(
             DayOfWeek.Monday,
             new TimeRange(new TimeOnly(8, 30), new TimeOnly(10, 30)),
@@ -96,7 +108,7 @@ public class GivenAGetCalendarQuery: IDisposable
         _context.Courses.Add(riseCourse);
         _context.Lessons.AddRange(riseLesson1, riseLesson2);
 
-        var fallCourse = new Course("FALL", "Bob", "TIAO-01");
+        var fallCourse = new Course("FALL", "Bob", "TIAO-01", academicSemester);
         var deadline = new Deadline(
             "Campus App",
             "I like bananas",

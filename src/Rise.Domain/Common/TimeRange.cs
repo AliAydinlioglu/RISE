@@ -1,3 +1,5 @@
+using Rise.Domain.Exceptions;
+
 namespace Rise.Domain.Common;
 
 public class TimeRange : ValueObject
@@ -9,8 +11,8 @@ public class TimeRange : ValueObject
 
     public TimeRange(TimeOnly startTime, TimeOnly endTime)
     {
-        if (endTime < startTime)
-            throw new ArgumentException("EndTime must be after StartTime", nameof(endTime));
+        if (endTime <= startTime)
+            throw new InvalidTimeRangeException("EndTime must be after StartTime");
 
         StartTime = startTime;
         EndTime = endTime;

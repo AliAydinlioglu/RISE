@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
+using Rise.Domain.StudentActivities;
 
 namespace Rise.Persistence;
 
@@ -21,6 +22,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Technician> Technicians => Set<Technician>();
+    public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();
+    public DbSet<Location> Locations => Set<Location>();
+    public DbSet<StudentClub> StudentClubs => Set<StudentClub>();
     
     public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
     public DbSet<Course> Courses => Set<Course>();

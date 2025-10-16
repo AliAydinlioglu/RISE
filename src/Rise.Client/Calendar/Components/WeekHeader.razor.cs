@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components;
 
 namespace Rise.Client.Calendar.Components;
@@ -21,14 +22,17 @@ public partial class WeekHeader
 
     private IEnumerable<DateTime> GetSchooldaysOfCurrentWeek()
     {
-        var monday = GetMondayOfWeek(SelectedDate);
+        var monday = CalendarHelpers.GetMondayOfWeek(SelectedDate);
         return Enumerable.Range(0, SchooldaysPerWeek)
             .Select(dayOffset => monday.AddDays(dayOffset));
     }
 
-    private static DateTime GetMondayOfWeek(DateTime date)
+    private int GetWeekNumber()
     {
-        var daysFromMonday = (date.DayOfWeek - DayOfWeek.Monday + 7) % 7;
-        return date.AddDays(-daysFromMonday);
+        return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+            SelectedDate,
+            CalendarWeekRule.FirstFourDayWeek,
+            DayOfWeek.Monday
+        );
     }
 }
