@@ -22,7 +22,7 @@ public class GivenACard : TestContext
         );
 
         cut.Find(".course-info .is-size-4").TextContent.ShouldBe(title);
-        cut.Find(".course-info .is-size-5").TextContent.ShouldBe(description ?? "");
+        cut.Find(".course-info .is-size-6").TextContent.ShouldBe(description ?? "");
         cut.Find(".course-info .is-size-7").TextContent.ShouldBe(cardHeader ?? "");
     }
 
