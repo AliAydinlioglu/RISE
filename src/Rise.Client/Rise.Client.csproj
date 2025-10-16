@@ -24,4 +24,20 @@
       <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Update="wwwroot\logo_black_bg.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\logo_white_bg.jpg">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Calendar\Components\CalendarDesktop.razor.css">
+        <DependentUpon>CalendarDesktop.razor</DependentUpon>
+      </None>
+    </ItemGroup>
+    
+
 </Project>

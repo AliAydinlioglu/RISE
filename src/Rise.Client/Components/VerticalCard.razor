@@ -1,0 +1,30 @@
+@inherits Card
+
+<div class="card vertical-card">
+    <div class="stacking-container">
+        <div class="stacking-container-background ">
+            @* BACKGROUND *@
+            
+        </div>
+        
+        @* FOREGROUND *@
+        <div class="square stacking-container-foreground mr-3">
+            <div
+                class="inner-date-square is-flex is-flex-direction-column is-justify-content-center is-align-items-center has-text-white">
+                <p class="has-text-weight-bold is-size-1 m-0">@DayOfMonth</p>
+                <p class="has-text-weight-bold is-size-3 is-uppercase m-0">@MonthAbbreviation</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-content has-background-white has-border">
+        <div class="media">
+            <div class="media-content"> 
+                <p class="title is-4">@Title</p>
+            </div>
+        </div>
+
+        <div class="content">
+            @ChildContent
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="box">
+    <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+        <button class="button is-ghost has-text-white" @onclick="OnPreviousMonth" style="text-decoration: none;">
+            <span class="icon">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+        </button>
+        <h2 class="title is-5 mb-0 is-capitalized">@DateInView.ToString("MMMM")</h2>
+        <button class="button is-ghost has-text-white" @onclick="OnNextMonth" style="text-decoration: none;">
+            <span class="icon">
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </button>
+    </div>
+
+    <table class="table is-fullwidth has-text-centered">
+        <thead>
+            <tr>
+                <th class="has-text-centered">Ma</th>
+                <th class="has-text-centered">Di</th>
+                <th class="has-text-centered">Wo</th>
+                <th class="has-text-centered">Do</th>
+                <th class="has-text-centered">Vr</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var week in GetWeeksInMonth())
+            {
+                <tr>
+                    @foreach (var day in week)
+                    {
+                        var isSelected = day.Date == SelectedDate.Date;
+                        var isToday = day.Date == DateTime.Today;
+                        <td>
+                            @if (day != DateTime.MinValue)
+                            {
+                                <button class="button @(isSelected ? "has-background-white has-text-black" : "") @(isToday ? "has-text-weight-bold has-text-white" : "")"
+                                        style="border-radius: 50%; width: 2.5rem; height: 2.5rem; @(isToday && !isSelected ? "border: 2px solid white;" : "")"
+                                        @onclick="() => OnDateInViewChanged(day)">
+                                    @day.Day
+                                </button>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

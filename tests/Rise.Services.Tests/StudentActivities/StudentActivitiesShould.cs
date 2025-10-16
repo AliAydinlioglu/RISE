@@ -1,13 +1,10 @@
-using System.Security.Claims;
 using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
-using Rise.Domain.StudentActivities;
 using Rise.Persistence;
 using Rise.Services.StudentActivities;
 using Rise.Shared.Common;
-using Rise.Shared.Locations;
 using Rise.Shared.StudentActivities;
-using Rise.Shared.StudentClubs;
+using Rise.TestDoubles;
 
 namespace Rise.Services.Tests.StudentActivities;
 

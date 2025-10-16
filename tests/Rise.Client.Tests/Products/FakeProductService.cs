@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Ardalis.Result;
+﻿using Ardalis.Result;
 using Rise.Shared.Common;
 using Rise.Shared.Products;
 

@@ -1,0 +1,102 @@
+.stacking-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
+
+.stacking-container > * {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.square {
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+}
+
+.stacking-container-background {
+    z-index: 0;
+    background-color: black;
+    container-type: inline-size;
+    overflow: hidden !important;
+}
+
+.stacking-container-background p {
+    font-size: 38cqw;
+    color: rgba(128, 128, 128, 0.35);
+    letter-spacing: 0.1em;
+    line-height: 1;
+    white-space: nowrap;
+    font-weight: 900;
+}
+
+.stacking-container-foreground {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stacking-container-foreground p {
+    line-height: 1;
+    margin: 0;
+    color: white;
+}
+
+.inner-date-square {
+    width: 88%;
+    height: 88%;
+    border: 5px solid white;
+}
+
+.box {
+    background: white;
+    border: 2px solid black;
+    border-radius: 0;
+    color: black;
+}
+
+.card-header {
+    color: #9c9c9c;
+}
+
+@media screen and (max-width: 768px) {
+    .square {
+        width: 130px;
+        height: 100%;
+    }
+
+    .inner-date-square {
+        border-width: 4px;
+    }
+
+    .stacking-container-foreground .is-size-1 {
+        font-size: 2.25rem !important;
+    }
+
+    .course-info .is-size-4,
+    .stacking-container-foreground .is-size-3{
+        font-size: 1.5rem !important;
+    }
+    
+    .course-info .is-size-5 {
+        font-size: 1rem !important;
+    }
+}
+
+/* Tablet */
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+    .square {
+        width: 160px;
+    }
+}
+
+/* Desktop */
+@media screen and (min-width: 1024px) {
+    .square {
+        width: 180px;
+    }
+}
+
+

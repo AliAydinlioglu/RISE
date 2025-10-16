@@ -6,6 +6,7 @@ using Rise.Services.Navigation;
 using Rise.Services.Products;
 using Rise.Services.Projects;
 using Rise.Services.User;
+using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Services.StudentActivities;
 using Rise.Shared.Navigation;
@@ -22,9 +23,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        // queries
-        services.AddScoped<IGetCalendarQuery, GetCalendarQuery>();
-        
         // Services
         services.AddScoped<IUserRepository, DummyUserService>();
         services.AddScoped<IProductService, ProductService>();        
@@ -32,7 +30,12 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICalendarService, CalendarService>();        
         services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ICalendarService, CalendarService>();   
+        services.AddScoped<IDateTimeService, DateTimeService>();   
         services.AddTransient<DbSeeder>();
+        
+        // queries
+        services.AddScoped<IGetCalendarQuery, GetCalendarQuery>();    
         
         // Add other application services here.
         services.AddScoped<IStudentActivityService, StudentActivityService>();

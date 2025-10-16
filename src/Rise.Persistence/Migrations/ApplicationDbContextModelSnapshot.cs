@@ -276,6 +276,9 @@ namespace Rise.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("AcademicSemesterId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ClassGroup")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -307,6 +310,8 @@ namespace Rise.Persistence.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AcademicSemesterId");
 
                     b.ToTable("Course", (string)null);
                 });
@@ -781,6 +786,17 @@ namespace Rise.Persistence.Migrations
 
                     b.Navigation("DateRange")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>
+                {
+                    b.HasOne("Rise.Domain.Calendar.AcademicSemester", "AcademicSemester")
+                        .WithMany()
+                        .HasForeignKey("AcademicSemesterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AcademicSemester");
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Deadline", b =>

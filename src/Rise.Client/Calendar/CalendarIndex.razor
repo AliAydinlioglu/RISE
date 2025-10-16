@@ -1,0 +1,51 @@
+@page "/kalender"
+@using Rise.Client.Calendar.Components
+
+<PageTitle>Kalender</PageTitle>
+
+@if (_isLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="is-hidden-tablet">
+        <CalendarMobile />
+    </div>
+    <div class="is-hidden-mobile">
+        <CalendarDesktop />
+    </div>
+}
+
+@code {
+
+    private RenderFragment RenderCalendarView() => __builder =>
+    {
+        <WeekHeader SelectedDate="_selectedDate"
+                    SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
+                    Title="@_selectedDate.ToString("MMMM yyyy")"
+                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+
+        <CalendarItemsList Items="@GetItemsForSelectedDate()"
+                           EmptyMessage="Geen evenementen voor deze dag"/>
+    };
+
+    private RenderFragment RenderLessenroosterView() => __builder =>
+    {
+        <WeekHeader SelectedDate="_selectedDate"
+                    SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
+                    Title="@($"{_selectedDate:MMMM yyyy}")"
+                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+
+        <CalendarItemsList Items="GetCoursesForSelectedDate()"
+                           EmptyMessage="Geen lessen voor deze dag"/>
+    };
+
+    private RenderFragment RenderDeadlineView() => __builder =>
+    {
+        <CalendarItemsList Items="GetAllDeadlines()"
+                           EmptyMessage="Geen deadlines beschikbaar"/>
+    };
+}

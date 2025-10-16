@@ -1,25 +1,27 @@
 using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
+using Rise.Shared;
 using Rise.Shared.Calendar;
 
 namespace Rise.Persistence.Queries.Calendar;
 
-public class GetCalendarQuery(ApplicationDbContext dbContext): IGetCalendarQuery
+public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService dateTimeService): IGetCalendarQuery
 {
     public async Task<Result<CalendarResponse.Get>> ExecuteAsync(string userClassGroup)
     {
-        var now = DateTime.UtcNow;
+        var now = dateTimeService.Now;
         
-        var academicSemester = await dbContext.AcademicSemesters
-            .Where(it => it.DateRange.StartDate <= now && it.DateRange.EndDate >= now)
-            .FirstOrDefaultAsync();
+        var academicSemester = dbContext.AcademicSemesters
+            .Include(academicSemester => academicSemester.DateRange)
+            .AsEnumerable()
+            .FirstOrDefault(it => it.DateRange.StartDate <= now && it.DateRange.EndDate >= now);
         
         if (academicSemester is null)
             throw new InvalidOperationException("No active semester");
         
         var courses = await dbContext.Courses
-            .Where(it => it.ClassGroup == userClassGroup)
+            .Where(it => it.ClassGroup == userClassGroup && it.AcademicSemester == academicSemester)
             .Include(it => it.Lessons)
             .Include(it => it.Deadlines)
             .Include(it => it.Exams)

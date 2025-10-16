@@ -13,6 +13,6 @@ public class DummyUserService: IUserRepository
     
     public Task<string?> GetClassGroupAsync(string userId)
     {
-        return Task.FromResult("42")!;
+        return Task.FromResult("TIAO1")!;
     }
 }

@@ -1,11 +1,9 @@
-﻿using Rise.Shared.Products;
-using Xunit.Abstractions;
-using Shouldly;
+﻿using Ardalis.Result;
 using NSubstitute;
-using System.Threading.Tasks;
-using System.Linq;
-using Ardalis.Result;
 using Rise.Shared.Common;
+using Rise.Shared.Products;
+using Shouldly;
+using Xunit.Abstractions;
 
 namespace Rise.Client.Products;
 
