@@ -56,3 +56,7 @@ public abstract class Entity<TId> : EntityBase
 
     public override int GetHashCode() => (GetType().ToString() + Id).GetHashCode();
 }
+/// <summary>
+/// Entity Base Class, all entities should inherit from this. (read: Entity = Row in SQL terms)
+/// </summary>
+public abstract class Entity : Entity<int> { }
