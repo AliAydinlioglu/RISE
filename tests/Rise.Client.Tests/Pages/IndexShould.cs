@@ -20,6 +20,6 @@ public class IndexShould : TestContext
         var cut = RenderComponent<Index>();
 
         // Assert that content of the paragraph shows counter at zero
-        cut.Find("h1").MarkupMatches("<h1>Hello, world!</h1>");
+        cut.Find("h1").MarkupMatches("<h1 class=\"title is-1 has-text-black\">Rise</h1>");
     }
 }
