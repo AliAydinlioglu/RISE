@@ -5,7 +5,8 @@ public class NavigationItem : Entity<int>
     public string Label { get; private set; }
     public string Icon { get; private set; }
     public string Url { get; private set; }
-    
+    public string Description{ get; set; } = string.Empty;
+
     private readonly List<RoleNavigationItemContentLocation> _roleNavigationItems = [];
     public IReadOnlyList<RoleNavigationItemContentLocation> RoleNavigationItems => _roleNavigationItems.AsReadOnly();
     
