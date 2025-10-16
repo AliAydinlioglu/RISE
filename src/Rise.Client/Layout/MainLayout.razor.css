@@ -4,38 +4,4 @@
     min-height: 100vh;
 }
 
-.content {
-    flex: 1;
-   /* padding: 2rem;*/
-    margin-top: 60px;
-    transition: margin-top 0.3s ease;
-}
 
-/* Tablet responsive */
-@media (max-width: 992px) {
-    .content {
-        padding: 1.5rem;
-    }
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-    .content {
-        padding: 1rem;
-        margin-top: 55px;
-    }
-}
-
-/* Small mobile */
-@media (max-width: 480px) {
-    .content {
-        padding: 0.75rem;
-    }
-}
-
-/* Very small mobile */
-@media (max-width: 360px) {
-    .content {
-        padding: 0.5rem;
-    }
-}

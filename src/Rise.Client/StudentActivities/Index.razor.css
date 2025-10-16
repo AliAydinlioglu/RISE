@@ -7,3 +7,6 @@ section.student-activities{
 .columns.is-multiline {
     align-items: stretch;
 }
+.container{
+    margin-top: 50px;
+}

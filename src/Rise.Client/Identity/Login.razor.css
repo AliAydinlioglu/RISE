@@ -1,6 +1,6 @@
 .login {
     position: relative;
-    height: 100vh;
+    height: 90vh;
     width: 100%;
     overflow: hidden;
     display: grid;
@@ -36,37 +36,6 @@
 .login-box {
     display: grid;
     gap: 1rem;
-}
-
-input.input.login-input::placeholder {
-    font-size: 1.1rem !important;
-    letter-spacing: 0.067em !important;
-    font-weight: 600 !important;
-    font-style: normal !important;
-    font-family: 'Montserrat', sans-serif !important;
-    color: rgba(255, 255, 255, 0.7) !important;
-}
-
-input.input.login-input {
-    color: white !important;
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3) !important;
-    font-size: 1.1rem !important;
-    letter-spacing: 0.067em !important;
-    font-weight: 600 !important;
-    font-style: normal !important;
-    font-family: 'Montserrat', sans-serif !important;
-    padding: 1.5rem !important;
-    border-radius: 8px !important;
-    box-shadow: none !important;
-    height: auto !important;
-    max-width: 100% !important;
-}
-
-input.input.login-input:focus,
-input.input.login-input:active {
-    border-color: rgba(255, 255, 255, 0.6) !important;
-    box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.25) !important;
 }
 
 .icon.is-left i, .icon.is-right i {

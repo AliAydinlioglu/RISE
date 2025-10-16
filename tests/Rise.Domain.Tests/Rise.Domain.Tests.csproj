@@ -31,4 +31,12 @@
       <ProjectReference Include="..\..\src\Rise.Domain\Rise.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Products\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Products\ProductShould.cs" />
+    </ItemGroup>
+
 </Project>

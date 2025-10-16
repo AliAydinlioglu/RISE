@@ -43,15 +43,8 @@
       <Content Update="wwwroot\Images\favicon.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Update="wwwroot\logo_black_bg.jpg">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Update="wwwroot\logo_white_bg.jpg">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+      <Content Remove="Layout\NavBar.razor" />
+      <Content Remove="wwwroot\logo_black_bg.jpg" />
     </ItemGroup>
 
     <ItemGroup>

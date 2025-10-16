@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Rise.Client;
 using Rise.Client.Calendar;
 using Rise.Client.Identity;
-using Rise.Client.Products;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Client.StudentActivities;
-using Rise.Shared.Products;
 using Rise.Shared.StudentActivities;
+using DateTimeService = Rise.Client.DateTimeService;
 
 try
 {
@@ -42,7 +41,6 @@ try
         .AddHttpMessageHandler<CookieHandler>();
 
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
-    builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; });
     builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; });
     builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; });
     await builder.Build().RunAsync();
