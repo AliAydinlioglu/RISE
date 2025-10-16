@@ -3,6 +3,7 @@ using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rise.Persistence;
+using Rise.Persistence.Configurations.Identity;
 using Rise.Persistence.Triggers;
 using Rise.Server.Identity;
 using Rise.Server.Processors;
@@ -24,7 +25,7 @@ try
     builder.Services
         .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration) // Configuration in AppSettings.json
             .Destructure.UsingAttributes()) // Sensitive data logging
-        .AddIdentity<IdentityUser, IdentityRole>() 
+        .AddIdentity<IdentityUser<Guid>, ApplicationRole>() 
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .Services.AddDbContext<ApplicationDbContext>(o =>
         {

@@ -4,6 +4,7 @@ using Rise.Domain.Common;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.StudentActivities;
+using Rise.Persistence.Configurations.Identity;
 using Rise.Persistence.SeedData;
 
 namespace Rise.Persistence;
@@ -13,7 +14,8 @@ namespace Rise.Persistence;
 /// <param name="dbContext"></param>
 /// <param name="roleManager"></param>
 /// <param name="userManager"></param>
-public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRole> roleManager, 
+    UserManager<IdentityUser<Guid>> userManager)
 {
     const string PasswordDefault = "A1b2C3!";
     public async Task SeedAsync()
@@ -31,9 +33,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         if (dbContext.Roles.Any())
             return;
 
-        await roleManager.CreateAsync(new IdentityRole("Public"));
-        await roleManager.CreateAsync(new IdentityRole("RegularStudent"));
-        await roleManager.CreateAsync(new IdentityRole("DistanceStudent"));
+        await RoleSeeder.Seed(roleManager);
     }
     
     private async Task  UsersAsync()
@@ -43,7 +43,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         
         await dbContext.Roles.ToListAsync();
 
-        var admin = new IdentityUser
+        var admin = new IdentityUser<Guid>
         {
             UserName = "admin@example.com",
             Email = "admin@example.com",
@@ -51,7 +51,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         };
         await userManager.CreateAsync(admin, PasswordDefault);
         
-        var secretary = new IdentityUser
+        var secretary = new IdentityUser<Guid>
         {
             UserName = "secretary@example.com",
             Email = "secretary@example.com",
@@ -59,7 +59,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         };
         await userManager.CreateAsync(secretary, PasswordDefault);
         
-        var technicianAccount1 = new IdentityUser
+        var technicianAccount1 = new IdentityUser<Guid>
         {
             UserName = "technician1@example.com",
             Email = "technician1@example.com",
@@ -67,7 +67,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         };
         await userManager.CreateAsync(technicianAccount1, PasswordDefault);
         
-        var technicianAccount2 = new IdentityUser
+        var technicianAccount2 = new IdentityUser<Guid>
         {
             UserName = "technician2@example.com",
             Email = "technician2@example.com",
@@ -75,7 +75,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         };
         await userManager.CreateAsync(technicianAccount2, PasswordDefault);
                 
-        var user = new IdentityUser
+        var user = new IdentityUser<Guid>
         {
             UserName = "user@example.com",
             Email = "user@example.com",
@@ -89,8 +89,8 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> 
         await userManager.AddToRoleAsync(technicianAccount2, "Technician");
 
         dbContext.Technicians.AddRange(
-            new Technician("Tech 1", "Awesome", technicianAccount1.Id),
-            new Technician("Tech 2", "Less Awesome", technicianAccount2.Id));
+            new Technician("Tech 1", "Awesome", technicianAccount1.Id.ToString()),
+            new Technician("Tech 2", "Less Awesome", technicianAccount2.Id.ToString()));
         
         await dbContext.SaveChangesAsync();
     }
