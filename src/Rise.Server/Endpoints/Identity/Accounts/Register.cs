@@ -10,7 +10,7 @@ namespace Rise.Server.Endpoints.Identity.Accounts;
 /// </summary>
 /// <param name="userManager"></param>
 /// <param name="userStore"></param>
-public class Register(UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore) : Endpoint<AccountRequest.Register, Result>
+public class Register(UserManager<IdentityUser<Guid>> userManager, IUserStore<IdentityUser<Guid>> userStore) : Endpoint<AccountRequest.Register, Result>
 {
     public override void Configure()
     {
@@ -25,8 +25,8 @@ public class Register(UserManager<IdentityUser> userManager, IUserStore<Identity
         {
             return Result.CriticalError("Requires a user store with email support.");
         }
-        var emailStore = (IUserEmailStore<IdentityUser>)userStore;
-        var user = new IdentityUser();
+        var emailStore = (IUserEmailStore<IdentityUser<Guid>>)userStore;
+        var user = new IdentityUser<Guid>();
         await userStore.SetUserNameAsync(user, req.Email, CancellationToken.None);
         await emailStore.SetEmailAsync(user, req.Email, CancellationToken.None);
         var result = await userManager.CreateAsync(user, req.Password!);

@@ -1,6 +1,7 @@
 using Rise.Shared.Identity;
 using Rise.Shared.Identity.Roles;
 using Microsoft.AspNetCore.Identity;
+using Rise.Persistence.Configurations.Identity;
 
 namespace Rise.Server.Endpoints.Identity.Roles;
 
@@ -9,7 +10,7 @@ namespace Rise.Server.Endpoints.Identity.Roles;
 /// See https://fast-endpoints.com/
 /// </summary>
 /// <param name="roleManager"></param>
-public class Create(RoleManager<IdentityRole> roleManager) : Endpoint<RoleRequest.Create, Result<string>>
+public class Create(RoleManager<ApplicationRole> roleManager) : Endpoint<RoleRequest.Create, Result<string>>
 {
     public override void Configure()
     {
@@ -22,9 +23,8 @@ public class Create(RoleManager<IdentityRole> roleManager) : Endpoint<RoleReques
         if(await roleManager.RoleExistsAsync(req.Name))
             return Result.Conflict($"Role with name '{req.Name}' already exists.");
         
-        IdentityRole role = new()
+        ApplicationRole role = new(AppRoles.RegularStudent, req.Name)
         {
-            Name = req.Name,
             NormalizedName = req.Name.ToUpper()
         };
 
@@ -33,6 +33,6 @@ public class Create(RoleManager<IdentityRole> roleManager) : Endpoint<RoleReques
         if(!result.Succeeded)
             return Result.Error(result.Errors.First().Description);
         
-        return Result.Created(role.Id);
+        return Result.Created(role.Id.ToString());
     }
 }

@@ -8,7 +8,7 @@ namespace Rise.Server.Endpoints.Identity.Accounts;
 /// See https://fast-endpoints.com/
 /// </summary>
 /// <param name="signInManager"></param>
-public class Login(SignInManager<IdentityUser> signInManager) : Endpoint<AccountRequest.Login, Result>
+public class Login(SignInManager<IdentityUser<Guid>> signInManager) : Endpoint<AccountRequest.Login, Result>
 {
     private const bool UseCookies = true;
     private const bool UseSessionCookies = true;

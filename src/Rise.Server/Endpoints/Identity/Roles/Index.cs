@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Rise.Shared.Identity;
 using Microsoft.AspNetCore.Identity;
+using Rise.Persistence.Configurations.Identity;
 
 namespace Rise.Server.Endpoints.Identity.Roles;
 
@@ -9,7 +10,7 @@ namespace Rise.Server.Endpoints.Identity.Roles;
 /// See https://fast-endpoints.com/ 
 /// </summary>
 /// <param name="roleManager"></param>
-public class Index(RoleManager<IdentityRole> roleManager) : EndpointWithoutRequest<Result<List<KeyValuePair<string, string>>>>
+public class Index(RoleManager<ApplicationRole> roleManager) : EndpointWithoutRequest<Result<List<KeyValuePair<Guid, string>>>>
 {
     public override void Configure()
     {
@@ -17,9 +18,9 @@ public class Index(RoleManager<IdentityRole> roleManager) : EndpointWithoutReque
         Roles(AppRoles.Administrator);
     }
 
-    public override async Task<Result<List<KeyValuePair<string, string>>>> ExecuteAsync(CancellationToken ctx)
+    public override async Task<Result<List<KeyValuePair<Guid, string>>>> ExecuteAsync(CancellationToken ctx)
     {
-        var roles = await roleManager.Roles.Select(r => new KeyValuePair<string, string>(r.Id, r.Name!)).ToListAsync(ctx);
+        var roles = await roleManager.Roles.Select(r => new KeyValuePair<Guid, string>(r.Id, r.Name!)).ToListAsync(ctx);
         return Result.Success(roles);
     }
 }

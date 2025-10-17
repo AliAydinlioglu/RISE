@@ -9,7 +9,7 @@ namespace Rise.Server.Endpoints.Identity.Accounts;
 /// See https://fast-endpoints.com/
 /// </summary>
 /// <param name="userManager"></param>
-public class Info(UserManager<IdentityUser> userManager) : EndpointWithoutRequest<Result<AccountResponse.Info>>
+public class Info(UserManager<IdentityUser<Guid>> userManager) : EndpointWithoutRequest<Result<AccountResponse.Info>>
 {
     public override void Configure()
     {
@@ -26,7 +26,7 @@ public class Info(UserManager<IdentityUser> userManager) : EndpointWithoutReques
         return Result.Success(await CreateInfoResponseAsync(user,HttpContext.User));       
     }
     
-    private async Task<AccountResponse.Info> CreateInfoResponseAsync(IdentityUser user,ClaimsPrincipal claimsPrincipal)
+    private async Task<AccountResponse.Info> CreateInfoResponseAsync(IdentityUser<Guid> user,ClaimsPrincipal claimsPrincipal)
     {
         return new()
         {
