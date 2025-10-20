@@ -1,13 +1,21 @@
 ﻿@inherits LayoutComponentBase
-<div>
+
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
+@* Needed for dialogs *@
+<MudDialogProvider />
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+<MudLayout>
     <header>
         <NavBar/>
     </header>
     <main>
-        <section class="section">
+        <MudMainContent class="section">
             @Body
-        </section>
+        </MudMainContent>
     </main>
-    <Rise.Client.Components.Navigation.NavBarFooter NavItems="_navItems" />
-</div>
+</MudLayout>
 
