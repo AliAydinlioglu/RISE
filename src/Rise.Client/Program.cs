@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 using Rise.Client;
 using Rise.Client.Calendar;
 using Rise.Client.Identity;
@@ -44,7 +45,11 @@ try
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; });
     builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; });
-    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; });
+    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; }); 
+
+// add MudBlazor services
+    builder.Services.AddMudServices();
+    
     await builder.Build().RunAsync();
 }
 catch (Exception ex)
