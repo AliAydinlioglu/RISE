@@ -1,0 +1,16 @@
+﻿using Microsoft.AspNetCore.Components;
+
+namespace Rise.Client.Components.Navigation;
+
+public partial class NavItem
+{
+    [Parameter]
+    public string Icon { get; set; } = @"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAqFBMVEUAAAD////9/f1iYmLv7+83NzcFBQWoqKgXFxfQ0ND6+vpgYGAYGBhTU1P39/fT09P+/v5hYWEWFhbJycn5+flfX1+pqanPz89eXl42NjYZGRkCAgLu7u719fXV1dVVVVU4ODgQEBBvb29lZWVubm4EBARjY2OEhISMjIzi4uLh4eGenp6dnZ38/Pyjo6MTExNUVFQHBwdEREQUFBSsrKzR0dGDg4P7+/tUOnLxAAAArklEQVRIx+3V1w6CMACF4VKc1NFCUQTFvfd+/zczsSNt1DS9M9r/8sB3xSjwLAP/DDAUYe36y8wBXsf+MzKO1PuXI8J2NO9pACLAK5VV0A7F3unqwH8PqhWxFwsOfDdoqeBqBtNF3pTll70RgGFak6XnzAw+5IAKskG/LjucjuYnvQsaMhqFlq+G+4B+DhDL3z3eJIg10w6U1SRmc3LTDxRvSwMeVAEWK727g92iBxhgFFu1DXneAAAAAElFTkSuQmCC";
+    [Parameter]
+    public string Label { get; set; } = "";
+    [Parameter]
+    public string Link { get; set; } = "#";
+    [Parameter]
+    public string navClass { get; set; } = "nav-item"; //nav-card
+}
+
