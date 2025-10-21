@@ -6,6 +6,7 @@ using Rise.Domain.Projects;
 using Rise.Domain.StudentActivities;
 using Rise.Persistence.Configurations.Identity;
 using Rise.Persistence.SeedData;
+using Rise.Shared.Identity;
 
 namespace Rise.Persistence;
 /// <summary>
@@ -44,59 +45,27 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         
         await dbContext.Roles.ToListAsync();
 
-        var admin = new IdentityUser<Guid>
+        var regularStudent = new IdentityUser<Guid>
         {
-            UserName = "admin@example.com",
-            Email = "admin@example.com",
+            UserName = "regular@example.com",
+            Email = "regular@example.com",
             EmailConfirmed = true,
         };
-        await userManager.CreateAsync(admin, PasswordDefault);
+        await userManager.CreateAsync(regularStudent, PasswordDefault);
         
-        var secretary = new IdentityUser<Guid>
+        var distanceStudent = new IdentityUser<Guid>
         {
-            UserName = "secretary@example.com",
-            Email = "secretary@example.com",
+            UserName = "distance@example.com",
+            Email = "distance@example.com",
             EmailConfirmed = true,
         };
-        await userManager.CreateAsync(secretary, PasswordDefault);
+        await userManager.CreateAsync(distanceStudent, PasswordDefault);
         
-        var technicianAccount1 = new IdentityUser<Guid>
-        {
-            UserName = "technician1@example.com",
-            Email = "technician1@example.com",
-            EmailConfirmed = true,
-        };
-        await userManager.CreateAsync(technicianAccount1, PasswordDefault);
-        
-        var technicianAccount2 = new IdentityUser<Guid>
-        {
-            UserName = "technician2@example.com",
-            Email = "technician2@example.com",
-            EmailConfirmed = true,
-        };
-        await userManager.CreateAsync(technicianAccount2, PasswordDefault);
-                
-        var user = new IdentityUser<Guid>
-        {
-            UserName = "user@example.com",
-            Email = "user@example.com",
-            EmailConfirmed = true,
-        };
-        await userManager.CreateAsync(user, PasswordDefault);
-        
-        await userManager.AddToRoleAsync(admin, "Administrator");
-        await userManager.AddToRoleAsync(secretary, "Secretary");
-        await userManager.AddToRoleAsync(technicianAccount1, "Technician");
-        await userManager.AddToRoleAsync(technicianAccount2, "Technician");
-
-        dbContext.Technicians.AddRange(
-            new Technician("Tech 1", "Awesome", technicianAccount1.Id.ToString()),
-            new Technician("Tech 2", "Less Awesome", technicianAccount2.Id.ToString()));
+        await userManager.AddToRoleAsync(regularStudent, nameof(AppRoles.RegularStudent));
+        await userManager.AddToRoleAsync(distanceStudent,  nameof(AppRoles.DistanceStudent));
         
         await dbContext.SaveChangesAsync();
     }
-    
-
     
     private async Task  ProductsAsync()
     {

@@ -7,7 +7,7 @@ namespace Rise.Server.Endpoints.Identity.Accounts;
 /// See https://fast-endpoints.com/
 /// </summary>
 /// <param name="signInManager"></param>
-public class Logout(SignInManager<IdentityUser> signInManager) : EndpointWithoutRequest
+public class Logout(SignInManager<IdentityUser<Guid>> signInManager) : EndpointWithoutRequest
 {
     public override void Configure()
     {
