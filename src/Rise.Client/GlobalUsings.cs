@@ -1,0 +1,1 @@
+global using Colors = global::Rise.Client.Theme.Colors;
