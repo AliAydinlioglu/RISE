@@ -1,12 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
 @* Required *@
-<MudThemeProvider />
-<MudPopoverProvider />
+<MudThemeProvider Theme="@MyCustomTheme"/>
+<MudPopoverProvider/>
 @* Needed for dialogs *@
-<MudDialogProvider />
+<MudDialogProvider/>
 @* Needed for snackbars *@
-<MudSnackbarProvider />
+<MudSnackbarProvider/>
 
 <MudLayout>
     <header>
@@ -19,3 +19,120 @@
     </main>
 </MudLayout>
 
+@code{
+
+    MudTheme MyCustomTheme = new MudTheme()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Black = Theme.Colors.Shades.Black,
+            White = Theme.Colors.Shades.White,
+            Primary = Theme.Colors.Shades.Black,
+            PrimaryContrastText = Theme.Colors.Shades.White,
+            Secondary = Theme.Colors.Shades.Black50,
+            SecondaryContrastText = Theme.Colors.Shades.White,
+            Tertiary = Theme.Colors.Cyan.Default,
+            TertiaryContrastText = Theme.Colors.Shades.White,
+            Info = Theme.Colors.Blue.Default,
+            InfoContrastText = Colors.Shades.White,
+            Success = Theme.Colors.Green.Default,
+            SuccessContrastText = Colors.Shades.White,
+            Warning = Theme.Colors.Orange.Default,
+            WarningContrastText = Colors.Shades.White,
+            Error = Theme.Colors.Red.Default,
+            ErrorContrastText = Colors.Shades.White,
+            Dark = Theme.Colors.Shades.Black,
+            DarkContrastText = Colors.Shades.White,
+
+            TextPrimary = Theme.Colors.Shades.Black,
+            TextSecondary = Theme.Colors.Shades.White,
+            TextDisabled = Theme.Colors.Gray.Default,
+
+            ActionDefault = Theme.Colors.Shades.Black,
+            ActionDisabled = Theme.Colors.Gray.Gray50,
+            ActionDisabledBackground = Theme.Colors.Gray.Gray30,
+
+            Background = Theme.Colors.Shades.White,
+            BackgroundGray = Theme.Colors.Gray.Default,
+            Surface = Theme.Colors.Shades.White,
+
+            DrawerBackground = Theme.Colors.Shades.White,
+            DrawerText = Theme.Colors.Shades.Black,
+            DrawerIcon = Theme.Colors.Shades.Black,
+
+            AppbarBackground = Theme.Colors.Shades.Black,
+            AppbarText = Theme.Colors.Shades.White,
+
+            LinesDefault = Theme.Colors.Gray.Gray15,
+            LinesInputs = Theme.Colors.Shades.Black,
+            TableLines = Theme.Colors.Gray.Gray50,
+            TableStriped = Theme.Colors.Gray.Gray30,
+            TableHover = Theme.Colors.Cyan.Default,
+
+            Divider = Theme.Colors.Gray.Gray50,
+            DividerLight = Theme.Colors.Gray.Gray15,
+
+            Skeleton = Theme.Colors.Gray.Gray30,
+
+            PrimaryDarken = Theme.Colors.Shades.Black50,
+            PrimaryLighten = Theme.Colors.Gray.Gray15,
+            SecondaryDarken = Theme.Colors.Shades.Black,
+            SecondaryLighten = Theme.Colors.Gray.Gray15,
+            TertiaryDarken = Theme.Colors.Cyan.Cyan50,
+            TertiaryLighten = Theme.Colors.Cyan.Cyan30,
+            InfoDarken = Theme.Colors.Blue.Blue50,
+            InfoLighten = Theme.Colors.Blue.Blue30,
+            SuccessDarken = Theme.Colors.Green.Green50,
+            SuccessLighten = Theme.Colors.Green.Green30,
+            WarningDarken = Theme.Colors.Orange.Orange50,
+            WarningLighten = Theme.Colors.Orange.Orange30,
+            ErrorDarken = Theme.Colors.Red.Red50,
+            ErrorLighten = Theme.Colors.Red.Red30,
+            DarkDarken = Theme.Colors.Shades.Black50,
+            DarkLighten = Theme.Colors.Shades.Black30,
+
+            BorderOpacity = 1.0,
+            HoverOpacity = 0.06,
+            RippleOpacity = 0.1,
+            RippleOpacitySecondary = 0.2,
+
+            GrayDefault = Theme.Colors.Gray.Default,
+            GrayLight = Theme.Colors.Gray.Gray50,
+            GrayLighter = Theme.Colors.Gray.Gray30,
+            GrayDark = Theme.Colors.Shades.Black30,
+            GrayDarker = Theme.Colors.Shades.Black50,
+
+            OverlayDark = "rgba(0,0,0,0.5)",
+            OverlayLight = "rgba(255,255,255,0.5)"
+        },
+        PaletteDark = new PaletteDark()
+        {
+            Primary = Colors.Blue.Lighten1
+        },
+
+        LayoutProperties = new LayoutProperties()
+        {
+            DrawerWidthLeft = "260px",
+            DrawerWidthRight = "300px"
+        },
+        
+        Typography = new Typography()
+        {
+            Default = new DefaultTypography()
+            {
+                FontFamily = new[] { "Montserrat", "Arial", "sans-serif" }
+            },
+            
+            H1 = new H1Typography()
+            {
+                FontWeight = "800"
+            },
+            
+            Button = new ButtonTypography()
+            {
+                FontWeight = "800"
+            }
+        }
+    };
+
+}
