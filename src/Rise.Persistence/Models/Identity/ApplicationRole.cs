@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Rise.Domain.Identity;
 
-namespace Rise.Persistence.Configurations.Identity;
+namespace Rise.Persistence.Models.Identity;
 
 public class ApplicationRole : IdentityRole<Guid>
 {

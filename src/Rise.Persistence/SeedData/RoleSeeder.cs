@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 using Rise.Shared.Identity;
 
 namespace Rise.Persistence.SeedData;

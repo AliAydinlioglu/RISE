@@ -1,9 +1,10 @@
 using Destructurama;
 using FastEndpoints.Swagger;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 using Rise.Persistence;
-using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 using Rise.Persistence.Triggers;
 using Rise.Server.Identity;
 using Rise.Server.Processors;
@@ -23,10 +24,13 @@ try
     Log.Information("Starting web application");
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+    
     builder.Services
         .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration) // Configuration in AppSettings.json
             .Destructure.UsingAttributes()) // Sensitive data logging
-        .AddIdentity<IdentityUser<Guid>, ApplicationRole>() 
+        .AddIdentity<ApplicationUser, ApplicationRole>() 
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .Services.AddDbContext<ApplicationDbContext>(o =>
         {
@@ -56,6 +60,13 @@ try
             {
                 s.Title = "RISE API";
             };
+        })
+        .AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalhost", policy => policy
+                .WithOrigins("https://localhost:5001")
+                .AllowAnyMethod()
+                .AllowAnyHeader());
         });
 
     var app = builder.Build();
@@ -91,7 +102,8 @@ try
                 
             };
         })
-        .UseSwaggerGen();
+        .UseSwaggerGen()
+        .UseCors("AllowLocalhost");
     app.MapFallbackToFile("index.html"); // Serves the Blazor app from the API, when no routes match.
     app.Run();
 }

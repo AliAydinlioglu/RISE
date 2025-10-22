@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using FastEndpoints.Security;
+using Microsoft.AspNetCore.Authorization;
 using Rise.Services.Identity;
 using Rise.Shared.Calendar;
 
@@ -13,6 +14,7 @@ public class GetCalendarEndpoint(ICalendarService service, ISessionContextProvid
         AllowAnonymous(); // TODO: aan te passen wanneer auth is geimplementeerd
     }
 
+    [Authorize]
     public override async Task<Result<CalendarResponse.Get>> ExecuteAsync(CancellationToken ct)
     {
         var userId = sessionProvider.User?.ClaimValue(ClaimTypes.NameIdentifier);

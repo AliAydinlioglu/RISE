@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Rise.Persistence;
 using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 using Rise.Services.Identity;
 using Rise.Shared.Identity;
 

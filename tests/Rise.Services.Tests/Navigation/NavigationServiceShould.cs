@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Navigation;
 using Rise.Persistence;
 using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 using Rise.Services.Navigation;
 using Rise.Shared.Identity;
 using Rise.Shared.Navigation;
@@ -254,8 +255,8 @@ public class NavigationServiceShould
             new RoleNavigationItemContentLocation(roles[2], navigationItems[2], contentLocations[2], 3),
         };
 
-        if (!dbContext.Roles.Any())
-            await dbContext.Roles.AddRangeAsync(identityRoles);
+        if (!dbContext.DomainRoles.Any())
+            await dbContext.DomainRoles.AddRangeAsync(roles);
         
         if(!dbContext.ContentLocations.Any())
             await dbContext.ContentLocations.AddRangeAsync(contentLocations);

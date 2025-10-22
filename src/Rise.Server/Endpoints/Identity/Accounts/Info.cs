@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Rise.Persistence.Models.Identity;
 using Rise.Shared.Identity.Accounts;
 
 namespace Rise.Server.Endpoints.Identity.Accounts;
@@ -9,7 +10,7 @@ namespace Rise.Server.Endpoints.Identity.Accounts;
 /// See https://fast-endpoints.com/
 /// </summary>
 /// <param name="userManager"></param>
-public class Info(UserManager<IdentityUser<Guid>> userManager) : EndpointWithoutRequest<Result<AccountResponse.Info>>
+public class Info(UserManager<ApplicationUser> userManager) : EndpointWithoutRequest<Result<AccountResponse.Info>>
 {
     public override void Configure()
     {
@@ -26,7 +27,7 @@ public class Info(UserManager<IdentityUser<Guid>> userManager) : EndpointWithout
         return Result.Success(await CreateInfoResponseAsync(user,HttpContext.User));       
     }
     
-    private async Task<AccountResponse.Info> CreateInfoResponseAsync(IdentityUser<Guid> user,ClaimsPrincipal claimsPrincipal)
+    private async Task<AccountResponse.Info> CreateInfoResponseAsync(ApplicationUser user,ClaimsPrincipal claimsPrincipal)
     {
         return new()
         {

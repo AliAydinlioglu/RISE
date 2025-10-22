@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Rise.Domain.Identity;
 using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 using Rise.Shared.Identity;
 
 namespace Rise.Services.Identity;

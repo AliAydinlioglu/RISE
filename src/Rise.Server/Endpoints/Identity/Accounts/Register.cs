@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Rise.Persistence;
+using Rise.Persistence.Models.Identity;
 using Rise.Shared.Identity.Accounts;
 
 namespace Rise.Server.Endpoints.Identity.Accounts;
@@ -10,7 +11,7 @@ namespace Rise.Server.Endpoints.Identity.Accounts;
 /// </summary>
 /// <param name="userManager"></param>
 /// <param name="userStore"></param>
-public class Register(UserManager<IdentityUser<Guid>> userManager, IUserStore<IdentityUser<Guid>> userStore) : Endpoint<AccountRequest.Register, Result>
+public class Register(UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore) : Endpoint<AccountRequest.Register, Result>
 {
     public override void Configure()
     {
@@ -25,8 +26,8 @@ public class Register(UserManager<IdentityUser<Guid>> userManager, IUserStore<Id
         {
             return Result.CriticalError("Requires a user store with email support.");
         }
-        var emailStore = (IUserEmailStore<IdentityUser<Guid>>)userStore;
-        var user = new IdentityUser<Guid>();
+        var emailStore = (IUserEmailStore<ApplicationUser>)userStore;
+        var user = new ApplicationUser();
         await userStore.SetUserNameAsync(user, req.Email, CancellationToken.None);
         await emailStore.SetEmailAsync(user, req.Email, CancellationToken.None);
         var result = await userManager.CreateAsync(user, req.Password!);

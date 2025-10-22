@@ -23,3 +23,19 @@ public static class RangeGuard
         return input;
     }
 }
+
+public static class EmailGuard
+{
+    public static string InvalidEmailFormat(
+        this IGuardClause guardClause, 
+        string email, 
+        [CallerArgumentExpression("email")] string parameterName = "")
+    {
+        guardClause.NullOrWhiteSpace(email);
+
+        return guardClause.InvalidFormat(
+            email, 
+            parameterName, 
+            """^(?!\.)("([^"\r\\]|\\["\r\\])*"|([-a-zA-Z0-9!#$%&'*+/=?^_`{|}~]+(?:\.[-a-zA-Z0-9!#$%&'*+/=?^_`{|}~]+)*))@([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$""");
+    }
+}

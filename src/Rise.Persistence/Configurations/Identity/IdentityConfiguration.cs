@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Rise.Domain.Identity;
+using Rise.Persistence.Models.Identity;
 
 namespace Rise.Persistence.Configurations.Identity;
 
@@ -9,7 +9,7 @@ namespace Rise.Persistence.Configurations.Identity;
 /// Configuration for the Identity tables.
 /// </summary>
 internal class IdentityConfiguration :
-    IEntityTypeConfiguration<IdentityUser<Guid>>,
+    IEntityTypeConfiguration<ApplicationUser>,
     IEntityTypeConfiguration<ApplicationRole>,
     IEntityTypeConfiguration<IdentityUserRole<Guid>>,
     IEntityTypeConfiguration<IdentityUserClaim<Guid>>,
@@ -24,9 +24,22 @@ internal class IdentityConfiguration :
     //     builder.ToTable("Users", "auth");
     // However, be aware that SQLite does NOT support schemas, so this only works with SQL Server, MarioDB, PostgreSQL,...
     // The default below will work on any provider.
-    
-    public void Configure(EntityTypeBuilder<IdentityUser<Guid>> builder)
-        => builder.ToTable("Users");
+
+    public void Configure(EntityTypeBuilder<ApplicationUser> builder)
+    {
+        builder.ToTable("Users");
+        
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        
+        builder.Property(x => x.Email).IsRequired().HasMaxLength(200);
+        builder.Property(x => x.FirstName).HasMaxLength(200);
+        builder.Property(x => x.LastName).HasMaxLength(200);
+        builder.Property(x => x.ClassGroup).HasMaxLength(50);
+        builder.Property(x => x.SsoId).IsRequired();
+        builder.Property(x => x.SsoProvider).IsRequired().HasMaxLength(255);
+        builder.Property(x => x.SsoRefreshToken).IsRequired();
+    }
 
     public void Configure(EntityTypeBuilder<ApplicationRole> builder)
         => builder.ToTable("Roles");

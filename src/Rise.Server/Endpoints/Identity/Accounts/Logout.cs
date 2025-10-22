@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Rise.Persistence.Models.Identity;
 
 namespace Rise.Server.Endpoints.Identity.Accounts;
 
@@ -7,7 +8,7 @@ namespace Rise.Server.Endpoints.Identity.Accounts;
 /// See https://fast-endpoints.com/
 /// </summary>
 /// <param name="signInManager"></param>
-public class Logout(SignInManager<IdentityUser<Guid>> signInManager) : EndpointWithoutRequest
+public class Logout(SignInManager<ApplicationUser> signInManager) : EndpointWithoutRequest
 {
     public override void Configure()
     {

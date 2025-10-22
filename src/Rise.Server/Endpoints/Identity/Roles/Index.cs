@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Shared.Identity;
 using Microsoft.AspNetCore.Identity;
 using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 
 namespace Rise.Server.Endpoints.Identity.Roles;
 

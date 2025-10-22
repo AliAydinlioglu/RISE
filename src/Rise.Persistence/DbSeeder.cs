@@ -4,7 +4,7 @@ using Rise.Domain.Common;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.StudentActivities;
-using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 using Rise.Persistence.SeedData;
 using Rise.Shared.Identity;
 
@@ -16,9 +16,8 @@ namespace Rise.Persistence;
 /// <param name="roleManager"></param>
 /// <param name="userManager"></param>
 public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRole> roleManager, 
-    UserManager<IdentityUser<Guid>> userManager)
+    UserManager<ApplicationUser> userManager)
 {
-    const string PasswordDefault = "A1b2C3!";
     public async Task SeedAsync()
     {
         await RolesAsync();
@@ -32,7 +31,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
 
     private async Task RolesAsync()
     {
-        if (dbContext.Roles.Any())
+        if (dbContext.DomainRoles.Any())
             return;
 
         await RoleSeeder.Seed(roleManager);
@@ -43,23 +42,29 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         if (dbContext.Users.Any())
             return;
         
-        await dbContext.Roles.ToListAsync();
+        await dbContext.DomainRoles.ToListAsync();
 
-        var regularStudent = new IdentityUser<Guid>
-        {
-            UserName = "regular@example.com",
-            Email = "regular@example.com",
-            EmailConfirmed = true,
-        };
-        await userManager.CreateAsync(regularStudent, PasswordDefault);
+        var regularStudent = new ApplicationUser(
+            "regular@example.com", 
+            "Regular", 
+            "Student", 
+            "TIN/TIAO-2", 
+            null, 
+            Guid.NewGuid(), 
+            "Microsoft Entra", 
+            Guid.NewGuid());
+        await userManager.CreateAsync(regularStudent);
         
-        var distanceStudent = new IdentityUser<Guid>
-        {
-            UserName = "distance@example.com",
-            Email = "distance@example.com",
-            EmailConfirmed = true,
-        };
-        await userManager.CreateAsync(distanceStudent, PasswordDefault);
+        var distanceStudent = new ApplicationUser(
+            "distance@example.com", 
+            "Distance", 
+            "Student", 
+            "TIN/TIAO-3", 
+            null, 
+            Guid.NewGuid(), 
+            "Microsoft Entra", 
+            Guid.NewGuid());
+        await userManager.CreateAsync(distanceStudent);
         
         await userManager.AddToRoleAsync(regularStudent, nameof(AppRoles.RegularStudent));
         await userManager.AddToRoleAsync(distanceStudent,  nameof(AppRoles.DistanceStudent));
