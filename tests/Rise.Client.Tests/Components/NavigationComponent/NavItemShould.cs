@@ -27,8 +27,8 @@ namespace Rise.Client.Components.NavigationComponent
             anchor.InnerHtml.ShouldContain(label);
             anchor.InnerHtml.ShouldContain(icon);
 
-            var img = cut.Find("img");
-            img.GetAttribute("src").ShouldBe(icon);
+            var img = cut.Find("i");
+            img.GetAttribute("class").ShouldBe(icon);
 
             var labelElement = cut.Find("label");
             labelElement.TextContent.ShouldBe(label);

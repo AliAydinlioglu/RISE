@@ -5,5 +5,5 @@ namespace Rise.Client.Components.Navigation;
 
 public partial class NavBarFooter
 {
-    [Parameter] public List<NavigationDto.Get> NavItems { get; set; } = new();
+    [Parameter] public HashSet<NavigationDto.Get> NavItems { get; set; } = new();
 }
