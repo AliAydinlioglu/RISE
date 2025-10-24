@@ -1,0 +1,11 @@
+<div>
+    <MudAlert Severity="@MapToMudSeverity(Severity)" Variant="Variant.Filled" Icon="@IconType">
+        <MudText Typo="Typo.h4" Class="semi-bold">@Title</MudText>
+        @if (!string.IsNullOrEmpty(Subtitle))
+        {
+            <MudText Typo="Typo.subtitle1">@Subtitle</MudText>
+        }
+        
+       <MudText Typo="Typo.body2" > @ChildContent </MudText>
+    </MudAlert>
+</div>
