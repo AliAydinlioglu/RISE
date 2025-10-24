@@ -17,7 +17,35 @@ namespace Rise.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("Roles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +59,9 @@ namespace Rise.Persistence.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("RoleId")
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -41,10 +71,10 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("RoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
+                        .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AccessFailedCount")
@@ -110,7 +140,7 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -124,7 +154,9 @@ namespace Rise.Persistence.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -134,7 +166,7 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("UserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(4000)
@@ -148,7 +180,9 @@ namespace Rise.Persistence.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
                     b.HasKey("LoginProvider", "ProviderKey");
@@ -158,12 +192,14 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("UserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("UserId")
+                        .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("RoleId")
+                    b.Property<string>("RoleId")
+                        .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "RoleId");
@@ -173,9 +209,10 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("UserId")
+                        .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
@@ -239,9 +276,6 @@ namespace Rise.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AcademicSemesterId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ClassGroup")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -273,8 +307,6 @@ namespace Rise.Persistence.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AcademicSemesterId");
 
                     b.ToTable("Course", (string)null);
                 });
@@ -414,156 +446,6 @@ namespace Rise.Persistence.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Lesson", (string)null);
-                });
-
-            modelBuilder.Entity("Rise.Domain.Identity.Role", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role", (string)null);
-                });
-
-            modelBuilder.Entity("Rise.Domain.Navigation.ContentLocation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContentLocation", (string)null);
-                });
-
-            modelBuilder.Entity("Rise.Domain.Navigation.NavigationItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NavigationItem", (string)null);
-                });
-
-            modelBuilder.Entity("Rise.Domain.Navigation.RoleNavigationItemContentLocation", b =>
-                {
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("NavigationItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ContentLocationId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SequenceNr")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("RoleId", "NavigationItemId", "ContentLocationId");
-
-                    b.HasIndex("ContentLocationId");
-
-                    b.HasIndex("NavigationItemId");
-
-                    b.ToTable("RoleNavigationItems", t =>
-                        {
-                            t.Property("RoleId")
-                                .HasColumnName("RoleNavigationItemContentLocation_RoleId");
-
-                            t.Property("NavigationItemId")
-                                .HasColumnName("RoleNavigationItemContentLocation_NavigationItemId");
-
-                            t.Property("ContentLocationId")
-                                .HasColumnName("RoleNavigationItemContentLocation_ContentLocationId");
-                        });
                 });
 
             modelBuilder.Entity("Rise.Domain.Products.Product", b =>
@@ -823,79 +705,51 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("StudentClub", (string)null);
                 });
 
-            modelBuilder.Entity("Rise.Persistence.Configurations.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasMaxLength(4000)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("Roles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Rise.Persistence.Configurations.Identity.ApplicationRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Rise.Persistence.Configurations.Identity.ApplicationRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser<System.Guid>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -919,7 +773,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("AcademicSemesterId");
 
-                            b1.ToTable("AcademicSemester");
+                            b1.ToTable("AcademicSemester", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AcademicSemesterId");
@@ -927,17 +781,6 @@ namespace Rise.Persistence.Migrations
 
                     b.Navigation("DateRange")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>
-                {
-                    b.HasOne("Rise.Domain.Calendar.AcademicSemester", "AcademicSemester")
-                        .WithMany()
-                        .HasForeignKey("AcademicSemesterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AcademicSemester");
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Deadline", b =>
@@ -985,7 +828,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("LessonId");
 
-                            b1.ToTable("Lesson");
+                            b1.ToTable("Lesson", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("LessonId");
@@ -995,64 +838,6 @@ namespace Rise.Persistence.Migrations
 
                     b.Navigation("TimeRange")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Rise.Domain.Navigation.RoleNavigationItemContentLocation", b =>
-                {
-                    b.HasOne("Rise.Domain.Navigation.ContentLocation", "ContentLocation")
-                        .WithMany("RoleNavigationItems")
-                        .HasForeignKey("ContentLocationId")
-                        .IsRequired();
-
-                    b.HasOne("Rise.Domain.Navigation.NavigationItem", "NavigationItem")
-                        .WithMany("RoleNavigationItems")
-                        .HasForeignKey("NavigationItemId")
-                        .IsRequired();
-
-                    b.HasOne("Rise.Domain.Identity.Role", "Role")
-                        .WithMany("RoleNavigationItems")
-                        .HasForeignKey("RoleId")
-                        .IsRequired();
-
-                    b.OwnsOne("Rise.Domain.Navigation.RoleNavigationItemContentLocationId", "Id", b1 =>
-                        {
-                            b1.Property<Guid>("RoleNavigationItemContentLocationRoleId")
-                                .HasColumnType("TEXT");
-
-                            b1.Property<int>("RoleNavigationItemContentLocationNavigationItemId")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("RoleNavigationItemContentLocationContentLocationId")
-                                .HasColumnType("INTEGER");
-
-                            b1.Property<int>("ContentLocationId")
-                                .HasColumnType("INTEGER")
-                                .HasColumnName("ContentLocationId");
-
-                            b1.Property<int>("NavigationItemId")
-                                .HasColumnType("INTEGER")
-                                .HasColumnName("NavigationItemId");
-
-                            b1.Property<Guid>("RoleId")
-                                .HasColumnType("TEXT")
-                                .HasColumnName("RoleId");
-
-                            b1.HasKey("RoleNavigationItemContentLocationRoleId", "RoleNavigationItemContentLocationNavigationItemId", "RoleNavigationItemContentLocationContentLocationId");
-
-                            b1.ToTable("RoleNavigationItems");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RoleNavigationItemContentLocationRoleId", "RoleNavigationItemContentLocationNavigationItemId", "RoleNavigationItemContentLocationContentLocationId");
-                        });
-
-                    b.Navigation("ContentLocation");
-
-                    b.Navigation("Id")
-                        .IsRequired();
-
-                    b.Navigation("NavigationItem");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Rise.Domain.Projects.Project", b =>
@@ -1094,7 +879,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("ProjectId");
 
-                            b1.ToTable("Project");
+                            b1.ToTable("Project", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ProjectId");
@@ -1135,7 +920,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("StudentActivityId");
 
-                            b1.ToTable("StudentActivity");
+                            b1.ToTable("StudentActivity", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("StudentActivityId");
@@ -1156,21 +941,6 @@ namespace Rise.Persistence.Migrations
                     b.Navigation("Exams");
 
                     b.Navigation("Lessons");
-                });
-
-            modelBuilder.Entity("Rise.Domain.Identity.Role", b =>
-                {
-                    b.Navigation("RoleNavigationItems");
-                });
-
-            modelBuilder.Entity("Rise.Domain.Navigation.ContentLocation", b =>
-                {
-                    b.Navigation("RoleNavigationItems");
-                });
-
-            modelBuilder.Entity("Rise.Domain.Navigation.NavigationItem", b =>
-                {
-                    b.Navigation("RoleNavigationItems");
                 });
 
             modelBuilder.Entity("Rise.Domain.Projects.Technician", b =>
