@@ -1,0 +1,45 @@
+services:
+  rise-db:
+    image: mariadb:11
+    container_name: rise-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: supersecretroot
+      MYSQL_DATABASE: risedb
+      MYSQL_USER: riseuser
+      MYSQL_PASSWORD: risepassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - rise_db_data:/var/lib/mysql
+
+  rise-server:
+    build:
+      context: .\src
+      dockerfile: ..\src\Rise.Server\Dockerfile
+    container_name: rise-server
+    depends_on:
+      - rise-db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=rise-db;Port=3306;Database=risedb;User=riseuser;Password=risepassword;TreatTinyAsBoolean=false;
+    ports:
+      - "5000:8080"   # intern 8080, extern 5000
+    restart: always
+
+  rise-client:
+    build:
+      context: .\src
+      dockerfile: ..\src\Rise.Client\Dockerfile
+    container_name: rise-client
+    depends_on:
+      - rise-server
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - API_BASE_URL=http://rise-server:8080
+    ports:
+      - "3000:80"     # extern 3000, intern 80
+    restart: always
+
+volumes:
+  rise_db_data:
