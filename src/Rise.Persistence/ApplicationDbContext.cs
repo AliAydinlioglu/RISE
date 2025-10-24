@@ -39,10 +39,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        // All columns in the database have a maxlength of 4000.
-        // in NVARACHAR 4000 is the maximum length that can be indexed by a database.
+        // All columns in the mariadb have a maxlength of 255 for string values.
+        // there is a maximum length that can be indexed by a database.
         // Some columns need more length, but these can be set on the configuration level for that Entity in particular.
-        configurationBuilder.Properties<string>().HaveMaxLength(4_000);
+        configurationBuilder.Properties<string>().HaveMaxLength(255);
         // All decimals columns should have 2 digits after the comma
         configurationBuilder.Properties<decimal>().HavePrecision(18, 2);
     }
