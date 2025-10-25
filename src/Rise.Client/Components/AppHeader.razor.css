@@ -1,0 +1,10 @@
+::deep .mud-typography {
+    font-weight: 800;
+}
+
+.secondary-header{
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-text-secondary);
+    border-bottom-right-radius: 10px ;
+    border-bottom-left-radius: 10px;
+}
