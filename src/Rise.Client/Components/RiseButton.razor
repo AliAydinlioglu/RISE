@@ -1,0 +1,8 @@
+<MudButton
+    Variant="@GetVariant()"
+    Color="Color.Primary"
+    Class=@($"border-2 {GetSizeClass()}")
+    OnClick="@OnClick"
+    Disabled="@Disabled">
+    @ChildContent
+</MudButton>
