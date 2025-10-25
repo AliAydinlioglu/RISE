@@ -1,0 +1,10 @@
+<div class="loader-container @AnimationState">
+    @for (var i = 0; i < Letters.Length; i++)
+    {
+        var position = GetLetterPosition(i);
+        <div class="letter-container" style="@GetPositionAnimationStyle(position)">
+            <div class="circle" style="background-color: @Color.Primary"></div>
+            <span class="letter" style="color: @Color.Primary">@Letters[i]</span>
+        </div>
+    }
+</div>
