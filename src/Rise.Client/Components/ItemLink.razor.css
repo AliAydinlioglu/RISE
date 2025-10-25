@@ -1,5 +1,9 @@
-a{
+::deep a{
     color: var(--mud-palette-primary-text);
+}
+
+::deep a.active{
+    color: var(--mud-palette-tertiary);
 }
 
 div{
