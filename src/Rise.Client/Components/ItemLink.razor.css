@@ -1,0 +1,11 @@
+a{
+    color: var(--mud-palette-primary-text);
+}
+
+div{
+    text-align: center;
+}
+
+p{
+    font-size: 0.625rem;
+}

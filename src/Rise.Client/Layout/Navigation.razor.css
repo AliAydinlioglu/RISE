@@ -1,0 +1,26 @@
+::deep .mud-navmenu.mud-navmenu-secondary .mud-nav-link.active:not(.mud-nav-link-disabled){
+    background-color: var(--mud-palette-tertiary);
+    opacity: 0.5;
+}
+::deep .mud-nav-item{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+footer{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/8+8);
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-text-secondary);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+}
