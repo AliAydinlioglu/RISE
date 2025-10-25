@@ -1,17 +1,19 @@
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Components.Form;
 using Shouldly;
 
 namespace Rise.Client.Components.FormComponents;
 
-public class GivenAnInputField : MudBlazorTestBase
+public abstract class GivenAnInputSetupTest<TRiseInputComponent> : MudBlazorTestSetup
+    where TRiseInputComponent : ComponentBase, IRiseInputComponentProps
 {
     private const string DefaultLabel = "Voornaam";
 
     [Fact]
     public void WhenInputIsRenderedWithRequiredLabel_ThenLabelShouldBeVisible()
     {
-        var cut = RenderTextFieldWithLabel();
+        var cut = RenderInputFieldWithLabel();
 
         cut.Markup.ShouldContain(DefaultLabel);
         cut.Find("label").TextContent.ShouldBe(DefaultLabel);
@@ -20,7 +22,7 @@ public class GivenAnInputField : MudBlazorTestBase
     [Fact]
     public void WhenInputIsRenderedWithoutOptionalParams_ThenDefaultsShouldBeSet()
     {
-        var cut = RenderTextFieldWithLabel();
+        var cut = RenderInputFieldWithLabel();
         var mudTextField = GetMudTextField(cut);
 
         mudTextField.Disabled.ShouldBeFalse();
@@ -35,7 +37,7 @@ public class GivenAnInputField : MudBlazorTestBase
     {
         const string helperText = "Vul je volledige naam in";
 
-        var cut = RenderTextFieldWithLabel(parameters => parameters
+        var cut = RenderInputFieldWithLabel(parameters => parameters
             .Add(param => param.HelperText, helperText)
         );
         var mudTextField = GetMudTextField(cut);
@@ -49,7 +51,7 @@ public class GivenAnInputField : MudBlazorTestBase
     {
         const string errorText = "Voornaam is verplicht";
 
-        var cut = RenderTextFieldWithLabel(parameters => parameters
+        var cut = RenderInputFieldWithLabel(parameters => parameters
             .Add(param => param.Error, true)
             .Add(param => param.ErrorText, errorText)
         );
@@ -63,7 +65,7 @@ public class GivenAnInputField : MudBlazorTestBase
     [Fact]
     public void WhenDisabledIsTrue_ThenInputShouldBeDisabled()
     {
-        var cut = RenderTextFieldWithLabel(parameters => parameters
+        var cut = RenderInputFieldWithLabel(parameters => parameters
             .Add(param => param.Disabled, true)
         );
         var mudTextField = GetMudTextField(cut);
@@ -73,17 +75,17 @@ public class GivenAnInputField : MudBlazorTestBase
     }
 
     
-    private IRenderedComponent<RiseTextField> RenderTextFieldWithLabel(
-        Action<ComponentParameterCollectionBuilder<RiseTextField>>? additionalParameters = null)
+    protected IRenderedComponent<TRiseInputComponent> RenderInputFieldWithLabel(
+        Action<ComponentParameterCollectionBuilder<TRiseInputComponent>>? additionalParameters = null)
     {
-        return RenderComponent<RiseTextField>(parameters =>
+        return RenderComponent<TRiseInputComponent>(parameters =>
         {
             parameters.Add(param => param.Label, DefaultLabel);
             additionalParameters?.Invoke(parameters);
         });
     }
 
-    private static MudTextField<string> GetMudTextField(IRenderedComponent<RiseTextField> cut)
+    protected MudTextField<string> GetMudTextField(IRenderedComponent<TRiseInputComponent> cut)
     {
         return cut.FindComponent<MudTextField<string>>().Instance;
     }

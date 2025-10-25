@@ -2,9 +2,9 @@ using MudBlazor.Services;
 
 namespace Rise.Client.Components;
 
-public abstract class MudBlazorTestBase : TestContext
+public abstract class MudBlazorTestSetup : TestContext
 {
-    protected MudBlazorTestBase()
+    protected MudBlazorTestSetup()
     {
         Services.AddMudServices();
 
