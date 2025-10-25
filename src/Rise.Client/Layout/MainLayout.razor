@@ -24,9 +24,10 @@
         
     </AppHeader>
     @*<header>
-
+    
         <NavBar/> 
     </header>*@
+    <Navigation />
     <main>
         <MudMainContent class="section">
             @Body
@@ -106,6 +107,7 @@
             DarkDarken = Theme.Colors.Shades.Black50,
             DarkLighten = Theme.Colors.Shades.Black30,
 
+            
             BorderOpacity = 1.0,
             HoverOpacity = 0.06,
             RippleOpacity = 0.1,
@@ -128,7 +130,9 @@
         LayoutProperties = new LayoutProperties()
         {
             DrawerWidthLeft = "260px",
-            DrawerWidthRight = "300px"
+            DrawerWidthRight = "300px",
+            DrawerMiniWidthLeft = "56px",
+            DrawerMiniWidthRight = "56px"
         },
         
         Typography = new Typography()
