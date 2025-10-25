@@ -6,6 +6,7 @@ using Rise.Client;
 using Rise.Client.Calendar;
 using Rise.Client.Identity;
 using Rise.Client.Products;
+using Rise.Client.Shared;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Client.StudentActivities;
@@ -34,6 +35,9 @@ try
 
 // register the custom state provider
     builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
+// register the shared title service
+    builder.Services.AddSingleton<SharedPageTitleService>();
+
 // register the account management interface
     builder.Services.AddScoped(sp => (IAccountManager)sp.GetRequiredService<AuthenticationStateProvider>());
 

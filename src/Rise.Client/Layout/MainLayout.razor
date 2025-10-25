@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using Rise.Client.Components
+@inherits LayoutComponentBase
 
 @* Required *@
 <MudThemeProvider Theme="@MyCustomTheme"/>
@@ -9,9 +10,23 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <header>
-        <NavBar/>
-    </header>
+    <AppHeader >
+        
+        @* TODO: Replace with real menu and login/profile functionality *@
+        <IconMenu>
+            <MudIcon Icon="@Icons.Material.Rounded.NotificationsNone" Size="Size.Large"/>
+        </IconMenu>
+        <ProfileSection>
+            <MudAvatar Class="px-1 border-2  " Variant="Variant.Outlined" Color="Color.Secondary">
+                <MudText Typo="Typo.body2">AW</MudText>
+            </MudAvatar>
+        </ProfileSection>
+        
+    </AppHeader>
+    @*<header>
+
+        <NavBar/> 
+    </header>*@
     <main>
         <MudMainContent class="section">
             @Body
@@ -29,7 +44,7 @@
             White = Theme.Colors.Shades.White,
             Primary = Theme.Colors.Shades.Black,
             PrimaryContrastText = Theme.Colors.Shades.White,
-            Secondary = Theme.Colors.Shades.Black50,
+            Secondary = Theme.Colors.Shades.White,
             SecondaryContrastText = Theme.Colors.Shades.White,
             Tertiary = Theme.Colors.Cyan.Default,
             TertiaryContrastText = Theme.Colors.Shades.White,
