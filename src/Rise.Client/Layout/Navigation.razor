@@ -2,10 +2,10 @@
 @if (!IsHomePage())
 {
     <MudDrawer Class="is-hidden-mobile" ClipMode="DrawerClipMode.Always" Open="true" Color="Color.Primary" Style=" top: calc(var(--mud-appbar-height) + 16px);">
-        <MudNavMenu Color="Color.Secondary">
+        <MudNavMenu Color="Color.Tertiary">
             @foreach (var item in NavItems)
             {
-                <MudNavLink Href="@item.Href" Match="NavLinkMatch.All" Icon="@item.Icon" IconColor="Color.Inherit">@item.Title</MudNavLink>
+                <MudNavLink Class="nav-link-custom" Href="@item.Href" Match="NavLinkMatch.All" Icon="@item.Icon" IconColor="Color.Inherit">@item.Title</MudNavLink>
             }
 
         </MudNavMenu>
