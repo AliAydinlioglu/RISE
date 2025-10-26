@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
-using NSubstitute;
 using Rise.Persistence;
 using Rise.Persistence.Models.Identity;
 using Rise.Services.Identity;
