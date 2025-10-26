@@ -9,7 +9,7 @@
     <div class="container">
     
         <MudGrid>
-            @foreach (var item in HomeBlocks)
+            @foreach (var item in AvailableBlocks)
             {
                 <MudItem xs="6" sm="4" md="3" lg="2">
                     <HomeBlock Href="@item.Route" Icon="@item.Icon">@item.Label</HomeBlock>
