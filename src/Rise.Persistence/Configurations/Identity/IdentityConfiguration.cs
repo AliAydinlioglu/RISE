@@ -30,7 +30,6 @@ internal class IdentityConfiguration :
         builder.ToTable("Users");
         
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
         
         builder.Property(x => x.Email).IsRequired().HasMaxLength(200);
         builder.Property(x => x.FirstName).HasMaxLength(200);
@@ -38,7 +37,6 @@ internal class IdentityConfiguration :
         builder.Property(x => x.ClassGroup).HasMaxLength(50);
         builder.Property(x => x.SsoId).IsRequired();
         builder.Property(x => x.SsoProvider).IsRequired().HasMaxLength(255);
-        builder.Property(x => x.SsoRefreshToken).IsRequired();
     }
 
     public void Configure(EntityTypeBuilder<ApplicationRole> builder)

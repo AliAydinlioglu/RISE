@@ -6,23 +6,19 @@ public class ApplicationUser : IdentityUser<Guid>
 {
     public string? FirstName { get; private set; }
     public string? LastName { get; private set; }
-    public string ClassGroup { get; private set; }
-    public DateTimeOffset? LastLogin { get; private set; }
+    public string? ClassGroup { get; private set; }
+    public DateTimeOffset LastLogin { get; set; }
     public Guid SsoId { get; private set; }
     public string SsoProvider { get; private set; }
-    public Guid SsoRefreshToken { get; private set; }
-
-    public ApplicationUser(){}
     
     public ApplicationUser(
         string email, 
         string? firstName, 
         string? lastName, 
-        string classGroup, 
-        DateTimeOffset? lastLogin, 
+        string? classGroup, 
+        DateTimeOffset lastLogin, 
         Guid ssoId, 
-        string ssoProvider, 
-        Guid ssoRefreshToken)
+        string ssoProvider)
     {
         UserName = email;
         Email = email;
@@ -32,6 +28,5 @@ public class ApplicationUser : IdentityUser<Guid>
         LastLogin = lastLogin;
         SsoId = ssoId;
         SsoProvider = ssoProvider;
-        SsoRefreshToken = ssoRefreshToken;
     }
 }

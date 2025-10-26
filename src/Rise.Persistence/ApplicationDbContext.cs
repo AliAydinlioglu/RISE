@@ -37,7 +37,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Deadline> Deadlines => Set<Deadline>();
     public DbSet<Exam> Exams => Set<Exam>();
     public DbSet<Role> DomainRoles => Set<Role>();
-    public DbSet<User> DomainRUsers => Set<User>();
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {

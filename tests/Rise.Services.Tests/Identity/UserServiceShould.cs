@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using Rise.Persistence;
-using Rise.Persistence.Configurations.Identity;
 using Rise.Persistence.Models.Identity;
 using Rise.Services.Identity;
 using Rise.Shared.Identity;
+using Rise.TestDoubles.Fakers;
 
 namespace Rise.Services.Tests.Identity;
 
@@ -19,7 +20,8 @@ public class UserServiceShould
     {
         // Arrange
         var roleManager = CreateRoleManager();
-        var userService = new UserService(roleManager);
+        var userManager = CreateUserManager();
+        var userService = new UserService(roleManager, userManager, new FakeSessionContextProvider());
 
         // Act
         var result = await userService.GetRoleIdAsync(null);
@@ -33,7 +35,8 @@ public class UserServiceShould
     {
         // Arrange
         var roleManager = CreateRoleManager();
-        var userService = new UserService(roleManager);
+        var userManager = CreateUserManager();
+        var userService = new UserService(roleManager, userManager, new FakeSessionContextProvider());
 
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity([], "mock"));
 
@@ -63,10 +66,12 @@ public class UserServiceShould
             Substitute.For<ILogger<RoleManager<ApplicationRole>>>()
         );
 
+        var userManager = CreateUserManager();
+
         var role = new ApplicationRole(AppRoles.RegularStudent, "Regular");
         await roleManager.CreateAsync(role);
         
-        var userService = new UserService(roleManager);
+        var userService = new UserService(roleManager, userManager, new FakeSessionContextProvider());
 
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity([new Claim(ClaimTypes.Role, "Regular")], "mock"));
 
@@ -98,4 +103,33 @@ public class UserServiceShould
             logger
         );
     }
+    
+    /// <summary>
+    /// TODO: when this is needed in other tests => put in shared library 
+    /// </summary>
+    /// <returns></returns>
+    private static UserManager<ApplicationUser> CreateUserManager()
+    {
+        var store = Substitute.For<IUserStore<ApplicationUser>>();
+        var identityOptions = Options.Create(new IdentityOptions());
+        var userValidators = new List<IUserValidator<ApplicationUser>> { new UserValidator<ApplicationUser>() };
+        var pwdValidators = new List<IPasswordValidator<ApplicationUser>> { new PasswordValidator<ApplicationUser>() };
+        var keyNormalizer = new UpperInvariantLookupNormalizer();
+        var errors = new IdentityErrorDescriber();
+        var passwordHasher = new PasswordHasher<ApplicationUser>();
+        var logger = Substitute.For<ILogger<UserManager<ApplicationUser>>>();
+
+        return new UserManager<ApplicationUser>(
+            store, 
+            identityOptions, 
+            passwordHasher, 
+            userValidators, 
+            pwdValidators,
+            keyNormalizer, 
+            errors, 
+            null!, 
+            logger
+        );
+    }
+
 }

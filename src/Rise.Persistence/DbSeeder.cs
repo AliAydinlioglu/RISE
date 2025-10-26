@@ -49,10 +49,9 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
             "Regular", 
             "Student", 
             "TIN/TIAO-2", 
-            null, 
+            DateTimeOffset.UtcNow, 
             Guid.NewGuid(), 
-            "Microsoft Entra", 
-            Guid.NewGuid());
+            "Microsoft Entra");
         await userManager.CreateAsync(regularStudent);
         
         var distanceStudent = new ApplicationUser(
@@ -60,10 +59,9 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
             "Distance", 
             "Student", 
             "TIN/TIAO-3", 
-            null, 
+            DateTimeOffset.UtcNow, 
             Guid.NewGuid(), 
-            "Microsoft Entra", 
-            Guid.NewGuid());
+            "Microsoft Entra");
         await userManager.CreateAsync(distanceStudent);
         
         await userManager.AddToRoleAsync(regularStudent, nameof(AppRoles.RegularStudent));
