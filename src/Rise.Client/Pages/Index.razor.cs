@@ -1,24 +1,22 @@
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Client.Layout;
+using Rise.Client.Shared;
 
 namespace Rise.Client.Pages;
 
 public partial class Index
 {
-    private HashSet<HomeBlockAttribute> HomeBlocks  = [];
+    
+    [Inject] private IHomeBlockService HomeBlocks  {get ; set; } = null!;
+    private IReadOnlySet<HomeBlockAttribute> AvailableBlocks = ImmutableHashSet<HomeBlockAttribute>.Empty;
     protected override void OnInitialized()
     {
-        // Get all types with [HomeBlock] in the current assembly
-        var assembly = Assembly.GetExecutingAssembly();
+        AvailableBlocks = HomeBlocks.AvailableBlocks;
 
-        HomeBlocks = assembly.GetTypes()
-            .Select(t => t.GetCustomAttribute<HomeBlockAttribute>())
-            .Where(attr => attr is not null)
-            .ToHashSet()!;
-        
         // TODO: in other ticket, add sort and view logic based on user preferences and roles
     }
 }

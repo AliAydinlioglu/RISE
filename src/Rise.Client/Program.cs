@@ -35,9 +35,9 @@ try
 
 // register the custom state provider
     builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
-// register the shared title service
+// register the shared Singletons
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
-
+    builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
 // register the account management interface
     builder.Services.AddScoped(sp => (IAccountManager)sp.GetRequiredService<AuthenticationStateProvider>());
 
