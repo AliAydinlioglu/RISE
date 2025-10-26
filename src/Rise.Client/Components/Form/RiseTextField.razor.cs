@@ -11,4 +11,8 @@ public partial class RiseTextField : IRiseInputComponentProps
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool Error { get; set; }
     [Parameter] public string? ErrorText { get; set; }
+   
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string? RequiredError { get; set; }
+    [Parameter] public Func<string?, string?>? Validation { get; set; }
 }

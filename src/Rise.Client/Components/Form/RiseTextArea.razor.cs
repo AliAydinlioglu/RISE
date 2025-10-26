@@ -12,4 +12,8 @@ public partial class RiseTextArea : IRiseInputComponentProps
     [Parameter] public bool Error { get; set; }
     [Parameter] public string? ErrorText { get; set; }
     [Parameter] public int Lines { get; set; } = 5;
+    
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string? RequiredError { get; set; }
+    [Parameter] public Func<string?, string?>? Validation { get; set; }
 }

@@ -1,0 +1,30 @@
+<MudForm @ref="@_mudForm"
+         Model="@Model"
+         Validation="@Validation">
+    <div class="rise-form">
+        @ChildContent
+        
+        <div class="form-actions">
+            <RiseButton
+                ButtonType="ButtonType.Submit"
+                Type="RiseButton.RiseButtonType.Primary"
+                Disabled="@IsSubmitting"
+                OnClick="@HandleSubmit">
+                @if (IsSubmitting)
+                {
+                    <RiseLoader/>
+                }
+                @SubmitButtonText
+            </RiseButton>
+
+            <RiseButton
+                ButtonType="ButtonType.Button"
+                Type="RiseButton.RiseButtonType.Secondary"
+                Disabled="@IsSubmitting"
+                OnClick="@HandleCancel">
+                Annuleren
+            </RiseButton>
+            }
+        </div>
+    </div>
+</MudForm>

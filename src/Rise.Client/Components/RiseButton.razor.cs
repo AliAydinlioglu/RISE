@@ -8,6 +8,7 @@ public partial class RiseButton
     [Parameter, EditorRequired] public EventCallback OnClick { get; set; }
     [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool Disabled { get; set; }
+    [Parameter] public ButtonType ButtonType { get; set; } = ButtonType.Button;
     [Parameter] public RiseButtonType Type { get; set; } = RiseButtonType.Primary;
     [Parameter] public RiseButtonSize Size { get; set; } = RiseButtonSize.Medium;
 
