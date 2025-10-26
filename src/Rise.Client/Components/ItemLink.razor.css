@@ -10,6 +10,14 @@ div{
     text-align: center;
 }
 
-p{
+p.itemlink-small{
+    font-size: 0.5rem;
+}
+
+p.itemlink-medium{
     font-size: 0.625rem;
+}
+
+p.itemlink-large{
+    font-size: 1rem;
 }
