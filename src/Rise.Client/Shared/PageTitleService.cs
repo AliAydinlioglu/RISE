@@ -5,6 +5,8 @@ namespace Rise.Client.Shared;
 public interface IPageTitleService
 {
     void SetTitle(RenderFragment? childContent);
+    event Action? OnChange;
+    RenderFragment? Content { get; }
 }
 
 public class PageTitleService: IPageTitleService

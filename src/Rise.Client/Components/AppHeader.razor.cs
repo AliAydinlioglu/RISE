@@ -9,7 +9,7 @@ public partial class AppHeader : ComponentBase, IDisposable
     [Parameter, EditorRequired] public RenderFragment IconMenu { get; set; }
     [Parameter, EditorRequired] public RenderFragment ProfileSection { get; set; }
     
-    [Inject] private PageTitleService TitleState { get; set; } = null!;
+    [Inject] private IPageTitleService TitleState { get; set; } = null!;
     
     protected override void OnInitialized()
     {
