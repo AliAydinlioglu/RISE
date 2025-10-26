@@ -1,5 +1,7 @@
 using Rise.Client.Calendar.Fakers;
 using Rise.Client.Components;
+using Rise.Client.Faker;
+using Rise.Client.Shared;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.TestDoubles.Fakers;
@@ -15,7 +17,10 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
     protected GivenACalendarBase()
     {
         var dateTimeServiceMock = new FakeDateTimeService(_fixedDate);
+        var pageTitleService = new FakePageTitleService();
+        
         Services.AddScoped<IDateTimeService>(_ => dateTimeServiceMock);
+        Services.AddScoped<IPageTitleService>(_ => pageTitleService);
     }
 
     [Fact]

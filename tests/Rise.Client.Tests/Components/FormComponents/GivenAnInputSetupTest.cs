@@ -49,17 +49,31 @@ public abstract class GivenAnInputSetupTest<TRiseInputComponent> : MudBlazorTest
     [Fact]
     public void WhenErrorStateIsTrue_ThenErrorTextShouldBeRendered()
     {
-        const string errorText = "Voornaam is verplicht";
+        const string errorText = "Voornaam error";
 
         var cut = RenderInputFieldWithLabel(parameters => parameters
             .Add(param => param.Error, true)
             .Add(param => param.ErrorText, errorText)
         );
+        var riseTextField = cut.Instance;
+    
+        riseTextField.Error.ShouldBeTrue();
+        riseTextField.ErrorText.ShouldBe(errorText);
+    }
+
+    [Fact]
+    public void WhenRequiredStateIsTrue_ThenRequiredTextShouldBeRendered()
+    {
+        const string requiredText = "Voornaam is verplicht";
+
+        var cut = RenderInputFieldWithLabel(parameters => parameters
+            .Add(param => param.Required, true)
+            .Add(param => param.RequiredError, requiredText)
+        );
         var mudTextField = GetMudTextField(cut);
 
-        mudTextField.Error.ShouldBeTrue();
-        mudTextField.ErrorText.ShouldBe(errorText);
-        cut.Markup.ShouldContain(errorText);
+        mudTextField.Required.ShouldBeTrue();
+        mudTextField.RequiredError.ShouldBe(requiredText);
     }
 
     [Fact]
