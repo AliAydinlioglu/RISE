@@ -1,0 +1,24 @@
+@typeparam TItem
+@inherits RiseDropdownBase<TItem>
+
+<MudMenu AnchorOrigin="Origin.BottomRight"
+         TransformOrigin="Origin.TopRight"
+         Dense="true"
+         FullWidth="true"
+         PopoverClass="rise-dropdown-popover"
+         Class="rise-dropdown">
+    <ActivatorContent>
+        <div class="rise-dropdown-bar">
+            <span class="rise-dropdown-label">@(GetItemText(SelectedItem))</span>
+            <MudIcon Icon="@Icons.Material.Filled.ArrowDropDown" Size="Size.Medium"/>
+        </div>
+    </ActivatorContent>
+    <ChildContent>
+        @foreach (var item in Items)
+        {
+            <MudMenuItem OnClick="@(() => OnItemClick(item))" Class="rise-dropdown-item">
+                <span>@GetItemText(item)</span>
+            </MudMenuItem>
+        }
+    </ChildContent>
+</MudMenu>

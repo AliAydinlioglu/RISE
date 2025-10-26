@@ -1,0 +1,63 @@
+.rise-dropdown {
+    display: inline-flex;
+}
+
+.rise-dropdown-bar {
+    display: flex;
+    align-items: center;
+    width: 220px;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border: 2px solid var(--mud-palette-primary);
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 200px;
+    transition: all 0.2s ease;
+}
+
+.rise-dropdown-bar:hover {
+    background-color: var(--mud-palette-action-default-hover);
+    border-color: var(--mud-palette-primary);
+}
+
+.rise-dropdown-label {
+    color: var(--mud-palette-text-primary);
+    flex: 1;
+    text-align: left;
+}
+
+.rise-dropdown-popover .mud-paper {
+    border: 1px solid var(--mud-palette-primary);
+    border-radius: 4px;
+}
+
+.rise-dropdown-popover .mud-list {
+    padding: 0;
+}
+
+.rise-dropdown-item.mud-menu-item {
+    box-sizing: border-box;
+    width: 220px !important;
+    display: flex;
+    text-align: left;
+    padding: 8px 12px !important;
+    color: var(--mud-palette-text-primary) !important;
+    min-height: auto !important;
+    border-bottom: 1px solid var(--mud-palette-primary);
+    transition: background-color 0.2s ease;
+}
+
+.rise-dropdown-item.mud-menu-item:last-child {
+    border-bottom: none;
+}
+
+.rise-dropdown-item.mud-menu-item:hover {
+    background-color: var(--mud-palette-table-hover) !important;
+}
+
+.rise-dropdown-item span,
+.rise-dropdown-item div {
+    color: var(--mud-palette-text-primary);
+    text-align: left;
+    flex: 1;
+}
