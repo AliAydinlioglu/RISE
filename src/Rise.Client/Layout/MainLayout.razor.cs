@@ -74,7 +74,6 @@ public partial class MainLayout
             ErrorLighten = Colors.Red.Red30,
             DarkDarken = Colors.Shades.Black50,
             DarkLighten = Colors.Shades.Black30,
-
             
             BorderOpacity = 1.0,
             HoverOpacity = 0.16,
