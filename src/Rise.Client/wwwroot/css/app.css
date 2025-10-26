@@ -109,6 +109,11 @@ header #navbarBasicExample{
     .loading-progress-text:after {
         content: var(--blazor-load-percentage-text, "Loading");
     }
+.mud-nav-link:hover{
+    background-color: var(--mud-palette-tertiary-hover)!important;
+}
+
+
 
 @media only screen and (min-width: 770px)   {
     main {
