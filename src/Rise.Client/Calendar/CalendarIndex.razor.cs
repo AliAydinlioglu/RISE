@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using Rise.Client.Attributes;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 
 namespace Rise.Client.Calendar;
 
+[HomeBlock(icon:@Icons.Material.Outlined.CalendarMonth,route:"/kalender",label:"Kalender")]
 public partial class CalendarIndex
 {
     private const string DummyUserId = "1";

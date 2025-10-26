@@ -1,14 +1,16 @@
 @page "/student-activities"
 @using Rise.Client.Components
 
-<PageTitle>StudentActivities</PageTitle>
+<PageTitle>Studenten Activiteiten</PageTitle>
 <div class="container ">
     <HeadTitle>Studenten activiteiten</HeadTitle>
 </div>
 <section class="mt-5 container student-activities">
     @if (studentActivities == null)
     {
-        <p><em>Loading...</em></p>
+        <MudContainer Class="mt-8">
+            <RiseLoader />
+        </MudContainer>
     }
     else
     {
