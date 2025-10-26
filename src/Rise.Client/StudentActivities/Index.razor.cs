@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using Rise.Client.Attributes;
 using Rise.Shared.Common;
 using Rise.Shared.StudentActivities;
 
 namespace Rise.Client.StudentActivities;
 
+[HomeBlock(icon:@Icons.Material.Outlined.EventNote, label:"Activititeiten", route:"/student-activities")]
 public partial class Index
 {
     private IEnumerable<StudentActivityDto.Index>? studentActivities;
