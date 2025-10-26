@@ -1,23 +1,25 @@
-using Rise.Client.StudentActivities;
+using Rise.Client.Faker;
+using Rise.Client.Shared;
 using Rise.Shared.StudentActivities;
 using Shouldly;
 using Xunit.Abstractions;
 
-namespace Xunit.StudentActivities;
+namespace Rise.Client.StudentActivities;
 
 public class DetailShould: TestContext
 {
     public DetailShould(ITestOutputHelper outputHelper)
     {
         Services.AddXunitLogger(outputHelper);
-        Services.AddScoped<IStudentActivityService, FakeStudentActivitiesService>(); 
+        Services.AddScoped<IStudentActivityService, FakeStudentActivitiesService>();
+                
+        var pageTitleService = new FakePageTitleService();
+        Services.AddScoped<IPageTitleService>(_ => pageTitleService);
     }
 
     [Fact]
     public void ShowsStudentActivities()
     {
-
-		
         var cut = RenderComponent<Detail>(ComponentParameter.CreateParameter("Id","1"));
         
         // Assert: organisator (first p inside the organisator field)

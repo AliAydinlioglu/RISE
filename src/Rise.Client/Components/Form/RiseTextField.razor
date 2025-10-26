@@ -2,11 +2,12 @@
     <label class="input-label">@Label</label>
     <MudTextField 
         T="string"
-        Label="@Label"
         @bind-Value="@Value"
         Variant="Variant.Outlined"
         HelperText="@HelperText"
         Disabled="@Disabled"
+        Error="@Error"
+        ErrorText="@ErrorText"
         Required="@Required"
         RequiredError="@RequiredError"
         Validation="@Validation"

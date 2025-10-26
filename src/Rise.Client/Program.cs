@@ -36,7 +36,7 @@ try
 // register the custom state provider
     builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
 // register the shared title service
-    builder.Services.AddSingleton<SharedPageTitleService>();
+    builder.Services.AddSingleton<PageTitleService>();
 
 // register the account management interface
     builder.Services.AddScoped(sp => (IAccountManager)sp.GetRequiredService<AuthenticationStateProvider>());

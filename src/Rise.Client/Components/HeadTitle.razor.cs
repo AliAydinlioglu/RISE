@@ -7,7 +7,9 @@ public partial class HeadTitle : ComponentBase
 {
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string? SubTitle { get; set; }
-    [Inject] private SharedPageTitleService TitleState { get; set; } = null!;
+    
+    [Inject] private IPageTitleService TitleState { get; set; } = null!;
+    
     protected override void OnParametersSet()
     {
         if (ChildContent is not null)

@@ -2,9 +2,11 @@ namespace Rise.Client.Components.Form;
 
 public interface IRiseInputComponentProps
 {
-    string Label { get; set; }
-    string? HelperText { get; set; }
-    bool Disabled { get; set; }
-    bool Error { get; set; }
-    string? ErrorText { get; set; }
+    string Label { get; }
+    string? HelperText { get; }
+    bool Disabled { get; }
+    bool Error { get; }
+    string? ErrorText { get; }
+    bool Required { get; }
+    string? RequiredError { get; }
 }
