@@ -11,8 +11,8 @@ services:
 
   rise-server:
     build:
-      context: .\src
-      dockerfile: ..\src\Rise.Server\Dockerfile
+      context: ./src
+      dockerfile: ../src/Rise.Server/Dockerfile
       args:
         API_BASE_URL: http://localhost:5000
     depends_on:
@@ -27,8 +27,8 @@ services:
 
   rise-client:
     build:
-      context: .\src
-      dockerfile: ..\src\Rise.Client\Dockerfile
+      context: ./src
+      dockerfile: ../src/Rise.Client/Dockerfile
       args:
         API_BASE_URL: http://localhost:3000
     container_name: rise-client
