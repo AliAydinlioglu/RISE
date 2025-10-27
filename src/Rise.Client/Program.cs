@@ -38,7 +38,7 @@ try
     builder.Services.AddScoped(sp => (IAccountManager)sp.GetRequiredService<AuthenticationStateProvider>());
 
 // configure client for auth interactions
-    var baseUrl = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
+    var baseUrl = new Uri( builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
     builder.Services.AddHttpClient("SecureApi", opt => opt.BaseAddress = baseUrl)
         .AddHttpMessageHandler<CookieHandler>();
 

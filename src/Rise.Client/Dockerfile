@@ -4,9 +4,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-#EXPOSE 8080
-#EXPOSE 8081
-#
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
@@ -21,14 +18,15 @@ RUN dotnet build "./Rise.Client.csproj" -c $BUILD_CONFIGURATION -o /app/build
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+ARG API_BASE_URL
 RUN dotnet publish "./Rise.Client.csproj" -c $BUILD_CONFIGURATION -o /app/publish
+RUN if [ -n "$API_BASE_URL" ]; then \
+      sed -i "s|https://localhost:5001|$API_BASE_URL|g" /app/publish/wwwroot/appsettings.json; \
+    fi
 
-FROM nginx:alpine as final
+FROM nginx:alpine AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY Rise.Client/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 EXPOSE 443
-
-
-ENTRYPOINT ["dotnet", "Rise.Client.dll"]

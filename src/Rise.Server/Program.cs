@@ -22,7 +22,6 @@ try
 {
     Log.Information("Starting web application");
     var builder = WebApplication.CreateBuilder(args);
-
     builder.Services
         .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration) // Configuration in AppSettings.json
             .Destructure.UsingAttributes()) // Sensitive data logging
@@ -30,8 +29,9 @@ try
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .Services.AddDbContext<ApplicationDbContext>(o =>
         {
-            var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection") ??
-                                   throw new InvalidOperationException("Connection string 'DatabaseConnection' not found.");
+            var connectionString = Environment.GetEnvironmentVariable("DatabaseConnection") ?? 
+                builder.Configuration.GetConnectionString("DatabaseConnection") ??
+                throw new InvalidOperationException("Connection string 'DatabaseConnection' not found.");
             var serverVersion = ServerVersion.AutoDetect(connectionString);
             o.UseMySql(connectionString, serverVersion);
             o.EnableDetailedErrors();
