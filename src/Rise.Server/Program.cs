@@ -61,6 +61,7 @@ try
                 s.Title = "RISE API";
             };
         })
+#if DEBUG
         .AddCors(options =>
         {
             options.AddPolicy("AllowLocalhost", policy => policy
@@ -68,6 +69,18 @@ try
                 .AllowAnyMethod()
                 .AllowAnyHeader());
         });
+#else
+        .AddCors(options =>
+        {
+            options.AddPolicy("FrontendPolicy", policy =>
+            {
+                var frontendUrl = builder.Configuration["FrontendUrl"]; //TODO: add FrontendUrl
+                policy.WithOrigins(frontendUrl)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
+#endif
 
     var app = builder.Build();
     // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts) 
@@ -102,8 +115,12 @@ try
                 
             };
         })
-        .UseSwaggerGen()
+#if DEBUG
         .UseCors("AllowLocalhost");
+#else
+        app.UseCors("FrontendPolicy");
+#endif
+        
     app.MapFallbackToFile("index.html"); // Serves the Blazor app from the API, when no routes match.
     app.Run();
 }

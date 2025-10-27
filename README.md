@@ -105,30 +105,136 @@ The `dotnet clean` command cleans the output of the previous build. It's impleme
 
 ## Authentication
 
-Authentication and authorization is present, you'll host and maintain the user accounts in your own database without any external identity provider. You can login with the following test users with the password `A1b2C3!`
+Authentication and authorization is handled by Microsoft Entra ID. 
 
-### Users
+- The **Blazor WASM** app handles **user login** via Microsoft Entra ID (OpenID Connect + PKCE).
+- The **API** validates the **JWT access token** sent by Blazor.
+- **No Client Secret** is required unless the API calls other services on its own (not applicable here).
 
-- user@example.com
-- technician1@example.com
-- technician2@example.com
-- secretary@example.com
-- admin@example.com
+### Users (development)
+
+- regular@rise2526t2campusappoutlook.onmicrosoft.com (pw: Tako499281)
 
 ### Roles
 
 There are 3 built-in roles, but adjust as needed
 
-- Technician
-- Secretary
-- Administrator
+- Public (may be used for visuals)
+- RegularStudent
+- DistanceStudent
 
 ### Use cases
 
-- Register
-- Login
-- Logout
 - GetInfo
+- LoginCallback (after successful login in client)
+
+### Requirements
+
+- Microsoft Entra ID (Azure AD) tenant
+- 2 App registrations (client + server)
+- Access to [https://entra.microsoft.com](https://entra.microsoft.com)
+
+### Setup Microsoft Entra ID
+
+### 1. App registrations
+
+#### A. FastEndpoints API (backend)
+
+1. Go to **App registrations → New registration**
+2. Name it e.g. `FastEndpointsAPI`
+3. Type: "Accounts in this organizational directory only"
+4. Click **Register**
+
+#### Expose an API
+1. Go to **Expose an API**
+2. Set the **Application ID URI**, e.g.: api://<client-id>
+3. Add a **scope**:
+- **Scope name:** e.g. `user.read`
+- **Who can consent:** Admins and users
+- **Admin consent display name:** Access API
+- **Admin consent description:** Allows access to FastEndpoints API
+- Click **Add scope**
+4. Go to **Manifest** and ensure `"accessTokenAcceptedVersion": 2` is set.
+
+#### B. Blazor WASM (frontend)
+
+1. Go to **Microsoft Entra ID → App registrations → New registration**
+2. Name it e.g. `BlazorWasmClient`
+3. Choose **"Accounts in this organizational directory only"**
+4. Set the redirect URI:
+    - `https://{base-url}/api/identity/accounts/login-callback`
+      - replace {base-url} by the base url of your client
+      - in development this will probably be localhost:5001, but port may be different
+5. Click **Register**
+
+#### Configure the app
+- Note the **Application (Client) ID** and **Directory (Tenant) ID**
+- Go to **Authentication**
+    - Add a logout redirect URI:  
+      `https://{base-url}/authentication/logout-callback`
+      - replace {base-url} by the base url of your client
+      - in development this will probably be localhost:5001, but port may be different
+  - Enable *Allow public client flows (PKCE)*
+
+#### Configure API access
+1. Go to **API permissions**
+2. Click **Add a permission → My APIs (or All API's) → [your API]**
+3. Select the scope `user.read` (or your custom scope)
+4. Click **Grant admin consent**
+
+### 2. Project Configuration
+
+#### A. FastEndpoints API
+#### Add following items in `Program.cs`
+````csharp
+using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services 
+    ...
+    .AddAuthorization()
+    .AddCors(options =>
+    {
+        options.AddPolicy("FrontendPolicy", policy =>
+        {
+            var frontendUrl = builder.Configuration["FrontendUrl"];
+            policy.WithOrigins(frontendUrl)
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+    });
+
+var app = builder.Build();
+
+app
+    ...
+    .UseAuthentication()
+    .UseAuthorization()
+    ...
+    .UseCors("FrontendPolicy");
+
+app.Run();
+
+````
+#### Add following items in appsettings.json and replace props between brackets by values from settings in Microsoft Entra ID
+````json
+"FrontendUrl": "{frontend-url}",
+"AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "Domain": "{domain}.onmicrosoft.com",
+    "ClientId": "{api-client-id}",
+    "TenantId": "{tenant-id}",
+    "Audience": "api://{api-client-id}"
+}
+````
+
+#### B. Blazor WASM
+TODO
 
 ## Solution Structure Overview
 
