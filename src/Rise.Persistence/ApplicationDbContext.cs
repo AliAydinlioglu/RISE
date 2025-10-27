@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
-using Rise.Domain.Navigation;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.StudentActivities;
@@ -23,9 +22,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
 {
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Project> Projects => Set<Project>();
-    public DbSet<RoleNavigationItemContentLocation> RoleNavigationItems => Set<RoleNavigationItemContentLocation>();
-    public DbSet<NavigationItem> NavigationItems => Set<NavigationItem>();
-    public DbSet<ContentLocation> ContentLocations => Set<ContentLocation>();
     public DbSet<Technician> Technicians => Set<Technician>();
     public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();
     public DbSet<Location> Locations => Set<Location>();

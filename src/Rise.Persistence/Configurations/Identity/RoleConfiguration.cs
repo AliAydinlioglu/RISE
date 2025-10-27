@@ -13,8 +13,5 @@ internal class RoleConfiguration : EntityConfiguration<Role>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).IsRequired() .HasMaxLength(200);
 
-        builder.HasMany(r => r.RoleNavigationItems)
-            .WithOne(rn => rn.Role)
-            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

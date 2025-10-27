@@ -27,7 +27,6 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         await ProjectsAsync();
         await StudentActivitiesAsync();
         await CalendarSeeder.Seed(dbContext);
-        await NavigationItemSeeder.Seed(dbContext);
     }
 
     private async Task RolesAsync()

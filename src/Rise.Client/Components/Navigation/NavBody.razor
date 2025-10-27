@@ -1,0 +1,6 @@
+﻿<nav class="nav-grid">
+    @foreach (var item in NavItems)
+    {
+        <NavItem Icon="@item.Icon" Label="@item.Label" Link="@item.Url" NavClass="nav-card" />
+    }
+</nav>

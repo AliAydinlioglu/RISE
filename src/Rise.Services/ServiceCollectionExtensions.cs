@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Rise.Persistence;
 using Rise.Persistence.Queries.Calendar;
 using Rise.Services.Calendar;
-using Rise.Services.Navigation;
 using Rise.Services.Products;
 using Rise.Services.Projects;
 using Rise.Services.User;
@@ -28,7 +27,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductService, ProductService>();        
         services.AddScoped<IProjectService, ProjectService>();        
         services.AddScoped<ICalendarService, CalendarService>();        
-        services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICalendarService, CalendarService>();   
         services.AddScoped<IDateTimeService, DateTimeService>();   

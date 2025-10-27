@@ -16,7 +16,6 @@ public class RoleShould
         // Assert  
         role.ShouldNotBeNull();
         role.Name.ShouldBe(RoleName);
-        role.RoleNavigationItems.ShouldBeEmpty();
     }
     
     [Fact]
@@ -32,7 +31,6 @@ public class RoleShould
         role.ShouldNotBeNull();
         role.Id.ShouldBe(roleId);
         role.Name.ShouldBe(RoleName);
-        role.RoleNavigationItems.ShouldBeEmpty();
     }
 
     [Theory]
