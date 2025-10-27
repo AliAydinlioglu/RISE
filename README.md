@@ -65,6 +65,26 @@
 
    4. Mongo etc... 
 
+## Using Docker
+To have a full environment, Docker is being used for 2 projects:
+- Rise.Client
+- Rise.Server
+
+MariaDB is used instead of SQLite.
+
+Go to https://www.docker.com/ for downloading Docker Desktop installation file.
+Make sure docker desktop is up and running.
+Go to solution path:
+
+```
+docker compose build --no-cache
+```
+
+```
+docker compose up
+```
+
+
 ## Creation of the database
 
 Is done by the app itself using migrations. To add and remove migrations, install the dotnet ef tool globally by running the following command in your terminal (only do this once)
