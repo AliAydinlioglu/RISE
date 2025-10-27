@@ -7,7 +7,7 @@ public partial class RiseLoader
     
     private int _rotationOffset;
     private bool _isLettersMovingToCentre;
-
+    
     protected override async Task OnInitializedAsync()
     {
         await AnimateLoader();
@@ -28,25 +28,20 @@ public partial class RiseLoader
     {
         AnimationState = "to-center";
         _isLettersMovingToCentre = true;
-        
-        await InvokeAsync(StateHasChanged);
-        await Task.Delay(700);
-        
+        await NextTick();
         _isLettersMovingToCentre = false;
     }
 
     private async Task AnimateToOutside()
     {
         AnimationState = "to-outside";
-        await InvokeAsync(StateHasChanged);
-        await Task.Delay(700);
+        await NextTick();
     }
 
     private async Task PrepareAnimationIteration()
     {
         AnimationState = "initial";
-        await InvokeAsync(StateHasChanged);
-        await Task.Delay(700);
+        await NextTick();
     }
 
     private int GetLetterPosition(int index)
@@ -70,5 +65,11 @@ public partial class RiseLoader
             4 => "top: 60%; left: 20%; transform: translate(-50%, -50%);",  // LINKS ONDER
             5 => "top: 30%; left: 20%; transform: translate(-50%, -50%);",  // LINKS BOVEN
         };
+    }
+
+    private async Task NextTick()
+    {
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(700);
     }
 }

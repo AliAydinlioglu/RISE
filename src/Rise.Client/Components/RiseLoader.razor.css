@@ -1,4 +1,5 @@
 .loader-container {
+    --letter-container-size: 50px;
     position: relative;
     width: 250px;
     height: 250px;
@@ -7,8 +8,8 @@
 
 .letter-container {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: var(--letter-container-size);
+    height: var(--letter-container-size);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,8 +18,8 @@
 
 .circle {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: var(--letter-container-size);
+    height: var(--letter-container-size);
     border-radius: 50%;
     opacity: 0;
     transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
