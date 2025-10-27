@@ -11,6 +11,6 @@ public partial class NavItem
     [Parameter]
     public string Link { get; set; } = "#";
     [Parameter]
-    public string navClass { get; set; } = "nav-item"; //nav-card
+    public string NavClass { get; set; } = "nav-item"; //nav-card
 }
 
