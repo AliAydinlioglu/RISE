@@ -10,6 +10,7 @@ using Rise.Server.Processors;
 using Rise.Services;
 using Rise.Services.Identity;
 using Serilog.Events;
+using Pomelo.EntityFrameworkCore.MySql;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -31,7 +32,8 @@ try
         {
             var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection") ??
                                    throw new InvalidOperationException("Connection string 'DatabaseConnection' not found.");
-            o.UseSqlite(connectionString); // Swap Sqlite for your database provider (e.g. Sql Server, MySQL, PostgreSQL, etc.).
+            var serverVersion = ServerVersion.AutoDetect(connectionString);
+            o.UseMySql(connectionString, serverVersion);
             o.EnableDetailedErrors();
             if (builder.Environment.IsDevelopment())
             {
