@@ -31,6 +31,10 @@ internal class IdentityConfiguration :
         
         builder.HasKey(x => x.Id);
         
+        builder.HasIndex(u => u.Email).IsUnique();
+        builder.HasIndex(u => new { u.SsoId, u.SsoProvider })
+            .IsUnique();
+        
         builder.Property(x => x.Email).IsRequired().HasMaxLength(200);
         builder.Property(x => x.FirstName).HasMaxLength(200);
         builder.Property(x => x.LastName).HasMaxLength(200);

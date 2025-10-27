@@ -11,7 +11,7 @@ using Rise.Persistence;
 namespace Rise.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251026201045_UserWithCustomProps")]
+    [Migration("20251027223930_UserWithCustomProps")]
     partial class UserWithCustomProps
     {
         /// <inheritdoc />
@@ -868,12 +868,18 @@ namespace Rise.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("SsoId", "SsoProvider")
+                        .IsUnique();
 
                     b.ToTable("Users", (string)null);
                 });
