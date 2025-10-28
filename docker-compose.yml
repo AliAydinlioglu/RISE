@@ -18,7 +18,8 @@ services:
     depends_on:
       - rise-db
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      # - ASPNETCORE_ENVIRONMENT=Production # Populates (wip) the database from committed SQL scripts
+      - ASPNETCORE_ENVIRONMENT=Development # Populates the database from EF
     env_file:
       - database.env
     ports:
