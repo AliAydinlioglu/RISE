@@ -8,32 +8,21 @@ public partial class Login
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
     private AccountRequest.Login Model = new();
-    private Result _result = new();
-    [Inject] public required IAccountManager AccountManager { get; set; }
     [Inject] public required NavigationManager Navigation { get; set; }
     private int randomNumber = new Random().Next(1, 9);
 
-    protected override async Task OnInitializedAsync()
+    public void HandleLogin()
     {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity is { IsAuthenticated: true })
+        try
         {
-            NavigationManager.NavigateTo("/kalender");
+            var returnUrl = ReturnUrl ?? "/kalender";
+
+            Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(returnUrl)}");
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Could not start Microsoft login");
         }
     }
-    public async Task LoginUser()
-    {
-        //_result = await AccountManager.LoginAsync(Model.Email!, Model.Password!);
-        _result = await AccountManager.LoginAsync("admin@example.com", "A1b2C3!");
 
-
-        //if (_result.IsSuccess && !string.IsNullOrEmpty(ReturnUrl))
-        //{
-        //    Navigation.NavigateTo(ReturnUrl);
-        //}
-        await Task.Delay(400);
-        Navigation.NavigateTo("/kalender");
-    }
 }

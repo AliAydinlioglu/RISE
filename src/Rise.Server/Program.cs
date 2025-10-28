@@ -1,9 +1,12 @@
 using Destructurama;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Pomelo.EntityFrameworkCore.MySql;
 using Rise.Persistence;
+using Rise.Persistence.Configurations.Identity;
 using Rise.Persistence.Models.Identity;
 using Rise.Persistence.Triggers;
 using Rise.Server.Identity;
@@ -11,7 +14,6 @@ using Rise.Server.Processors;
 using Rise.Services;
 using Rise.Services.Identity;
 using Serilog.Events;
-using Pomelo.EntityFrameworkCore.MySql;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -24,17 +26,23 @@ try
     Log.Information("Starting web application");
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
-    
     builder.Services
-        .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration) // Configuration in AppSettings.json
-            .Destructure.UsingAttributes()) // Sensitive data logging
-        .AddIdentity<ApplicationUser, ApplicationRole>() 
+        .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration)
+            .Destructure.UsingAttributes());
+
+    builder.Services
+        .AddIdentity<ApplicationUser, ApplicationRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
-        .Services.AddDbContext<ApplicationDbContext>(o =>
+        .AddDefaultTokenProviders();
+
+    builder.Services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+    builder.Services
+        .AddDbContext<ApplicationDbContext>(o =>
         {
-            var connectionString = Environment.GetEnvironmentVariable("DatabaseConnection") ?? 
+            var connectionString = Environment.GetEnvironmentVariable("DatabaseConnection") ??
                 builder.Configuration.GetConnectionString("DatabaseConnection") ??
                 throw new InvalidOperationException("Connection string 'DatabaseConnection' not found.");
             var serverVersion = ServerVersion.AutoDetect(connectionString);
@@ -61,28 +69,14 @@ try
             {
                 s.Title = "RISE API";
             };
-        })
-#if DEBUG
-        .AddCors(options =>
-        {
-            options.AddPolicy("AllowLocalhost", policy => policy
-                .WithOrigins("https://localhost:5001")
-                .AllowAnyMethod()
-                .AllowAnyHeader());
         });
-#else
-        .AddCors(options =>
-        {
-            options.AddPolicy("FrontendPolicy", policy =>
-            {
-                var frontendUrl = builder.Configuration["FrontendUrl"]; //TODO: add FrontendUrl
-                policy.WithOrigins(frontendUrl)
-                      .AllowAnyMethod()
-                      .AllowAnyHeader();
-            });
-        });
-#endif
-
+    builder.Services.AddDistributedMemoryCache();
+    builder.Services.AddSession(options =>
+    {
+        options.IdleTimeout = TimeSpan.FromMinutes(30);
+        options.Cookie.HttpOnly = true;
+        options.Cookie.IsEssential = true;
+    });
     var app = builder.Build();
     // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts) 
     // See: https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli
@@ -103,6 +97,7 @@ try
         .UseBlazorFrameworkFiles() // Blazor is also served from the API. 
         .UseStaticFiles()
         .UseDefaultExceptionHandler()
+        .UseSession()
         .UseAuthentication()
         .UseAuthorization()
         .UseFastEndpoints(o =>
@@ -113,16 +108,11 @@ try
                 ep.PreProcessor<GlobalRequestLogger>(Order.Before);
                 ep.PostProcessor<GlobalResponseSender>(Order.Before);
                 ep.PostProcessor<GlobalResponseLogger>(Order.Before);
-                
             };
         })
-#if DEBUG
-        .UseCors("AllowLocalhost");
-#else
-        .UseCors("FrontendPolicy");
-#endif
-        
-    app.MapFallbackToFile("index.html"); // Serves the Blazor app from the API, when no routes match.
+        .UseSwaggerGen();
+
+    app.MapFallbackToFile("index.html");
     app.Run();
 }
 catch (Exception ex)
@@ -133,5 +123,3 @@ finally
 {
     Log.CloseAndFlush();
 }
-
-

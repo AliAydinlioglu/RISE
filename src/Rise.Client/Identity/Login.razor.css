@@ -1,10 +1,25 @@
-.login {
-    position: relative;
+﻿.login {
+    position: fixed;
+    top: 0;
+    left: 0; 
+    right: 0;
+    bottom: 0;
     height: 100vh;
-    width: 100%;
+    width: 100vw;
     overflow: hidden;
     display: grid;
     place-items: center;
+    margin: 0;
+    padding: 0;
+    z-index: 0; 
+}
+
+
+@media only screen and (min-width: 770px) {
+    .login {
+        left: var(--mud-drawer-width-left, 240px);
+        width: calc(100vw - var(--mud-drawer-width-left, 240px));
+    }
 }
 /*stelt een foto vor achtergrond in*/
 .login-bg {
@@ -13,6 +28,7 @@
     background-size: cover;
     background-position: center;
     z-index: 0;
+    width: 100%;
     max-height:100vh;
     overflow:hidden;
 }
@@ -28,64 +44,35 @@
 .login-center {
     position: relative;
     z-index: 2;
-    width: clamp(200px, 55vw, 460px);
     padding: 0 1rem;
 }
 
 .login-box {
     display: grid;
     gap: 1rem;
+    padding: 2rem;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.15)
 }
 
 .login-input {
+    background-color:#000000;
     color: black !important;
     font-family: 'Montserrat';
 }
-.input .login-input .p{
-    color:red !important;
-}
-
-.icon.is-left i, .icon.is-right i {
-    color: rgba(255,255,255);
-}
-
 
 .control.has-icons-right .login-input {
     padding-right: 2.25rem;
 }
-
-
-.login-button {
-    height: 5rem;
-    margin-top: 1.5rem;
-    border-radius: 10px;
-    background: #fff !important;
-    color: #000 !important;
-    font-weight: 700;
-    font-size: clamp(1rem, 1vw + 0.5rem, 2rem);
-    letter-spacing: .02em;
-    border: none;
-    transition: transform .06s ease, box-shadow .12s ease;
-    font-family: 'Montserrat';
-    width: clamp(200px, 55vw, 460px);
+.control.has-icons-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-    .login-button:hover {
-        background: rgb(0, 0, 0, 0.5) !important;
-        cursor: pointer;
-        color: #fff !important;       
-    }
-
-    .login-button:active {
-        transform: translateY(1px);
-    }
-
-/*.notification.is-danger {
-    background: rgba(255, 0, 00, .95);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-}*/
+.button-field {
+    text-align: center;
+}
 
 @media (max-width: 420px) {
     .login-center {

@@ -1,5 +1,4 @@
 ﻿@using Rise.Client.Components
-@using Rise.Client.Components.Dropdown
 @inherits LayoutComponentBase
 
 @* Required *@
@@ -13,19 +12,39 @@
 <MudLayout>
     <RiseAppHeader >
         
-        @* TODO: Replace with real menu and login/profile functionality *@
         <IconMenu>
             <MudIcon Icon="@Icons.Material.Rounded.NotificationsNone" Size="Size.Large"/>
         </IconMenu>
         <ProfileSection>
-            <RiseNavigationDropdown Items="_profilePages" ItemTextFunc="@(p => p.Title)" NavigationUrlFunc="@(p => p.Url)">
+             <AuthorizeView>
+                 <NotAuthorized>
+            <MudMenu>
                 <ActivatorContent>
-                    @* TODO: Replace with user profile image or initials *@
-                    <MudAvatar Class="px-1 border-2  " Variant="Variant.Outlined" Color="Color.Secondary">
-                        <MudText Typo="Typo.body2">AW</MudText>
+                    <MudAvatar Class="px-1 border-2  " Variant="Variant.Outlined" Color="Color.Secondary" @onclick="GoToLogin">
+                        <MudIcon Icon="@Icons.Material.Filled.Login" />
                     </MudAvatar>
                 </ActivatorContent>
-            </RiseNavigationDropdown>
+                
+            </MudMenu>
+                </NotAuthorized>
+             </AuthorizeView>
+
+            <AuthorizeView>
+              <Authorized>
+                 <MudMenu>
+                        <ActivatorContent>
+                            <MudAvatar Class="px-1 border-2" Variant="Variant.Outlined" Color="Color.Secondary">
+                                <MudText Typo="Typo.body2">@UserInitials</MudText>
+                            </MudAvatar>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <MudMenuItem @onclick="GoToAccount" Label="Profiel" />
+                            <MudMenuItem @onclick="GoToAccountSettings" Label="Settings" />
+                            <MudMenuItem @onclick="LogoutAsync" Label="Logout" />
+                        </ChildContent>
+                </MudMenu>
+              </Authorized>
+            </AuthorizeView>
             
         </ProfileSection>
         

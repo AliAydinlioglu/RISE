@@ -3,6 +3,7 @@ using Rise.Client.Identity;
 
 namespace Rise.Client.Components.Main
 {
+    //todo: verwijderen?
     public partial class Header
     {
         private bool isDropdownOpen = false;
@@ -17,14 +18,14 @@ namespace Rise.Client.Components.Main
             isDropdownOpen = false;}
 
         private async Task LogoutAsync(){
-            await AccountManager.LogoutAsync();
-            NavigationManager.NavigateTo("/login");
-            isDropdownOpen = false;}
+            //TODO: logout
+            NavigationManager.NavigateTo("authentication/logout?returnUrl=/", forceLoad: true);
+            
+}
 
 
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
-        [Inject] public required IAccountManager AccountManager { get; set; }
 
     }
 }

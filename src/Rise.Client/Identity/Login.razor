@@ -1,4 +1,7 @@
-@page "/login"
+﻿@page "/login"
+@using Rise.Client.Components
+@using Rise.Client.Components.Form
+@using static Rise.Client.Components.RiseButton
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
 
@@ -7,55 +10,20 @@
 
 <AuthorizeView>
     <Authorized Context="authContext">
-@*         <div class="notification">You're logged in as @authContext.User.Identity?.Name.</div>
-        <div><strong>With the following claims:</strong>
-            <div class="fixed-grid has-2-cols">
-                <div class="grid is-gap-1">
-                    <div class="cel"><strong>Type</strong></div>
-                    <div class="cel"><strong>Value</strong></div>
-                    @foreach (var claim in authContext.User.Claims)
-                    {
-                        <div class="cel">@claim.Type</div>
-                        <div class="cel">@claim.Value</div>
-                    }
-                </div>
-            </div>
-        </div> *@
+
     </Authorized>
 
     <NotAuthorized>
         <div class="login">
-            <div class="login-bg" style='background-image: url("/images/HOGENT bg1.jpg");'></div> @* hier moet de randomNumber var gebruikt worden om willekeurig background te tonen, maar is nog niet gelukt *@
+            <div class="login-bg" style='background-image: url("/images/HOGENT bg@(randomNumber).jpg");'></div>
             <div class="login-overlay"></div>
-
-            <div class="login-center">
-                @foreach (var error in _result.Errors)
-                {
-                    <div class="notification is-danger">@error</div>
-                }
-
+            <div class="login-center">               
                 <section class="login-box">
-                    <EditForm Model="Model" OnValidSubmit="LoginUser" Context="formContext">
-                        @* <FluentValidationValidator /> *@
-
-                        <div class="text-field">
-                            <p class="control has-icons-right">
-                                <InputText @bind-Value="Model.Email"
-                                           type="email"
-                                           autocomplete="username"
-                                           class="input login-input"
-                                           placeholder="Email" />
-                                <span class="icon is-small is-left">
-                                    <i class="fa fa-user"></i>
-                                </span>
-                            </p>
-@*                             <ValidationMessage For="() => Model.Email" class="has-text-danger" />
- *@                        </div>
-
-                        <div class="button-field">
-                            <button type="submit" class="button login-button is-fullwidth">
+                    <EditForm Model="Model" OnValidSubmit="HandleLogin" Context="formContext">
+                        <div class="button-field" >
+                            <RiseButton OnClick="HandleLogin" Size="RiseButtonSize.XLarge" Type="RiseButtonType.Primary">
                                 AANMELDEN
-                            </button>
+                            </RiseButton>
                         </div>
                     </EditForm>
                 </section>

@@ -1,15 +1,15 @@
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Authentication.WebAssembly.Msal;
 using MudBlazor.Services;
 using Rise.Client;
 using Rise.Client.Calendar;
-using Rise.Client.Identity;
 using Rise.Client.Products;
 using Rise.Client.Shared;
+using Rise.Client.StudentActivities;
 using Rise.Shared;
 using Rise.Shared.Calendar;
-using Rise.Client.StudentActivities;
 using Rise.Shared.Products;
 using Rise.Shared.StudentActivities;
 
@@ -27,31 +27,50 @@ try
 
     Log.Information("Starting web application");
 
-// register the cookie handler
-    builder.Services.AddTransient<CookieHandler>();
+    var baseUrl = new Uri(builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
 
-// set up authorization
-    builder.Services.AddAuthorizationCore();
+    // MSAL Authentication (dit registreert automatisch AuthenticationStateProvider)
+    builder.Services.AddMsalAuthentication(options =>
+    {
+        builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+        options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
+        options.ProviderOptions.LoginMode = "redirect";
+    });
 
 // register the custom state provider
     builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
 // register the shared Singletons
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
-// register the account management interface
-    builder.Services.AddScoped(sp => (IAccountManager)sp.GetRequiredService<AuthenticationStateProvider>());
+    builder.Services.AddSingleton<IDateTimeService, Rise.Client.DateTimeService>();
 
-// configure client for auth interactions
-    var baseUrl = new Uri( builder.Configuration["BackendUrl"] ?? "https://localhost:5001");
-    builder.Services.AddHttpClient("SecureApi", opt => opt.BaseAddress = baseUrl)
-        .AddHttpMessageHandler<CookieHandler>();
+    builder.Services.AddHttpClient<IProductService, ProductService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-    builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
-    builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; });
-    builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; });
-    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; }); 
+    builder.Services.AddHttpClient<ICalendarService, CalendarService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddScoped<BaseAddressAuthorizationMessageHandler>(sp =>
+    {
+        var handler = sp.GetRequiredService<AuthorizationMessageHandler>()
+            .ConfigureHandler(
+                authorizedUrls: new[] { baseUrl.ToString() },
+                scopes: new[] { "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user" }
+            );
+        return (BaseAddressAuthorizationMessageHandler)(object)handler;
+    });
+
     builder.Services.AddMudServices();
-    
+
     await builder.Build().RunAsync();
 }
 catch (Exception ex)

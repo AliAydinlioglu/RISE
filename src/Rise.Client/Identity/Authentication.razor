@@ -1,0 +1,24 @@
+﻿@page "/authentication/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<RemoteAuthenticatorView Action="@Action">
+@*     <LoggingIn>
+        <p>Inloggen bij Microsoft...</p>
+    </LoggingIn>
+    <CompletingLoggingIn>
+        <p>Login voltooien...</p>
+    </CompletingLoggingIn>
+    <LogInFailed>
+        <p>Er ging iets mis bij het inloggen. <a href="/login">Probeer opnieuw</a></p>
+    </LogInFailed>
+    <LogOut>
+        <p>Uitloggen...</p>
+    </LogOut>
+    <LogOutSucceeded>
+        <p>Succesvol uitgelogd!</p>
+    </LogOutSucceeded> *@
+</RemoteAuthenticatorView>
+
+@code {
+    [Parameter] public string? Action { get; set; }
+}
