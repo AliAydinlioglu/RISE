@@ -3,7 +3,7 @@ using Rise.Client.Shared;
 
 namespace Rise.Client.Components;
 
-public partial class HeadTitle : ComponentBase
+public partial class RiseHeadTitle : ComponentBase
 {
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string? SubTitle { get; set; }

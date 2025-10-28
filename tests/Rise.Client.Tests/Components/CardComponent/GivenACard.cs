@@ -1,4 +1,4 @@
-using System.Globalization;
+using Rise.Client.Components.Card;
 using Shouldly;
 using Xunit.Abstractions;
 
@@ -58,14 +58,14 @@ public class GivenACard : TestContext
         cut.Find(".stacking-container-background p").TextContent.ShouldBe(expected);
     }
 
-    private IRenderedComponent<Card> RenderComponentCardComponent(
+    private IRenderedComponent<RiseCard> RenderComponentCardComponent(
         string? title = "Test Course",
         string? description = "B. Alice",
         string? cardHeader = "14:00 | GSCHB.1.001",
         DateTime? dateInput = null
     )
     {
-        return RenderComponent<Card>(parameters =>
+        return RenderComponent<RiseCard>(parameters =>
         {
             var date = dateInput ?? new DateTime(2025, 11, 12);
             parameters

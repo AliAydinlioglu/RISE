@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Rise.Shared.Locations;
 
-namespace Rise.Client.Components;
+namespace Rise.Client.Components.Card;
 
-public partial class StudentActivitiesCardContent : Card
+public partial class RiseStudentActivitiesCardContent : RiseCard
 {
     
     [Parameter, EditorRequired] public TimeOnly StartTime { get; set; }
@@ -17,7 +17,7 @@ public partial class StudentActivitiesCardContent : Card
     
     protected override void OnParametersSet()
     {
-        base.OnParametersSet();
+        OnParametersSet();
         LocationString = Location.Name != string.Empty 
             ? $"{Location.Name}" 
             : $"{Location.Street} {Location.HouseNumber} {Location.BusNumber}, {Location.Postcode} {Location.City}";

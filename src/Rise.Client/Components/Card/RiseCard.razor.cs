@@ -2,9 +2,10 @@ using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using static System.String;
 
-namespace Rise.Client.Components;
 
-public partial class Card
+namespace Rise.Client.Components.Card;
+
+public partial class RiseCard
 {
     [Parameter, EditorRequired] public DateTime Date { get; set; }
     [Parameter, EditorRequired] public string Title { get; set; } = Empty;

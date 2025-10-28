@@ -3,7 +3,7 @@
 
 <PageTitle>Studenten Activiteiten</PageTitle>
 <div class="container ">
-    <HeadTitle>Studenten activiteiten</HeadTitle>
+    <RiseHeadTitle>Studenten activiteiten</RiseHeadTitle>
 </div>
 <section class="mt-5 container student-activities">
     @if (studentActivities == null)
@@ -24,24 +24,24 @@
                     <a href="/student-activities/@studentActivity.Id">
                         <!-- Desktop/Tablet: Vertical Card -->
                         <div class="is-hidden-mobile">
-                            <VerticalCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
-                                <StudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
+                            <RiseVerticalCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
+                                <RiseStudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
                                                               Date="studentActivity.Date.LocalDateTime"
                                                               StartTime="studentActivity.StartTime"
                                                               EndTime="studentActivity.EndTime"
                                                               Location="studentActivity.Location"/>
-                            </VerticalCard>
+                            </RiseVerticalCard>
                         </div>
 
                         <!-- Mobile: Regular Card -->
                         <div class="is-hidden-tablet">
-                            <Card Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
-                                <StudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
+                            <RiseCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
+                                <RiseStudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
                                                               Date="studentActivity.Date.LocalDateTime"
                                                               StartTime="studentActivity.StartTime"
                                                               EndTime="studentActivity.EndTime"
                                                               Location="studentActivity.Location"/>
-                            </Card>
+                            </RiseCard>
                         </div>
                     </a>
                 </article>

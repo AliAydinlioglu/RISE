@@ -7,7 +7,7 @@ public static class CalendarTestHelpers
 {
     public static IElement GetVisibleCarouselItem(this IRenderedComponent<CalendarIndex> component)
     {
-        var carousel = component.FindComponent<Carousel>();
+        var carousel = component.FindComponent<RiseCarousel>();
         return carousel.Find(".carousel-item[style*='display: block']");
     }
 

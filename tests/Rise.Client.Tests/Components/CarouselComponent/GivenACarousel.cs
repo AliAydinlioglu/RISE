@@ -56,11 +56,11 @@ public class GivenACarousel : TestContext
         cut.Instance.CurrentIndex.ShouldBe(0);
     }
 
-    private IRenderedComponent<Carousel> CreateCarousel(
+    private IRenderedComponent<RiseCarousel> CreateCarousel(
         List<RenderFragment> items,
         int? currentIndex = null)
     {
-        return RenderComponent<Carousel>(parameters =>
+        return RenderComponent<RiseCarousel>(parameters =>
         {
             parameters.Add(p => p.Items, items);
             if (currentIndex.HasValue)

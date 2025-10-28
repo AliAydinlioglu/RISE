@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Rise.Client.Components;
 
-public partial class Carousel
+public partial class RiseCarousel
 {
     private double _touchStartX;
     private double _touchEndX;

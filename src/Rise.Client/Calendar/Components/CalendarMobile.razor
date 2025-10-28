@@ -2,7 +2,7 @@
 @inherits CalendarIndex
 
 <div class="mb-4">
-   <HeadTitle SubTitle="Swipe om te wisselen tussen tabbladen">@GetCurrentViewTitle()</HeadTitle>
+   <RiseHeadTitle SubTitle="Swipe om te wisselen tussen tabbladen">@GetCurrentViewTitle()</RiseHeadTitle>
     
 </div>
 <div class="tabs is-centered mb-4">
@@ -27,4 +27,4 @@
         </li>
     </ul>
 </div>
-<Carousel Items="_carouselItems" CurrentIndex="_currentView" CurrentIndexChanged="OnViewChanged"/>
+<RiseCarousel Items="_carouselItems" CurrentIndex="_currentView" CurrentIndexChanged="OnViewChanged"/>

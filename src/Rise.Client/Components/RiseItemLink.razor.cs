@@ -3,7 +3,7 @@ using MudBlazor;
 
 namespace Rise.Client.Components;
 
-public partial class ItemLink : ComponentBase
+public partial class RiseItemLink : ComponentBase
 {
     [Parameter, EditorRequired] public string Href { get; set; } = null!;
     [Parameter, EditorRequired] public string Icon { get; set; }

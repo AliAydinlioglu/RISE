@@ -1,5 +1,5 @@
 using Rise.Client.Calendar.Fakers;
-using Rise.Client.Components;
+using Rise.Client.Components.Card;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
 using Rise.Shared;
@@ -54,15 +54,13 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
     {
         var cut = RenderCalendarComponent();
 
-        var cards = cut.FindComponents<Card>();
+        var cards = cut.FindComponents<RiseCard>();
         cards.Count.ShouldBeGreaterThan(0);
     }
     
     protected IRenderedComponent<TCalendarComonent> RenderCalendarComponent(bool loading = false)
     {
-        var calendarServiceMock = loading
-            ? new FakeCalendarService(true)
-            : new FakeCalendarService(false);
+        var calendarServiceMock = new FakeCalendarService(loading);
 
         Services.AddScoped<ICalendarService>(_ => calendarServiceMock);
         return RenderComponent<TCalendarComonent>();

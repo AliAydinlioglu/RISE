@@ -3,7 +3,7 @@ using Rise.Client.Shared;
 
 namespace Rise.Client.Components;
 
-public partial class AppHeader : ComponentBase, IDisposable
+public partial class RiseAppHeader : ComponentBase, IDisposable
 {
     
     [Parameter, EditorRequired] public RenderFragment IconMenu { get; set; }

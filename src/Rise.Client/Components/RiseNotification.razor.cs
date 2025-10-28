@@ -3,7 +3,7 @@ using MudBlazor;
 
 namespace Rise.Client.Components;
 
-public partial class Notification : ComponentBase
+public partial class RiseNotification : ComponentBase
 {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Subtitle { get; set; } = string.Empty;
