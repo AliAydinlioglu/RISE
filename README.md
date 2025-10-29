@@ -255,9 +255,11 @@ app.Run();
 
 #### B. Blazor WASM
 Install package in Rise.Client:
-dotnet add package Microsoft.Authentication.WebAssembly.Msal
+````dotnet add package Microsoft.Authentication.WebAssembly.Msal````
+
 
 Add to Rise.Client/Program.cs:
+````csharp
     builder.Services.AddMsalAuthentication(options =>
     {
         builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
@@ -265,20 +267,23 @@ Add to Rise.Client/Program.cs:
         options.ProviderOptions.LoginMode = "redirect";
         options.ProviderOptions.Cache.CacheLocation = "localStorage"; 
     });
-    
+````    
 Last option will make sure that your token is saved in localstorage, so that when you refresh a page you're still logged in. You can also change it with 'sessionStorage' or 'memory'.
 
 Add to Rise.Client/appsettings.json
+````json
   "AzureAd": {
     "Authority": "https://login.microsoftonline.com/052a5cbb-135d-45c5-b50e-689b56d29142",
     "ClientId": "dbcbd040-8ba4-4ed9-9004-fafff85674c7",
     "ValidateAuthority": true
   },
+````
 
 Add to Rise.Client/wwwroot/index.html
+````html
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
-
+````
 ## Solution Structure Overview
 
 The template is designed as a boilerplate or template for .NET solutions, following best practices for structuring projects, separation of concerns, and maintainability. Here's a breakdown of the solution structure and its workings, explained:
