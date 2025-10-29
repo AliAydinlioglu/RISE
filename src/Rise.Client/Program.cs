@@ -35,6 +35,7 @@ try
         builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
         options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
         options.ProviderOptions.LoginMode = "redirect";
+        options.ProviderOptions.Cache.CacheLocation = "localStorage";
     });
 
 // register the custom state provider

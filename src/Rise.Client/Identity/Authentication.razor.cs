@@ -1,0 +1,58 @@
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Rise.Shared.Identity.Accounts;
+using System.Net.Http.Json;
+
+namespace Rise.Client.Identity;
+
+public partial class Authentication
+{
+    [Parameter]
+    public string? Action { get; set; }
+
+    [Inject]
+    private IHttpClientFactory HttpClientFactory { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private async Task OnLoginSucceeded(RemoteAuthenticationState state)
+    {
+        try
+        {
+            Log.Information("Login succeeded, calling backend to create/update user");
+
+            var httpClient = HttpClientFactory.CreateClient("SecureApi");
+            
+
+            var response = await httpClient.PostAsync("/api/identity/accounts/login-callback", null);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<Result<AccountResponse.LoginCallback>>();
+
+                if (result?.IsSuccess == true)
+                {
+                    Log.Information("User created/updated successfully: {Email}", result.Value?.Email);
+                }
+                else
+                {
+                    Log.Warning("Failed to create/update user: {Errors}", string.Join(", ", result?.Errors ?? Array.Empty<string>()));
+                }
+            }
+            else
+            {
+                Log.Error("Failed to create/update user: {StatusCode}", response.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error calling login-callback endpoint");
+        }
+    }
+    private void OnLogoutSucceeded(RemoteAuthenticationState state)
+    {
+        Log.Information("Logout succeeded, redirecting to calendar");
+        Navigation.NavigateTo("/kalender", forceLoad: true);
+    }
+}

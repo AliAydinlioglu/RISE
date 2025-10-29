@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using MudBlazor;
 using Rise.Client.Identity;
 
@@ -7,6 +8,12 @@ namespace Rise.Client.Layout;
 
 public partial class MainLayout
 {
+    [Inject]
+    private SignOutSessionStateManager SignOutManager { get; set; } = default!;
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthenticationState { get; set; }
 
     private void GoToAccountSettings()
     {
@@ -17,19 +24,16 @@ public partial class MainLayout
         NavigationManager.NavigateTo("/account");
     }
 
-    private void LogoutAsync()
+    private async Task LogoutAsync()
     {
-        //TODO: implement logout
-        NavigationManager.NavigateTo("authentication/logout?returnUrl=/", forceLoad: true);
+        await SignOutManager.SetSignOutState();
+        NavigationManager.NavigateTo("authentication/logout");
     }
 
     void GoToLogin() { NavigationManager.NavigateTo("/login"); }
 
 
-    [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
-    [CascadingParameter]
-    private Task<AuthenticationState>? AuthenticationState { get; set; }
+
 
     private string UserInitials { get; set; } = "?";
     private string UserName { get; set; } = "";

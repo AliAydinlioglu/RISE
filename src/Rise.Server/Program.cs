@@ -77,6 +77,21 @@ try
         options.Cookie.HttpOnly = true;
         options.Cookie.IsEssential = true;
     });
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowBlazorClient", policy =>
+        {
+            policy.WithOrigins(
+                    "https://localhost:7214",
+                    "http://localhost:7214",
+                    "https://localhost:5001",
+                    "http://localhost:5001"
+                )
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
+    });
     var app = builder.Build();
     // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts) 
     // See: https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli
@@ -98,6 +113,7 @@ try
         .UseStaticFiles()
         .UseDefaultExceptionHandler()
         .UseSession()
+        .UseCors("AllowBlazorClient")
         .UseAuthentication()
         .UseAuthorization()
         .UseFastEndpoints(o =>
