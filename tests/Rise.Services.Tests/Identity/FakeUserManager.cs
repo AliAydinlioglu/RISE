@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Rise.Persistence;
 using Rise.Persistence.Models.Identity;
 
@@ -10,8 +11,12 @@ namespace Rise.Services.Tests.Identity;
 
 public static class FakeUserManager 
 {
-    public static UserManager<ApplicationUser> Generate(ApplicationDbContext? dbContext = null)
+    public static UserManager<ApplicationUser> Generate(
+        ApplicationDbContext? dbContext = null, 
+        Exception? exceptionWhenUpdating = null, 
+        Exception? exceptionWhenCreating = null)
     {
+        // store might be initialized for seeding it with data
         var store = dbContext != null
             ? new UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>(dbContext)
             : Substitute.For<IUserStore<ApplicationUser>>();
@@ -24,7 +29,7 @@ public static class FakeUserManager
         var passwordHasher = new PasswordHasher<ApplicationUser>();
         var logger = Substitute.For<ILogger<UserManager<ApplicationUser>>>();
 
-        return new UserManager<ApplicationUser>(
+        var userManager = Substitute.ForPartsOf<UserManager<ApplicationUser>>(
             store, 
             identityOptions, 
             passwordHasher, 
@@ -35,5 +40,19 @@ public static class FakeUserManager
             null!, 
             logger
         );
+
+        if (exceptionWhenCreating != null)
+        {
+            userManager.CreateAsync(Arg.Any<ApplicationUser>())
+                .ThrowsAsync(exceptionWhenCreating);
+        }
+
+        if (exceptionWhenUpdating != null)
+        {
+            userManager.UpdateAsync(Arg.Any<ApplicationUser>())
+                .ThrowsAsync(exceptionWhenUpdating);
+        }
+        
+        return userManager;
     }
 }

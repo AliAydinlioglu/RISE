@@ -41,18 +41,18 @@ public class UserService(
         if (claimsPrincipal is not { Identity.IsAuthenticated: true })
             return Result.Unauthorized("User is not authenticated");
 
+        var oidString = claimsPrincipal.GetOid();
+
+        if (string.IsNullOrWhiteSpace(oidString))
+            return Result.Unauthorized("Oid is missing, so user is not authenticated");
+        
+        if(!Guid.TryParse(oidString, out var oid))
+            return Result.Error("Oid is in a wrong format");
+        
         var email = claimsPrincipal.GetEmail();
         
         if(string.IsNullOrWhiteSpace(email))
             return Result.Error("Email is required");
-        
-        var oidString = claimsPrincipal.GetOid();
-
-        if (string.IsNullOrWhiteSpace(oidString))
-            return Result.Error("Oid is required");
-        
-        if(!Guid.TryParse(oidString, out var oid))
-            return Result.Error("Oid is in a wrong format");
         
         var user = await GetApplicationUserAsync(oid, SsoProviders.MicrosoftEntra, email);
         
@@ -112,7 +112,9 @@ public class UserService(
             await userManager.CreateAsync(user);
             return Result.Created(await MapToLoginCallbackModelAsync(user));
         }
-        catch (DbUpdateException ex) when (ex.InnerException?.Message.Contains("UNIQUE") == true)
+        catch (DbUpdateException ex) 
+            when (ex.GetBaseException().Message.Contains("unique", StringComparison.OrdinalIgnoreCase) || 
+                  ex.GetBaseException().Message.Contains("duplicate", StringComparison.OrdinalIgnoreCase))
         {
             // this catch is triggered by unique key violation. Possible reason: request was sent twice
             var existingUser = await GetApplicationUserAsync(oid, ssoProvider, email);

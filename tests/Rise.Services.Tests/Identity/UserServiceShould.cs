@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Ardalis.Result;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using Rise.Persistence;
 using Rise.Persistence.Models.Identity;
 using Rise.Services.Identity;
@@ -12,6 +13,7 @@ namespace Rise.Services.Tests.Identity;
 public class UserServiceShould
 {
     private const string Oid = "62f44ebb-1305-40ed-8c51-1d8858289cb2";
+    private const string Email = "example@example.com";
     
     [Fact]
     public async Task ReturnPublicRole_WhenUserIsUnknown()
@@ -82,7 +84,9 @@ public class UserServiceShould
         //assert
         result.IsSuccess.ShouldBeFalse();
         result.Status.ShouldBe(ResultStatus.Unauthorized);
-        result.Errors.ShouldHaveSingleItem("User is not authenticated");
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("User is not authenticated");
     }
     
     [Fact]
@@ -91,8 +95,7 @@ public class UserServiceShould
         // arrange
         var roleManager = FakeRoleManager.Generate();
         var userManager = FakeUserManager.Generate();
-        var identity = new  ClaimsIdentity(); 
-        var sessionProvider = new FakeSessionContextProvider(new ClaimsPrincipal(identity));
+        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.Unauthenticated());
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
@@ -101,7 +104,9 @@ public class UserServiceShould
         //assert
         result.IsSuccess.ShouldBeFalse();
         result.Status.ShouldBe(ResultStatus.Unauthorized);
-        result.Errors.ShouldHaveSingleItem("User is not authenticated");
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("User is not authenticated");
     }
     
     [Fact]
@@ -109,9 +114,8 @@ public class UserServiceShould
     {
         // arrange
         var roleManager = FakeRoleManager.Generate();
-        var userManager = FakeUserManager.Generate();
-        var identity = new  ClaimsIdentity(new List<Claim>(), "SomeAuthType"); 
-        var sessionProvider = new FakeSessionContextProvider(new ClaimsPrincipal(identity));
+        var userManager = FakeUserManager.Generate(); 
+        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.WithoutClaims());
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
@@ -120,7 +124,9 @@ public class UserServiceShould
         //assert
         result.IsSuccess.ShouldBeFalse();
         result.Status.ShouldBe(ResultStatus.Unauthorized);
-        result.Errors.ShouldHaveSingleItem("Oid of user is not known and therefore not authenticated");
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("Oid is missing, so user is not authenticated");
     }
     
     [Fact]
@@ -129,8 +135,7 @@ public class UserServiceShould
         // arrange
         var roleManager = FakeRoleManager.Generate();
         var userManager = FakeUserManager.Generate();
-        var identity = new  ClaimsIdentity(new List<Claim>(){ new("oid","abc") }, "SomeAuthType"); 
-        var sessionProvider = new FakeSessionContextProvider(new ClaimsPrincipal(identity));
+        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.WithOidOnly("abc"));
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
@@ -139,60 +144,48 @@ public class UserServiceShould
         //assert
         result.IsSuccess.ShouldBeFalse();
         result.Status.ShouldBe(ResultStatus.Error);
-        result.Errors.ShouldHaveSingleItem("Oid is in a wrong format");
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("Oid is in a wrong format");
     }
     
     [Fact]
-    public async Task ReturnCreatedResult_WhenUserIsNotFound()
+    public async Task ReturnErrorResult_WhenEmailNotProvided()
     {
         // arrange
-        await using var dbContext = new ApplicationDbContext(GetDbContextOptions(nameof(ReturnCreatedResult_WhenUserIsNotFound)));
-
-        var email = "example@example.com";
-        
         var roleManager = FakeRoleManager.Generate();
-        var userManager = FakeUserManager.Generate(dbContext);
-        
-        var identity = new  ClaimsIdentity([
-            new Claim("oid",Oid), 
-            new Claim(ClaimTypes.Email, email)
-        ], "SomeAuthType"); 
-        var sessionProvider = new FakeSessionContextProvider(new ClaimsPrincipal(identity));
+        var userManager = FakeUserManager.Generate();
+        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.WithOidOnly(Oid));
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
         var result =  await userService.GetOrCreateUserAsync();
         
         //assert
-        result.IsSuccess.ShouldBeTrue();
-        result.Status.ShouldBe(ResultStatus.Created);
-        result.Value.Email.ShouldBe(email);
-        result.Value.Roles.ShouldBeEmpty();
+        result.IsSuccess.ShouldBeFalse();
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("Email is required");
     }
     
     [Fact]
-    public async Task ReturnSuccessResult_WhenUserIsFound()
+    public async Task ReturnSuccessResult_WhenUserIsFoundAndUpdateSucceeds()
     {
         // arrange
-        await using var dbContext = new ApplicationDbContext(GetDbContextOptions(nameof(ReturnSuccessResult_WhenUserIsFound)));
+        await using var dbContext = new ApplicationDbContext(GetDbContextOptions(nameof(ReturnSuccessResult_WhenUserIsFoundAndUpdateSucceeds)));
 
         var oid = new Guid(Oid);
-        var email = "example@example.com";
-        var role = nameof(AppRoles.RegularStudent);
-        
-        var identity = new  ClaimsIdentity([
-            new Claim("oid",Oid), 
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, role)
-        ], "SomeAuthType"); 
-        var sessionProvider = new FakeSessionContextProvider(new ClaimsPrincipal(identity));
+        const string role = nameof(AppRoles.RegularStudent);
+        var claimsPrincipal = FakeClaimsPrincipal.WithClaimsForLoginCallback(Oid, Email, role);
+        var sessionProvider = new FakeSessionContextProvider(claimsPrincipal);
         
         var roleManager = FakeRoleManager.Generate(dbContext);
         await roleManager.CreateAsync(new ApplicationRole(AppRoles.RegularStudent, role));
         
         var userManager = FakeUserManager.Generate(dbContext);
 
-        var fakeApplicationUser = FakeApplicationUser.Generate(oid);
+        var fakeApplicationUser = FakeApplicationUser.New(oid);
         await userManager.CreateAsync(fakeApplicationUser);
         await userManager.AddToRoleAsync(fakeApplicationUser, role);
         
@@ -204,8 +197,112 @@ public class UserServiceShould
         //assert
         result.IsSuccess.ShouldBeTrue();
         result.Status.ShouldBe(ResultStatus.Ok);
-        result.Value.Email.ShouldBe(email);
-        result.Value.Roles.ShouldHaveSingleItem(role);
+        result.Value.Email.ShouldBe(Email);
+        result.Value.Roles.ShouldHaveSingleItem().ShouldBe(role);
+    }
+    
+    [Fact]
+    public async Task ReturnErrorResult_WhenUserIsFoundAndUpdateFails()
+    {
+        // arrange
+        await using var dbContext = new ApplicationDbContext(GetDbContextOptions(nameof(ReturnErrorResult_WhenUserIsFoundAndUpdateFails)));
+
+        var oid = new Guid(Oid);
+        const string role = nameof(AppRoles.RegularStudent);
+        var claimsPrincipal = FakeClaimsPrincipal.WithClaimsForLoginCallback(Oid, Email, role);
+        var sessionProvider = new FakeSessionContextProvider(claimsPrincipal);
+        
+        var roleManager = FakeRoleManager.Generate(dbContext);
+        await roleManager.CreateAsync(new ApplicationRole(AppRoles.RegularStudent, role));
+        
+        var userManager = FakeUserManager.Generate(dbContext, exceptionWhenUpdating: new Exception("store exception"));
+        
+        var fakeApplicationUser = FakeApplicationUser.New(oid);
+        await userManager.CreateAsync(fakeApplicationUser);
+        await userManager.AddToRoleAsync(fakeApplicationUser, role);
+        
+        var userService = new UserService(roleManager, userManager, sessionProvider);
+        
+        //act
+        var result =  await userService.GetOrCreateUserAsync();
+        
+        //assert
+        result.IsSuccess.ShouldBeFalse();
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("Something went wrong when updating user");
+    }
+    
+    [Fact]
+    public async Task ReturnCreatedResult_WhenUserIsNotFoundAndCreateSucceeds()
+    {
+        // arrange
+        await using var dbContext = new ApplicationDbContext(GetDbContextOptions(nameof(ReturnCreatedResult_WhenUserIsNotFoundAndCreateSucceeds)));
+        
+        var roleManager = FakeRoleManager.Generate();
+        var userManager = FakeUserManager.Generate(dbContext);
+
+        var claimsPrincipal = FakeClaimsPrincipal.WithClaimsForLoginCallback(Oid, Email, "test"); 
+        var sessionProvider = new FakeSessionContextProvider(claimsPrincipal);
+        var userService = new UserService(roleManager, userManager, sessionProvider);
+        
+        //act
+        var result =  await userService.GetOrCreateUserAsync();
+        
+        //assert
+        result.IsSuccess.ShouldBeTrue();
+        result.Status.ShouldBe(ResultStatus.Created);
+        result.Value.Email.ShouldBe(Email);
+        result.Value.Roles.ShouldBeEmpty();
+    }
+    
+    [Fact]
+    public async Task ReturnCreatedResult_WhenUserIsNotFoundAndCreateFailsAndUserStillNotFound()
+    {
+        // arrange
+        await using var dbContext = new ApplicationDbContext(GetDbContextOptions(nameof(ReturnCreatedResult_WhenUserIsNotFoundAndCreateFailsAndUserStillNotFound)));
+        
+        var roleManager = FakeRoleManager.Generate();
+        var userManager = FakeUserManager.Generate(dbContext, exceptionWhenCreating: new DbUpdateException("unique constraint violation"));
+
+        var claimsPrincipal = FakeClaimsPrincipal.WithClaimsForLoginCallback(Oid, Email, "test"); 
+        var sessionProvider = new FakeSessionContextProvider(claimsPrincipal);
+        var userService = new UserService(roleManager, userManager, sessionProvider);
+        
+        //act
+        var result =  await userService.GetOrCreateUserAsync();
+        
+        //assert
+        result.IsSuccess.ShouldBeFalse();
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("User with this info is already present, but for some reason not found.");
+    }
+    
+    [Fact]
+    public async Task ReturnCreatedResult_WhenUserIsNotFoundAndCreateFailsUnexpected()
+    {
+        // arrange
+        await using var dbContext = new ApplicationDbContext(GetDbContextOptions(nameof(ReturnCreatedResult_WhenUserIsNotFoundAndCreateFailsAndUserStillNotFound)));
+        
+        var roleManager = FakeRoleManager.Generate();
+        var userManager = FakeUserManager.Generate(dbContext, exceptionWhenCreating: new Exception("store create fails"));
+
+        var claimsPrincipal = FakeClaimsPrincipal.WithClaimsForLoginCallback(Oid, Email, "test"); 
+        var sessionProvider = new FakeSessionContextProvider(claimsPrincipal);
+        var userService = new UserService(roleManager, userManager, sessionProvider);
+        
+        //act
+        var result =  await userService.GetOrCreateUserAsync();
+        
+        //assert
+        result.IsSuccess.ShouldBeFalse();
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.Errors
+            .ShouldHaveSingleItem()
+            .ShouldBe("Something went wrong when creating user");
     }
     
     private static DbContextOptions<ApplicationDbContext> GetDbContextOptions(string dbName)

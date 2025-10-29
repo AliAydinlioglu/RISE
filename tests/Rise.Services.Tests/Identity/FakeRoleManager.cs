@@ -11,6 +11,7 @@ public static class FakeRoleManager
 {
     public static RoleManager<ApplicationRole> Generate(ApplicationDbContext? dbContext = null)
     {
+        // store might be initialized for seeding it with data
         var store = dbContext != null
             ? new RoleStore<ApplicationRole, ApplicationDbContext, Guid>(dbContext)
             : Substitute.For<IRoleStore<ApplicationRole>>();

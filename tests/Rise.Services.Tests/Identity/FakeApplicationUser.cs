@@ -5,15 +5,12 @@ namespace Rise.Services.Tests.Identity;
 
 public static class FakeApplicationUser
 {
-    public static ApplicationUser Generate(Guid ssoId)
-    {
-        return new ApplicationUser(
-            "example@example.com", 
+    public static ApplicationUser New(Guid ssoId) 
+        => new("example@example.com", 
             "example", 
             "example", 
             null, 
             DateTimeOffset.UtcNow, 
             ssoId,
             SsoProviders.MicrosoftEntra);
-    }
 }
