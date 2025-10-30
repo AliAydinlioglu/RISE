@@ -41,7 +41,7 @@ pipeline {
                     // Use credentials for private repository
                     checkout([
                         $class: 'GitSCM',
-                        branches: [[name: '*/main']],
+                        branches: [[name: '*/ops/jenkins-configuratie']],
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [],
                         submoduleCfg: [],
