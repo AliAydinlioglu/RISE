@@ -114,7 +114,7 @@ try
                 ep.PostProcessor<GlobalResponseLogger>(Order.Before);
                 
             };
-        })
+        });
 #if DEBUG
         .UseCors("AllowLocalhost");
 #else
