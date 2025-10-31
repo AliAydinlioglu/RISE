@@ -101,7 +101,21 @@ try
             {
                 Log.Warning(ex, "Migrate failed; proceeding with EnsureCreated schema in {Env}.", app.Environment.EnvironmentName);
             }
-            await dbSeeder.SeedAsync();
+            var canSeed = false;
+            try
+            {
+                // If Identity tables exist, this query will succeed
+                _ = await dbContext.Users.AnyAsync();
+                canSeed = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Skipping seed: base tables not present yet in {Env}.", app.Environment.EnvironmentName);
+            }
+            if (canSeed)
+            {
+                await dbSeeder.SeedAsync();
+            }
         }
     }
     // Theses middlewares are strict in order of calling!
