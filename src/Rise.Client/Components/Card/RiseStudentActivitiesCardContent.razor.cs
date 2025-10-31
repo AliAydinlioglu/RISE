@@ -17,7 +17,6 @@ public partial class RiseStudentActivitiesCardContent : RiseCard
     
     protected override void OnParametersSet()
     {
-        OnParametersSet();
         LocationString = Location.Name != string.Empty 
             ? $"{Location.Name}" 
             : $"{Location.Street} {Location.HouseNumber} {Location.BusNumber}, {Location.Postcode} {Location.City}";
