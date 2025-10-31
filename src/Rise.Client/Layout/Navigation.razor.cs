@@ -36,7 +36,7 @@ public partial class Navigation : ComponentBase
   
  
 }
-// TODO: Replace with actual navigation items. These are just placeholders.
+// TODO: Voorlopige oplossing, wordt vervangen door Wim's implementatie van navitems.
 
 public class NavItem
 {

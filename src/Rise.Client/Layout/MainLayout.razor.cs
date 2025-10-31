@@ -4,6 +4,14 @@ namespace Rise.Client.Layout;
 
 public partial class MainLayout
 {
+    private record PageInfo(string Title, string Url);
+    
+    private List<PageInfo> _profilePages = new()
+    {
+        new("Profiel", "/profile"),
+        new("Instellingen", "/settings"),
+        new ("Uitloggen", "/logout")
+    };
     
     MudTheme MyCustomTheme = new MudTheme()
     {

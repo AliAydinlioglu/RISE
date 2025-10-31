@@ -1,4 +1,5 @@
 ﻿@using Rise.Client.Components
+@using Rise.Client.Components.Dropdown
 @inherits LayoutComponentBase
 
 @* Required *@
@@ -17,34 +18,14 @@
             <MudIcon Icon="@Icons.Material.Rounded.NotificationsNone" Size="Size.Large"/>
         </IconMenu>
         <ProfileSection>
-            <MudMenu>
+            <RiseNavigationDropdown Items="_profilePages" ItemTextFunc="@(p => p.Title)" NavigationUrlFunc="@(p => p.Url)">
                 <ActivatorContent>
+                    @* TODO: Replace with user profile image or initials *@
                     <MudAvatar Class="px-1 border-2  " Variant="Variant.Outlined" Color="Color.Secondary">
                         <MudText Typo="Typo.body2">AW</MudText>
                     </MudAvatar>
                 </ActivatorContent>
-                <ChildContent>
-                    <MudMenuItem Label="Profiel" />
-                    <MudMenuItem Label="Settings" />
-                    <MudMenuItem Label="Logout" />
-                </ChildContent>
-            </MudMenu>
-            
-            @* TODO: Proper login *@
-            @* <AuthorizeView> *@
-            @*   <Authorized> *@
-            @*     <MudMenu>
-            @*            <ActivatorContent>
-            @*               <MudAvatar Class="px-1 border-2  " Variant="Variant.Outlined" Color="Color.Secondary">
-                                <MudText Typo="Typo.body2">AW</MudText>
-                            </MudAvatar>
-                         </ActivatorContent>
-                  <ChildContent>
-                    ...
-                    </ChildContent>
-                </MudMenu>
-            @*   </Authorized> *@
-            @* </AuthorizeView> *@
+            </RiseNavigationDropdown>
             
         </ProfileSection>
         
