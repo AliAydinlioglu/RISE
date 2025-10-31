@@ -333,3 +333,114 @@ Gebruik altijd het `TItem` type parameter expliciet:
     }
 }
 ```
+
+## 5. RiseAppHeader Component 
+Component voor de app header (balk bovenaan de pagina). Deze wordt enkel gebruikt in MainLayout.razor
+
+### Parameters 
+| Parameter          | Type                   | Vereist | Default          | Beschrijving                                                                  |
+|--------------------|------------------------|---------|------------------|-------------------------------------------------------------------------------|
+| `IconMenu`         | `RenderFragment`       | ✅ | -                | Sectie waar allerlei icon buttons kunenn worden geplaatst zoals announcements |
+| `ProfileSection`   | `RenderFragment` | ✅ | -                | Hier wordt de profiel sectie geplaatst (login/logout/etc)                     |
+
+### TitleState
+TitleState is een Singleton service die de pagina titel beheert. Deze neemt de titel in het RiseHeadTitle component uit de pagina en hergebruikt die voor de mobiele secondary header.
+Zie PageTitleService in Client/Shared voor de singleton service.
+
+
+```razor
+<RiseAppHeader >
+  <IconMenu>
+    <!-- Hier komt dan de content van de IconMenu. Dit is zelf te bepalen -->
+  </IconMenu>
+  <ProfileSection>
+    <!-- Hier komt dan de content van de ProfileSection. Dit is zelf te bepalen -->
+   </ProfileSection>
+</RiseAppHeader>
+```
+
+## 6. RiseHeadTitle Component
+Algemene component voor de paginatitel. Deze is verplicht op pagina's als je een mobiele secondart header wilt.
+### Parameters 
+| Parameter      | Type             | Vereist | Default          | Beschrijving                                          |
+|----------------|------------------|---------|------------------|-------------------------------------------------------|
+| `ChildContent` | `RenderFragment` | ✅ | -                | Hier komt de hoofdtitel van de pagina.                |
+| `SubTitle`     | `string`         | ❌ | -                | Een extra kleinere titel die onder de hoofdtitel komt |   
+| `ImageUrl`     | `string`        | ❌ | -                | Optionele afbeelding als achtergrond van de header    |
+| `OverlayColor `| `string`        | ❌ | `rgba(0, 0, 0, 0.5)` | Kleur overlay over de afbeelding (indien gebruikt)     |
+
+### BackgroundStyle
+Deze property geeft de CSS stijl voor de achtergrond van de header. Indien `ImageUrl` is opgegeven, wordt deze gebruikt als achtergrondafbeelding. Anders wordt de primarykleur gebruikt.
+
+### TitleState / OnParamatersSet
+Bij het instantiëren van de component wordt de `TitleState` singleton service bijgewerkt met de titel zodat die gebruikt kan worden voor de mobiele header
+
+```razor
+<!-- Voorbeeld van een image header -->
+<RiseHeadTitle SubTitle="bla bla bla bla bla " ImageUrl="social.JPG">Home</RiseHeadTitle>
+
+<!-- Voorbeeld van een standaard header -->
+<RiseHeadTitle>Home</RiseHeadTitle>
+```
+
+## 7. RiseHomeBlock Component
+Deze Component wordt gebruikt voor de blokken op de homepage. Basically een wrapper rond RiseItemLink Component 
+### Parameters
+| Parameter       | Type             | Vereist | Default             | Beschrijving                                                                                                                   |
+|-----------------|------------------|---------|---------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `Href`          | `string`         | ✅ | `null!`              | link naar waar de blok moet doorsturen.                                                                                        |
+| `Icon`          | `string`         |  ✅ | -                   | Het icoon dat gebruikt wordt. Deze moet uit de Mudblazor icon gallery komen voorbeeld formaat: @Icons.Material.Filled.Favorite |   
+| `ChildContent`  | `RenderFragment` | ✅ | -                   | Wordt gebruikt voor de label                                                                                                   |
+
+### Werking RiseHomeBlock op homepage
+De Home blokken worden doormiddel van een ['custom attribute'](https://learn.microsoft.com/en-us/dotnet/standard/attributes/writing-custom-attributes) automatisch gegenereerd. 
+Via `[HomeBlock(icon:@Icons.Material.Outlined.EventNote, label:"label", route:"/home")]` toe te voegen op de pagina. Deze worden door de HomeBlockService bij builden eenmalig opgehaald en kunnen opgevraagd worden via de singleton. Hiermee kan de lijst nog verder gefilterd worden en gesorteerd naar wens.
+`
+
+```razor
+<!-- Voorbeeld van een homeblock -->
+<RiseHomeBlock Href="/home" Icon="@Icons.Material.Outlined.House">Homel</RiseHomeBlock>
+
+```
+
+## 8. RiseItemLink Component
+Deze component laat toe om een eenvoudige klikbare navigatie te maken met een icoon en label.
+### Parameters
+| Parameter      | Type             | Vereist | Default             | Beschrijving                                                                                                                |
+|----------------|------------------|---------|---------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `Href`         | `string`         | ✅ | `null!`              | link naar waar  moet doorsturen.                                                                                        |
+| `Icon`         | `string`         |  ✅ | -                   | Het icoon dat gebruikt wordt. Deze moet uit de Mudblazor icon gallery komen voorbeeld formaat: @Icons.Material.Filled.Favorite |   
+| `ChildContent` | `RenderFragment` | ✅ | -                   | Wordt gebruikt voor de label                                                                                                |
+| `Class`        | `string`         |  ❌ | -                   | Extra CSS classes om toe te voegen aan de root element                                                                      |
+| `Style`        | `string`         |  ❌ | -                   | Extra CSS styles om toe te voegen aan de root element                                                                       |
+| `Size` | `Size`|         |  ❌ | `Size.Medium`       | Bepaalt de grootte van het icoon (Small, Medium, Large)                                                                     |
+
+```razor
+<!-- Voorbeeld van een homeblock -->
+    <RiseItemLink Href="/link" Icon="@Icons.Material.Outlined.House" Size="Size.Large"  Class="custom-class" Style="margin-top:10px;">
+        label
+    </RiseItemLink>
+```
+
+## 9. Notification Component
+Deze component laat toe om een eenvoudige klikbare navigatie te maken met een icoon en label.
+### Parameters
+| Parameter  | Type             | Vereist | Default         | Beschrijving                                              |
+|------------|------------------|---------|-----------------|-----------------------------------------------------------|
+| `Title`    | `string`         | ✅ | `string.Empty` | HoofdTitel van de notificatie.                            |
+| `Subtitle` | `string`         |  ❌ | `string.Empty`              | Secondaire titel, iets kleiner                            |   
+| `Severity` | `NotificationSeverity` | ✅ | -               | Hiermee wordt het type notificatie bepaalt                |
+| `ChildContent`    | `RenderFragment`         |  ❌ | -               | Hiermee kan de inhoud van de notificatie worden ingesteld |
+
+### Opties voor de notificatie
+- `NotificationSeverity.Info` - Informatieve notificatie (zwart)
+- `NotificationSeverity.Success` - Succes notificatie (groen)
+- `NotificationSeverity.Warning` - Waarschuwing notificatie (oranje)
+- `NotificationSeverity.Error` - Fout notificatie (rood)
+Deze enum wordt static ingeladen over heel de site dus kan je zonder NotificationSeverity te prefixen gebruiken.
+```razor
+<!-- Voorbeeld van een homeblock -->
+    <RiseNotification Title="Hoofdtitel" Subtitle="bla bla bla" Severity="Info">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    </RiseItemLink>
+```

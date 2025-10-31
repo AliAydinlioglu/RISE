@@ -5,7 +5,7 @@ namespace Rise.Client.Components;
 
 public partial class RiseHeadTitle : ComponentBase
 {
-    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter, EditorRequired] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string? SubTitle { get; set; }
     [Parameter] public string? ImageUrl { get; set; }
     [Parameter] public string OverlayColor { get; set; } = "rgba(0,0,0,0.35)";
