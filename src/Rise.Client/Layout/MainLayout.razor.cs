@@ -122,6 +122,15 @@ public partial class MainLayout
                 FontWeight = "800"
             },
             
+            H2 = new H2Typography()
+            {
+                FontWeight = "800"
+            },
+            H3 = new H3Typography()
+            {
+                FontWeight = "800"
+            },
+            
             Button = new ButtonTypography()
             {
                 FontWeight = "800"

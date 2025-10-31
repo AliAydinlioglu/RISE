@@ -113,7 +113,9 @@ header #navbarBasicExample{
     background-color: var(--mud-palette-tertiary-hover)!important;
 }
 
-
+.head-title-container{
+    padding: 15px 0;
+}
 
 @media only screen and (min-width: 770px)   {
     main {

@@ -1,9 +1,11 @@
-.head-title {
-    background: black;
-    color: white;
-    padding: 1em;
+.hero-background-overlay{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
 }
 
-.head-title .h2 {
-    text-align: center;
+.headtitle-content{
+    position: relative;
+    z-index: 2;
 }
