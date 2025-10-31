@@ -110,7 +110,17 @@ try
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Skipping seed: base tables not present yet in {Env}.", app.Environment.EnvironmentName);
+                Log.Warning(ex, "Base tables not present; attempting full schema (re)create in {Env}.", app.Environment.EnvironmentName);
+                try
+                {
+                    await dbContext.Database.EnsureDeletedAsync();
+                    await dbContext.Database.EnsureCreatedAsync();
+                    canSeed = true;
+                }
+                catch (Exception ex2)
+                {
+                    Log.Warning(ex2, "Failed to (re)create schema in {Env}.", app.Environment.EnvironmentName);
+                }
             }
             if (canSeed)
             {
