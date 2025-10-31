@@ -119,7 +119,7 @@ try
 #if DEBUG
         .UseCors("AllowLocalhost");
 #else
-        app.UseCors("FrontendPolicy");
+        .UseCors("FrontendPolicy");
 #endif
         
     app.MapFallbackToFile("index.html"); // Serves the Blazor app from the API, when no routes match.
