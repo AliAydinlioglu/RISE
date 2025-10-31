@@ -39,4 +39,13 @@ public static class ClaimsPrincipalExtentions
     /// <returns><c>true</c> if the user is in the specified role; otherwise, <c>false</c>.</returns>
     public static bool IsInRole(this ClaimsPrincipal user, string role) =>
         user?.IsInRole(role) ?? false;
+
+    public static string? GetOid(this ClaimsPrincipal user) 
+        => user?.FindFirst("oid")?.Value;
+    
+    public static string? GetFirstName(this ClaimsPrincipal user) 
+        => user?.FindFirst(ClaimTypes.GivenName)?.Value;
+    
+    public static string? GetLastName(this ClaimsPrincipal user) 
+        => user?.FindFirst(ClaimTypes.Surname)?.Value;
 }

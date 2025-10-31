@@ -1,12 +1,12 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
+using Rise.Domain.Identity;
 using Rise.Domain.Navigation;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.StudentActivities;
-using Rise.Persistence.Configurations.Identity;
+using Rise.Persistence.Models.Identity;
 
 namespace Rise.Persistence;
 
@@ -19,7 +19,7 @@ namespace Rise.Persistence;
 /// See https://enterprisecraftsmanship.com/posts/should-you-abstract-database/
 /// </summary>
 /// <param name="opts"></param>
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : IdentityDbContext<IdentityUser<Guid>, ApplicationRole, Guid>(opts)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(opts)
 {
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Project> Projects => Set<Project>();
@@ -36,6 +36,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Deadline> Deadlines => Set<Deadline>();
     public DbSet<Exam> Exams => Set<Exam>();
+    public DbSet<Role> DomainRoles => Set<Role>();
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
