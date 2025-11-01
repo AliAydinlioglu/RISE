@@ -10,7 +10,7 @@ pipeline {
         APP_SERVER_HOST = '192.168.56.12'
         APP_SERVER_USER = 'deploy'
         APP_NAME = 'Rise.Server'
-        APP_PORT = '5000'
+        APP_PORT = '5001'
         
         // Build configuration
         DOTNET_VERSION = '9.0'
