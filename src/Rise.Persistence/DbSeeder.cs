@@ -101,13 +101,13 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         if (!technicians.Any())
             return;
         
-        var addresses = new List<Address>
+        var addresses = new List<Domain.Projects.Address>
         {
-            new Address("Koningstraat 12", "Bus 3A", "Brussel", "1000"),
-            new Address("Meir 45", "", "Antwerpen", "2000"),
-            new Address("Veldstraat 78", "2e verdieping", "Gent", "9000"),
-            new Address("Rue de la Loi 175", "", "Bruxelles", "1040"),
-            new Address("Place Saint-Lambert 8", "Bureau 12", "Liège", "4000"),
+            new Domain.Projects.Address("Koningstraat 12", "Bus 3A", "Brussel", "1000"),
+            new Domain.Projects.Address("Meir 45", "", "Antwerpen", "2000"),
+            new Domain.Projects.Address("Veldstraat 78", "2e verdieping", "Gent", "9000"),
+            new Domain.Projects.Address("Rue de la Loi 175", "", "Bruxelles", "1040"),
+            new Domain.Projects.Address("Place Saint-Lambert 8", "Bureau 12", "Liège", "4000"),
         };
 
         var rnd = new Random(123); // Using a seed so the random is always the same.
