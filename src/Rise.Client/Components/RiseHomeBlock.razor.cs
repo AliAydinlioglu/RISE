@@ -4,7 +4,7 @@ namespace Rise.Client.Components;
 
 public partial class RiseHomeBlock : ComponentBase
 {
-    [Parameter, EditorRequired] public string Href { get; set; } = null!;
-    [Parameter, EditorRequired] public string Icon { get; set; }
-    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } 
+    [Parameter, EditorRequired] public required string Href { get; set; }
+    [Parameter, EditorRequired] public required string Icon { get; set; }
+    [Parameter, EditorRequired] public required RenderFragment ChildContent { get; set; } 
 }

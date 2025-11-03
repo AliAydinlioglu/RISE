@@ -6,7 +6,7 @@ namespace Rise.Client.Components;
 public partial class RiseNotification : ComponentBase
 {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
-    [Parameter] public string? Subtitle { get; set; } = string.Empty;
+    [Parameter] public string? Subtitle { get; set; }
     [Parameter, EditorRequired] public NotificationSeverity Severity { get; set; } = NotificationSeverity.Info;
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
