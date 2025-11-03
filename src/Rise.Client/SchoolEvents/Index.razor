@@ -1,14 +1,17 @@
 @page "/school-events"
 
 @using Rise.Client.Components
+@using Rise.Client.Components.Calendar
 @using Rise.Client.Components.Card
 
 <PageTitle>Evenementen</PageTitle>
+
 <div class="container ">
     <RiseHeadTitle>Evenementen</RiseHeadTitle>
 </div>
+
 <section class="mt-5 container school-events">
-    @if (schoolEvents == null)
+    @if (_schoolEvents == null)
     {
         <MudContainer Class="mt-8">
             <RiseLoader />
@@ -16,58 +19,84 @@
     }
     else
     {
-        <div class="is-flex columns  is-multiline  mb-4">
+        <div class="is-flex columns is-justify-content-center">
             
-            @foreach (var schoolEvent in schoolEvents)
+            <WeekCalendar SelectedDate="SelectedDate"
+                      SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => SelectedDate = date)"
+                      Title="@($"{SelectedDate:MMMM yyyy}")"
+                      OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                      OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+            
+            <RiseButton 
+                ButtonType="ButtonType.Button" 
+                OnClick="() => OnClickFilter()" 
+                Size="RiseButton.RiseButtonSize.Small" 
+                Type="RiseButton.RiseButtonType.Secondary">
+                    <MudIcon Size="Size.Medium" Color="Color.Dark" Icon="@Icons.Material.Outlined.FilterAlt"/>
+            </RiseButton>
+        </div>
+        
+        
+        
+        <div class="is-flex columns  is-multiline  mb-4">
+            @foreach (var schoolEvent in _schoolEvents)
             {
-           
                 <article data-bunit="sa-index" class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
                 
-                    <a href="/school-event/@schoolEvent.Id">
+                    <a href="/school-events/@schoolEvent.Id">
                         <!-- Desktop/Tablet: Vertical Card -->
                         <div class="is-hidden-mobile">
                             <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
-                                @*TODO*@
+                                <RiseSchoolEventCardContent 
+                                    Category="@schoolEvent.Category"
+                                    StartTime="@schoolEvent.StartTime"
+                                    EndTime="@schoolEvent.EndTime"
+                                    Location="@schoolEvent.Location"/>
                             </RiseVerticalCard>
                         </div>
 
                         <!-- Mobile: Regular Card -->
                         <div class="is-hidden-tablet">
                             <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
-                                @*TODO*@
+                                <RiseSchoolEventCardContent 
+                                    Category="@schoolEvent.Category"
+                                    StartTime="@schoolEvent.StartTime"
+                                    EndTime="@schoolEvent.EndTime"
+                                    Location="@schoolEvent.Location"/>
                             </RiseCard>
                         </div>
                     </a>
                 </article>
             }
-        
         </div>
         <section class="section pagination-section"> 
-        
             <nav class="pagination is-rounded is-centered" role="navigation">
-                <button class="pagination-previous" 
-                        disabled="@(currentPage <= 1)"
-                        @onclick="() => OnPageChangedAsync(currentPage - 1)">
+                
+                <button class="pagination-previous"
+                        disabled="@(_currentPage <= 1)"
+                        @onclick="() => OnPageChangedAsync(_currentPage - 1)">
                     Previous
                 </button>
-                <button class="pagination-next" 
-                        disabled="@(currentPage >= totalPages)"
-                        @onclick="() => OnPageChangedAsync(currentPage + 1)">
+                <button class="pagination-next"
+                        disabled="@(_currentPage >= TotalPages)"
+                        @onclick="() => OnPageChangedAsync(_currentPage + 1)">
                     Next
                 </button>
+                
                 <ul class="pagination-list">
-                    @for (int i = 1; i <= totalPages; i++)
+                    @for (var i = 1; i <= TotalPages; i++)
                     {
                         var pageNumber = i;
                         <li>
-                            <button class="pagination-link @(currentPage == pageNumber ? "is-current" : "")"
+                            <button class="pagination-link @(_currentPage == pageNumber ? "is-current" : "")"
                                     @onclick="() => OnPageChangedAsync(pageNumber)">
                                 @pageNumber
                             </button>
                         </li>
                     }
                 </ul>
+                
             </nav>
         </section>
-        }
+    }
 </section>

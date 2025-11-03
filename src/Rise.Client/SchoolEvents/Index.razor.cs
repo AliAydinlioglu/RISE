@@ -1,20 +1,23 @@
 using MudBlazor;
 using Rise.Client.Attributes;
+using Rise.Client.Calendar;
 using Rise.Shared.Locations;
 
 namespace Rise.Client.SchoolEvents;
 
-[HomeBlock(icon:@Icons.Material.Outlined.EventNote, label:"Evenementen", route:"/events")]
+[HomeBlock(icon:@Icons.Material.Outlined.CalendarToday, label:"Evenementen", route:"/school-events")]
 public partial class Index 
 {
-    private IEnumerable<SchoolEventDto.Index>? schoolEvents;
+    private IEnumerable<SchoolEventDto.Index>? _schoolEvents;
     
-    private int currentPage = 1;
-    private int pageSize = 8;
-    private int totalCount = 0;
-    private int totalPages => (int)Math.Ceiling((double)totalCount / pageSize);
+    private int _currentPage = 1;
+    private const int PageSize = 8;
+    private int TotalCount => _schoolEvents?.Count() ?? 0;
+    private int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
     
-    private async Task LoadStudentActivitiesAsync()
+    private DateTime SelectedDate { get; set; } = DateTime.Now;
+    
+    private async Task LoadSchoolEventsAsync()
     {
         /*
         var request = new QueryRequest.SkipTake
@@ -34,8 +37,8 @@ public partial class Index
             Postcode = 9000,
         };
 
-        IEnumerable<SchoolEventDto.Index> events = [
-            new()
+        _schoolEvents = [
+            new SchoolEventDto.Index
             {
                 Id = 1,
                 Title = "Hersftwandeling",
@@ -45,7 +48,7 @@ public partial class Index
                 EndTime = new TimeOnly(13, 30),
                 Location = schoonmeersen
             },
-            new()
+            new SchoolEventDto.Index
             {
                 Id = 2,
                 Title = "Move & Groove",
@@ -55,7 +58,7 @@ public partial class Index
                 EndTime = new TimeOnly(20, 00),
                 Location = schoonmeersen
             },
-            new()
+            new SchoolEventDto.Index
             {
                 Id = 3,
                 Title = "HOGENT CUP",
@@ -65,7 +68,7 @@ public partial class Index
                 EndTime = new TimeOnly(23, 00),
                 Location = schoonmeersen
             },
-            new()
+            new SchoolEventDto.Index
             {
                 Id = 4,
                 Title = "Uitstelgedrag aanpakken",
@@ -75,7 +78,7 @@ public partial class Index
                 EndTime = new TimeOnly(20, 30),
                 Location = null, //TODO: check
             },
-            new()
+            new SchoolEventDto.Index
             {
                 Id = 5,
                 Title = "Hersftwandeling",
@@ -85,7 +88,7 @@ public partial class Index
                 EndTime = new TimeOnly(13, 30),
                 Location = schoonmeersen
             },
-            new()
+            new SchoolEventDto.Index
             {
                 Id = 6,
                 Title = "Move & Groove",
@@ -95,7 +98,7 @@ public partial class Index
                 EndTime = new TimeOnly(20, 00),
                 Location = schoonmeersen
             },
-            new()
+            new SchoolEventDto.Index
             {
                 Id = 7,
                 Title = "HOGENT CUP",
@@ -105,7 +108,7 @@ public partial class Index
                 EndTime = new TimeOnly(23, 00),
                 Location = schoonmeersen
             },
-            new()
+            new SchoolEventDto.Index
             {
                 Id = 8,
                 Title = "Uitstelgedrag aanpakken",
@@ -114,19 +117,30 @@ public partial class Index
                 StartTime = new TimeOnly(18, 30),
                 EndTime = new TimeOnly(20, 30),
                 Location = null, //TODO: check
-            }];
-        
-        var result = Result.Success(new SchoolEventResponse.Index
-        {
-            SchoolEvents = events,
-            TotalCount = events.Count(),
-        });
+            }
+        ];
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSchoolEventsAsync();
+    }
+    
     private async Task OnPageChangedAsync(int page)
     {
-        currentPage = page;
-        await LoadStudentActivitiesAsync();
+        _currentPage = page;
+        await LoadSchoolEventsAsync();
+    }
+
+    private async Task OnClickFilter()
+    {
+        
+    }
+    
+    private void SetDateRelativeToCurrentDate(int days)
+    {
+        SelectedDate = SelectedDate.AddDays(days);
+        SelectedDate = CalendarHelpers.GetMondayOfWeek(SelectedDate);
     }
 }
 
@@ -134,25 +148,15 @@ public static class SchoolEventDto
 {
     public class Index
     {
-        public required int Id { get; set; }
-        public required string Title { get; set; }
-        public required string Category { get; set; }
-        public string? Description { get; set; }
-        public required DateTimeOffset Date { get; set; }
+        public required int Id { get; init; }
+        public required string Title { get; init; }
+        public required string Category { get; init; }
+        public required DateTimeOffset Date { get; init; }
         
-        public required TimeOnly StartTime { get; set; }
-        public required TimeOnly EndTime { get; set; }
+        public required TimeOnly StartTime { get; init; }
+        public required TimeOnly EndTime { get; init; }
         
         public string? ImageUrl { get; set; }
-        public required LocationDto.Index Location { get; set; }
-    }
-}
-
-public static class SchoolEventResponse
-{
-    public class Index
-    {
-        public IEnumerable<SchoolEventDto.Index> SchoolEvents { get; set; } = [];
-        public int TotalCount { get; set; }
+        public LocationDto.Index? Location { get; init; }
     }
 }
