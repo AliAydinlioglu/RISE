@@ -1,0 +1,8 @@
+@inherits RiseCard;
+
+<div class="is-flex is-flex-direction-column is-justify-content-center">
+    <p>@Category</p>
+    <p>@DateString</p>
+    <p>@TimeRangeString</p>
+    <p class="is-flex-grow-1">@(Location?.ToString() ?? "Online")</p>
+</div>

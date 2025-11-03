@@ -1,0 +1,41 @@
+@page "/school-events/{Id?}"
+@using Rise.Client.Components
+
+<div data-bunit='sa-detail'  class="container is-widescreen detail-sa   ">
+    <a href="/school-events" class="has-text-black hover:has-text-underline">
+        <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span>Terug naar evenementen</span>
+    </a>
+    <div class="section">
+        <RiseHeadTitle>@Title</RiseHeadTitle>
+
+        <div class="content">
+            <div class="box">
+                <div data-bunit='sa-detail-organisator' class="field">
+                    <p class="is-size-6">@Category</p>
+                </div>
+
+                <div data-bunit='sa-detail-date' class="field">
+                    <label  class="label">Datum & Tijd:</label>
+                    <p class="is-size-6">@LocalDateString</p>
+                    <p class="is-size-6 has-text-grey">@TimeString</p>
+                </div>
+
+                <div data-bunit='sa-detail-location' class="field">
+                    <label class="label">Locatie:</label>
+                    <p class="is-size-6">@LocationName</p>
+                    <p class="is-size-6 has-text-grey">@Address</p>
+                </div>
+
+                <div data-bunit='sa-detail-description' class="field">
+                    <label class="label">Beschrijving:</label>
+                    <div class="content">
+                        <p>@Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

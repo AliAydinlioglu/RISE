@@ -11,6 +11,7 @@ public partial class Navigation : ComponentBase
     new NavItem { Title = "Home", Icon = Icons.Material.Outlined.Home, Href = "/" },
     new NavItem { Title = "Kalender", Icon = Icons.Material.Outlined.CalendarMonth, Href = "/kalender" },
     new NavItem { Title = "Activiteiten", Icon =Icons.Material.Outlined.EventNote, Href = "/student-activities" },
+    new NavItem { Title = "Evenementen", Icon =Icons.Material.Outlined.CalendarToday, Href = "/school-events" },
     new NavItem { Title = "Contact", Icon =Icons.Material.Outlined.Person, Href = "/contact" }
   };
 
