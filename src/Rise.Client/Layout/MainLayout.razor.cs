@@ -32,9 +32,6 @@ public partial class MainLayout
 
     void GoToLogin() { NavigationManager.NavigateTo("/login"); }
 
-
-
-
     private string UserInitials { get; set; } = "?";
     private string UserName { get; set; } = "";
 

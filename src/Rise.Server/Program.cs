@@ -30,14 +30,29 @@ try
         .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration)
             .Destructure.UsingAttributes());
 
-    builder.Services
-        .AddIdentity<ApplicationUser, ApplicationRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
+    //builder.Services
+    //    .AddIdentity<ApplicationUser, ApplicationRole>()
+    //    .AddEntityFrameworkStores<ApplicationDbContext>()
+    //    .AddDefaultTokenProviders();
+
+    builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.TokenValidationParameters.ValidAudiences = new[]
+        {
+        "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590"
+    };
+        options.TokenValidationParameters.ValidIssuers = new[]
+        {
+        "https://sts.windows.net/052a5cbb-135d-45c5-b50e-689b56d29142/",
+        "https://login.microsoftonline.com/052a5cbb-135d-45c5-b50e-689b56d29142/v2.0"
+    };
+    });
+
 
     builder.Services
         .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
 
     builder.Services
         .AddDbContext<ApplicationDbContext>(o =>
@@ -127,7 +142,6 @@ try
             };
         })
         .UseSwaggerGen();
-
     app.MapFallbackToFile("index.html");
     app.Run();
 }

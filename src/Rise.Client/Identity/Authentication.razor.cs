@@ -16,13 +16,23 @@ public partial class Authentication
     [Inject]
     private NavigationManager Navigation { get; set; } = default!;
 
+    [Inject]
+    private IAccessTokenProvider TokenProvider { get; set; } = default!;
+
+
     private async Task OnLoginSucceeded(RemoteAuthenticationState state)
     {
+
         try
         {
             Log.Information("Login succeeded, calling backend to create/update user");
+            var tokenResult = await TokenProvider.RequestAccessToken();
 
-            var httpClient = HttpClientFactory.CreateClient("SecureApi");
+            if (tokenResult.TryGetToken(out var token))
+            {
+                Log.Information("Access token acquired: {Token}", token.Value);
+
+                var httpClient = HttpClientFactory.CreateClient("SecureApi");
             
 
             var response = await httpClient.PostAsync("/api/identity/accounts/login-callback", null);
@@ -43,6 +53,11 @@ public partial class Authentication
             else
             {
                 Log.Error("Failed to create/update user: {StatusCode}", response.StatusCode);
+            }
+            }
+            else
+            {
+                Log.Warning("No access token available — user not authenticated?");
             }
         }
         catch (Exception ex)

@@ -38,9 +38,20 @@ try
         options.ProviderOptions.Cache.CacheLocation = "localStorage";
     });
 
-// register the custom state provider
-    builder.Services.AddScoped<AuthenticationStateProvider, CookieAuthenticationStateProvider>();
-// register the shared Singletons
+    builder.Services.AddHttpClient("SecureApi", client =>
+    {
+        client.BaseAddress = new Uri("https://localhost:44386");
+    })
+    .AddHttpMessageHandler(sp =>
+    {
+        return sp.GetRequiredService<AuthorizationMessageHandler>()
+            .ConfigureHandler(
+                authorizedUrls: new[] { "https://localhost:44386" },
+                scopes: new[] { "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user" }
+            );
+    });
+
+    // register the shared Singletons
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, Rise.Client.DateTimeService>();
@@ -71,7 +82,6 @@ try
     });
 
     builder.Services.AddMudServices();
-
     await builder.Build().RunAsync();
 }
 catch (Exception ex)
