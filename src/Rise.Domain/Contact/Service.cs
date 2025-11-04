@@ -1,12 +1,18 @@
 ﻿namespace Rise.Domain.Contact;
 
-public class Service: Entity
+public class Service : Entity
 {
     private Service() { }
 
-    public Service(string name, ServiceCategory? serviceCategory) { 
+    public Service(string name)
+    {
         Name = name;
-        ServiceCategory = serviceCategory ?? new ServiceCategory("Onbekend"); 
+        ServiceCategory = new ServiceCategory("Onbekend");
+    }
+
+    public Service(string name, ServiceCategory serviceCategory) : this(name)
+    {
+        ServiceCategory = serviceCategory;
     }
 
     public string Name { get; private set; }
