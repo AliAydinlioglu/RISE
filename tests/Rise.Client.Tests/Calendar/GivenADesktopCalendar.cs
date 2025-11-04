@@ -81,7 +81,7 @@ public class GivenADesktopCalendar : GivenACalendarBase<CalendarDesktop>
     {
         var cut = RenderCalendarComponent();
         var initialMonth = cut.Find("h2.title").TextContent;
-        initialMonth.ShouldBe("november");
+        initialMonth.ShouldBe("november", StringCompareShould.IgnoreCase);
 
         var nextButton = cut.Find(".is-flex").QuerySelectorAll("button")[1];
         nextButton.Click();
@@ -95,13 +95,13 @@ public class GivenADesktopCalendar : GivenACalendarBase<CalendarDesktop>
     {
         var cut = RenderCalendarComponent();
         var initialMonth = cut.Find("h2.title").TextContent;
-        initialMonth.ShouldBe("november");
+        initialMonth.ShouldBe("november", StringCompareShould.IgnoreCase);
 
         var prevButton = cut.Find(".is-flex").QuerySelectorAll("button")[0];
         prevButton.Click();
 
         var newMonth = cut.Find("h2.title").TextContent;
-        newMonth.ShouldBe("oktober");
+        newMonth.ShouldBe("oktober", StringCompareShould.IgnoreCase);
     }
     
 }

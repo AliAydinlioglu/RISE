@@ -24,7 +24,7 @@ public static class CalendarTestHelpers
 
     public static string GetTitle(this IRenderedComponent<CalendarIndex> component)
     {
-        return component.Find("h1.title").TextContent;
+        return component.Find("h3.mud-typography-h3").TextContent;
     }
 
     public static string GetSelectedDayNumber(this IRenderedComponent<CalendarIndex> component)

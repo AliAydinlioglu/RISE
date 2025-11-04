@@ -16,6 +16,10 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
 
     protected GivenACalendarBase()
     {
+        var culture = System.Globalization.CultureInfo.GetCultureInfo("nl-NL");
+        System.Globalization.CultureInfo.CurrentCulture = culture;
+        System.Globalization.CultureInfo.CurrentUICulture = culture;
+        
         var dateTimeServiceMock = new FakeDateTimeService(_fixedDate);
         var pageTitleService = new FakePageTitleService();
         
