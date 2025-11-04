@@ -1,17 +1,23 @@
 ﻿namespace Rise.Domain.Contact;
 
-public class Service(string name, ServiceCategory? serviceCategory) : Entity
+public class Service: Entity
 {
-    public string Name { get; private set; } = name;
+    private Service() { }
 
-    public ServiceCategory ServiceCategory { get; private set; } 
-        = serviceCategory ?? new ServiceCategory("Onbekend");
+    public Service(string name, ServiceCategory? serviceCategory) { 
+        Name = name;
+        ServiceCategory = serviceCategory ?? new ServiceCategory("Onbekend"); 
+    }
+
+    public string Name { get; private set; }
+
+    public ServiceCategory ServiceCategory { get; private set; }
 
     public string? Description { get; private set; }
 
     public ServiceLocation? Location { get; private set; }
 
-    public ContactPeriod? OpeningHours { get; private set; }
+    public List<ContactPeriod> OpeningHours { get; private set; } = [];
 
     public HashSet<string> Remarks { get; private set; } = [];
 
@@ -37,8 +43,35 @@ public class Service(string name, ServiceCategory? serviceCategory) : Entity
         Remarks.Add(remark);
     }
 
-    public void ChangeOpeningsHours(ContactPeriod contactPeriod)
+    public void ChangeOpeningsHours(List<ContactPeriod> contactPeriod)
     {
         OpeningHours = contactPeriod;
+    }
+
+    /// <summary>
+    /// Check if it is necessary to know if the service is open or not
+    /// </summary>
+    /// <returns>bool</returns>
+    public bool HasOpeningHours()
+    {
+        return OpeningHours.Count > 0;
+    }
+
+    /// <summary>
+    /// Check if it is open on a specific date time
+    /// </summary>
+    public bool IsOpenOn(DateOnly date, TimeOnly hour)
+    {
+        var daily = OpeningHours.FirstOrDefault(d => d.ContactDate == date);
+        return daily?.ContactHours.Any(tr => hour.IsBetween(tr.StartTime, tr.EndTime)) ?? false;
+    }
+
+    /// <summary>
+    /// Check if it is open now
+    /// </summary>
+    public bool IsOpen()
+    {
+        var now = DateTime.Now;
+        return IsOpenOn(DateOnly.FromDateTime(now), TimeOnly.FromDateTime(now));
     }
 }

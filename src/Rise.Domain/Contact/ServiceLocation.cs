@@ -1,10 +1,18 @@
 ﻿
 namespace Rise.Domain.Contact;
 
-public class ServiceLocation(StructuredAddress structuredAddress): ValueObject
+public class ServiceLocation: ValueObject
 {
-    public StructuredAddress ServiceAddress { get; private set; } = structuredAddress;
-    public string LocationName { get; private set; } = string.Empty;
+    private ServiceLocation() { }
+
+    public ServiceLocation(StructuredAddress structuredAddress, string locationName)
+    {
+        LocationName = locationName;
+        ServiceAddress = structuredAddress;
+    }
+
+    public StructuredAddress ServiceAddress { get; private set; }
+    public string LocationName { get; private set; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
