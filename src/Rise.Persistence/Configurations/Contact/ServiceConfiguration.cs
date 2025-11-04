@@ -1,0 +1,70 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Rise.Domain.Common;
+using Rise.Domain.Contact;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Rise.Persistence.Configurations.Contact;
+
+/// <summary>
+/// Specific configuration for <see cref="Service"/>.
+/// </summary>
+internal class ServiceConfiguration : EntityConfiguration<Service>
+{
+    public override void Configure(EntityTypeBuilder<Service> builder)
+    {
+        base.Configure(builder);
+
+        builder.Property(x => x.Name).IsRequired().HasMaxLength(250);
+
+        builder.OwnsOne(x => x.ServiceCategory, sc =>
+        {
+            sc.Property(c => c.Name)
+              .IsRequired()
+              .HasMaxLength(100)
+              .HasColumnName("ServiceCategoryName");
+        });
+
+        builder.Property(x => x.Description)
+               .HasMaxLength(1000);
+
+        // Owned entity: Location (with StructuredAddress)
+        builder.OwnsOne(x => x.Location, loc =>
+        {
+            loc.OwnsOne(l => l.ServiceAddress, sa =>
+            {
+                sa.Property(a => a.Street).HasMaxLength(250);
+                sa.Property(a => a.HouseNumber);
+                sa.Property(a => a.BusNumber).HasMaxLength(20);
+                sa.Property(a => a.Postcode);
+                sa.Property(a => a.City).HasMaxLength(100);
+            });
+
+            loc.Property(l => l.LocationName).HasMaxLength(250);
+        });
+
+        // Owned entity: OpeningHours (with ContactPeriod)
+        builder.OwnsMany(x => x.OpeningHours, oh =>
+        {
+            oh.WithOwner().HasForeignKey("Id");
+            oh.OwnsMany(c => c.ContactHours, ch =>
+             {
+                 ch.Property(t => t.StartTime).IsRequired();
+                 ch.Property(t => t.EndTime).IsRequired();
+             });
+            oh.ToTable("ServiceContactPeriods");
+            
+        });
+
+        // Collectie van remarks (HashSet<string>)
+        builder.Property(x => x.Remarks);
+
+        // Collectie van CommunicationChannels
+        builder.OwnsMany(x => x.CommunicationChannels, cc =>
+        {
+            cc.WithOwner().HasForeignKey("Id");
+            cc.ToTable("ServiceCommunicationChannels");
+        });
+    }
+}
