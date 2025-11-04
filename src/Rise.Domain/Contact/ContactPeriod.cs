@@ -5,7 +5,7 @@
 /// contact days, openingshours, etc.
 /// </summary>
 /// <param name="openingHours"></param>
-public class ContactPeriod(IDictionary<DateOnly, List<TimeRange>> openingHours)
+public class ContactPeriod(IDictionary<DateOnly, List<TimeRange>> openingHours): ValueObject
 {
     public IDictionary<DateOnly, List<TimeRange>> OpeningHours { get; private set; } = openingHours;
 
@@ -36,4 +36,17 @@ public class ContactPeriod(IDictionary<DateOnly, List<TimeRange>> openingHours)
             TimeOnly.FromDateTime(currentDate));
     }
 
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        foreach (var kvp in OpeningHours.OrderBy(kvp => kvp.Key))
+        {
+            yield return kvp.Key;
+
+            // Sorteer de TimeRanges ook voor voorspelbare volgorde
+            foreach (var timeRange in kvp.Value.OrderBy(tr => tr.StartTime).ThenBy(tr => tr.EndTime))
+            {
+                yield return timeRange;
+            }
+        }
+    }
 }
