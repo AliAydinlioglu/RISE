@@ -308,7 +308,7 @@ public static class ContactSeeder
     {
         var service = new Service(
             "Overige vragen",
-            new ServiceCategory("Overige")
+            new ServiceCategory("Onbekend")
         );
 
         service.DescribeService(
