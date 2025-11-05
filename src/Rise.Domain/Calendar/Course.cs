@@ -21,6 +21,9 @@ public class Course : Entity
     private readonly List<Exam> _exams = new();
     public IReadOnlyCollection<Exam> Exams => _exams.AsReadOnly();
 
+    private readonly List<Announcement> _announcements = new();
+    public IReadOnlyCollection<Announcement> Announcements => _announcements.AsReadOnly();
+
     private Course() { }
 
     public Course(string title, string lecturer, string classGroup, AcademicSemester academicSemester)
