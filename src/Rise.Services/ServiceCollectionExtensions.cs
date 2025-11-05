@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Rise.Persistence;
 using Rise.Persistence.Queries.Calendar;
 using Rise.Services.Calendar;
+using Rise.Services.Contact;
 using Rise.Services.Navigation;
 using Rise.Services.Products;
 using Rise.Services.Projects;
@@ -9,6 +10,7 @@ using Rise.Services.User;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Services.StudentActivities;
+using Rise.Shared.Contact;
 using Rise.Shared.Navigation;
 using Rise.Shared.Products;
 using Rise.Shared.Projects;
@@ -31,7 +33,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICalendarService, CalendarService>();   
-        services.AddScoped<IDateTimeService, DateTimeService>();   
+        services.AddScoped<IDateTimeService, DateTimeService>();
+        services.AddScoped<IContactService, ContactService>();
         services.AddTransient<DbSeeder>();
         
         // queries

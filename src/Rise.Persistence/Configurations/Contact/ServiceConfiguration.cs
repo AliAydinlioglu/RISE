@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Rise.Domain.Common;
 using Rise.Domain.Contact;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Rise.Persistence.Configurations.Contact;
 
@@ -21,13 +18,13 @@ internal class ServiceConfiguration : EntityConfiguration<Service>
         builder.OwnsOne(x => x.ServiceCategory, sc =>
         {
             sc.Property(c => c.Name)
-              .IsRequired()
-              .HasMaxLength(100)
-              .HasColumnName("ServiceCategoryName");
+                .IsRequired()
+                .HasMaxLength(100)
+                .HasColumnName("ServiceCategoryName");
         });
 
         builder.Property(x => x.Description)
-               .HasMaxLength(1000);
+            .HasMaxLength(1000);
 
         // Owned entity: Location (with StructuredAddress)
         builder.OwnsOne(x => x.Location, loc =>
@@ -49,12 +46,11 @@ internal class ServiceConfiguration : EntityConfiguration<Service>
         {
             oh.WithOwner().HasForeignKey("Id");
             oh.OwnsMany(c => c.ContactHours, ch =>
-             {
-                 ch.Property(t => t.StartTime).IsRequired();
-                 ch.Property(t => t.EndTime).IsRequired();
-             });
+            {
+                ch.Property(t => t.StartTime).IsRequired();
+                ch.Property(t => t.EndTime).IsRequired();
+            });
             oh.ToTable("ServiceContactPeriods");
-            
         });
 
         // Collectie van remarks (HashSet<string>)
