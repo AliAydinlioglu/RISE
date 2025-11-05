@@ -23,7 +23,7 @@ public partial class RiseButton
         RiseButtonSize.Small => "px-4 py-2",
         RiseButtonSize.Medium => "px-6 py-3",
         RiseButtonSize.Large => "px-10 py-4",
-        RiseButtonSize.XLarge => "px-15 py-6",
+        RiseButtonSize.XLarge => "px-16 py-6",
     };
 
     public enum RiseButtonType

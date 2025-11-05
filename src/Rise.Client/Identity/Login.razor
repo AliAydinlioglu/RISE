@@ -5,23 +5,24 @@
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthStateProvider
 
-
 <PageTitle>Login</PageTitle>
 
 <AuthorizeView>
     <Authorized Context="authContext">
-
     </Authorized>
 
     <NotAuthorized>
-        <div class="login">
+        <div class="login" @onkeydown="HandleKeyDown">
             <div class="login-bg" style='background-image: url("/images/HOGENT bg@(randomNumber).jpg");'></div>
             <div class="login-overlay"></div>
             <div class="login-center">               
                 <section class="login-box">
                     <EditForm Model="Model" OnValidSubmit="HandleLogin" Context="formContext">
-                        <div class="button-field" >
-                            <RiseButton OnClick="HandleLogin" Size="RiseButtonSize.XLarge" Type="RiseButtonType.Primary">
+                        <div class="button-field">
+                            <RiseButton @ref="loginButtonRef"
+                                        OnClick="HandleLogin"
+                                        Size="RiseButtonSize.XLarge"
+                                        Type="RiseButtonType.Primary">
                                 AANMELDEN
                             </RiseButton>
                         </div>
@@ -29,7 +30,5 @@
                 </section>
             </div>
         </div>
-
     </NotAuthorized>
-
 </AuthorizeView>

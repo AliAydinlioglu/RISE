@@ -1,28 +1,37 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Rise.Client.Components
 
-<RemoteAuthenticatorView Action="@Action" 
-                          OnLogInSucceeded="OnLoginSucceeded"
-                          OnLogOutSucceeded="OnLogoutSucceeded">
+@if (showError)
+{
+    <div class="error-overlay">
+        <div class="notification-container">
+            <Notification Title="Login mislukt"
+                          Subtitle="Er is een fout opgetreden tijdens het inloggen"
+                          Severity="Notification.NotificationSeverity.Error">
+                @errorMessage
+            </Notification>
+            <p class="redirect-message">U wordt automatisch uitgelogd en doorgestuurd naar de login pagina...</p>
+        </div>
+    </div>
+}
+
+<RemoteAuthenticatorView Action="@Action"
+                         OnLogInSucceeded="OnLoginSucceeded"
+                         OnLogOutSucceeded="OnLogoutSucceeded">
     <LoggingIn>
-        <p>Inloggen bij Microsoft...</p>
+        <div class="auth-message">
+            <p>Inloggen...</p>
+        </div>
     </LoggingIn>
     <CompletingLoggingIn>
-        <p>Login voltooien...</p>
+        <div class="auth-message">
+            <p>Login wordt voltooid...</p>
+        </div>
     </CompletingLoggingIn>
-    <LogInFailed>
-        <p>Er ging iets mis bij het inloggen:</p>
-    </LogInFailed>    
-    <LogOut>
-        <p>Uitloggen van Microsoft...</p>
-    </LogOut>
     <CompletingLogOut>
-        <p>Logout voltooien...</p>
+        <div class="auth-message">
+            <p>Uitloggen...</p>
+        </div>
     </CompletingLogOut>
-    <LogOutSucceeded>
-        <p>Succesvol uitgelogd! Je wordt doorverwezen...</p>
-    </LogOutSucceeded>
-    <LogOutFailed>
-        <p>Er ging iets mis bij het uitloggen</p>
-    </LogOutFailed>
 </RemoteAuthenticatorView>
