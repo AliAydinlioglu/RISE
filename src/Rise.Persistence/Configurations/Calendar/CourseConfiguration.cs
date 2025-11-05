@@ -33,5 +33,9 @@ internal class CourseConfiguration: EntityConfiguration<Course>
             .WithOne(it => it.Course)
             .HasForeignKey(it => it.CourseId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(it => it.Announcements)
+            .WithOne(it => it.Course)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
