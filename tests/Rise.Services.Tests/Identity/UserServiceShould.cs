@@ -78,7 +78,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, new FakeSessionContextProvider());
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeFalse();
@@ -98,7 +98,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeFalse();
@@ -109,23 +109,23 @@ public class UserServiceShould
     }
     
     [Fact]
-    public async Task ReturnUnauthorizedResult_WhenUserHasNoOidClaim()
+    public async Task ReturnUnauthorizedResult_WhenOidNotGiven()
     {
         // arrange
         var roleManager = FakeRoleManager.Generate();
         var userManager = FakeUserManager.Generate(); 
-        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.WithoutClaims());
+        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.WithClaimsForLoginCallback("", Email, AppRoles.RegularStudent));
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(null!);
         
         //assert
         result.IsSuccess.ShouldBeFalse();
-        result.Status.ShouldBe(ResultStatus.Unauthorized);
+        result.Status.ShouldBe(ResultStatus.Error);
         result.Errors
             .ShouldHaveSingleItem()
-            .ShouldBe("Oid is missing, so user is not authenticated");
+            .ShouldBe("Oid is required");
     }
     
     [Fact]
@@ -134,11 +134,11 @@ public class UserServiceShould
         // arrange
         var roleManager = FakeRoleManager.Generate();
         var userManager = FakeUserManager.Generate();
-        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.WithOidOnly("abc"));
+        var sessionProvider = new FakeSessionContextProvider(FakeClaimsPrincipal.WithClaimsForLoginCallback("abc", Email, AppRoles.RegularStudent));
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync("abc");
         
         //assert
         result.IsSuccess.ShouldBeFalse();
@@ -158,7 +158,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeFalse();
@@ -191,7 +191,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeTrue();
@@ -223,7 +223,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeFalse();
@@ -247,7 +247,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeTrue();
@@ -270,7 +270,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeFalse();
@@ -294,7 +294,7 @@ public class UserServiceShould
         var userService = new UserService(roleManager, userManager, sessionProvider);
         
         //act
-        var result =  await userService.GetOrCreateUserAsync();
+        var result =  await userService.GetOrCreateUserAsync(Oid);
         
         //assert
         result.IsSuccess.ShouldBeFalse();

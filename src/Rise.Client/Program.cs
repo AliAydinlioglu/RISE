@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Authentication.WebAssembly.Msal;
 using MudBlazor.Services;
 using Rise.Client;
 using Rise.Client.Calendar;
@@ -33,23 +32,20 @@ try
     builder.Services.AddMsalAuthentication(options =>
     {
         builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-        options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
         options.ProviderOptions.LoginMode = "redirect";
         options.ProviderOptions.Cache.CacheLocation = "localStorage";
+        options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
     });
 
     builder.Services.AddHttpClient("SecureApi", client =>
     {
-        client.BaseAddress = new Uri("https://localhost:44386");
+        client.BaseAddress = baseUrl;
     })
-    .AddHttpMessageHandler(sp =>
-    {
-        return sp.GetRequiredService<AuthorizationMessageHandler>()
-            .ConfigureHandler(
-                authorizedUrls: new[] { "https://localhost:44386" },
-                scopes: new[] { "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user" }
-            );
-    });
+    .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
+        .ConfigureHandler(
+            authorizedUrls: [baseUrl.ToString()],
+            scopes: ["api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user"]
+        ));
 
     // register the shared Singletons
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
@@ -70,16 +66,6 @@ try
     {
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
-    builder.Services.AddScoped<BaseAddressAuthorizationMessageHandler>(sp =>
-    {
-        var handler = sp.GetRequiredService<AuthorizationMessageHandler>()
-            .ConfigureHandler(
-                authorizedUrls: new[] { baseUrl.ToString() },
-                scopes: new[] { "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user" }
-            );
-        return (BaseAddressAuthorizationMessageHandler)(object)handler;
-    });
 
     builder.Services.AddMudServices();
     await builder.Build().RunAsync();

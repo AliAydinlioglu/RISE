@@ -2,6 +2,14 @@ using System.Security.Claims;
 
 namespace Rise.Shared.Identity.Accounts;
 
+public static partial class AccountRequest
+{
+    public class LoginCallback
+    {
+        public required string Oid { get; set; }
+    }
+}
+
 public static partial class AccountResponse
 {
     public class LoginCallback

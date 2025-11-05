@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
-using Pomelo.EntityFrameworkCore.MySql;
 using Rise.Persistence;
-using Rise.Persistence.Configurations.Identity;
 using Rise.Persistence.Models.Identity;
 using Rise.Persistence.Triggers;
 using Rise.Server.Identity;
@@ -26,34 +24,30 @@ try
     Log.Information("Starting web application");
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Services.AddIdentityCore<ApplicationUser>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddRoles<ApplicationRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+    
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+    
+    builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.TokenValidationParameters.ValidIssuers =
+        [
+            $"https://login.microsoftonline.com/{builder.Configuration["AzureAd:TenantId"]}/v2.0",
+            $"https://sts.windows.net/{builder.Configuration["AzureAd:TenantId"]}/"
+        ];
+    });
+
     builder.Services
         .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration)
             .Destructure.UsingAttributes());
-
-    //builder.Services
-    //    .AddIdentity<ApplicationUser, ApplicationRole>()
-    //    .AddEntityFrameworkStores<ApplicationDbContext>()
-    //    .AddDefaultTokenProviders();
-
-    builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
-    {
-        options.TokenValidationParameters.ValidAudiences = new[]
-        {
-        "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590"
-    };
-        options.TokenValidationParameters.ValidIssuers = new[]
-        {
-        "https://sts.windows.net/052a5cbb-135d-45c5-b50e-689b56d29142/",
-        "https://login.microsoftonline.com/052a5cbb-135d-45c5-b50e-689b56d29142/v2.0"
-    };
-    });
-
-
-    builder.Services
-        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
-
-
+        
     builder.Services
         .AddDbContext<ApplicationDbContext>(o =>
         {
@@ -67,7 +61,7 @@ try
             {
                 o.EnableSensitiveDataLogging(); // only enabled in development.
             }
-            o.UseTriggers(options => options.AddTrigger<EntityBeforeSaveTrigger>()); // Handles all UpdatedAt, CreatedAt stuff.
+            o.UseTriggers(options => options.AddTrigger<EntityBeforeSaveTrigger>());
         })
         .AddHttpContextAccessor()
         .AddScoped<ISessionContextProvider, HttpContextSessionProvider>() // Provides the current user from the HttpContext to the session provider.
@@ -85,23 +79,12 @@ try
                 s.Title = "RISE API";
             };
         });
-    builder.Services.AddDistributedMemoryCache();
-    builder.Services.AddSession(options =>
-    {
-        options.IdleTimeout = TimeSpan.FromMinutes(30);
-        options.Cookie.HttpOnly = true;
-        options.Cookie.IsEssential = true;
-    });
+    
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowBlazorClient", policy =>
         {
-            policy.WithOrigins(
-                    "https://localhost:7214",
-                    "http://localhost:7214",
-                    "https://localhost:5001",
-                    "http://localhost:5001"
-                )
+            policy.WithOrigins("https://localhost:5001")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
@@ -127,7 +110,7 @@ try
         .UseBlazorFrameworkFiles() // Blazor is also served from the API. 
         .UseStaticFiles()
         .UseDefaultExceptionHandler()
-        .UseSession()
+        .UseRouting()
         .UseCors("AllowBlazorClient")
         .UseAuthentication()
         .UseAuthorization()
