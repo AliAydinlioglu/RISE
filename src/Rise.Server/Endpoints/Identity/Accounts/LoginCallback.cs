@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Rise.Shared.Identity;
 using Rise.Shared.Identity.Accounts;
 
 namespace Rise.Server.Endpoints.Identity.Accounts;
 
+[Authorize]
 public class GetOrCreate(IUserService userService) : Endpoint<AccountRequest.LoginCallback, Result<AccountResponse.LoginCallback>>
 {
     public override void Configure()
