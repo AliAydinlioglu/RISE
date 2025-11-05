@@ -20,7 +20,6 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
         var totalCount = await query.CountAsync(ctx);
 
-        // Apply ordering
         if (!string.IsNullOrWhiteSpace(request.OrderBy))
         {
             query = request.OrderDescending
@@ -29,7 +28,6 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
         }
         else
         {
-            // Default order: by category name, then by service name
             query = query.OrderBy(s => s.ServiceCategory.Name).ThenBy(s => s.Name);
         }
 

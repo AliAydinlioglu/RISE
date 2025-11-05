@@ -4,9 +4,6 @@ using Rise.Domain.Contact;
 
 namespace Rise.Persistence.Configurations.Contact;
 
-/// <summary>
-/// Specific configuration for <see cref="Service"/>.
-/// </summary>
 internal class ServiceConfiguration : EntityConfiguration<Service>
 {
     public override void Configure(EntityTypeBuilder<Service> builder)
@@ -26,7 +23,6 @@ internal class ServiceConfiguration : EntityConfiguration<Service>
         builder.Property(x => x.Description)
             .HasMaxLength(1000);
 
-        // Owned entity: Location (with StructuredAddress)
         builder.OwnsOne(x => x.Location, loc =>
         {
             loc.OwnsOne(l => l.ServiceAddress, sa =>
@@ -41,7 +37,6 @@ internal class ServiceConfiguration : EntityConfiguration<Service>
             loc.Property(l => l.LocationName).HasMaxLength(250);
         });
 
-        // Owned entity: OpeningHours (with ContactPeriod)
         builder.OwnsMany(x => x.OpeningHours, oh =>
         {
             oh.WithOwner().HasForeignKey("Id");
@@ -53,10 +48,8 @@ internal class ServiceConfiguration : EntityConfiguration<Service>
             oh.ToTable("ServiceContactPeriods");
         });
 
-        // Collectie van remarks (HashSet<string>)
         builder.Property(x => x.Remarks);
 
-        // Collectie van CommunicationChannels
         builder.OwnsMany(x => x.CommunicationChannels, cc =>
         {
             cc.WithOwner().HasForeignKey("Id");
