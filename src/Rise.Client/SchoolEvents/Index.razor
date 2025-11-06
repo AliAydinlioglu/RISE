@@ -6,7 +6,7 @@
 
 <PageTitle>Evenementen</PageTitle>
 
-<div class="container ">
+<div class="container">
     <RiseHeadTitle>Evenementen</RiseHeadTitle>
 </div>
 
@@ -19,24 +19,58 @@
     }
     else
     {
-        <div class="is-flex columns is-justify-content-center">
+        <MudGrid>
             
-            <WeekCalendar SelectedDate="SelectedDate"
-                      SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => SelectedDate = date)"
-                      Title="@($"{SelectedDate:MMMM yyyy}")"
-                      OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
-                      OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+            <MudItem lg="4" Class="is-hidden-mobile">
+                <MudIconButton
+                    Icon="@Icons.Material.Outlined.CalendarToday"
+                    Variant="Variant.Filled"
+                    Size="Size.Medium"
+                    Color="Color.Primary"/>
+                <MudIconButton
+                    Icon="@Icons.Material.Outlined.List"
+                    Variant="Variant.Outlined"
+                    Size="Size.Medium"
+                    Color="Color.Primary"/>
+            </MudItem>
             
-            <RiseButton 
-                ButtonType="ButtonType.Button" 
-                OnClick="() => OnClickFilter()" 
-                Size="RiseButton.RiseButtonSize.Small" 
-                Type="RiseButton.RiseButtonType.Secondary">
-                    <MudIcon Size="Size.Medium" Color="Color.Dark" Icon="@Icons.Material.Outlined.FilterAlt"/>
-            </RiseButton>
-        </div>
-        
-        
+            <MudItem lg="4" Class="d-flex align-center justify-center">
+                <WeekCalendar 
+                    SelectedDate="SelectedDate"
+                    SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => SelectedDate = date)"
+                    Title="@($"{SelectedDate:MMMM yyyy}")"
+                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+            </MudItem>
+            
+            <MudItem lg="4" Class="d-flex flex-column">
+                <MudMenu 
+                    Class="align-self-end"
+                    Icon="@Icons.Material.Outlined.FilterAlt"
+                    Variant="Variant.Outlined"
+                    Size="Size.Medium"
+                    Color="Color.Primary"
+                    Style="width: fit-content; margin-bottom: 0.25rem"
+                >
+                    <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem>
+                    <MudMenuItem OnClick="() => { }">Prijs</MudMenuItem>
+                    <MudMenuItem OnClick="() => { }">Campus</MudMenuItem>
+                </MudMenu>
+                <MudMenu
+                    Class="is-hidden-mobile align-self-end"
+                    Icon="@Icons.Material.Outlined.Sort"
+                    Variant="Variant.Outlined"
+                    Size="Size.Medium"
+                    Color="Color.Primary"
+                    Style="width: fit-content">
+                    <MudMenuItem OnClick="() => { }">Naam</MudMenuItem>
+                    <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem>
+                    <MudMenuItem OnClick="() => { }">Datum</MudMenuItem>
+                    <MudMenuItem OnClick="() => { }">Campus</MudMenuItem>
+                </MudMenu>
+            </MudItem>
+            
+        </MudGrid>
         
         <div class="is-flex columns  is-multiline  mb-4">
             @foreach (var schoolEvent in _schoolEvents)
@@ -51,7 +85,8 @@
                                     Category="@schoolEvent.Category"
                                     StartTime="@schoolEvent.StartTime"
                                     EndTime="@schoolEvent.EndTime"
-                                    Location="@schoolEvent.Location"/>
+                                    Location="@schoolEvent.Location"
+                                    Date="@schoolEvent.Date.LocalDateTime"/>
                             </RiseVerticalCard>
                         </div>
 
@@ -62,7 +97,8 @@
                                     Category="@schoolEvent.Category"
                                     StartTime="@schoolEvent.StartTime"
                                     EndTime="@schoolEvent.EndTime"
-                                    Location="@schoolEvent.Location"/>
+                                    Location="@schoolEvent.Location"
+                                    Date="@schoolEvent.Date.LocalDateTime"/>
                             </RiseCard>
                         </div>
                     </a>

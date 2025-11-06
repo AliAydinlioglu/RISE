@@ -12,4 +12,5 @@ public partial class RiseSchoolEventCardContent : RiseCard
     [Parameter] public string? ImageUrl { get; set; }
 
     private string TimeRangeString => $"{StartTime} - {EndTime}";
+    private new string DateString => $"{Date:dddd d MMMM yyyy}"; 
 }
