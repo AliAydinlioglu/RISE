@@ -321,12 +321,12 @@ EOF
 EOF
                         """
 
-                        // Test HTTPS endpoint from external (via domain)
+                        // Test HTTP endpoint from external
                         sh """
-                            echo "Testing external HTTPS connection to https://${APP_DOMAIN}..."
-                            curl -f https://${APP_DOMAIN} || {
-                                echo "External HTTPS health check failed - application not responding on https://${APP_DOMAIN}"
-                                echo "This might be a Cloudflare tunnel or binding issue"
+                            echo "Testing external connection to ${APP_SERVER_HOST}:${APP_PORT}..."
+                            curl -f http://${APP_SERVER_HOST}:${APP_PORT} || {
+                                echo "External health check failed - application not responding on port ${APP_PORT}"
+                                echo "This might be a firewall or binding issue"
                                 exit 1
                             }
                         """
