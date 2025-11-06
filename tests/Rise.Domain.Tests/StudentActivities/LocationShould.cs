@@ -1,3 +1,4 @@
+using Rise.Domain.Locations;
 using Rise.Domain.StudentActivities;
 
 namespace Rise.Domain.Tests.StudentActivities;

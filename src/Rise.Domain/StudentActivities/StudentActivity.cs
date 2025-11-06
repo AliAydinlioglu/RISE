@@ -1,4 +1,5 @@
 using Rise.Domain.Exceptions;
+using Rise.Domain.Locations;
 
 namespace Rise.Domain.StudentActivities;
 

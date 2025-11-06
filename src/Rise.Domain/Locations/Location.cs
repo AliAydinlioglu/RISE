@@ -1,4 +1,4 @@
-namespace Rise.Domain.StudentActivities;
+namespace Rise.Domain.Locations;
 
 public class Location : Entity
 {
