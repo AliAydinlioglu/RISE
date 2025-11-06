@@ -1,4 +1,4 @@
-﻿namespace Rise.Domain.Contact;
+﻿﻿namespace Rise.Domain.Contact;
 
 public class Service : Entity
 {
@@ -6,7 +6,7 @@ public class Service : Entity
 
     public Service(string name)
     {
-        Name = name;
+        Name = Guard.Against.NullOrWhiteSpace(name);
         ServiceCategory = new ServiceCategory("Onbekend");
     }
 
@@ -25,7 +25,7 @@ public class Service : Entity
 
     public List<ContactPeriod> OpeningHours { get; private set; } = [];
 
-    public HashSet<string> Remarks { get; private set; } = [];
+    public List<string> Remarks { get; private set; } = [];
 
     public List<CommunicationChannel> CommunicationChannels { get; private set; } = [];
 
