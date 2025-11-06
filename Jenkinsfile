@@ -162,16 +162,20 @@ pipeline {
                                 grep -n "\"DatabaseConnection\"" ${PUBLISH_DIR}/appsettings.json || true
                             fi
                             if ls ${PUBLISH_DIR}/wwwroot/appsettings*.json >/dev/null 2>&1; then
-                                sed -i "s|https://localhost:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|http://localhost:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|https://127.0.0.1:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|http://127.0.0.1:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|https://0.0.0.0:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|http://0.0.0.0:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|http://${APP_SERVER_HOST}:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                # Explicit BackendUrl/FrontendUrl (no capture groups) - use HTTPS domain
+                                # First, explicitly set BackendUrl/FrontendUrl to HTTPS domain (this handles the JSON structure correctly)
                                 sed -i "s|\"BackendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"BackendUrl\":\"https://${APP_DOMAIN}\"|" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
                                 sed -i "s|\"FrontendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"FrontendUrl\":\"https://${APP_DOMAIN}\"|" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                # Then clean up any remaining localhost/127.0.0.1/0.0.0.0 patterns with ports (remove port numbers)
+                                sed -i "s|https://localhost:[0-9]*|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://localhost:[0-9]*|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|https://127.0.0.1:[0-9]*|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://127.0.0.1:[0-9]*|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|https://0.0.0.0:[0-9]*|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://0.0.0.0:[0-9]*|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://${APP_SERVER_HOST}:[0-9]*|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                # Also handle URLs without ports
+                                sed -i "s|https://localhost|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://localhost|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
                                 echo '=== VERIFY publish/wwwroot/appsettings.json URLs ==='
                                 head -n 50 ${PUBLISH_DIR}/wwwroot/appsettings.json || true
                             fi
@@ -232,16 +236,20 @@ EOC
 
                                 # Update client-side appsettings in wwwroot (BackendUrl/FrontendUrl) - use HTTPS domain
                                 if ls ${CURRENT_PATH}/wwwroot/appsettings*.json >/dev/null 2>&1; then
-                                    sudo sed -i "s|https://localhost:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|http://localhost:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|https://127.0.0.1:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|http://127.0.0.1:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|https://0.0.0.0:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|http://0.0.0.0:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|http://${APP_SERVER_HOST}:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    # Explicitly set BackendUrl and FrontendUrl to the HTTPS domain (no backrefs)
+                                    # First, explicitly set BackendUrl/FrontendUrl to HTTPS domain (this handles the JSON structure correctly)
                                     sudo sed -i "s|\"BackendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"BackendUrl\":\"https://${APP_DOMAIN}\"|" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
                                     sudo sed -i "s|\"FrontendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"FrontendUrl\":\"https://${APP_DOMAIN}\"|" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    # Then clean up any remaining localhost/127.0.0.1/0.0.0.0 patterns with ports (remove port numbers)
+                                    sudo sed -i "s|https://localhost:[0-9]*|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://localhost:[0-9]*|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|https://127.0.0.1:[0-9]*|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://127.0.0.1:[0-9]*|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|https://0.0.0.0:[0-9]*|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://0.0.0.0:[0-9]*|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://${APP_SERVER_HOST}:[0-9]*|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    # Also handle URLs without ports
+                                    sudo sed -i "s|https://localhost|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://localhost|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
                                 fi
                                 
                                 # Reload systemd to apply drop-in
