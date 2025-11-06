@@ -1,0 +1,82 @@
+﻿@page "/contact"
+<PageTitle>Contact</PageTitle>
+<div class="container ">
+    <RiseHeadTitle>Contact</RiseHeadTitle>
+</div>
+
+<section class="mt-5 container">
+    @if (contactServices == null)
+    {
+        <MudContainer Class="mt-8">
+            <RiseLoader />
+        </MudContainer>
+    }
+    else
+    {
+        <div class="is-flex columns is-multiline mb-4">
+            @foreach (var contactService in contactServices)
+            {
+                <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop ">
+
+                    <a href="/contact/@contactService">
+                        <RiseInfoCard Title="@contactService.Name">
+                            <div class="columns">
+                                <div class="column">
+                                    <p class="has-text-weight-semibold">Schoonmeersen 
+                                        @(contactService.IsOpen ? "✅ OPEN" : "❌ GESLOTEN")</p>
+                                    <p>Valentin Vaerwyckweg 1</p>
+                                    <p>9000 GENT</p>
+                                    <p>09 243 31 00</p>
+                                    <p><a href="mailto:studentensecretariaat.di@hogent.be">studentensecretariaat.di@hogent.be</a></p>
+                                </div>
+                                <div class="column">
+                                    <p class="has-text-weight-semibold">Openingsuren</p>
+                                    <div class="opening-hours">
+                                    @foreach (var day in contactService.OpeningHours)
+                                    {
+                                        <p>
+                                            @day.Key:
+                                            @string.Join(", ", day.Value.Select(v => $"{v.Open:hh\\:mm}-{v.Close:hh\\:mm}"))
+                                        </p>
+                                    }
+                                    </div>
+                                    <br/>
+                                    <p>Aangepaste openingsuren tijdens de examens.</p>
+                                </div>
+                            </div>
+                        </RiseInfoCard>
+                    </a>
+                </article>
+            
+            }
+        
+        </div>
+        @* <section class="section pagination-section"> 
+        
+            <nav class="pagination is-rounded is-centered" role="navigation">
+                <button class="pagination-previous" 
+                        disabled="@(currentPage <= 1)"
+                        @onclick="() => OnPageChangedAsync(currentPage - 1)">
+                    Previous
+                </button>
+                <button class="pagination-next" 
+                        disabled="@(currentPage >= totalPages)"
+                        @onclick="() => OnPageChangedAsync(currentPage + 1)">
+                    Next
+                </button>
+                <ul class="pagination-list">
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        var pageNumber = i;
+                        <li>
+                            <button class="pagination-link @(currentPage == pageNumber ? "is-current" : "")"
+                                    @onclick="() => OnPageChangedAsync(pageNumber)">
+                                @pageNumber
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </section> *@
+        }
+</section>
