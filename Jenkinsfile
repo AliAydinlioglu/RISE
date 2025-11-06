@@ -13,6 +13,9 @@ pipeline {
         APP_NAME = 'Rise.Server'
         APP_PORT = '5001'
         
+        // Domain configuration for HTTPS (Cloudflare)
+        APP_DOMAIN = 'campus.badrlab.xyz'
+        
         // Build configuration
         DOTNET_VERSION = '9.0'
         BUILD_CONFIGURATION = 'Release'
@@ -159,15 +162,16 @@ pipeline {
                                 grep -n "\"DatabaseConnection\"" ${PUBLISH_DIR}/appsettings.json || true
                             fi
                             if ls ${PUBLISH_DIR}/wwwroot/appsettings*.json >/dev/null 2>&1; then
-                                sed -i "s|https://localhost:|http://${APP_SERVER_HOST}:|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|http://localhost:|http://${APP_SERVER_HOST}:|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|https://127.0.0.1:|http://${APP_SERVER_HOST}:|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|http://127.0.0.1:|http://${APP_SERVER_HOST}:|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|https://0.0.0.0:|http://${APP_SERVER_HOST}:|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|http://0.0.0.0:|http://${APP_SERVER_HOST}:|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                # Explicit BackendUrl/FrontendUrl (no capture groups)
-                                sed -i "s|\"BackendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"BackendUrl\":\"http://${APP_SERVER_HOST}:${APP_PORT}\"|" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
-                                sed -i "s|\"FrontendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"FrontendUrl\":\"http://${APP_SERVER_HOST}:${APP_PORT}\"|" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|https://localhost:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://localhost:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|https://127.0.0.1:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://127.0.0.1:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|https://0.0.0.0:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://0.0.0.0:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|http://${APP_SERVER_HOST}:|https://${APP_DOMAIN}|g" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                # Explicit BackendUrl/FrontendUrl (no capture groups) - use HTTPS domain
+                                sed -i "s|\"BackendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"BackendUrl\":\"https://${APP_DOMAIN}\"|" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
+                                sed -i "s|\"FrontendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"FrontendUrl\":\"https://${APP_DOMAIN}\"|" ${PUBLISH_DIR}/wwwroot/appsettings*.json || true
                                 echo '=== VERIFY publish/wwwroot/appsettings.json URLs ==='
                                 head -n 50 ${PUBLISH_DIR}/wwwroot/appsettings.json || true
                             fi
@@ -203,7 +207,7 @@ pipeline {
                                 Environment=APP_SERVER_HOST=${APP_SERVER_HOST}
                                 Environment=ConnectionStrings__DatabaseConnection=server=98.66.235.220;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
                                 Environment=DatabaseConnection=server=98.66.235.220;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
-                                Environment=FrontendUrl=http://${APP_SERVER_HOST}:${APP_PORT}
+                                Environment=FrontendUrl=https://${APP_DOMAIN}
                                 WorkingDirectory=${CURRENT_PATH}
                                 Restart=always
                                 RestartSec=5
@@ -226,17 +230,18 @@ EOC
                                     sudo perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=192.168.56.11;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none"/' ${CURRENT_PATH}/appsettings.json || true
                                 fi
 
-                                # Update client-side appsettings in wwwroot (BackendUrl/FrontendUrl)
+                                # Update client-side appsettings in wwwroot (BackendUrl/FrontendUrl) - use HTTPS domain
                                 if ls ${CURRENT_PATH}/wwwroot/appsettings*.json >/dev/null 2>&1; then
-                                    sudo sed -i "s|https://localhost:|http://${APP_SERVER_HOST}:|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|http://localhost:|http://${APP_SERVER_HOST}:|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|https://127.0.0.1:|http://${APP_SERVER_HOST}:|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|http://127.0.0.1:|http://${APP_SERVER_HOST}:|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|https://0.0.0.0:|http://${APP_SERVER_HOST}:|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|http://0.0.0.0:|http://${APP_SERVER_HOST}:|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    # Explicitly set BackendUrl and FrontendUrl to the correct base URL (no backrefs)
-                                    sudo sed -i "s|\"BackendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"BackendUrl\":\"http://${APP_SERVER_HOST}:${APP_PORT}\"|" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
-                                    sudo sed -i "s|\"FrontendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"FrontendUrl\":\"http://${APP_SERVER_HOST}:${APP_PORT}\"|" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|https://localhost:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://localhost:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|https://127.0.0.1:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://127.0.0.1:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|https://0.0.0.0:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://0.0.0.0:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|http://${APP_SERVER_HOST}:|https://${APP_DOMAIN}|g" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    # Explicitly set BackendUrl and FrontendUrl to the HTTPS domain (no backrefs)
+                                    sudo sed -i "s|\"BackendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"BackendUrl\":\"https://${APP_DOMAIN}\"|" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
+                                    sudo sed -i "s|\"FrontendUrl\"[[:space:]]*:[[:space:]]*\".*\"|\"FrontendUrl\":\"https://${APP_DOMAIN}\"|" ${CURRENT_PATH}/wwwroot/appsettings*.json || true
                                 fi
                                 
                                 # Reload systemd to apply drop-in
@@ -308,12 +313,12 @@ EOF
 EOF
                         """
 
-                        // Test HTTP endpoint from external
+                        // Test HTTPS endpoint from external (via domain)
                         sh """
-                            echo "Testing external connection to ${APP_SERVER_HOST}:${APP_PORT}..."
-                            curl -f http://${APP_SERVER_HOST}:${APP_PORT} || {
-                                echo "External health check failed - application not responding on port ${APP_PORT}"
-                                echo "This might be a firewall or binding issue"
+                            echo "Testing external HTTPS connection to https://${APP_DOMAIN}..."
+                            curl -f https://${APP_DOMAIN} || {
+                                echo "External HTTPS health check failed - application not responding on https://${APP_DOMAIN}"
+                                echo "This might be a Cloudflare tunnel or binding issue"
                                 exit 1
                             }
                         """
