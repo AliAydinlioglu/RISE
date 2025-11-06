@@ -3,14 +3,15 @@ using Rise.Client.Attributes;
 
 namespace Rise.Client.Contact;
 
-
 [HomeBlock(icon: @Icons.Material.Outlined.EventNote, label: "Contact", route: "/contact")]
 public partial class ContactIndex
 {
     private List<ContactService> contactServices = new()
     {
+
         new ContactService
         {
+            Id = 1,
             Name = "Studentensecretariaat",
             OpeningHours = new Dictionary<DayOfWeek, List<(TimeSpan, TimeSpan)>>
             {
@@ -22,6 +23,7 @@ public partial class ContactIndex
         },
         new ContactService
         {
+            Id = 2,
             Name = "Bib",
             OpeningHours = new Dictionary<DayOfWeek, List<(TimeSpan, TimeSpan)>>
             {
@@ -34,6 +36,7 @@ public partial class ContactIndex
         },
         new ContactService
         {
+            Id = 3,
             Name = "Standaard Student Shop",
             OpeningHours = new Dictionary<DayOfWeek, List<(TimeSpan, TimeSpan)>>()
             {
@@ -44,6 +47,7 @@ public partial class ContactIndex
 
     public class ContactService
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public Dictionary<DayOfWeek, List<(TimeSpan Open, TimeSpan Close)>> OpeningHours { get; set; } = [];
 

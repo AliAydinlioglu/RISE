@@ -5,18 +5,18 @@
     overflow: hidden;
 }
 
-/* HEADER */
+/* HEADER 
+    Mischien later bekijken om een ander css file te maken
+    zonder images
+*/
 .info-card-header {
     height: 120px;
-    background: black; /* Mobile default */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(200, 200, 200, 0.1);
+    background-image: url('https://www.hogent.be/sites/hogent/assets/Image/banner66.jpg');
     text-align: center;
-}
-
-/* Desktop: background image */
-@media screen and (min-width: 1024px) {
-    .info-card-header {
-        background: url('/social.JPG') center/cover no-repeat;
-    }
 }
 
 /* Title inside header */
