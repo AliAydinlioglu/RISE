@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Rise.Persistence;
 using Rise.Persistence.Queries.Calendar;
+using Rise.Persistence.Queries.Courses;
 using Rise.Services.Calendar;
+using Rise.Services.Courses;
 using Rise.Services.Navigation;
 using Rise.Services.Products;
 using Rise.Services.Projects;
@@ -15,6 +17,7 @@ using Rise.Shared.Projects;
 using Rise.Shared.User;
 using Rise.Shared.StudentActivities;
 using Rise.Services.Identity;
+using Rise.Shared.Courses;
 using Rise.Shared.Identity;
 
 namespace Rise.Services;
@@ -30,12 +33,13 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICalendarService, CalendarService>();        
         services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<ICalendarService, CalendarService>();   
         services.AddScoped<IDateTimeService, DateTimeService>();   
+        services.AddScoped<ICourseService, CourseService>();   
         services.AddTransient<DbSeeder>();
         
         // queries
         services.AddScoped<IGetCalendarQuery, GetCalendarQuery>();    
+        services.AddScoped<IGetCourseDetailQuery, GetCourseDetailQuery>();    
         
         // Add other application services here.
         services.AddScoped<IStudentActivityService, StudentActivityService>();
