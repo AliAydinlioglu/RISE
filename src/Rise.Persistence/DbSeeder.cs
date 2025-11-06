@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Common;
+using Rise.Domain.Locations;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
+using Rise.Domain.SchoolEvents;
 using Rise.Domain.StudentActivities;
 using Rise.Persistence.Models.Identity;
 using Rise.Persistence.SeedData;
@@ -24,7 +26,9 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         await UsersAsync();
         await ProductsAsync();
         await ProjectsAsync();
+        await LocationsAsync();
         await StudentActivitiesAsync();
+        await SchoolEventsAsync();
         await CalendarSeeder.Seed(dbContext);
         await NavigationItemSeeder.Seed(dbContext);
         await ContactSeeder.Seed(dbContext);
@@ -127,21 +131,35 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         dbContext.Projects.AddRange(projects);
         await dbContext.SaveChangesAsync();
     }
-    
-    private async Task StudentActivitiesAsync()
+
+    private async Task LocationsAsync()
     {
-        if (dbContext.StudentActivities.Any())
+        if (dbContext.Locations.Any())
             return;
         
-       
-        var locations = new List<Location>
+        dbContext.Locations.AddRange(new List<Location>
         {
             new Location("Schoonmeersen", "Valentin Vaerwyckweg", 1, 9000, "Gent","B"),
             new Location("Campus Gent - Sint-Pietersplein", "Sint-Pietersplein", 7, 9000, "Gent",""),
             new Location("Campus Gent - Ledeganck", "Karel Lodewijk Ledeganckstraat", 35, 9000, "Gent",""),
             new Location("Stadshal Gent", "Emile Braunplein", 1, 9000, "Gent",""),
             new Location("NTGent - Voorplein", "Sint-Baafsplein", 17, 9000, "Gent","")
-        };
+        });
+        await dbContext.SaveChangesAsync();
+    }
+
+    private async Task StudentActivitiesAsync()
+    {
+        if (dbContext.StudentActivities.Any())
+            return;
+
+
+        var locations = await dbContext.Locations.ToListAsync();
+
+        if (!locations.Any())
+        {
+            throw new InvalidOperationException("Locations moeten eerst geseed worden!");
+        }
 
         var studentClubs = new List<StudentClub>
         {
@@ -175,6 +193,44 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
             new StudentActivity("Activity 18", "Description for Activity 18", new DateTime(2025, 4, 27), new TimeRange(new TimeOnly(14, 0), new TimeOnly(16, 0)), "images/activity18.png", locations[2], studentClubs[3]),
             new StudentActivity("Activity 19", "Description for Activity 19", new DateTime(2025, 5, 9), new TimeRange(new TimeOnly(10, 0), new TimeOnly(12, 0)), "images/activity19.png", locations[3], studentClubs[4]),
             new StudentActivity("Activity 20", "Description for Activity 20", new DateTime(2025, 6, 21), new TimeRange(new TimeOnly(17, 0), new TimeOnly(19, 0)), "images/activity20.png", locations[4], studentClubs[0])
+        });
+        await dbContext.SaveChangesAsync();
+    }
+
+    private async Task SchoolEventsAsync()
+    {
+        if (dbContext.SchoolEvents.Any())
+            return;
+
+
+        var locations = await dbContext.Locations.ToListAsync();
+
+        if (!locations.Any())
+        {
+            throw new InvalidOperationException("Locations moeten eerst geseed worden!");
+        }
+        dbContext.SchoolEvents.AddRange(new List<SchoolEvent>
+        {
+            new SchoolEvent("SchoolEvent 1", "Description for SchoolEvent 1", new DateTime(2023, 11, 15), new TimeRange (new TimeOnly( 10, 0  ), new TimeOnly(12, 0)),0,"link",5,true,"Public", "images/activity1.png", locations[0]),
+            new SchoolEvent("SchoolEvent 2", "Description for SchoolEvent 2", new DateTime(2023, 12, 5), new TimeRange(new TimeOnly(14, 0), new TimeOnly(16, 0)),0.5m,"link",5,true,"Student",  "images/activity2.png", locations[1]),
+            new SchoolEvent("SchoolEvent 3", "Description for SchoolEvent 3", new DateTime(2024, 1, 20), new TimeRange(new TimeOnly(9, 0), new TimeOnly(11, 0)),1,"link",5,true,"Public",  "images/activity3.png", locations[2]),
+            new SchoolEvent("SchoolEvent 4", "Description for SchoolEvent 4", new DateTime(2024, 2, 10), new TimeRange(new TimeOnly(13, 0), new TimeOnly(15, 0)),2,"link",5,true,"Student",  "images/activity4.png", locations[3]),
+            new SchoolEvent("SchoolEvent 5", "Description for SchoolEvent 5", new DateTime(2024, 3, 25), new TimeRange(new TimeOnly(11, 0), new TimeOnly(13, 0)),3.5m,"link",5,true,"Public",  "images/activity5.png", locations[4]),
+            new SchoolEvent("SchoolEvent 6", "Description for SchoolEvent 6", new DateTime(2024, 4, 5), new TimeRange(new TimeOnly(8, 30), new TimeOnly(10, 30)),5,"link",5,true,"Student",  "images/activity6.png", locations[0]),
+            new SchoolEvent("SchoolEvent 7", "Description for SchoolEvent 7", new DateTime(2024, 5, 12), new TimeRange(new TimeOnly(15, 0), new TimeOnly(17, 0)),0,"link",5,true,"Public",  "images/activity7.png", locations[1]),
+            new SchoolEvent("SchoolEvent 8", "Description for SchoolEvent 8", new DateTime(2024, 6, 18), new TimeRange(new TimeOnly(10, 0), new TimeOnly(12, 0)),0,"link",5,true,"Student",  "images/activity8.png", locations[2]),
+            new SchoolEvent("SchoolEvent 9", "Description for SchoolEvent 9", new DateTime(2024, 7, 22), new TimeRange(new TimeOnly(18, 0), new TimeOnly(20, 0)),10,"link",5,true,"Public",  "images/activity9.png", locations[3]),
+            new SchoolEvent("SchoolEvent 10", "Description for SchoolEvent 10", new DateTime(2024, 8, 30), new TimeRange(new TimeOnly(9, 0), new TimeOnly(11, 0)),0,"link",5,true,"Student",  "images/activity10.png", locations[4]),
+            new SchoolEvent("SchoolEvent 11", "Description for SchoolEvent 11", new DateTime(2024, 9, 14), new TimeRange(new TimeOnly(12, 0), new TimeOnly(14, 0)),0,"link",5,true,"Public",  "images/activity11.png", locations[0]),
+            new SchoolEvent("SchoolEvent 12", "Description for SchoolEvent 12", new DateTime(2024, 10, 3), new TimeRange(new TimeOnly(14, 30), new TimeOnly(16, 30)),0,"link",5,true,"Student",  "images/activity12.png", locations[1]),
+            new SchoolEvent("SchoolEvent 13", "Description for SchoolEvent 13", new DateTime(2024, 11, 11), new TimeRange(new TimeOnly(10, 0), new TimeOnly(12, 0)),0,"link",5,true,"Public",  "images/activity13.png", locations[2]),
+            new SchoolEvent("SchoolEvent 14", "Description for SchoolEvent 14", new DateTime(2024, 12, 1), new TimeRange(new TimeOnly(13, 0), new TimeOnly(15, 0)),0,"link",5,true,"Student",  "images/activity14.png", locations[3]),
+            new SchoolEvent("SchoolEvent 15", "Description for SchoolEvent 15", new DateTime(2025, 1, 19), new TimeRange(new TimeOnly(9, 30), new TimeOnly(11, 30)),40,"link",5,true,"Public",  "images/activity15.png", locations[4]),
+            new SchoolEvent("SchoolEvent 16", "Description for SchoolEvent 16", new DateTime(2025, 2, 8), new TimeRange(new TimeOnly(16, 0), new TimeOnly(18, 0)),0,"link",5,true,"Student",  "images/activity16.png", locations[0]),
+            new SchoolEvent("SchoolEvent 17", "Description for SchoolEvent 17", new DateTime(2025, 3, 16), new TimeRange(new TimeOnly(11, 0), new TimeOnly(13, 0)),0,"link",5,true,"Public",  "images/activity17.png", locations[1]),
+            new SchoolEvent("SchoolEvent 18", "Description for SchoolEvent 18", new DateTime(2025, 4, 27), new TimeRange(new TimeOnly(14, 0), new TimeOnly(16, 0)),0,"link",5,true,"Student",  "images/activity18.png", locations[2]),
+            new SchoolEvent("SchoolEvent 19", "Description for SchoolEvent 19", new DateTime(2025, 5, 9), new TimeRange(new TimeOnly(10, 0), new TimeOnly(12, 0)),0,"link",5,true,"Public",  "images/activity19.png", locations[3]),
+            new SchoolEvent("SchoolEvent 20", "Description for SchoolEvent 20", new DateTime(2025, 6, 21), new TimeRange(new TimeOnly(17, 0), new TimeOnly(19, 0)),0,"link",5,true,"Student",  "images/activity20.png", locations[4])
         });
         await dbContext.SaveChangesAsync();
     }

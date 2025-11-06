@@ -10,6 +10,7 @@ using Rise.Client.StudentActivities;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Shared.Products;
+using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
@@ -69,10 +70,16 @@ try
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-    builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; });
-    builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; });
-    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; });
-    builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; });
+    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
     builder.Services.AddMudServices();
     await builder.Build().RunAsync();
 }
