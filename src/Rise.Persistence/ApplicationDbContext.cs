@@ -36,6 +36,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Deadline> Deadlines => Set<Deadline>();
     public DbSet<Exam> Exams => Set<Exam>();
+    public DbSet<Announcement> Announcements => Set<Announcement>();
     public DbSet<Role> DomainRoles => Set<Role>();
   
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
