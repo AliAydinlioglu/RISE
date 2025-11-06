@@ -154,7 +154,7 @@ pipeline {
                                 sed -i "s|\"http://localhost\"|\"http://${APP_SERVER_HOST}\"|g" ${PUBLISH_DIR}/appsettings*.json || true
                                 # Do not modify FrontendUrl/BackendUrl in root appsettings here; CORS is set via environment
                                 # Update DatabaseConnection to point to DB server (using perl for safe JSON manipulation)
-                                perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=192.168.56.11;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none"/' ${PUBLISH_DIR}/appsettings.json || true
+                                perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=98.66.235.220;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none"/' ${PUBLISH_DIR}/appsettings.json || true
                                 echo '=== VERIFY publish/appsettings.json DatabaseConnection ==='
                                 grep -n "\"DatabaseConnection\"" ${PUBLISH_DIR}/appsettings.json || true
                             fi
@@ -201,8 +201,8 @@ pipeline {
                                 Environment=ASPNETCORE_ENVIRONMENT=Development
                                 Environment=ASPNETCORE_URLS=http://0.0.0.0:${APP_PORT}
                                 Environment=APP_SERVER_HOST=${APP_SERVER_HOST}
-                                Environment=ConnectionStrings__DatabaseConnection=server=192.168.56.11;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
-                                Environment=DatabaseConnection=server=192.168.56.11;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
+                                Environment=ConnectionStrings__DatabaseConnection=server=98.66.235.220;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
+                                Environment=DatabaseConnection=server=98.66.235.220;port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
                                 Environment=FrontendUrl=http://${APP_SERVER_HOST}:${APP_PORT}
                                 WorkingDirectory=${CURRENT_PATH}
                                 Restart=always
