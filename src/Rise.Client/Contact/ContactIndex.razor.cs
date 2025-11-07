@@ -1,70 +1,37 @@
 ﻿using MudBlazor;
 using Rise.Client.Attributes;
+using Rise.Shared.Contact;
 
 namespace Rise.Client.Contact;
 
 [HomeBlock(icon: @Icons.Material.Outlined.EventNote, label: "Contact", route: "/contact")]
 public partial class ContactIndex
 {
-    private List<ContactService> contactServices = new()
+    private List<ContactDto.Index> contactServices = [];
+
+    protected override async Task OnInitializedAsync()
     {
+        contactServices = await ContactDataLoader.LoadContactsAsync();
+    }
 
-        new ContactService
-        {
-            Id = 1,
-            Name = "Studentensecretariaat",
-            OpeningHours = new Dictionary<DayOfWeek, List<(TimeSpan, TimeSpan)>>
-            {
-                { DayOfWeek.Monday,    new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-                { DayOfWeek.Tuesday,   new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("18:30")) }},
-                { DayOfWeek.Wednesday, new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-                { DayOfWeek.Friday,    new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-            }
-        },
-        new ContactService
-        {
-            Id = 2,
-            Name = "Bib",
-            OpeningHours = new Dictionary<DayOfWeek, List<(TimeSpan, TimeSpan)>>
-            {
-                { DayOfWeek.Monday,    new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-                { DayOfWeek.Tuesday,   new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("18:30")) }},
-                { DayOfWeek.Wednesday, new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-                { DayOfWeek.Thursday,  new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-                { DayOfWeek.Friday,    new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-            }
-        },
-        new ContactService
-        {
-            Id = 3,
-            Name = "Standaard Student Shop",
-            OpeningHours = new Dictionary<DayOfWeek, List<(TimeSpan, TimeSpan)>>()
-            {
-                { DayOfWeek.Thursday,  new() { (TimeSpan.Parse("08:30"), TimeSpan.Parse("12:00")), (TimeSpan.Parse("13:00"), TimeSpan.Parse("16:00")) }},
-            }
-        }
-    };
-
-    public class ContactService
+    public bool IsOpen(IEnumerable<ContactDto.ContactPeriodDto> openingHours)
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public Dictionary<DayOfWeek, List<(TimeSpan Open, TimeSpan Close)>> OpeningHours { get; set; } = [];
+        var now = DateTime.Now;
+        var today = DateOnly.FromDateTime(now);
+        var currentTime = TimeOnly.FromDateTime(now);
 
-        public bool IsOpen => IsOpenNow();
+        // Zoek alle periodes van vandaag (datum vergelijken op dag van week)
+        var todayPeriods = openingHours
+            .Where(p => p.ContactDate.DayOfWeek == today.DayOfWeek)
+            .ToList();
 
-        private bool IsOpenNow()
-        {
-            var now = DateTime.Now;
-            var today = now.DayOfWeek;
+        if (!todayPeriods.Any())
+            return false;
 
-            if (!OpeningHours.TryGetValue(today, out var timeRanges))
-                return false;
-
-            var currentTime = now.TimeOfDay;
-
-            return timeRanges.Any(range => currentTime >= range.Open && currentTime <= range.Close);
-        }
+        // Controleer of huidige tijd binnen een van de tijdsvensters valt
+        return todayPeriods.Any(p =>
+            p.ContactHours.Any(h =>
+                currentTime >= h.StartTime && currentTime <= h.EndTime));
     }
 
 }

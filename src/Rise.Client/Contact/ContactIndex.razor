@@ -1,4 +1,5 @@
 ﻿@page "/contact"
+@inject HttpClient Http
 <PageTitle>Contact</PageTitle>
 <div class="container ">
     <RiseHeadTitle>Contact</RiseHeadTitle>
@@ -16,32 +17,23 @@
         <div class="is-flex columns is-multiline mb-4">
             @foreach (var contactService in contactServices)
             {
-
                 <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop ">
                     <a href="/contact/@contactService">
                         <RiseInfoCard Title="@contactService.Name">
                             <div class="columns">
                                 <div class="column">
-                                    <p class="has-text-weight-semibold">Schoonmeersen 
-                                        @(contactService.IsOpen ? "✅ OPEN" : "❌ GESLOTEN")</p>
-                                    <p>Valentin Vaerwyckweg 1</p>
-                                    <p>9000 GENT</p>
-                                    <p>09 243 31 00</p>
-                                    <p><a href="mailto:studentensecretariaat.di@hogent.be">studentensecretariaat.di@hogent.be</a></p>
+                                    <ContactLocation 
+                                        Location="contactService.Location"
+                                        ExtraInfo="@(IsOpen(contactService.OpeningHours) ? " ✅ OPEN" : " ❌ GESLOTEN")">
+                                    </ContactLocation>
+                                    <br/>
+                                    <ContactCommunication Channels="contactService.CommunicationChannels">
+                                    </ContactCommunication>
                                 </div>
                                 <div class="column">
-                                    <p class="has-text-weight-semibold">Openingsuren</p>
-                                    <div class="opening-hours">
-                                    @foreach (var day in contactService.OpeningHours)
-                                    {
-                                        <p>
-                                            @day.Key:
-                                            @string.Join(", ", day.Value.Select(v => $"{v.Open:hh\\:mm}-{v.Close:hh\\:mm}"))
-                                        </p>
-                                    }
-                                    </div>
+                                    <ContactOpeningHours OpeningHours="contactService.OpeningHours"></ContactOpeningHours>
                                     <br/>
-                                    <p>Aangepaste openingsuren tijdens de examens.</p>
+                                    <ContactRemarks Remarks=contactService.Remarks></ContactRemarks>
                                 </div>
                             </div>
                         </RiseInfoCard>
