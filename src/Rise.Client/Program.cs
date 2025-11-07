@@ -12,6 +12,8 @@ using Rise.Shared.Calendar;
 using Rise.Client.StudentActivities;
 using Rise.Shared.Products;
 using Rise.Shared.StudentActivities;
+using Rise.Shared.Contact;
+using Rise.Client.Contact;
 
 try
 {
@@ -49,7 +51,8 @@ try
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; });
     builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; });
-    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; }); 
+    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; });
+    builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; });
     builder.Services.AddMudServices();
     
     await builder.Build().RunAsync();
