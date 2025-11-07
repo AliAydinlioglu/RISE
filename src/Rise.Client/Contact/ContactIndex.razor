@@ -1,5 +1,4 @@
 ﻿@page "/contact"
-@inject HttpClient Http
 <PageTitle>Contact</PageTitle>
 <div class="container ">
     <RiseHeadTitle>Contact</RiseHeadTitle>
@@ -18,13 +17,13 @@
             @foreach (var contactService in contactServices)
             {
                 <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop ">
-                    <a href="/contact/@contactService">
+                    <a href="/contact/@contactService.Id">
                         <RiseInfoCard Title="@contactService.Name">
                             <div class="columns">
                                 <div class="column">
                                     <ContactLocation 
                                         Location="contactService.Location"
-                                        ExtraInfo="@(IsOpen(contactService.OpeningHours) ? " ✅ OPEN" : " ❌ GESLOTEN")">
+                                        ExtraInfo="@(ServiceContactHelper.ShowOpeningInfo(contactService.OpeningHours))">
                                     </ContactLocation>
                                     <br/>
                                     <ContactCommunication Channels="contactService.CommunicationChannels">
