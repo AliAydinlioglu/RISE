@@ -1,0 +1,9 @@
+﻿<p class="has-text-weight-semibold">
+    @Location?.LocationName 
+</p>
+@ExtraInfo
+@if(HasAddress())
+{
+        <p>@Location.ServiceAddress.Street @Location.ServiceAddress.HouseNumber @Location.ServiceAddress.BusNumber</p>
+        <p>@Location.ServiceAddress.Postcode @Location.ServiceAddress.City</p>
+}
