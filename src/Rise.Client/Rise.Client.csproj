@@ -53,4 +53,13 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Main\Footer.razor" />
+    <_ContentIncludedByDefault Remove="Components\Main\Header.razor" />
+    <_ContentIncludedByDefault Remove="Components\Main\SideNavBar.razor" />
+    <_ContentIncludedByDefault Remove="Components\Navigation\NavBarFooter.razor" />
+    <_ContentIncludedByDefault Remove="Components\Navigation\NavBody.razor" />
+    <_ContentIncludedByDefault Remove="Components\Navigation\NavItem.razor" />
+  </ItemGroup>
+
 </Project>
