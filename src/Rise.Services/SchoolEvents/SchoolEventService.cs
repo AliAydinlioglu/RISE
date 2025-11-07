@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Rise.Services.SchoolEvents
 {
-    internal class SchoolEventService(ApplicationDbContext dbContext, ISessionContextProvider sessionContextProvider) : ISchoolEventService
+    public class SchoolEventService(ApplicationDbContext dbContext, ISessionContextProvider sessionContextProvider) : ISchoolEventService
     {
         public async Task<Result<SchoolEventResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request, CancellationToken ctx)
         {

@@ -1,7 +1,7 @@
 using Rise.Domain.Locations;
 using Rise.Domain.StudentActivities;
 
-namespace Rise.Domain.Tests.StudentActivities;
+namespace Rise.Domain.Tests.Locations;
 
 public class LocationShould
 {
