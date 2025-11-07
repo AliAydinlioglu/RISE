@@ -18,7 +18,8 @@ public class ContactService(HttpClient httpClient) : IContactService
 
     public Task<Result<ContactResponse.Detail>> GetDetailByIdAsync(int id, CancellationToken ctx = default)
     {
-        throw new NotImplementedException();
+        var result = httpClient.GetFromJsonAsync<Result<ContactResponse.Detail>>($"/api/contact/{id}", cancellationToken: ctx);
+        return result!;
     }
 
     public Task<Result<ContactResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request, CancellationToken ctx = default)

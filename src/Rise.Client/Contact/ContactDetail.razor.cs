@@ -7,6 +7,7 @@ public partial class ContactDetail
 {
     private ContactDto.Index _contactService { get; set; }
     [Parameter] public string Id { get; set; } = string.Empty;
+    [Inject] public required IContactService ContactService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -14,7 +15,8 @@ public partial class ContactDetail
         {
             return;
         }
-        var contactServices = await ContactDataLoader.LoadContactsAsync();
-        _contactService = contactServices.Find(c => c.Id == int.Parse(Id));
+        
+        var result = await ContactService.GetDetailByIdAsync(int.Parse(Id));
+        _contactService = result.Value.Service;
     }
 }

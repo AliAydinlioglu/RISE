@@ -12,7 +12,6 @@ public class Detail(IContactService service) : Endpoint<ContactRequest.Detail, R
     
     public override Task<Result<ContactResponse.Detail>> ExecuteAsync(ContactRequest.Detail req, CancellationToken ctx)
     {
-        
         return service.GetDetailByIdAsync(req.Id, ctx);
     }
     
