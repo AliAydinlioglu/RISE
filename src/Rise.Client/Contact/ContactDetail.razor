@@ -1,0 +1,43 @@
+﻿@page "/contact/{Id}"
+@if (_contactService == null)
+{
+    <MudContainer Class="mt-8">
+        <RiseLoader />
+    </MudContainer>
+}
+else
+{
+    <PageTitle>@_contactService.Name</PageTitle>
+    <a href="/contact" class="has-text-black hover:has-text-underline">
+        <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span>Terug naar contacten</span>
+    </a>
+    <div class="container ">
+        <RiseHeadTitle>@_contactService.Name</RiseHeadTitle>
+    </div>
+
+    <section class="mt-5 container">
+        <div class="content">
+            <div class="box" hidden="@string.IsNullOrWhiteSpace(_contactService?.Description)">
+                @_contactService.Description
+            </div>
+            <div class="box" hidden="@((_contactService.Location == null ? true : false))">
+                <ContactLocation 
+                    Location="_contactService.Location"
+                    ExtraInfo="@(ServiceContactHelper.ShowOpeningInfo(_contactService.OpeningHours))">
+                </ContactLocation>
+            </div>
+            <div class="box" hidden="@(!_contactService?.CommunicationChannels?.Any() ?? true)">
+                <ContactCommunication Channels="_contactService.CommunicationChannels"></ContactCommunication>
+            </div>
+            <div class="box" hidden="@(!_contactService?.OpeningHours?.Any() ?? true)">
+                <ContactOpeningHours OpeningHours="_contactService.OpeningHours"></ContactOpeningHours>
+            </div>
+            <div class="box" hidden="@(!_contactService?.Remarks?.Any() ?? true)">
+                <ContactRemarks Remarks=_contactService.Remarks></ContactRemarks>
+            </div>
+        </div>
+    </section>
+}
