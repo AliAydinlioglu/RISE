@@ -13,14 +13,16 @@ public static class ContactSeeder
         var services = new List<Service>
         {
             CreateStudentensecretariaatSchoonmeersen(),
-            CreateStudentensecretariaatMercator(),
             CreateBibliotheekSchoonmeersen(),
             CreateStandaardStudentenShopSchoonmeersen(),
             CreateIBaMaFlex(),
             CreateStakingWatNu(),
             CreatePsychosocialeOndersteuning(),
             CreateOngevalMelden(),
-            CreateOverigeVragen()
+            CreateOverigeVragen(),
+            CreateStudentensecretariaatMercator(),
+            CreateBibliotheekMercator(),
+            CreateStandaardStudentenShopGent()
         };
 
         dbContext.Services.AddRange(services);
@@ -81,6 +83,91 @@ public static class ContactSeeder
         return service;
     }
 
+    private static Service CreateBibliotheekSchoonmeersen()
+    {
+        var service = new Service(
+            "Bibliotheek Schoonmeersen",
+            new ServiceCategory("Ondersteunend")
+        );
+
+        service.DescribeService(
+            "De bibliotheek biedt een uitgebreide collectie boeken, tijdschriften en online bronnen.");
+
+        var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
+        var location = new ServiceLocation(address, "Schoonmeersen");
+        service.ChangeLocation(location);
+
+        var openingHours = new List<ContactPeriod>
+        {
+            new ContactPeriod(new DateOnly(2025, 11, 3),
+                new List<TimeRange> { new TimeRange(new TimeOnly(8, 0), new TimeOnly(21, 45)) }),
+            new ContactPeriod(new DateOnly(2025, 11, 4),
+                new List<TimeRange> { new TimeRange(new TimeOnly(8, 0), new TimeOnly(21, 45)) }),
+            new ContactPeriod(new DateOnly(2025, 11, 5),
+                new List<TimeRange> { new TimeRange(new TimeOnly(8, 0), new TimeOnly(21, 45)) }),
+            new ContactPeriod(new DateOnly(2025, 11, 6),
+                new List<TimeRange> { new TimeRange(new TimeOnly(8, 0), new TimeOnly(21, 45)) }),
+            new ContactPeriod(new DateOnly(2025, 11, 7),
+                new List<TimeRange> { new TimeRange(new TimeOnly(8, 0), new TimeOnly(16, 45)) })
+        };
+        service.ChangeOpeningsHours(openingHours);
+
+        service.AddRemark("Gesloten op weekend en feestdagen");
+
+        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:bibschoonmeersen@hogent.be",
+            CommunicationTypes.Email));
+        service.AddCommunicationChannel(new CommunicationChannel("Website",
+            "https://www.hogent.be/student/bibliotheken/", CommunicationTypes.Form));
+        service.AddCommunicationChannel(new CommunicationChannel("Telefoon", "tel:09 243 35 60",
+            CommunicationTypes.Phone));
+        service.AddCommunicationChannel(new CommunicationChannel("Facebook",
+            "https://www.facebook.com/BIBSchoonmeersen/", CommunicationTypes.SocialMedia));
+        service.AddCommunicationChannel(new CommunicationChannel("Vimeo",
+            "https://vimeo.com/hogent", CommunicationTypes.SocialMedia));
+        service.AddCommunicationChannel(new CommunicationChannel("Pinterest",
+            "https://www.pinterest.com/bibschoo/", CommunicationTypes.SocialMedia));
+
+        return service;
+    }
+
+    private static Service CreateStandaardStudentenShopSchoonmeersen()
+    {
+        var service = new Service(
+            "Standaard Studenten Shop Schoonmeersen",
+            new ServiceCategory("Ondersteunend")
+        );
+
+        service.DescribeService("Bij de Standaard kan je terecht voor studiemateriaal, boeken en veel meer.");
+
+        var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
+        var location = new ServiceLocation(address, "Schoonmeersen");
+        service.ChangeLocation(location);
+
+        var openingHours = new List<ContactPeriod>
+        {
+            new ContactPeriod(new DateOnly(2025, 11, 4),
+                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(17, 0)) }),
+            new ContactPeriod(new DateOnly(2025, 11, 5),
+                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(17, 0)) }),
+            new ContactPeriod(new DateOnly(2025, 11, 6),
+                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(17, 0)) }),
+            new ContactPeriod(new DateOnly(2025, 11, 7),
+                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(16, 0)) })
+        };
+        service.ChangeOpeningsHours(openingHours);
+
+        service.AddRemark("Gesloten op weekend en feestdagen");
+
+        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:ks.hogent@standaardboekhandel.be",
+            CommunicationTypes.Email));
+        service.AddCommunicationChannel(new CommunicationChannel("Website",
+            "https://hogent.standaardstudentshop.be/Practical", CommunicationTypes.Form));
+        service.AddCommunicationChannel(new CommunicationChannel("Telefoon", "tel:09 292 10 25",
+            CommunicationTypes.Phone));
+
+        return service;
+    }
+
     private static Service CreateStudentensecretariaatMercator()
     {
         var service = new Service(
@@ -129,24 +216,24 @@ public static class ContactSeeder
 
         service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:info@hogent.be",
             CommunicationTypes.Email));
-        service.AddCommunicationChannel(new CommunicationChannel("Telefoon", "tel:09 243 20 16",
+        service.AddCommunicationChannel(new CommunicationChannel("Telefoon", "tel:09 243 31 20",
             CommunicationTypes.Phone));
 
         return service;
     }
 
-    private static Service CreateBibliotheekSchoonmeersen()
+    private static Service CreateBibliotheekMercator()
     {
         var service = new Service(
-            "Bibliotheek Schoonmeersen",
+            "Bibliotheek Mercator",
             new ServiceCategory("Ondersteunend")
         );
 
         service.DescribeService(
             "De bibliotheek biedt een uitgebreide collectie boeken, tijdschriften en online bronnen.");
 
-        var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Schoonmeersen");
+        var address = new StructuredAddress("Henleykaai", 84, 9000, "Gent", "");
+        var location = new ServiceLocation(address, "Mercator");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
@@ -164,61 +251,56 @@ public static class ContactSeeder
         };
         service.ChangeOpeningsHours(openingHours);
 
-        service.AddRemark("Gesloten op feestdagen");
+        service.AddRemark("Gesloten op weekend en feestdagen \n10-11 november \nKerstverlof");
 
-        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:bibschoonmeersen@hogent.be",
+        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:bibmercator@hogent.be",
             CommunicationTypes.Email));
         service.AddCommunicationChannel(new CommunicationChannel("Website",
             "https://www.hogent.be/student/bibliotheken/", CommunicationTypes.Form));
-        service.AddCommunicationChannel(new CommunicationChannel("Telefoon", "tel:09 243 35 60",
+        service.AddCommunicationChannel(new CommunicationChannel("Telefoon", "tel:09 243 35 80",
             CommunicationTypes.Phone));
 
         return service;
     }
 
-    private static Service CreateStandaardStudentenShopSchoonmeersen()
+    private static Service CreateStandaardStudentenShopGent()
     {
         var service = new Service(
-            "Standaard Studenten Shop Schoonmeersen",
+            "Standaard Studenten Shop Gent",
             new ServiceCategory("Ondersteunend")
         );
 
         service.DescribeService("Bij de Standaard kan je terecht voor studiemateriaal, boeken en veel meer.");
 
-        var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Schoonmeersen");
+        var address = new StructuredAddress("Bagattenstraat", 51, 9000, "Gent", "");
+        var location = new ServiceLocation(address, "Gent Campus");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
         {
+            new ContactPeriod(new DateOnly(2025, 11, 3),
+                new List<TimeRange> { new TimeRange(new TimeOnly(11, 0), new TimeOnly(18, 0)) }),
             new ContactPeriod(new DateOnly(2025, 11, 4),
-                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(17, 0)) }),
+                new List<TimeRange> { new TimeRange(new TimeOnly(11, 0), new TimeOnly(15, 0)) }),
             new ContactPeriod(new DateOnly(2025, 11, 5),
-                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(17, 0)) }),
+                new List<TimeRange> { new TimeRange(new TimeOnly(11, 0), new TimeOnly(18, 0)) }),
             new ContactPeriod(new DateOnly(2025, 11, 6),
-                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(17, 0)) }),
+                new List<TimeRange> { new TimeRange(new TimeOnly(11, 0), new TimeOnly(15, 0)) }),
             new ContactPeriod(new DateOnly(2025, 11, 7),
-                new List<TimeRange> { new TimeRange(new TimeOnly(9, 0), new TimeOnly(16, 0)) })
+                new List<TimeRange> { new TimeRange(new TimeOnly(11, 0), new TimeOnly(15, 0)) })
         };
         service.ChangeOpeningsHours(openingHours);
 
-        service.AddRemark("Gesloten op feestdagen");
+        service.AddRemark("Gesloten op vakantieperiodes en op feest-, brug- en weekenddagen");
 
-        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:ks.hogent@standaardboekhandel.be",
+        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "ks.hogent@standaardboekhandel.be",
             CommunicationTypes.Email));
         service.AddCommunicationChannel(new CommunicationChannel("Website",
             "https://hogent.standaardstudentshop.be/Practical", CommunicationTypes.Form));
-        service.AddCommunicationChannel(new CommunicationChannel("Telefoon", "tel:09 292 10 25",
-            CommunicationTypes.Phone));
-        service.AddCommunicationChannel(new CommunicationChannel("Facebook",
-            "https://www.facebook.com/BIBSchoonmeersen/", CommunicationTypes.SocialMedia));
-        service.AddCommunicationChannel(new CommunicationChannel("Vimeo",
-            "https://vimeo.com/hogent", CommunicationTypes.SocialMedia));
-        service.AddCommunicationChannel(new CommunicationChannel("Pinterest",
-            "https://www.pinterest.com/bibschoo/", CommunicationTypes.SocialMedia));
 
         return service;
     }
+
 
     private static Service CreateIBaMaFlex()
     {
