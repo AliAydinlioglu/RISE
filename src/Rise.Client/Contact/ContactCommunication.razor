@@ -1,0 +1,9 @@
+﻿<div class="contact-communications">
+    @foreach (var channel in Channels)
+    {
+        <div class="channel">
+            <span class="category">@channel.TypeOfCommunication</span>
+            <a href="@channel.Link" target="_blank">@channel.Name</a>
+        </div>
+    }
+</div>
