@@ -32,7 +32,7 @@ namespace Rise.Domain.SchoolEvents
             TimeRange = Guard.Against.Null(timeRange);
             ImageUrl = imageUrl;
             Location = Guard.Against.Null(location);
-            Price = Guard.Against.Null(price);
+            Price = Guard.Against.Negative(Guard.Against.Null(price));
             RegisterLink = Guard.Against.NullOrWhiteSpace(registerLink);
             Registrable = Guard.Against.Null(registrable);
             Capacity = Guard.Against.NegativeOrZero(capacity);
