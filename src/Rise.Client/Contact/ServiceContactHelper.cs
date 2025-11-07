@@ -26,6 +26,9 @@ public static class ServiceContactHelper
 
     public static string ShowOpeningInfo(IEnumerable<ContactDto.ContactPeriodDto> openingHours)
     {
+        if (!openingHours.Any())
+            return "";
+
         return IsOpen(openingHours) ? " ✅ OPEN" : " ❌ GESLOTEN";
     }
 }

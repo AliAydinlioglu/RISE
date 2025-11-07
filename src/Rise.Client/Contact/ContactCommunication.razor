@@ -1,5 +1,5 @@
 ﻿<div class="contact-communications">
-    @foreach (var channel in Channels)
+    @foreach (var channel in Channels.Where(c => !string.IsNullOrWhiteSpace(c.Name)))
     {
         <div class="channel">
             <span class="category">@channel.TypeOfCommunication</span>

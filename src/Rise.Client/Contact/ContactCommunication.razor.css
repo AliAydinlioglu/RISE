@@ -12,7 +12,7 @@
 
 .contact-communications .channel .category{
     display: inline-block;
-    width: 50px;
+    min-width: 50px;
     font-weight: bold;
 }
 
