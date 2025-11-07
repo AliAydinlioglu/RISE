@@ -4,6 +4,7 @@ using Rise.Domain.Calendar;
 using Rise.Domain.Common;
 using Rise.Persistence.Queries.Courses.Mappers;
 using Rise.Shared.Courses;
+using Serilog;
 
 namespace Rise.Persistence.Queries.Courses;
 
@@ -16,7 +17,10 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
     {
         var course = await FetchCourse(courseId);
         if (course is null)
+        {
+            Log.Warning($"Course with Id {courseId} not found.");
             return Result.NotFound("Course not found");
+        }
 
         var validationResult = ValidateCourse(course, date, userClassGroup);
         if (!validationResult.IsSuccess)
@@ -48,15 +52,24 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
     {
         var userIsEnrolledInCourse = course.ClassGroup == userClassGroup;
         if (!userIsEnrolledInCourse)
+        {
+            Log.Warning($"Course with {course.Id} is not assigned to classgroup: {userClassGroup}.");
             return Result.Forbidden();
+        }
 
         var dateAsOffset = new DateTimeOffset(date.ToDateTime(TimeOnly.MinValue));
         if (!IsDateWithinSemester(dateAsOffset, course.AcademicSemester.DateRange))
+        {
+            Log.Warning($"Date {dateAsOffset} is outside the academic semester {course.AcademicSemester.Id}.");
             return Result.Invalid(new ValidationError("Date is outside the academic semester"));
+        }
 
         var lesson = course.Lessons.FirstOrDefault(l => l.DayOfWeek == date.DayOfWeek);
         if (lesson is null)
+        {
+            Log.Warning($"No lesson scheduled on {date.DayOfWeek} for this course");
             return Result.NotFound($"No lesson scheduled on {date.DayOfWeek} for this course");
+        }
 
         return Result.Success();
     }
