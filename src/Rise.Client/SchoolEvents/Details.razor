@@ -28,13 +28,21 @@
                     <p class="is-size-6">@LocationName</p>
                     <p class="is-size-6 has-text-grey">@Address</p>
                 </div>
-
+                
+                <div data-bunit='sa-detail-description' class="field">
+                    <label class="label">Prijs:</label>
+                    <div class="content">
+                        <p>€ @Price.ToString("0.00")</p>
+                    </div>
+                </div>
+                
                 <div data-bunit='sa-detail-description' class="field">
                     <label class="label">Beschrijving:</label>
                     <div class="content">
                         <p>@Description</p>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

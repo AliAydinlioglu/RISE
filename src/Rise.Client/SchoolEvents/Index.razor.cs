@@ -9,16 +9,17 @@ namespace Rise.Client.SchoolEvents;
 public partial class Index 
 {
     private IEnumerable<SchoolEventDto.Index>? _schoolEvents;
+
+    private DateTime _selectedDate = DateTime.Now;
     
-    private int _currentPage = 1;
     private const int PageSize = 8;
-    private int TotalCount => _schoolEvents?.Count() ?? 0;
+    private int TotalCount { get; set; }
     private int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
-    
-    private DateTime SelectedDate { get; set; } = DateTime.Now;
     
     private async Task LoadSchoolEventsAsync()
     {
+        Log.Information("{0}: selected date={1}", nameof(LoadSchoolEventsAsync), _selectedDate);
+        
         /*
         var request = new QueryRequest.SkipTake
         {
@@ -42,7 +43,178 @@ public partial class Index
             {
                 Id = 1,
                 Title = "Hersftwandeling",
-                Date = new DateTime(2025, 10, 20),
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
+                Category = "Biodiversiteit",
+                StartTime = new TimeOnly(12, 30),
+                EndTime = new TimeOnly(13, 30),
+                Location = schoonmeersen
+            },new SchoolEventDto.Index
+            {
+                Id = 1,
+                Title = "Hersftwandeling",
+                Date = new DateTime(2025, 11, 08),
                 Category = "Biodiversiteit",
                 StartTime = new TimeOnly(12, 30),
                 EndTime = new TimeOnly(13, 30),
@@ -119,28 +291,29 @@ public partial class Index
                 Location = null, //TODO: check
             }
         ];
+
+        TotalCount = _schoolEvents.Count();
+        _schoolEvents = _schoolEvents.Where(x => x.Date.Date == _selectedDate.Date);
+        Log.Information("{0}: events={1}", nameof(LoadSchoolEventsAsync), _schoolEvents);
     }
 
     protected override async Task OnInitializedAsync()
     {
         await LoadSchoolEventsAsync();
     }
-    
-    private async Task OnPageChangedAsync(int page)
-    {
-        _currentPage = page;
-        await LoadSchoolEventsAsync();
-    }
 
-    private async Task OnClickFilter()
+    private async Task OnDateChangedAsync(DateTime date)
     {
-        
+        Log.Information("{0}: {1}", nameof(OnDateChangedAsync), $"{date:dd/MM/yyyy}");
+        _selectedDate = date;
+        await LoadSchoolEventsAsync();
     }
     
     private void SetDateRelativeToCurrentDate(int days)
     {
-        SelectedDate = SelectedDate.AddDays(days);
-        SelectedDate = CalendarHelpers.GetMondayOfWeek(SelectedDate);
+        Log.Information("{0}: {1}", nameof(SetDateRelativeToCurrentDate), days);
+        _selectedDate = _selectedDate.AddDays(days);
+        _selectedDate = CalendarHelpers.GetMondayOfWeek(_selectedDate);
     }
 }
 

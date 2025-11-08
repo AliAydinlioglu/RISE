@@ -1,0 +1,8 @@
+.detail-sa .content, .detail-sa .box, .detail-sa .box-content, .detail-sa .label{
+    background: white;
+    color: black;
+}
+
+.detail-sa a:hover{
+    text-decoration: underline;
+}
