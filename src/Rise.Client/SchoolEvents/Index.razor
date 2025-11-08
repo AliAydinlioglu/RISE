@@ -36,9 +36,9 @@
             
             <MudItem lg="12" Class="d-flex align-center justify-center">
                 <RiseWeekCalendar 
-                    SelectedDate="@DateTime.Now"
-                    SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => SelectedDate = date)"
-                    Title="@($"{SelectedDate:MMMM yyyy}")"
+                    SelectedDate="_selectedDate"
+                    SelectedDateChanged="(date) => OnDateChangedAsync(date)"
+                    Title="@($"{_selectedDate:MMMM yyyy}")"
                     CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Secondary"
                     CalendarWidth="RiseWeekCalendar.RiseWeekCalendarWidth.Medium"
                     ShowOnlySchoolDays="false"
@@ -74,69 +74,52 @@
             @* </MudItem> *@
             
         </MudGrid>
-        
-        <div class="is-flex columns  is-multiline  mb-4">
-            @foreach (var schoolEvent in _schoolEvents)
-            {
-                <article data-bunit="sa-index" class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
-                
-                    <a href="/school-events/@schoolEvent.Id">
-                        <!-- Desktop/Tablet: Vertical Card -->
-                        <div class="is-hidden-mobile">
-                            <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
-                                <RiseSchoolEventCardContent 
-                                    ImageUrl="@schoolEvent.ImageUrl"
-                                    Category="@schoolEvent.Category"
-                                    StartTime="@schoolEvent.StartTime"
-                                    EndTime="@schoolEvent.EndTime"
-                                    Location="@schoolEvent.Location"
-                                    Date="@schoolEvent.Date.LocalDateTime"/>
-                            </RiseVerticalCard>
-                        </div>
 
-                        <!-- Mobile: Regular Card -->
-                        <div class="is-hidden-tablet">
-                            <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
-                                <RiseSchoolEventCardContent 
-                                    Category="@schoolEvent.Category"
-                                    StartTime="@schoolEvent.StartTime"
-                                    EndTime="@schoolEvent.EndTime"
-                                    Location="@schoolEvent.Location"
-                                    Date="@schoolEvent.Date.LocalDateTime"/>
-                            </RiseCard>
-                        </div>
-                    </a>
-                </article>
-            }
-        </div>
-        <section class="section pagination-section"> 
-            <nav class="pagination is-rounded is-centered" role="navigation">
+        if (!_schoolEvents.Any())
+        {
+            <MudContainer Class="mt-8">
+                <p class="align-center">Geen evenementen voor deze datum.</p>
+            </MudContainer>
+        }
+        else
+        {
+            <div class="is-flex columns  is-multiline  mb-4">
+                @foreach (var schoolEvent in _schoolEvents)
+                {
+                    <article class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
                 
-                <button class="pagination-previous"
-                        disabled="@(_currentPage <= 1)"
-                        @onclick="() => OnPageChangedAsync(_currentPage - 1)">
-                    Previous
-                </button>
-                <button class="pagination-next"
-                        disabled="@(_currentPage >= TotalPages)"
-                        @onclick="() => OnPageChangedAsync(_currentPage + 1)">
-                    Next
-                </button>
-                
-                <ul class="pagination-list">
-                    @for (var i = 1; i <= TotalPages; i++)
-                    {
-                        var pageNumber = i;
-                        <li>
-                            <button class="pagination-link @(_currentPage == pageNumber ? "is-current" : "")"
-                                    @onclick="() => OnPageChangedAsync(pageNumber)">
-                                @pageNumber
-                            </button>
-                        </li>
-                    }
-                </ul>
-                
-            </nav>
-        </section>
+                        <a href="/school-events/@schoolEvent.Id">
+                            <!-- Desktop/Tablet: Vertical Card -->
+                            <div class="is-hidden-mobile">
+                                <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                    <RiseSchoolEventCardContent 
+                                        ImageUrl="@schoolEvent.ImageUrl"
+                                        Category="@schoolEvent.Category"
+                                        StartTime="@schoolEvent.StartTime"
+                                        EndTime="@schoolEvent.EndTime"
+                                        Location="@schoolEvent.Location"
+                                        Date="@schoolEvent.Date.LocalDateTime"/>
+                                </RiseVerticalCard>
+                            </div>
+
+                            <!-- Mobile: Regular Card -->
+                            <div class="is-hidden-tablet">
+                                <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                    <RiseSchoolEventCardContent 
+                                        ImageUrl="@schoolEvent.ImageUrl"
+                                        Category="@schoolEvent.Category"
+                                        StartTime="@schoolEvent.StartTime"
+                                        EndTime="@schoolEvent.EndTime"
+                                        Location="@schoolEvent.Location"
+                                        Date="@schoolEvent.Date.LocalDateTime"/>
+                                </RiseCard>
+                            </div>
+                        </a>
+                    </article>
+                }
+            </div>
+            
+            <RisePagination TotalPages="TotalPages"/>
+        }
     }
 </section>

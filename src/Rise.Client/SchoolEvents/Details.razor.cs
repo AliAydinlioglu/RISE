@@ -13,4 +13,5 @@ public partial class Details : ComponentBase
     private string TimeString { get; set; }
     private string LocalDateString { get; set; }
     private string Category { get; set; }
+    private double Price { get; set; }
 }
