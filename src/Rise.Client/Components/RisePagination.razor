@@ -2,13 +2,13 @@
     <nav class="pagination is-rounded is-centered" role="navigation">
                 
         <button class="pagination-previous"
-                disabled="@(_currentPage <= 1)"
-                @onclick="() => OnPageChanged(_currentPage - 1)">
+                disabled="@(CurrentPage <= 1)"
+                @onclick="() => OnPageChanged(CurrentPage - 1)">
             Previous
         </button>
         <button class="pagination-next"
-                disabled="@(_currentPage >= TotalPages)"
-                @onclick="() => OnPageChanged(_currentPage + 1)">
+                disabled="@(CurrentPage >= TotalPages)"
+                @onclick="() => OnPageChanged(CurrentPage + 1)">
             Next
         </button>
                 
@@ -17,7 +17,7 @@
             {
                 var pageNumber = i;
                 <li>
-                    <button class="pagination-link @(_currentPage == pageNumber ? "is-current" : "")"
+                    <button class="pagination-link @(CurrentPage == pageNumber ? "is-current" : "")"
                             @onclick="() => OnPageChanged(pageNumber)">
                         @pageNumber
                     </button>

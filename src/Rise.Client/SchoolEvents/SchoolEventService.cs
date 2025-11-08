@@ -1,8 +1,8 @@
-﻿using Rise.Shared.Common;
+﻿using System.Net.Http.Json;
+using Rise.Shared.Common;
 using Rise.Shared.SchoolEvents;
-using System.Net.Http.Json;
 
-namespace Rise.Client.StudentActivities;
+namespace Rise.Client.SchoolEvents;
 
 public class SchoolEventService(HttpClient httpClient) : ISchoolEventService
 {

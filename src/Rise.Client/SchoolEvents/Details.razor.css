@@ -1,8 +1,8 @@
-.detail-sa .content, .detail-sa .box, .detail-sa .box-content, .detail-sa .label{
+.detail-se .content, .detail-se .box, .detail-se .box-content, .detail-se .label{
     background: white;
     color: black;
 }
 
-.detail-sa a:hover{
+.se-address{
     text-decoration: underline;
 }

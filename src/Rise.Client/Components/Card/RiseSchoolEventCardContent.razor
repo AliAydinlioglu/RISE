@@ -4,5 +4,5 @@
     <p>@Category</p>
     <p>@DateString</p>
     <p>@TimeRangeString</p>
-    <p class="is-flex-grow-1">@(Location?.ToString() ?? "Online")</p>
+    <p class="is-flex-grow-1">@(Location?.GetAddressWithName() ?? "Online")</p>
 </div>
