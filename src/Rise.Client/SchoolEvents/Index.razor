@@ -21,54 +21,57 @@
     {
         <MudGrid>
             
-            <MudItem lg="4" Class="is-hidden-mobile">
-                <MudIconButton
-                    Icon="@Icons.Material.Outlined.CalendarToday"
-                    Variant="Variant.Filled"
-                    Size="Size.Medium"
-                    Color="Color.Primary"/>
-                <MudIconButton
-                    Icon="@Icons.Material.Outlined.List"
-                    Variant="Variant.Outlined"
-                    Size="Size.Medium"
-                    Color="Color.Primary"/>
-            </MudItem>
+            @* <MudItem lg="4" Class="is-hidden-mobile"> *@
+            @*     <MudIconButton *@
+            @*         Icon="@Icons.Material.Outlined.CalendarToday" *@
+            @*         Variant="Variant.Filled" *@
+            @*         Size="Size.Medium" *@
+            @*         Color="Color.Primary"/> *@
+            @*     <MudIconButton *@
+            @*         Icon="@Icons.Material.Outlined.List" *@
+            @*         Variant="Variant.Outlined" *@
+            @*         Size="Size.Medium" *@
+            @*         Color="Color.Primary"/> *@
+            @* </MudItem> *@
             
-            <MudItem lg="4" Class="d-flex align-center justify-center">
-                <WeekCalendar 
-                    SelectedDate="SelectedDate"
+            <MudItem lg="12" Class="d-flex align-center justify-center">
+                <RiseWeekCalendar 
+                    SelectedDate="@DateTime.Now"
                     SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => SelectedDate = date)"
                     Title="@($"{SelectedDate:MMMM yyyy}")"
+                    CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Secondary"
+                    CalendarWidth="RiseWeekCalendar.RiseWeekCalendarWidth.Medium"
+                    ShowOnlySchoolDays="false"
                     OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
                     OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
             </MudItem>
             
-            <MudItem lg="4" Class="d-flex flex-column">
-                <MudMenu 
-                    Class="align-self-end"
-                    Icon="@Icons.Material.Outlined.FilterAlt"
-                    Variant="Variant.Outlined"
-                    Size="Size.Medium"
-                    Color="Color.Primary"
-                    Style="width: fit-content; margin-bottom: 0.25rem"
-                >
-                    <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem>
-                    <MudMenuItem OnClick="() => { }">Prijs</MudMenuItem>
-                    <MudMenuItem OnClick="() => { }">Campus</MudMenuItem>
-                </MudMenu>
-                <MudMenu
-                    Class="is-hidden-mobile align-self-end"
-                    Icon="@Icons.Material.Outlined.Sort"
-                    Variant="Variant.Outlined"
-                    Size="Size.Medium"
-                    Color="Color.Primary"
-                    Style="width: fit-content">
-                    <MudMenuItem OnClick="() => { }">Naam</MudMenuItem>
-                    <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem>
-                    <MudMenuItem OnClick="() => { }">Datum</MudMenuItem>
-                    <MudMenuItem OnClick="() => { }">Campus</MudMenuItem>
-                </MudMenu>
-            </MudItem>
+            @* <MudItem lg="4" Class="d-flex flex-column"> *@
+            @*     <MudMenu *@
+            @*         Class="align-self-end" *@
+            @*         Icon="@Icons.Material.Outlined.FilterAlt" *@
+            @*         Variant="Variant.Outlined" *@
+            @*         Size="Size.Medium" *@
+            @*         Color="Color.Primary" *@
+            @*         Style="width: fit-content; margin-bottom: 0.25rem" *@
+            @*     > *@
+            @*         <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem> *@
+            @*         <MudMenuItem OnClick="() => { }">Prijs</MudMenuItem> *@
+            @*         <MudMenuItem OnClick="() => { }">Campus</MudMenuItem> *@
+            @*     </MudMenu> *@
+            @*     <MudMenu *@
+            @*         Class="is-hidden-mobile align-self-end" *@
+            @*         Icon="@Icons.Material.Outlined.Sort" *@
+            @*         Variant="Variant.Outlined" *@
+            @*         Size="Size.Medium" *@
+            @*         Color="Color.Primary" *@
+            @*         Style="width: fit-content"> *@
+            @*         <MudMenuItem OnClick="() => { }">Naam</MudMenuItem> *@
+            @*         <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem> *@
+            @*         <MudMenuItem OnClick="() => { }">Datum</MudMenuItem> *@
+            @*         <MudMenuItem OnClick="() => { }">Campus</MudMenuItem> *@
+            @*     </MudMenu> *@
+            @* </MudItem> *@
             
         </MudGrid>
         
@@ -82,6 +85,7 @@
                         <div class="is-hidden-mobile">
                             <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
                                 <RiseSchoolEventCardContent 
+                                    ImageUrl="@schoolEvent.ImageUrl"
                                     Category="@schoolEvent.Category"
                                     StartTime="@schoolEvent.StartTime"
                                     EndTime="@schoolEvent.EndTime"
