@@ -15,11 +15,13 @@ public static class LocationDto
         
         public string? BusNumber { get; set; } = String.Empty;
 
-        public override string ToString()
+        public string GetAddressWithName()
         {
-            if (!string.IsNullOrWhiteSpace(Name)) 
-                return Name;
-
+            return !string.IsNullOrWhiteSpace(Name) ? Name : GetAddressWithoutName();
+        }
+        
+        public string GetAddressWithoutName()
+        {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append($"{Street} {HouseNumber}");
 

@@ -21,19 +21,6 @@
     {
         <MudGrid>
             
-            @* <MudItem lg="4" Class="is-hidden-mobile"> *@
-            @*     <MudIconButton *@
-            @*         Icon="@Icons.Material.Outlined.CalendarToday" *@
-            @*         Variant="Variant.Filled" *@
-            @*         Size="Size.Medium" *@
-            @*         Color="Color.Primary"/> *@
-            @*     <MudIconButton *@
-            @*         Icon="@Icons.Material.Outlined.List" *@
-            @*         Variant="Variant.Outlined" *@
-            @*         Size="Size.Medium" *@
-            @*         Color="Color.Primary"/> *@
-            @* </MudItem> *@
-            
             <MudItem lg="12" Class="d-flex align-center justify-center">
                 <RiseWeekCalendar 
                     SelectedDate="_selectedDate"
@@ -42,44 +29,21 @@
                     CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Secondary"
                     CalendarWidth="RiseWeekCalendar.RiseWeekCalendarWidth.Medium"
                     ShowOnlySchoolDays="false"
-                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
-                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+                    OnPreviousWeek="() => SetDateRelativeToCurrentDateAsync(-7)"
+                    OnNextWeek="() => SetDateRelativeToCurrentDateAsync(7)"/>
             </MudItem>
-            
-            @* <MudItem lg="4" Class="d-flex flex-column"> *@
-            @*     <MudMenu *@
-            @*         Class="align-self-end" *@
-            @*         Icon="@Icons.Material.Outlined.FilterAlt" *@
-            @*         Variant="Variant.Outlined" *@
-            @*         Size="Size.Medium" *@
-            @*         Color="Color.Primary" *@
-            @*         Style="width: fit-content; margin-bottom: 0.25rem" *@
-            @*     > *@
-            @*         <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem> *@
-            @*         <MudMenuItem OnClick="() => { }">Prijs</MudMenuItem> *@
-            @*         <MudMenuItem OnClick="() => { }">Campus</MudMenuItem> *@
-            @*     </MudMenu> *@
-            @*     <MudMenu *@
-            @*         Class="is-hidden-mobile align-self-end" *@
-            @*         Icon="@Icons.Material.Outlined.Sort" *@
-            @*         Variant="Variant.Outlined" *@
-            @*         Size="Size.Medium" *@
-            @*         Color="Color.Primary" *@
-            @*         Style="width: fit-content"> *@
-            @*         <MudMenuItem OnClick="() => { }">Naam</MudMenuItem> *@
-            @*         <MudMenuItem OnClick="() => { }">Categorie</MudMenuItem> *@
-            @*         <MudMenuItem OnClick="() => { }">Datum</MudMenuItem> *@
-            @*         <MudMenuItem OnClick="() => { }">Campus</MudMenuItem> *@
-            @*     </MudMenu> *@
-            @* </MudItem> *@
             
         </MudGrid>
 
-        if (!_schoolEvents.Any())
+        if (_showError)
         {
-            <MudContainer Class="mt-8">
-                <p class="align-center">Geen evenementen voor deze datum.</p>
-            </MudContainer>
+            <MudAlert Severity="Severity.Error">Er liep iets fout bij het ophalen van de evenementen.</MudAlert>
+        }
+        else if (!_schoolEvents.Any())
+        {
+            <div class="notification is-light">
+                <p class="has-text-centered">Geen evenementen voor deze dag.</p>
+            </div>
         }
         else
         {
@@ -94,7 +58,7 @@
                                 <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
                                     <RiseSchoolEventCardContent 
                                         ImageUrl="@schoolEvent.ImageUrl"
-                                        Category="@schoolEvent.Category"
+                                        Category="TODO"
                                         StartTime="@schoolEvent.StartTime"
                                         EndTime="@schoolEvent.EndTime"
                                         Location="@schoolEvent.Location"
@@ -107,7 +71,7 @@
                                 <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
                                     <RiseSchoolEventCardContent 
                                         ImageUrl="@schoolEvent.ImageUrl"
-                                        Category="@schoolEvent.Category"
+                                        Category="TODO"
                                         StartTime="@schoolEvent.StartTime"
                                         EndTime="@schoolEvent.EndTime"
                                         Location="@schoolEvent.Location"
@@ -119,7 +83,11 @@
                 }
             </div>
             
-            <RisePagination TotalPages="TotalPages"/>
+            <RisePagination 
+                CurrentPage="_currentPage" 
+                PageSize="PageSize"
+                TotalPages="TotalPages"
+                CurrentPageChanged="OnPageChangedAsync"/>
         }
     }
 </section>

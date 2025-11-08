@@ -1,7 +1,9 @@
 @page "/school-events/{Id?}"
 @using Rise.Client.Components
 
-<div data-bunit='sa-detail'  class="container is-widescreen detail-sa   ">
+<PageTitle>@_schoolEvent.Title</PageTitle>
+
+<div data-bunit="se-detail"  class="container is-widescreen detail-se">
     <a href="/school-events" class="has-text-black hover:has-text-underline">
         <span class="icon">
             <i class="fas fa-arrow-left"></i>
@@ -9,41 +11,67 @@
         <span>Terug naar evenementen</span>
     </a>
     <div class="section">
-        <RiseHeadTitle>@Title</RiseHeadTitle>
+        
+        @if (_showError)
+        {
+            <MudAlert Severity="Severity.Error">Er liep iets fout bij het ophalen van het evenement.</MudAlert>
+        }
+        else
+        {
+            <RiseHeadTitle ImageUrl=@($"https://www.hogent.be/sites/hogent/assets/Image/banner{new Random().Next(0, 131)}.jpg")>@_schoolEvent.Title</RiseHeadTitle>
 
-        <div class="content">
-            <div class="box">
-                <div data-bunit='sa-detail-organisator' class="field">
-                    <p class="is-size-6">@Category</p>
-                </div>
+            <div class="content">
+                <div class="box">
+                    <div data-bunit='se-detail-organisator' class="field">
+                        <label class="label">Categorie:</label>
+                        <p class="is-size-6">TODO</p>
+                    </div>
 
-                <div data-bunit='sa-detail-date' class="field">
-                    <label  class="label">Datum & Tijd:</label>
-                    <p class="is-size-6">@LocalDateString</p>
-                    <p class="is-size-6 has-text-grey">@TimeString</p>
-                </div>
+                    <div data-bunit='se-detail-date' class="field">
+                        <label class="label">Datum & Tijd:</label>
+                        <span class="is-size-6">@_schoolEvent.Date.ToString("dddd d MMMM yyyy")</span><br/>
+                        <span class="is-size-6 has-text-black">@_schoolEvent.TimeString</span>
+                    </div>
 
-                <div data-bunit='sa-detail-location' class="field">
-                    <label class="label">Locatie:</label>
-                    <p class="is-size-6">@LocationName</p>
-                    <p class="is-size-6 has-text-grey">@Address</p>
+                    <div data-bunit='se-detail-location' class="field">
+                        <label class="label">Locatie:</label>
+                        <span class="is-size-6">@_schoolEvent.Location.Name</span><br/>
+                        @{ var address = _schoolEvent.Location.GetAddressWithoutName(); }
+                        <a class="is-size-6 has-text-black se-address" href="https://www.google.com/maps?q=@address" target="_blank">@address</a>
+                    </div>
+
+                    <div data-bunit='se-detail-description' class="field">
+                        <label class="label">Prijs:</label>
+                        <div class="content">
+                            <p>€ @(_schoolEvent.IsFree() ? "Gratis" : _schoolEvent.Price.ToString("0.00"))</p>
+                        </div>
+                    </div>
+
+                    <div data-bunit='se-detail-description' class="field">
+                        <label class="label">Beschrijving:</label>
+                        <div class="content">
+                            <p>@_schoolEvent.Description</p>
+                        </div>
+                    </div>
+
                 </div>
                 
-                <div data-bunit='sa-detail-description' class="field">
-                    <label class="label">Prijs:</label>
-                    <div class="content">
-                        <p>€ @Price.ToString("0.00")</p>
-                    </div>
-                </div>
+                <RiseButton
+                    ButtonType="ButtonType.Button"
+                    Size="RiseButton.RiseButtonSize.Medium"
+                    OnClick="() => { }">
+                    <MudIcon Icon="@Icons.Material.Filled.Add"/> Voeg toe aan kalender
+                </RiseButton>
                 
-                <div data-bunit='sa-detail-description' class="field">
-                    <label class="label">Beschrijving:</label>
-                    <div class="content">
-                        <p>@Description</p>
-                    </div>
-                </div>
+                <RiseButton
+                    ButtonType="ButtonType.Button"
+                    Size="RiseButton.RiseButtonSize.Medium"
+                    OnClick="() => NavigateTo(_schoolEvent.RegisterLink)">
+                    <MudIcon Icon="@Icons.Material.Filled.Add"/> Inschrijven
+                </RiseButton>
                 
             </div>
-        </div>
+        }
+        
     </div>
 </div>

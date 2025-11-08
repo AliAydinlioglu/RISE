@@ -1,11 +1,4 @@
 ﻿using Rise.Shared.Locations;
-using Rise.Shared.StudentClubs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Rise.Shared.SchoolEvents
 {
@@ -27,6 +20,10 @@ namespace Rise.Shared.SchoolEvents
             public required string Category { get; set; }
             public required string? ImageUrl { get; set; }
             public required LocationDto.Index Location { get; set; }
+            
+            public string TimeString => $"{StartTime:HH:mm} - {EndTime:HH:mm}";
+            public string LocalDateString => Location.GetAddressWithName();
+            public bool IsFree() => Price == 0;
         }
         public class Index : Base { }
         public class Detail : Base { }
