@@ -28,6 +28,7 @@ namespace Rise.Persistence.Configurations.SchoolEvents
             builder.Property(x => x.Capacity).IsRequired();
             builder.Property(x => x.Registrable).IsRequired().HasDefaultValue(true);
             builder.Property(x => x.Publicity).IsRequired().HasMaxLength(2048);
+            builder.Property(x => x.Category).IsRequired().HasMaxLength(100);
             builder.Property(x => x.ImageUrl).HasMaxLength(2048);
             builder.HasOne(x => x.Location).WithMany().IsRequired().OnDelete(DeleteBehavior.NoAction);
         }

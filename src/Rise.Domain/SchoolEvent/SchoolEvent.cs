@@ -19,11 +19,12 @@ namespace Rise.Domain.SchoolEvents
         public int Capacity { get; private set; }
         public bool Registrable { get; private set; }
         public string Publicity { get; private set; }
+        public string Category { get; set; }
         public string? ImageUrl { get; private set; }
         public Location Location { get; set; }
 
         private SchoolEvent() { }
-        public SchoolEvent(string title, string description, DateTimeOffset date, TimeRange timeRange, decimal price, string registerLink, int capacity, bool registrable, string publicity,
+        public SchoolEvent(string title, string description, DateTimeOffset date, TimeRange timeRange, decimal price, string registerLink, int capacity, bool registrable, string publicity, string category,
             string imageUrl, Location location)
         {
             Title = Guard.Against.NullOrWhiteSpace(title);
@@ -37,6 +38,7 @@ namespace Rise.Domain.SchoolEvents
             Registrable = Guard.Against.Null(registrable);
             Capacity = Guard.Against.NegativeOrZero(capacity);
             Publicity = Guard.Against.NullOrWhiteSpace(publicity);
+            Category = Guard.Against.NullOrWhiteSpace(category);
         }
     }
 }
