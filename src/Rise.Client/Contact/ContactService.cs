@@ -24,7 +24,7 @@ public class ContactService(HttpClient httpClient) : IContactService
 
     public Task<Result<ContactResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request, CancellationToken ctx = default)
     {
-        var result = httpClient.GetFromJsonAsync<Result<ContactResponse.Index>>("/api/contact", cancellationToken: ctx);
+        var result = httpClient.GetFromJsonAsync<Result<ContactResponse.Index>>($"/api/contact?skip={request.Skip}&take={request.Take}", cancellationToken: ctx);
         return result!;
     }
 

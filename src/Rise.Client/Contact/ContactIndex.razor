@@ -5,7 +5,7 @@
 </div>
 
 <section class="mt-5 container">
-    @if (contactServices == null)
+    @if (contactFacilities == null)
     {
         <MudContainer Class="mt-8">
             <RiseLoader />
@@ -14,24 +14,23 @@
     else
     {
         <div class="is-flex columns is-multiline mb-4">
-            @foreach (var contactService in contactServices)
+            @foreach (var contactFacility in contactFacilities)
             {
                 <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop ">
-                        <RiseInfoCard Title="@contactService.Name">
+                    <RiseInfoCard Title="@contactFacility.Name">
                             <div class="columns">
                                 <div class="column">
-                                    <ContactLocation 
-                                        Location="contactService.Location"
-                                        ExtraInfo="@(ServiceContactHelper.ShowOpeningInfo(contactService.OpeningHours))">
+                                    <ContactLocation Location="contactFacility.Location"
+                                                 ExtraInfo="@(ServiceContactHelper.ShowOpeningInfo(contactFacility.OpeningHours))">
                                     </ContactLocation>
                                     <br/>
-                                    <ContactCommunication Channels="contactService.CommunicationChannels">
+                                <ContactCommunication Channels="contactFacility.CommunicationChannels">
                                     </ContactCommunication>
                                 </div>
                                 <div class="column">
-                                    <ContactOpeningHours OpeningHours="contactService.OpeningHours"></ContactOpeningHours>
+                                <ContactOpeningHours OpeningHours="contactFacility.OpeningHours"></ContactOpeningHours>
                                     <br/>
-                                    <ContactRemarks Remarks=contactService.Remarks></ContactRemarks>
+                                <ContactRemarks Remarks=contactFacility.Remarks></ContactRemarks>
                                 </div>
                             </div>
                         </RiseInfoCard>
@@ -40,7 +39,7 @@
             }
         
         </div>
-        @*<section class="section pagination-section"> 
+        <section class="section pagination-section"> 
         
             <nav class="pagination is-rounded is-centered" role="navigation">
                 <button class="pagination-previous" 
@@ -66,6 +65,6 @@
                     }
                 </ul>
             </nav>
-        </section> *@
+        </section>
         }
 </section>

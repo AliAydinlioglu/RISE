@@ -9,23 +9,35 @@ namespace Rise.Client.Contact;
 [HomeBlock(icon: @Icons.Material.Outlined.EventNote, label: "Contact", route: "/contact")]
 public partial class ContactIndex
 {
-    private IEnumerable<ContactDto.Index> contactServices = [];
+    private IEnumerable<ContactDto.Index> contactFacilities = [];
     [Inject] public required IContactService ContactService{ get; set; }
     private int currentPage = 1;
     private int pageSize = 8;
-    //private int totalCount = 0;
-    //private int totalPages => (int)Math.Ceiling((double)totalCount / pageSize);
+    private int totalCount = 0;
+    private int totalPages => (int)Math.Ceiling((double)totalCount / pageSize);
 
     protected override async Task OnInitializedAsync()
+    {
+        await LoadContactFacilitiesAsync();
+    }
+
+    private async Task LoadContactFacilitiesAsync()
     {
         var request = new QueryRequest.SkipTake
         {
             Skip = (currentPage - 1) * pageSize,
             Take = pageSize,
         };
-        
+
         var result = await ContactService.GetIndexAsync(request);
-        contactServices = result.Value.Facilities;
+        contactFacilities = result.Value.Facilities;
+        totalCount = result.Value.TotalCount;
+    }
+
+    private async Task OnPageChangedAsync(int page)
+    {
+        currentPage = page;
+        await LoadContactFacilitiesAsync();
     }
 
 }

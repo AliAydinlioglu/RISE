@@ -31,7 +31,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
             query = query.OrderBy(s => s.FacilityCategory.Name).ThenBy(s => s.Name);
         }
 
-        var services = await query
+        var facilities = await query
             .AsNoTracking()
             .Skip(request.Skip)
             .Take(request.Take)
@@ -40,7 +40,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
         return Result.Success(new ContactResponse.Index
         {
-            Facilities = services,
+            Facilities = facilities,
             TotalCount = totalCount
         });
     }
