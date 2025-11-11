@@ -4,7 +4,7 @@ using Rise.Domain.Contact;
 
 namespace Rise.Persistence.Configurations.Contact;
 
-internal class ServiceConfiguration : EntityConfiguration<Facility>
+internal class FacilityConfiguration : EntityConfiguration<Facility>
 {
     public override void Configure(EntityTypeBuilder<Facility> builder)
     {
@@ -12,12 +12,12 @@ internal class ServiceConfiguration : EntityConfiguration<Facility>
 
         builder.Property(x => x.Name).IsRequired().HasMaxLength(250);
 
-        builder.OwnsOne(x => x.ServiceCategory, sc =>
+        builder.OwnsOne(x => x.FacilityCategory, sc =>
         {
             sc.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnName("ServiceCategoryName");
+                .HasColumnName("FacilityCategoryName");
         });
 
         builder.Property(x => x.Description)
@@ -45,7 +45,7 @@ internal class ServiceConfiguration : EntityConfiguration<Facility>
                 ch.Property(t => t.StartTime).IsRequired();
                 ch.Property(t => t.EndTime).IsRequired();
             });
-            oh.ToTable("ServiceContactPeriods");
+            oh.ToTable("FacilityContactPeriods");
         });
 
         builder.Property(x => x.Remarks);
@@ -53,7 +53,7 @@ internal class ServiceConfiguration : EntityConfiguration<Facility>
         builder.OwnsMany(x => x.CommunicationChannels, cc =>
         {
             cc.WithOwner().HasForeignKey("Id");
-            cc.ToTable("ServiceCommunicationChannels");
+            cc.ToTable("FacilityCommunicationChannels");
         });
     }
 }

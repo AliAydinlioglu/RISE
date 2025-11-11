@@ -16,8 +16,8 @@ public class ServiceShould
 
         service.ShouldNotBeNull();
         service.Name.ShouldBe(ServiceName);
-        service.ServiceCategory.ShouldNotBeNull();
-        service.ServiceCategory.Name.ShouldBe("Onbekend");
+        service.FacilityCategory.ShouldNotBeNull();
+        service.FacilityCategory.Name.ShouldBe("Onbekend");
         service.Description.ShouldBeNull();
         service.Location.ShouldBeNull();
         service.OpeningHours.ShouldBeEmpty();
@@ -32,7 +32,7 @@ public class ServiceShould
 
         service.ShouldNotBeNull();
         service.Name.ShouldBe(ServiceName);
-        service.ServiceCategory.ShouldBe(_category);
+        service.FacilityCategory.ShouldBe(_category);
         service.Description.ShouldBeNull();
         service.Location.ShouldBeNull();
     }

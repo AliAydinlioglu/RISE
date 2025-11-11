@@ -28,7 +28,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
         }
         else
         {
-            query = query.OrderBy(s => s.ServiceCategory.Name).ThenBy(s => s.Name);
+            query = query.OrderBy(s => s.FacilityCategory.Name).ThenBy(s => s.Name);
         }
 
         var services = await query
@@ -71,7 +71,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
         var services = await dbContext.Services
             .AsNoTracking()
-            .Where(s => s.ServiceCategory.Name == categoryName)
+            .Where(s => s.FacilityCategory.Name == categoryName)
             .OrderBy(s => s.Name)
             .Select(s => ToIndexDto(s))
             .ToListAsync(ctx);
@@ -93,7 +93,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
         var services = await dbContext.Services
             .AsNoTracking()
             .Where(s => s.Location != null && s.Location.LocationName == campusName)
-            .OrderBy(s => s.ServiceCategory.Name)
+            .OrderBy(s => s.FacilityCategory.Name)
             .ThenBy(s => s.Name)
             .Select(s => ToIndexDto(s))
             .ToListAsync(ctx);
@@ -110,7 +110,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
         var services = await dbContext.Services
             .AsNoTracking()
             .Where(s => s.Location == null)
-            .OrderBy(s => s.ServiceCategory.Name)
+            .OrderBy(s => s.FacilityCategory.Name)
             .ThenBy(s => s.Name)
             .Select(s => ToIndexDto(s))
             .ToListAsync(ctx);
@@ -128,7 +128,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
         {
             Id = service.Id,
             Name = service.Name,
-            ServiceCategoryName = service.ServiceCategory.Name,
+            ServiceCategoryName = service.FacilityCategory.Name,
             Description = service.Description,
             Location = service.Location != null ? new ContactDto.FacilityLocationDto
             {

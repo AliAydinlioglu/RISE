@@ -1190,7 +1190,7 @@ namespace Rise.Persistence.Migrations
 
             modelBuilder.Entity("Rise.Domain.Contact.Facility", b =>
                 {
-                    b.OwnsOne("Rise.Domain.Contact.FacilityCategory", "ServiceCategory", b1 =>
+                    b.OwnsOne("Rise.Domain.Contact.FacilityCategory", "FacilityCategory", b1 =>
                         {
                             b1.Property<int>("FacilityId")
                                 .HasColumnType("int");
@@ -1199,7 +1199,7 @@ namespace Rise.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("varchar(100)")
-                                .HasColumnName("ServiceCategoryName");
+                                .HasColumnName("FacilityCategoryName");
 
                             b1.HasKey("FacilityId");
 
@@ -1289,7 +1289,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("Id", "Id1");
 
-                            b1.ToTable("ServiceCommunicationChannels", (string)null);
+                            b1.ToTable("FacilityCommunicationChannels", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("Id");
@@ -1311,7 +1311,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("Id", "Id1");
 
-                            b1.ToTable("ServiceContactPeriods", (string)null);
+                            b1.ToTable("FacilityContactPeriods", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("Id");
@@ -1338,7 +1338,7 @@ namespace Rise.Persistence.Migrations
 
                                     b2.HasKey("ContactPeriodId", "ContactPeriodId1", "Id");
 
-                                    b2.ToTable("ServiceContactPeriods_ContactHours");
+                                    b2.ToTable("FacilityContactPeriods_ContactHours");
 
                                     b2.WithOwner()
                                         .HasForeignKey("ContactPeriodId", "ContactPeriodId1");
@@ -1349,12 +1349,12 @@ namespace Rise.Persistence.Migrations
 
                     b.Navigation("CommunicationChannels");
 
+                    b.Navigation("FacilityCategory")
+                        .IsRequired();
+
                     b.Navigation("Location");
 
                     b.Navigation("OpeningHours");
-
-                    b.Navigation("ServiceCategory")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rise.Domain.Navigation.RoleNavigationItemContentLocation", b =>

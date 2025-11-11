@@ -7,17 +7,17 @@ public class Facility : Entity
     public Facility(string name)
     {
         Name = Guard.Against.NullOrWhiteSpace(name);
-        ServiceCategory = new FacilityCategory("Onbekend");
+        FacilityCategory = new FacilityCategory("Onbekend");
     }
 
     public Facility(string name, FacilityCategory serviceCategory) : this(name)
     {
-        ServiceCategory = serviceCategory;
+        FacilityCategory = serviceCategory;
     }
 
     public string Name { get; private set; }
 
-    public FacilityCategory ServiceCategory { get; private set; }
+    public FacilityCategory FacilityCategory { get; private set; }
 
     public string? Description { get; private set; }
 
