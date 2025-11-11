@@ -12,8 +12,8 @@ using Rise.Persistence;
 namespace Rise.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251106115711_ContactService")]
-    partial class ContactService
+    [Migration("20251111175128_ContactFacility")]
+    partial class ContactFacility
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,6 +176,52 @@ namespace Rise.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AcademicSemester", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Calendar.Announcement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTimeOffset>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Announcement", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>
@@ -369,7 +415,7 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Lesson", (string)null);
                 });
 
-            modelBuilder.Entity("Rise.Domain.Contact.Service", b =>
+            modelBuilder.Entity("Rise.Domain.Contact.Facility", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -407,7 +453,7 @@ namespace Rise.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Service", (string)null);
+                    b.ToTable("Facility", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.Identity.Role", b =>
@@ -1038,6 +1084,45 @@ namespace Rise.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Rise.Domain.Calendar.Announcement", b =>
+                {
+                    b.HasOne("Rise.Domain.Calendar.Course", "Course")
+                        .WithMany("Announcements")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Rise.Domain.Calendar.Lecturer", "Sender", b1 =>
+                        {
+                            b1.Property<int>("AnnouncementId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("LastName");
+
+                            b1.HasKey("AnnouncementId");
+
+                            b1.ToTable("Announcement");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AnnouncementId");
+                        });
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Sender")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>
                 {
                     b.HasOne("Rise.Domain.Calendar.AcademicSemester", "AcademicSemester")
@@ -1106,8 +1191,81 @@ namespace Rise.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rise.Domain.Contact.Service", b =>
+            modelBuilder.Entity("Rise.Domain.Contact.Facility", b =>
                 {
+                    b.OwnsOne("Rise.Domain.Contact.FacilityCategory", "ServiceCategory", b1 =>
+                        {
+                            b1.Property<int>("FacilityId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("varchar(100)")
+                                .HasColumnName("ServiceCategoryName");
+
+                            b1.HasKey("FacilityId");
+
+                            b1.ToTable("Facility");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FacilityId");
+                        });
+
+                    b.OwnsOne("Rise.Domain.Contact.FacilityLocation", "Location", b1 =>
+                        {
+                            b1.Property<int>("FacilityId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("LocationName")
+                                .IsRequired()
+                                .HasMaxLength(250)
+                                .HasColumnType("varchar(250)");
+
+                            b1.HasKey("FacilityId");
+
+                            b1.ToTable("Facility");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FacilityId");
+
+                            b1.OwnsOne("Rise.Domain.Common.StructuredAddress", "FaclitityAddress", b2 =>
+                                {
+                                    b2.Property<int>("FacilityLocationFacilityId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("BusNumber")
+                                        .HasMaxLength(20)
+                                        .HasColumnType("varchar(20)");
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("varchar(100)");
+
+                                    b2.Property<int>("HouseNumber")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("Postcode")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("Street")
+                                        .IsRequired()
+                                        .HasMaxLength(250)
+                                        .HasColumnType("varchar(250)");
+
+                                    b2.HasKey("FacilityLocationFacilityId");
+
+                                    b2.ToTable("Facility");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("FacilityLocationFacilityId");
+                                });
+
+                            b1.Navigation("FaclitityAddress")
+                                .IsRequired();
+                        });
+
                     b.OwnsMany("Rise.Domain.Contact.CommunicationChannel", "CommunicationChannels", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -1190,79 +1348,6 @@ namespace Rise.Persistence.Migrations
                                 });
 
                             b1.Navigation("ContactHours");
-                        });
-
-                    b.OwnsOne("Rise.Domain.Contact.ServiceCategory", "ServiceCategory", b1 =>
-                        {
-                            b1.Property<int>("ServiceId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("varchar(100)")
-                                .HasColumnName("ServiceCategoryName");
-
-                            b1.HasKey("ServiceId");
-
-                            b1.ToTable("Service");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ServiceId");
-                        });
-
-                    b.OwnsOne("Rise.Domain.Contact.ServiceLocation", "Location", b1 =>
-                        {
-                            b1.Property<int>("ServiceId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("LocationName")
-                                .IsRequired()
-                                .HasMaxLength(250)
-                                .HasColumnType("varchar(250)");
-
-                            b1.HasKey("ServiceId");
-
-                            b1.ToTable("Service");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ServiceId");
-
-                            b1.OwnsOne("Rise.Domain.Common.StructuredAddress", "ServiceAddress", b2 =>
-                                {
-                                    b2.Property<int>("ServiceLocationServiceId")
-                                        .HasColumnType("int");
-
-                                    b2.Property<string>("BusNumber")
-                                        .HasMaxLength(20)
-                                        .HasColumnType("varchar(20)");
-
-                                    b2.Property<string>("City")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("varchar(100)");
-
-                                    b2.Property<int>("HouseNumber")
-                                        .HasColumnType("int");
-
-                                    b2.Property<int>("Postcode")
-                                        .HasColumnType("int");
-
-                                    b2.Property<string>("Street")
-                                        .IsRequired()
-                                        .HasMaxLength(250)
-                                        .HasColumnType("varchar(250)");
-
-                                    b2.HasKey("ServiceLocationServiceId");
-
-                                    b2.ToTable("Service");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ServiceLocationServiceId");
-                                });
-
-                            b1.Navigation("ServiceAddress")
-                                .IsRequired();
                         });
 
                     b.Navigation("CommunicationChannels");
@@ -1429,6 +1514,8 @@ namespace Rise.Persistence.Migrations
 
             modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>
                 {
+                    b.Navigation("Announcements");
+
                     b.Navigation("Deadlines");
 
                     b.Navigation("Exams");
