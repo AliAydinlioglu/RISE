@@ -52,7 +52,7 @@ public class ContactServiceShould
         result.IsSuccess.ShouldBeTrue();
         result.Value.Facilities.Count().ShouldBe(11);
         result.Value.TotalCount.ShouldBe(11);
-        resultServices.First().ServiceCategoryName.ShouldBe("Administratief");
+        resultServices.First().FacilityCategoryName.ShouldBe("Administratief");
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class ContactServiceShould
         result.IsSuccess.ShouldBeTrue();
         result.Value.Service.Id.ShouldBe(existingService.Id);
         result.Value.Service.Name.ShouldBe(existingService.Name);
-        result.Value.Service.ServiceCategoryName.ShouldNotBeNullOrWhiteSpace();
+        result.Value.Service.FacilityCategoryName.ShouldNotBeNullOrWhiteSpace();
     }
 
     [Fact]
@@ -161,7 +161,7 @@ public class ContactServiceShould
         var result = await service.GetByCategoryAsync(category, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Facilities.ShouldAllBe(s => s.ServiceCategoryName == category);
+        result.Value.Facilities.ShouldAllBe(s => s.FacilityCategoryName == category);
         result.Value.Facilities.Count().ShouldBe(expectedCount);
     }
 

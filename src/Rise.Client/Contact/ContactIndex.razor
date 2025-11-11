@@ -16,25 +16,22 @@
         <div class="is-flex columns is-multiline mb-4">
             @foreach (var contactFacility in contactFacilities)
             {
-                <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop ">
+                <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop">
                     <RiseInfoCard Title="@contactFacility.Name">
-                            <div class="columns">
-                                <div class="column">
-                                    <ContactLocation Location="contactFacility.Location"
-                                                 ExtraInfo="@(ServiceContactHelper.ShowOpeningInfo(contactFacility.OpeningHours))">
-                                    </ContactLocation>
-                                    <br/>
-                                <ContactCommunication Channels="contactFacility.CommunicationChannels">
-                                    </ContactCommunication>
-                                </div>
-                                <div class="column">
-                                <ContactOpeningHours OpeningHours="contactFacility.OpeningHours"></ContactOpeningHours>
-                                    <br/>
-                                <ContactRemarks Remarks=contactFacility.Remarks></ContactRemarks>
-                                </div>
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                <ContactLocation Location="contactFacility.Location"></ContactLocation>
+                                <ContactCommunication Channels="contactFacility.CommunicationChannels"></ContactCommunication>
                             </div>
-                        </RiseInfoCard>
+                            <div class="column">
+                                <ShowFacilityOpen IsFacilityOpen="contactFacility.IsFacilityOpen"></ShowFacilityOpen>
+                                <ContactOpeningHours OpeningHours="contactFacility.OpeningHours"></ContactOpeningHours>
+                                <ContactRemarks Remarks="contactFacility.Remarks"></ContactRemarks>
+                            </div>
+                        </div>
+                    </RiseInfoCard>
                 </article>
+
             
             }
         

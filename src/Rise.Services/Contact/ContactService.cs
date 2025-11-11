@@ -124,15 +124,15 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
     private static ContactDto.Index ToIndexDto(Facility service)
     {
-        return new ContactDto.Index
+        var index = new ContactDto.Index
         {
             Id = service.Id,
             Name = service.Name,
-            ServiceCategoryName = service.FacilityCategory.Name,
+            FacilityCategoryName = service.FacilityCategory.Name,
             Description = service.Description,
             Location = service.Location != null ? new ContactDto.FacilityLocationDto
             {
-                ServiceAddress = new ContactDto.StructuredAddressDto
+                FacilityAddress = new ContactDto.StructuredAddressDto
                 {
                     Street = service.Location.FaclitityAddress.Street,
                     HouseNumber = service.Location.FaclitityAddress.HouseNumber,
@@ -159,6 +159,11 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
                 TypeOfCommunication = cc.TypeOfCommunication.ToString()
             }).ToList()
         };
+
+        if (service.HasOpeningHours())
+            index.IsFacilityOpen = service.IsOpen();
+
+        return index;
     }
 }
 

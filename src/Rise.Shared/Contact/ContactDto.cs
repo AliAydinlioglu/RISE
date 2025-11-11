@@ -6,17 +6,18 @@ public static class ContactDto
     {
         public required int Id { get; set; }
         public required string Name { get; set; }
-        public required string ServiceCategoryName { get; set; }
+        public required string FacilityCategoryName { get; set; }
         public string? Description { get; set; }
         public FacilityLocationDto? Location { get; set; }
         public IEnumerable<ContactPeriodDto> OpeningHours { get; set; } = [];
+        public bool? IsFacilityOpen { get; set; }
         public IEnumerable<string> Remarks { get; set; } = [];
         public IEnumerable<CommunicationChannelDto> CommunicationChannels { get; set; } = [];
     }
 
     public class FacilityLocationDto
     {
-        public required StructuredAddressDto ServiceAddress { get; set; }
+        public required StructuredAddressDto FacilityAddress { get; set; }
         public required string LocationName { get; set; }
     }
 

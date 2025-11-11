@@ -10,6 +10,6 @@ public partial class ContactLocation
 
     public bool HasAddress()
     {
-        return Location != null && Location.ServiceAddress != null;
+        return Location != null && Location.FacilityAddress != null;
     }
 }

@@ -1,0 +1,8 @@
+﻿@if (IsFacilityOpen.HasValue)
+{
+    <MudText Class="d-flex">
+        <MudIcon Icon="@(IsFacilityOpen == true ? Icons.Material.Filled.Check : IsFacilityOpen == false ? Icons.Material.Filled.Close : Icons.Material.Filled.HelpOutline)"
+                 Color="@(IsFacilityOpen == true ? Color.Success : IsFacilityOpen == false ? Color.Error : Color.Default)" />
+        @(IsFacilityOpen == true ? "Open" : IsFacilityOpen == false ? "Gesloten" : "Niet ingevuld")
+    </MudText>
+}
