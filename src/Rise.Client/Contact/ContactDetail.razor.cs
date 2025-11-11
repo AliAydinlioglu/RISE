@@ -5,7 +5,7 @@ namespace Rise.Client.Contact;
 
 public partial class ContactDetail
 {
-    private ContactDto.Index _contactService { get; set; }
+    private ContactDto.Index contactFacility { get; set; }
     [Parameter] public string Id { get; set; } = string.Empty;
     [Inject] public required IContactService ContactService { get; set; }
 
@@ -17,6 +17,6 @@ public partial class ContactDetail
         }
         
         var result = await ContactService.GetDetailByIdAsync(int.Parse(Id));
-        _contactService = result.Value.Service;
+        contactFacility = result.Value.Service;
     }
 }

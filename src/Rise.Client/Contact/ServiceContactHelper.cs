@@ -29,6 +29,6 @@ public static class ServiceContactHelper
         if (!openingHours.Any())
             return "";
 
-        return IsOpen(openingHours) ? " ✅ OPEN" : " ❌ GESLOTEN";
+        return IsOpen(openingHours) ? "OPEN" : "GESLOTEN";
     }
 }

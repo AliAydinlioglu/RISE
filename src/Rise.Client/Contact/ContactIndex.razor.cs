@@ -25,7 +25,7 @@ public partial class ContactIndex
         };
         
         var result = await ContactService.GetIndexAsync(request);
-        contactServices = result.Value.Services;
+        contactServices = result.Value.Facilities;
     }
 
 }

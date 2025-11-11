@@ -1,7 +1,7 @@
 ﻿
 namespace Rise.Domain.Contact;
 
-public class ServiceCategory(string name): ValueObject
+public class FacilityCategory(string name): ValueObject
 {
     public string Name { get; private set; } = name;
 

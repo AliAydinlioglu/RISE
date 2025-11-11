@@ -40,7 +40,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
         return Result.Success(new ContactResponse.Index
         {
-            Services = services,
+            Facilities = services,
             TotalCount = totalCount
         });
     }
@@ -78,7 +78,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
         return Result.Success(new ContactResponse.Index
         {
-            Services = services,
+            Facilities = services,
             TotalCount = services.Count
         });
     }
@@ -100,7 +100,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
         return Result.Success(new ContactResponse.Index
         {
-            Services = services,
+            Facilities = services,
             TotalCount = services.Count
         });
     }
@@ -117,12 +117,12 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
 
         return Result.Success(new ContactResponse.Index
         {
-            Services = services,
+            Facilities = services,
             TotalCount = services.Count
         });
     }
 
-    private static ContactDto.Index ToIndexDto(Service service)
+    private static ContactDto.Index ToIndexDto(Facility service)
     {
         return new ContactDto.Index
         {
@@ -130,15 +130,15 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
             Name = service.Name,
             ServiceCategoryName = service.ServiceCategory.Name,
             Description = service.Description,
-            Location = service.Location != null ? new ContactDto.ServiceLocationDto
+            Location = service.Location != null ? new ContactDto.FacilityLocationDto
             {
                 ServiceAddress = new ContactDto.StructuredAddressDto
                 {
-                    Street = service.Location.ServiceAddress.Street,
-                    HouseNumber = service.Location.ServiceAddress.HouseNumber,
-                    BusNumber = service.Location.ServiceAddress.BusNumber,
-                    Postcode = service.Location.ServiceAddress.Postcode,
-                    City = service.Location.ServiceAddress.City
+                    Street = service.Location.FaclitityAddress.Street,
+                    HouseNumber = service.Location.FaclitityAddress.HouseNumber,
+                    BusNumber = service.Location.FaclitityAddress.BusNumber,
+                    Postcode = service.Location.FaclitityAddress.Postcode,
+                    City = service.Location.FaclitityAddress.City
                 },
                 LocationName = service.Location.LocationName
             } : null,

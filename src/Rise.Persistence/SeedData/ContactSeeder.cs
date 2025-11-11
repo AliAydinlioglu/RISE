@@ -10,7 +10,7 @@ public static class ContactSeeder
         if (dbContext.Services.Any())
             return;
 
-        var services = new List<Service>
+        var services = new List<Facility>
         {
             CreateStudentensecretariaatSchoonmeersen(),
             CreateBibliotheekSchoonmeersen(),
@@ -29,18 +29,18 @@ public static class ContactSeeder
         await dbContext.SaveChangesAsync();
     }
 
-    private static Service CreateStudentensecretariaatSchoonmeersen()
+    private static Facility CreateStudentensecretariaatSchoonmeersen()
     {
-        var service = new Service(
+        var service = new Facility(
             "Studentensecretariaat Schoonmeersen",
-            new ServiceCategory("Administratief")
+            new FacilityCategory("Administratief")
         );
 
         service.DescribeService(
             "Het studentensecretariaat helpt je met administratieve vragen over je inschrijving, studiebewijzen, en studiefinanciering.");
 
         var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Schoonmeersen");
+        var location = new FacilityLocation(address, "Schoonmeersen");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
@@ -83,18 +83,18 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateBibliotheekSchoonmeersen()
+    private static Facility CreateBibliotheekSchoonmeersen()
     {
-        var service = new Service(
+        var service = new Facility(
             "Bibliotheek Schoonmeersen",
-            new ServiceCategory("Ondersteunend")
+            new FacilityCategory("Ondersteunend")
         );
 
         service.DescribeService(
             "De bibliotheek biedt een uitgebreide collectie boeken, tijdschriften en online bronnen.");
 
         var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Schoonmeersen");
+        var location = new FacilityLocation(address, "Schoonmeersen");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
@@ -130,17 +130,17 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateStandaardStudentenShopSchoonmeersen()
+    private static Facility CreateStandaardStudentenShopSchoonmeersen()
     {
-        var service = new Service(
+        var service = new Facility(
             "Standaard Studenten Shop Schoonmeersen",
-            new ServiceCategory("Ondersteunend")
+            new FacilityCategory("Ondersteunend")
         );
 
         service.DescribeService("Bij de Standaard kan je terecht voor studiemateriaal, boeken en veel meer.");
 
         var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Schoonmeersen");
+        var location = new FacilityLocation(address, "Schoonmeersen");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
@@ -168,18 +168,18 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateStudentensecretariaatMercator()
+    private static Facility CreateStudentensecretariaatMercator()
     {
-        var service = new Service(
+        var service = new Facility(
             "Studentensecretariaat Mercator",
-            new ServiceCategory("Administratief")
+            new FacilityCategory("Administratief")
         );
 
         service.DescribeService(
             "Het studentensecretariaat helpt je met administratieve vragen over je inschrijving, studiebewijzen, en studiefinanciering.");
 
         var address = new StructuredAddress("Henleykaai", 84, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Mercator");
+        var location = new FacilityLocation(address, "Mercator");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
@@ -222,18 +222,18 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateBibliotheekMercator()
+    private static Facility CreateBibliotheekMercator()
     {
-        var service = new Service(
+        var service = new Facility(
             "Bibliotheek Mercator",
-            new ServiceCategory("Ondersteunend")
+            new FacilityCategory("Ondersteunend")
         );
 
         service.DescribeService(
             "De bibliotheek biedt een uitgebreide collectie boeken, tijdschriften en online bronnen.");
 
         var address = new StructuredAddress("Henleykaai", 84, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Mercator");
+        var location = new FacilityLocation(address, "Mercator");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
@@ -263,17 +263,17 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateStandaardStudentenShopGent()
+    private static Facility CreateStandaardStudentenShopGent()
     {
-        var service = new Service(
+        var service = new Facility(
             "Standaard Studenten Shop Gent",
-            new ServiceCategory("Ondersteunend")
+            new FacilityCategory("Ondersteunend")
         );
 
         service.DescribeService("Bij de Standaard kan je terecht voor studiemateriaal, boeken en veel meer.");
 
         var address = new StructuredAddress("Bagattenstraat", 51, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Gent Campus");
+        var location = new FacilityLocation(address, "Gent Campus");
         service.ChangeLocation(location);
 
         var openingHours = new List<ContactPeriod>
@@ -302,11 +302,11 @@ public static class ContactSeeder
     }
 
 
-    private static Service CreateIBaMaFlex()
+    private static Facility CreateIBaMaFlex()
     {
-        var service = new Service(
+        var service = new Facility(
             "iBaMaFlex!",
-            new ServiceCategory("Administratief")
+            new FacilityCategory("Administratief")
         );
 
         service.DescribeService("Online studentenplatform voor studievoortgang, punten en examens.");
@@ -319,11 +319,11 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateStakingWatNu()
+    private static Facility CreateStakingWatNu()
     {
-        var service = new Service(
+        var service = new Facility(
             "Staking: Wat nu?",
-            new ServiceCategory("Administratief")
+            new FacilityCategory("Administratief")
         );
 
         service.DescribeService(
@@ -338,18 +338,18 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreatePsychosocialeOndersteuning()
+    private static Facility CreatePsychosocialeOndersteuning()
     {
-        var service = new Service(
+        var service = new Facility(
             "Psychosociale ondersteuning",
-            new ServiceCategory("Veiligheid en welzijn")
+            new FacilityCategory("Veiligheid en welzijn")
         );
 
         service.DescribeService(
             "Vertrouwelijke gesprekken met professionele begeleiders voor studiestress en persoonlijke problemen.");
 
         var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Schoonmeersen");
+        var location = new FacilityLocation(address, "Schoonmeersen");
         service.ChangeLocation(location);
 
 
@@ -363,11 +363,11 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateOngevalMelden()
+    private static Facility CreateOngevalMelden()
     {
-        var service = new Service(
+        var service = new Facility(
             "Ongeval melden",
-            new ServiceCategory("Veiligheid en welzijn")
+            new FacilityCategory("Veiligheid en welzijn")
         );
 
         service.DescribeService(
@@ -386,11 +386,11 @@ public static class ContactSeeder
         return service;
     }
 
-    private static Service CreateOverigeVragen()
+    private static Facility CreateOverigeVragen()
     {
-        var service = new Service(
+        var service = new Facility(
             "Overige vragen",
-            new ServiceCategory("Onbekend")
+            new FacilityCategory("Onbekend")
         );
 
         service.DescribeService(

@@ -8,13 +8,13 @@ public static class ContactDto
         public required string Name { get; set; }
         public required string ServiceCategoryName { get; set; }
         public string? Description { get; set; }
-        public ServiceLocationDto? Location { get; set; }
+        public FacilityLocationDto? Location { get; set; }
         public IEnumerable<ContactPeriodDto> OpeningHours { get; set; } = [];
         public IEnumerable<string> Remarks { get; set; } = [];
         public IEnumerable<CommunicationChannelDto> CommunicationChannels { get; set; } = [];
     }
 
-    public class ServiceLocationDto
+    public class FacilityLocationDto
     {
         public required StructuredAddressDto ServiceAddress { get; set; }
         public required string LocationName { get; set; }

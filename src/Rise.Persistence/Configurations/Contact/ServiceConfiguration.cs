@@ -4,9 +4,9 @@ using Rise.Domain.Contact;
 
 namespace Rise.Persistence.Configurations.Contact;
 
-internal class ServiceConfiguration : EntityConfiguration<Service>
+internal class ServiceConfiguration : EntityConfiguration<Facility>
 {
-    public override void Configure(EntityTypeBuilder<Service> builder)
+    public override void Configure(EntityTypeBuilder<Facility> builder)
     {
         base.Configure(builder);
 
@@ -25,7 +25,7 @@ internal class ServiceConfiguration : EntityConfiguration<Service>
 
         builder.OwnsOne(x => x.Location, loc =>
         {
-            loc.OwnsOne(l => l.ServiceAddress, sa =>
+            loc.OwnsOne(l => l.FaclitityAddress, sa =>
             {
                 sa.Property(a => a.Street).HasMaxLength(250);
                 sa.Property(a => a.HouseNumber);

@@ -1,27 +1,27 @@
 ﻿﻿namespace Rise.Domain.Contact;
 
-public class Service : Entity
+public class Facility : Entity
 {
-    private Service() { }
+    private Facility() { }
 
-    public Service(string name)
+    public Facility(string name)
     {
         Name = Guard.Against.NullOrWhiteSpace(name);
-        ServiceCategory = new ServiceCategory("Onbekend");
+        ServiceCategory = new FacilityCategory("Onbekend");
     }
 
-    public Service(string name, ServiceCategory serviceCategory) : this(name)
+    public Facility(string name, FacilityCategory serviceCategory) : this(name)
     {
         ServiceCategory = serviceCategory;
     }
 
     public string Name { get; private set; }
 
-    public ServiceCategory ServiceCategory { get; private set; }
+    public FacilityCategory ServiceCategory { get; private set; }
 
     public string? Description { get; private set; }
 
-    public ServiceLocation? Location { get; private set; }
+    public FacilityLocation? Location { get; private set; }
 
     public List<ContactPeriod> OpeningHours { get; private set; } = [];
 
@@ -39,7 +39,7 @@ public class Service : Entity
         CommunicationChannels.Add(communicationChannel);
     }
 
-    public void ChangeLocation(ServiceLocation location)
+    public void ChangeLocation(FacilityLocation location)
     {
         Location = location;
     }

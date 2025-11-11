@@ -7,12 +7,12 @@ public class ServiceShould
 {
     private const string ServiceName = "Studentensecretariaat";
     private const string Description = "Service voor administratieve vragen";
-    private readonly ServiceCategory _category = new("Administratief");
+    private readonly FacilityCategory _category = new("Administratief");
     
     [Fact]
     public void BeCreated_WithNameOnly()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
 
         service.ShouldNotBeNull();
         service.Name.ShouldBe(ServiceName);
@@ -28,7 +28,7 @@ public class ServiceShould
     [Fact]
     public void BeCreated_WithNameAndCategory()
     {
-        var service = new Service(ServiceName, _category);
+        var service = new Facility(ServiceName, _category);
 
         service.ShouldNotBeNull();
         service.Name.ShouldBe(ServiceName);
@@ -43,13 +43,13 @@ public class ServiceShould
     [InlineData("   ")]
     public void ThrowException_WhenNameIsNullOrWhitespace(string name)
     {
-        Should.Throw<ArgumentException>(() => new Service(name));
+        Should.Throw<ArgumentException>(() => new Facility(name));
     }
 
     [Fact]
     public void AddDescription_Successfully()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
 
         service.DescribeService(Description);
 
@@ -59,7 +59,7 @@ public class ServiceShould
     [Fact]
     public void AddCommunicationChannel_Successfully()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var channel = new CommunicationChannel("Email", "test@hogent.be", CommunicationTypes.Email);
 
         service.AddCommunicationChannel(channel);
@@ -71,7 +71,7 @@ public class ServiceShould
     [Fact]
     public void AddMultipleCommunicationChannels_Successfully()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var emailChannel = new CommunicationChannel("Email", "test@hogent.be", CommunicationTypes.Email);
         var phoneChannel = new CommunicationChannel("Telefoon", "09 123 45 67", CommunicationTypes.Phone);
 
@@ -86,9 +86,9 @@ public class ServiceShould
     [Fact]
     public void ChangeLocation_Successfully()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location = new ServiceLocation(address, "Schoonmeersen");
+        var location = new FacilityLocation(address, "Schoonmeersen");
 
         service.ChangeLocation(location);
 
@@ -98,7 +98,7 @@ public class ServiceShould
     [Fact]
     public void AddRemark_Successfully()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var remark = "Gesloten op feestdagen";
 
         service.AddRemark(remark);
@@ -110,7 +110,7 @@ public class ServiceShould
     [Fact]
     public void AddMultipleRemarks_Successfully()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var remark1 = "Gesloten op feestdagen";
         var remark2 = "Gesloten tijdens examenperiode";
 
@@ -125,7 +125,7 @@ public class ServiceShould
     [Fact]
     public void ChangeOpeningHours_Successfully()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var openingHours = new List<ContactPeriod>
         {
             new ContactPeriod(new DateOnly(2025, 11, 6), new List<TimeRange>
@@ -144,7 +144,7 @@ public class ServiceShould
     [Fact]
     public void HasOpeningHours_ReturnTrue_WhenOpeningHoursExist()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var openingHours = new List<ContactPeriod>
         {
             new ContactPeriod(new DateOnly(2025, 11, 6), new List<TimeRange>
@@ -162,7 +162,7 @@ public class ServiceShould
     [Fact]
     public void HasOpeningHours_ReturnFalse_WhenNoOpeningHours()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
 
         var hasHours = service.HasOpeningHours();
 
@@ -172,7 +172,7 @@ public class ServiceShould
     [Fact]
     public void IsOpenOn_ReturnTrue_WhenWithinOpeningHours()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var date = new DateOnly(2025, 11, 6);
         var openingHours = new List<ContactPeriod>
         {
@@ -191,7 +191,7 @@ public class ServiceShould
     [Fact]
     public void IsOpenOn_ReturnFalse_WhenOutsideOpeningHours()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var date = new DateOnly(2025, 11, 6);
         var openingHours = new List<ContactPeriod>
         {
@@ -210,7 +210,7 @@ public class ServiceShould
     [Fact]
     public void IsOpenOn_ReturnFalse_WhenDifferentDate()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var date = new DateOnly(2025, 11, 6);
         var openingHours = new List<ContactPeriod>
         {
@@ -229,7 +229,7 @@ public class ServiceShould
     [Fact]
     public void IsOpenOn_ReturnTrue_WhenTimeIsAtStartOfRange()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var date = new DateOnly(2025, 11, 6);
         var openingHours = new List<ContactPeriod>
         {
@@ -248,7 +248,7 @@ public class ServiceShould
     [Fact]
     public void IsOpenOn_HandleMultipleTimeRanges()
     {
-        var service = new Service(ServiceName);
+        var service = new Facility(ServiceName);
         var date = new DateOnly(2025, 11, 6);
         var openingHours = new List<ContactPeriod>
         {

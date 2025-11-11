@@ -31,7 +31,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();
     public DbSet<Location> Locations => Set<Location>();
     public DbSet<StudentClub> StudentClubs => Set<StudentClub>();
-    public DbSet<Service> Services => Set<Service>();
+    public DbSet<Facility> Services => Set<Facility>();
     
     public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
     public DbSet<Course> Courses => Set<Course>();

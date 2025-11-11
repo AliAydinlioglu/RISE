@@ -6,7 +6,7 @@ namespace Rise.Client.Contact;
 public partial class ContactLocation
 {
     [Parameter]public string ExtraInfo { get ; set; } = string.Empty;
-    [Parameter] public ServiceLocationDto? Location { get; set; }
+    [Parameter] public FacilityLocationDto? Location { get; set; }
 
     public bool HasAddress()
     {
