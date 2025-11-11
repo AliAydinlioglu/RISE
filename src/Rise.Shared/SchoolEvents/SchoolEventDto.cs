@@ -17,7 +17,6 @@ namespace Rise.Shared.SchoolEvents
             public required string Title { get; set; }
             public string? Description { get; set; }
             public required DateTimeOffset Date { get; set; }
-
             public required TimeOnly StartTime { get; set; }
             public required TimeOnly EndTime { get; set; }
             public required decimal Price { get; set; }
@@ -25,6 +24,7 @@ namespace Rise.Shared.SchoolEvents
             public required int Capacity { get; set; }
             public required bool Registrable { get; set; }
             public required string Publicity { get; set; }
+            public required string Category { get; set; }
             public required string? ImageUrl { get; set; }
             public required LocationDto.Index Location { get; set; }
         }

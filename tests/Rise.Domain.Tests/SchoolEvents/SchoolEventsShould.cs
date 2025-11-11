@@ -23,6 +23,7 @@ public class SchoolEventsShould
             capacity: 50,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: "/images/infosessie.png",
             _location
         );
@@ -60,6 +61,7 @@ public class SchoolEventsShould
             capacity: 50,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: "/images/event.png",
             _location
         ));
@@ -110,6 +112,7 @@ public class SchoolEventsShould
             capacity: 50,
             registrable: true,
             publicity: publicity,
+            category: "Sport",
             imageUrl: "/images/event.png",
             location
         ));
@@ -133,6 +136,7 @@ public class SchoolEventsShould
             capacity: invalidCapacity,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: "/images/event.png",
             _location
         ));
@@ -156,6 +160,7 @@ public class SchoolEventsShould
             capacity: 50,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: "/images/event.png",
             _location
         ));
@@ -180,6 +185,7 @@ public class SchoolEventsShould
             capacity: 50,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: "/images/event.png",
             _location
         );
@@ -204,6 +210,7 @@ public class SchoolEventsShould
             capacity: validCapacity,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: "/images/event.png",
             _location
         );
@@ -224,6 +231,7 @@ public class SchoolEventsShould
             capacity: 50,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: "/images/event.png",
             _location
         );
@@ -244,6 +252,7 @@ public class SchoolEventsShould
             capacity: 50,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: null,
             _location
         );

@@ -30,6 +30,7 @@ public static class SchoolEventTestDataFactory
             capacity: 50,
             registrable: true,
             publicity: "Public",
+            category: "Sport",
             imageUrl: $"/images/{title.ToLower().Replace(" ", "")}.png",
             location
         );
@@ -54,6 +55,7 @@ public static class SchoolEventTestDataFactory
                 capacity: 50,
                 registrable: true,
                 publicity: "Public",
+                category: "Sport",
                 imageUrl: $"/images/eventtest{i}.png",
                 location
             );

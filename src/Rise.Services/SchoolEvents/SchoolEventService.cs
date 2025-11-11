@@ -68,6 +68,7 @@ namespace Rise.Services.SchoolEvents
                 Capacity = se.Capacity,
                 Registrable = se.Registrable,
                 Publicity = se.Publicity,
+                Category = se.Category,
                 ImageUrl = se.ImageUrl,
                 Location = ToLocationDto(se.Location),
             };
@@ -88,6 +89,7 @@ namespace Rise.Services.SchoolEvents
                 Capacity = se.Capacity,
                 Registrable = se.Registrable,
                 Publicity = se.Publicity,
+                Category = se.Category,
                 ImageUrl = se.ImageUrl,
                 Location = ToLocationDto(se.Location),
             };
