@@ -4,7 +4,7 @@ namespace Rise.Client.Contact;
 
 public static class ServiceContactHelper
 {
-    public static bool IsOpen(IEnumerable<ContactDto.ContactPeriodDto> openingHours)
+    private static bool IsOpen(IEnumerable<ContactDto.ContactPeriodDto> openingHours)
     {
         var now = DateTime.Now;
         var today = DateOnly.FromDateTime(now);
