@@ -1,6 +1,6 @@
 ﻿.info-card {
     border: 2px solid black;
-    border-radius: 0;
+    border-radius: 4px;
     background: white;
     overflow: hidden;
 }
