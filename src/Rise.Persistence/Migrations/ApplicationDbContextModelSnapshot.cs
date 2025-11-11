@@ -484,6 +484,58 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Role", (string)null);
                 });
 
+            modelBuilder.Entity("Rise.Domain.Locations.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BusNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("HouseNumber")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<int>("Postcode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location", (string)null);
+                });
+
             modelBuilder.Entity("Rise.Domain.Navigation.ContentLocation", b =>
                 {
                     b.Property<int>("Id")
@@ -729,7 +781,7 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Technician", (string)null);
                 });
 
-            modelBuilder.Entity("Rise.Domain.StudentActivities.Location", b =>
+            modelBuilder.Entity("Rise.Domain.SchoolEvents.SchoolEvent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -737,36 +789,53 @@ namespace Rise.Persistence.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BusNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("HouseNumber")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("varchar(2048)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(250)
-                        .HasColumnType("varchar(250)");
-
-                    b.Property<int>("Postcode")
+                    b.Property<int>("LocationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Street")
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Publicity")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("varchar(2048)");
+
+                    b.Property<string>("RegisterLink")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("varchar(2048)");
+
+                    b.Property<bool>("Registrable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar(250)");
@@ -778,7 +847,9 @@ namespace Rise.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location", (string)null);
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("SchoolEvent", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.StudentActivities.StudentActivity", b =>
@@ -1466,9 +1537,44 @@ namespace Rise.Persistence.Migrations
                     b.Navigation("Technician");
                 });
 
+            modelBuilder.Entity("Rise.Domain.SchoolEvents.SchoolEvent", b =>
+                {
+                    b.HasOne("Rise.Domain.Locations.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.OwnsOne("Rise.Domain.Common.TimeRange", "TimeRange", b1 =>
+                        {
+                            b1.Property<int>("SchoolEventId")
+                                .HasColumnType("int");
+
+                            b1.Property<TimeOnly>("EndTime")
+                                .HasColumnType("time(6)")
+                                .HasColumnName("EndTime");
+
+                            b1.Property<TimeOnly>("StartTime")
+                                .HasColumnType("time(6)")
+                                .HasColumnName("StartTime");
+
+                            b1.HasKey("SchoolEventId");
+
+                            b1.ToTable("SchoolEvent");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SchoolEventId");
+                        });
+
+                    b.Navigation("Location");
+
+                    b.Navigation("TimeRange")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Rise.Domain.StudentActivities.StudentActivity", b =>
                 {
-                    b.HasOne("Rise.Domain.StudentActivities.Location", "Location")
+                    b.HasOne("Rise.Domain.Locations.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.NoAction)
