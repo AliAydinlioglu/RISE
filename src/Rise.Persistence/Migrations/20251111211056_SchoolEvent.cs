@@ -13,38 +13,6 @@ namespace Rise.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Announcement",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FirstName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    LastName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Message = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Timestamp = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Announcement", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Announcement_Course_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Course",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "SchoolEvent",
                 columns: table => new
                 {
@@ -85,11 +53,6 @@ namespace Rise.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Announcement_CourseId",
-                table: "Announcement",
-                column: "CourseId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SchoolEvent_LocationId",
                 table: "SchoolEvent",
                 column: "LocationId");
@@ -98,9 +61,6 @@ namespace Rise.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Announcement");
-
             migrationBuilder.DropTable(
                 name: "SchoolEvent");
         }
