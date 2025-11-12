@@ -9,7 +9,7 @@
                   Title="@item.Title"
                   Description="@item.Description"
                   CardHeader="@item.Header" 
-                  OnClickNavigateTo=@($"/lessen/{item.CourseId}?datum={DateOnly.FromDateTime(item.Date)}")/>
+                  OnClickNavigateTo=@($"/lessen/{item.CourseId}?datum={item.Date:yyyy-MM-dd}")/>
         }
     }
     else

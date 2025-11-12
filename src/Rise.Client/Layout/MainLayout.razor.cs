@@ -179,12 +179,27 @@ public partial class MainLayout
         {
             Default = new DefaultTypography()
             {
-                FontFamily = new[] { "Montserrat", "Arial", "sans-serif" }
+                FontFamily = new[] { "Montserrat", "Arial", "sans-serif" },
+                LetterSpacing = "0em"
             },
             
-            H1 = new H1Typography()
+            H1 = new H1Typography
             {
                 FontWeight = "800"
+            },
+            
+            H3 = new H3Typography
+            {
+                FontWeight = "600",
+                FontSize = "28px",
+                LineHeight = "1.3",
+            },
+            
+            Body1 = new Body1Typography
+            {
+                FontWeight = "400",
+                FontSize = "18px",
+                LineHeight = "1.5",
             },
             
             Button = new ButtonTypography()

@@ -1,0 +1,31 @@
+@page "/lessen/{CourseId}"
+@using Rise.Client.Components
+@using Rise.Client.Courses.Components
+
+@if (_isLoading)
+{
+    <RiseLoader/>
+}
+else
+{
+    <MudContainer Class="py-4 px-6">
+        <MudGrid>
+            <MudItem xs="6">
+                <MetaDataLabel LabelText="Datum">@_course.LessonDate</MetaDataLabel>
+            </MudItem>
+            <MudItem xs="6">
+                <MetaDataLabel LabelText="Uur">@_course.LessonTime</MetaDataLabel>
+            </MudItem>
+            <MudItem xs="12">
+                <MetaDataLabel LabelText="Locatie">
+                    <p>@_course.Location.Campus</p>
+                    <p>@_course.Location.Adress</p>
+                    <p>@_course.Location.Room</p>
+                </MetaDataLabel>
+            </MudItem>
+            <MudItem xs="12">
+                <MetaDataLabel LabelText="Docent">@_course.Lecturer</MetaDataLabel>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}
