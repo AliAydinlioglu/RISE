@@ -42,6 +42,7 @@ public static class CalendarExtensions
         {
             yield return new CalendarViewItem
             {
+                CourseId = course.CourseId,
                 Type = CalendarViewItem.CalendarEventType.Course,
                 Date = date,
                 Title = course.CourseTitle,
@@ -55,6 +56,7 @@ public static class CalendarExtensions
     {
         return course.Deadlines.Select(it => new CalendarViewItem
         {
+            CourseId = course.CourseId,
             Type = CalendarViewItem.CalendarEventType.Deadline,
             Date = it.DeadlineTimestamp.LocalDateTime,
             Title = it.TaskTitle,
@@ -70,6 +72,7 @@ public static class CalendarExtensions
             var examDateTime = it.ExamTimestamp.LocalDateTime;
             return new CalendarViewItem
             {
+                CourseId = course.CourseId,
                 Type = CalendarViewItem.CalendarEventType.Exam,
                 Title = it.ExamTitle,
                 Date = examDateTime,

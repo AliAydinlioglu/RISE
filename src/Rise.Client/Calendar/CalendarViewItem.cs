@@ -2,6 +2,7 @@ namespace Rise.Client.Calendar;
 
 public class CalendarViewItem
 {
+    public required string CourseId { get; set; }
     public required CalendarEventType Type { get; set; }
     public required DateTime Date { get; set; }
     public required string Title { get; set; }
