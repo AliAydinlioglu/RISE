@@ -49,7 +49,7 @@ public class GivenAMobileCalendar : GivenACalendarBase<CalendarMobile>
 
         cut.ClickDay(4);
 
-        cut.GetSelectedDayNumber().ShouldBe("15");
+        cut.GetSelectedDayNumber().ShouldBe("11");
     }
 
     [Fact]

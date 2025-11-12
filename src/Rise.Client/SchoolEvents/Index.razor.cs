@@ -13,8 +13,6 @@ public partial class Index
     private IEnumerable<SchoolEventDto.Index>? _schoolEvents;
 
     private DateTime _selectedDate = DateTime.Now;
-    private bool _showError;
-    private bool _isLoading;
 
     private int _currentPage = 1;
     private const int PageSize = 8;
@@ -25,8 +23,6 @@ public partial class Index
     
     private async Task LoadSchoolEventsAsync()
     {
-        _isLoading = true;
-        
         var request = new QueryRequest.SkipTake
         {
             Skip = (_currentPage - 1) * PageSize,
@@ -38,19 +34,12 @@ public partial class Index
         };
 
         var result = await SchoolEventService.GetIndexAsync(request, CancellationToken.None);
-
+            
         if (result.IsSuccess)
         {
             _schoolEvents = result.Value.SchoolEvents;
             _totalCount = result.Value.TotalCount;
-            _showError = false;
         }
-        else
-        {
-            _showError = true;
-        }
-        
-        _isLoading = false;
         
         Log.Information("Loading events: date={Date}, skip={Skip}, take={Take}, PageSize={TotalCount}, TotalPages={TotalPages}", 
             _selectedDate, (_currentPage - 1) * PageSize, PageSize, _totalCount, TotalPages);

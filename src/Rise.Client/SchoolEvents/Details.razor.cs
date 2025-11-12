@@ -21,6 +21,7 @@ public partial class Details : ComponentBase
             
             _showError = true;
             await InvokeAsync(StateHasChanged);
+            return;
         }
 
         if (!int.TryParse(Id, out var idAsInt))
@@ -29,6 +30,7 @@ public partial class Details : ComponentBase
             
             _showError = true;
             await InvokeAsync(StateHasChanged);
+            return;
         }
         
         var result = await SchoolEventService.GetDetailByIdAsync(idAsInt, CancellationToken.None);

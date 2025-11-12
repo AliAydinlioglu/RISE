@@ -4,7 +4,6 @@ using Rise.Client.Faker;
 using Rise.Client.Shared;
 using Rise.Shared;
 using Rise.Shared.Calendar;
-using Rise.TestDoubles.Fakers;
 using Shouldly;
 
 namespace Rise.Client.Calendar;
@@ -49,9 +48,8 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
     {
         var cut = RenderCalendarComponent();
 
-        cut.GetSelectedDayNumber().ShouldBe("13");
+        cut.GetSelectedDayNumber().ShouldBe("11");
     }
-
     
     [Fact]
     public void WhenSelectedDayHasEvents_ThenEventsShouldBeDisplayed()

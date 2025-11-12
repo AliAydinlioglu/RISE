@@ -29,7 +29,7 @@ public static class CalendarTestHelpers
 
     public static string GetSelectedDayNumber(this IRenderedComponent<CalendarIndex> component)
     {
-        return component.Find(".has-background-white.has-text-black").TextContent.Trim();
+        return component.Find("[data-bunit='wc-span-with-day']").TextContent.Trim();
     }
 
     public static void ClickDay(this IRenderedComponent<CalendarIndex> component, int dayIndex)
