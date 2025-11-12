@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.JSInterop;
 using MudBlazor;
 using Rise.Client.Identity;
+using Rise.Client.Shared;
+using Rise.Shared.Notifications;
 
 namespace Rise.Client.Layout;
 
@@ -12,6 +15,8 @@ public partial class MainLayout
     private SignOutSessionStateManager SignOutManager { get; set; } = default!;
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] private INotificationService NotificationService { get; set; } = default!;
     [CascadingParameter]
     private Task<AuthenticationState>? AuthenticationState { get; set; }
 
@@ -55,6 +60,28 @@ public partial class MainLayout
         }
     }
 
+    protected override void OnInitialized()
+    {
+        _ = RequestNotificationSubscriptionAsync();
+    }
+
+    async Task RequestNotificationSubscriptionAsync()
+    {
+        var subscription = await JSRuntime.InvokeAsync<NotificationSubscription>(
+            "blazorPushNotifications.requestSubscription");
+        
+        if (subscription is not null)
+        {
+            try
+            {
+                await NotificationService.SubscribeToNotifications(subscription);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+            }
+        }
+    }
     private string GetInitials(string name)
     {
         if (string.IsNullOrWhiteSpace(name))

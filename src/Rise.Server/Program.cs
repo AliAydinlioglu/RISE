@@ -11,6 +11,8 @@ using Rise.Server.Identity;
 using Rise.Server.Processors;
 using Rise.Services;
 using Rise.Services.Identity;
+using Rise.Services.Notifications;
+using Rise.Shared.Notifications;
 using Serilog.Events;
 
 Log.Logger = new LoggerConfiguration()
@@ -90,6 +92,7 @@ try
                 .AllowCredentials();
         });
     });
+    builder.Services.AddHostedService<NotificationBackgroundService>();
     var app = builder.Build();
     // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts) 
     // See: https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli
@@ -124,7 +127,7 @@ try
                 ep.PostProcessor<GlobalResponseLogger>(Order.Before);
             };
         })
-        .UseSwaggerGen();
+        .UseSwaggerGen();   
     app.MapFallbackToFile("index.html");
     app.Run();
 }

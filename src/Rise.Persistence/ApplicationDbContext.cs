@@ -10,6 +10,7 @@ using Rise.Domain.Projects;
 using Rise.Domain.SchoolEvents;
 using Rise.Domain.StudentActivities;
 using Rise.Persistence.Models.Identity;
+using Rise.Shared.Notifications;
 
 namespace Rise.Persistence;
 
@@ -44,7 +45,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Exam> Exams => Set<Exam>();
     public DbSet<Announcement> Announcements => Set<Announcement>();
     public DbSet<Role> DomainRoles => Set<Role>();
-  
+    public DbSet<NotificationSubscription> NotificationSubscriptions => Set<NotificationSubscription>();
+
+
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         // All columns in the mariadb have a maxlength of 255 for string values.

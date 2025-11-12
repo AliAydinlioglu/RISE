@@ -23,6 +23,8 @@ using Rise.Shared.Courses;
 using Rise.Shared.Identity;
 using Rise.Shared.SchoolEvents;
 using Rise.Services.SchoolEvents;
+using Rise.Shared.Notifications;
+using Rise.Services.Notifications;
 
 namespace Rise.Services;
 
@@ -40,6 +42,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IDateTimeService, DateTimeService>();   
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<IContactService, ContactService>();
+        services.AddScoped<INotificationService, NotificationService>();
         services.AddTransient<DbSeeder>();
         
         // queries

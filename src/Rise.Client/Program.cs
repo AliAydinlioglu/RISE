@@ -12,6 +12,7 @@ using Rise.Client.Shared;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Shared.Courses;
+using Rise.Shared.Notifications;
 using Rise.Shared.Products;
 using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
