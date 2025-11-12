@@ -1,11 +1,12 @@
 @page "/kalender"
 @using Rise.Client.Calendar.Components
+@using Rise.Client.Components
 
 <PageTitle>Kalender</PageTitle>
 
 @if (_isLoading)
 {
-    <p><em>Loading...</em></p>
+    <RiseLoader />
 }
 else
 {

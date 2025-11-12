@@ -8,7 +8,8 @@
             <RiseCard Date="@item.Date"
                   Title="@item.Title"
                   Description="@item.Description"
-                  CardHeader="@item.Header" />
+                  CardHeader="@item.Header" 
+                  OnClickNavigateTo=@($"/lessen/{item.CourseId}?datum={DateOnly.FromDateTime(item.Date)}")/>
         }
     }
     else
