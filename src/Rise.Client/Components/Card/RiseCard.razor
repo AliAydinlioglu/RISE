@@ -1,4 +1,6 @@
-<div class="box is-flex p-0 is-align-items-stretch">
+<div @onclick="HandleClick" 
+     class="box is-flex p-0 is-align-items-stretch"
+     style="@(OnClickNavigateTo is null ? null : "cursor: pointer;")">
     <div class="stacking-container">
         @* BACKGROUND *@
         <div class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
