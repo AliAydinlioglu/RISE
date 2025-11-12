@@ -15,9 +15,9 @@ using Rise.Shared.Courses;
 using Rise.Shared.Products;
 using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
-using DateTimeService = Rise.Client.DateTimeService;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
+using DateTimeService = Rise.Client.DateTimeService;
 
 try
 {
