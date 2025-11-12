@@ -14,23 +14,27 @@ public partial class Index
 
     private DateTime _selectedDate = DateTime.Now;
     private bool _showError;
+    private bool _isLoading;
 
     private int _currentPage = 1;
     private const int PageSize = 8;
-    private int TotalCount { get; set; }
-    private int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
+    private int _totalCount;
+    private int TotalPages => (int)Math.Ceiling((double)_totalCount / PageSize);
     
     [Inject] public required ISchoolEventService SchoolEventService { get; set; }
     
     private async Task LoadSchoolEventsAsync()
     {
-        Log.Information("Loading events: date={Date}, skip={Skip}, take={Take}", 
-            _selectedDate, (_currentPage - 1) * PageSize, PageSize);
+        _isLoading = true;
         
         var request = new QueryRequest.SkipTake
         {
             Skip = (_currentPage - 1) * PageSize,
             Take = PageSize,
+            Filters = new Dictionary<string, object?>()
+            {
+                { "Date", _selectedDate.ToUniversalTime().Date }
+            }
         };
 
         var result = await SchoolEventService.GetIndexAsync(request, CancellationToken.None);
@@ -38,7 +42,7 @@ public partial class Index
         if (result.IsSuccess)
         {
             _schoolEvents = result.Value.SchoolEvents;
-            TotalCount = result.Value.TotalCount;
+            _totalCount = result.Value.TotalCount;
             _showError = false;
         }
         else
@@ -46,8 +50,10 @@ public partial class Index
             _showError = true;
         }
         
-        // re-render
-        await InvokeAsync(StateHasChanged);
+        _isLoading = false;
+        
+        Log.Information("Loading events: date={Date}, skip={Skip}, take={Take}, PageSize={TotalCount}, TotalPages={TotalPages}", 
+            _selectedDate, (_currentPage - 1) * PageSize, PageSize, _totalCount, TotalPages);
     }
 
     protected override async Task OnInitializedAsync() 
