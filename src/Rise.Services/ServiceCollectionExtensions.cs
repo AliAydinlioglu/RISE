@@ -3,6 +3,7 @@ using Rise.Persistence;
 using Rise.Persistence.Queries.Calendar;
 using Rise.Persistence.Queries.Courses;
 using Rise.Services.Calendar;
+using Rise.Services.Contact;
 using Rise.Services.Courses;
 using Rise.Services.Navigation;
 using Rise.Services.Products;
