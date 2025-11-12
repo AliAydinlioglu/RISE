@@ -6,6 +6,7 @@ using Rise.Shared.Calendar;
 
 namespace Rise.Server.Endpoints.Calendar;
 
+[Authorize]
 public class GetCalendarEndpoint(ICalendarService service, ISessionContextProvider sessionProvider): EndpointWithoutRequest<Result<CalendarResponse.Get>>
 {
     public override void Configure()

@@ -11,6 +11,7 @@ using Rise.Services.User;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Services.StudentActivities;
+using Rise.Shared.Contact;
 using Rise.Shared.Navigation;
 using Rise.Shared.Products;
 using Rise.Shared.Projects;
@@ -34,7 +35,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IDateTimeService, DateTimeService>();   
-        services.AddScoped<ICourseService, CourseService>();   
+        services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<IContactService, ContactService>();
         services.AddTransient<DbSeeder>();
         
         // queries

@@ -412,6 +412,47 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Lesson", (string)null);
                 });
 
+            modelBuilder.Entity("Rise.Domain.Contact.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.PrimitiveCollection<string>("Remarks")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Service", (string)null);
+                });
+
             modelBuilder.Entity("Rise.Domain.Identity.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1144,6 +1185,175 @@ namespace Rise.Persistence.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("TimeRange")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rise.Domain.Contact.Service", b =>
+                {
+                    b.OwnsMany("Rise.Domain.Contact.CommunicationChannel", "CommunicationChannels", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id1")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b1.Property<int>("Id1"));
+
+                            b1.Property<string>("Link")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)");
+
+                            b1.Property<int>("TypeOfCommunication")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Id", "Id1");
+
+                            b1.ToTable("ServiceCommunicationChannels", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("Id");
+                        });
+
+                    b.OwnsMany("Rise.Domain.Contact.ContactPeriod", "OpeningHours", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id1")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b1.Property<int>("Id1"));
+
+                            b1.Property<DateOnly>("ContactDate")
+                                .HasColumnType("date");
+
+                            b1.HasKey("Id", "Id1");
+
+                            b1.ToTable("ServiceContactPeriods", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("Id");
+
+                            b1.OwnsMany("Rise.Domain.Common.TimeRange", "ContactHours", b2 =>
+                                {
+                                    b2.Property<int>("ContactPeriodId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("ContactPeriodId1")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<TimeOnly>("EndTime")
+                                        .HasColumnType("time(6)");
+
+                                    b2.Property<TimeOnly>("StartTime")
+                                        .HasColumnType("time(6)");
+
+                                    b2.HasKey("ContactPeriodId", "ContactPeriodId1", "Id");
+
+                                    b2.ToTable("ServiceContactPeriods_ContactHours");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ContactPeriodId", "ContactPeriodId1");
+                                });
+
+                            b1.Navigation("ContactHours");
+                        });
+
+                    b.OwnsOne("Rise.Domain.Contact.ServiceCategory", "ServiceCategory", b1 =>
+                        {
+                            b1.Property<int>("ServiceId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("varchar(100)")
+                                .HasColumnName("ServiceCategoryName");
+
+                            b1.HasKey("ServiceId");
+
+                            b1.ToTable("Service");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ServiceId");
+                        });
+
+                    b.OwnsOne("Rise.Domain.Contact.ServiceLocation", "Location", b1 =>
+                        {
+                            b1.Property<int>("ServiceId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("LocationName")
+                                .IsRequired()
+                                .HasMaxLength(250)
+                                .HasColumnType("varchar(250)");
+
+                            b1.HasKey("ServiceId");
+
+                            b1.ToTable("Service");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ServiceId");
+
+                            b1.OwnsOne("Rise.Domain.Common.StructuredAddress", "ServiceAddress", b2 =>
+                                {
+                                    b2.Property<int>("ServiceLocationServiceId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("BusNumber")
+                                        .HasMaxLength(20)
+                                        .HasColumnType("varchar(20)");
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("varchar(100)");
+
+                                    b2.Property<int>("HouseNumber")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("Postcode")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("Street")
+                                        .IsRequired()
+                                        .HasMaxLength(250)
+                                        .HasColumnType("varchar(250)");
+
+                                    b2.HasKey("ServiceLocationServiceId");
+
+                                    b2.ToTable("Service");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ServiceLocationServiceId");
+                                });
+
+                            b1.Navigation("ServiceAddress")
+                                .IsRequired();
+                        });
+
+                    b.Navigation("CommunicationChannels");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("OpeningHours");
+
+                    b.Navigation("ServiceCategory")
                         .IsRequired();
                 });
 

@@ -29,7 +29,7 @@ public static class ClaimsPrincipalExtentions
     /// <param name="user">The <see cref="ClaimsPrincipal"/> representing the current user.</param>
     /// <returns>The email address as a string if found; otherwise, null.</returns>
     public static string? GetEmail(this ClaimsPrincipal user) =>
-        user?.FindFirst(ClaimTypes.Email)?.Value;
+        user?.FindFirst(ClaimTypes.Name)?.Value;
 
     /// <summary>
     /// Determines whether the current <see cref="ClaimsPrincipal"/> has the specified role.
