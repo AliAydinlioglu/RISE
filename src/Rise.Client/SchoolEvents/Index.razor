@@ -11,7 +11,7 @@
 </div>
 
 <section class="mt-5 container school-events">
-    @if (_schoolEvents == null)
+    @if (_isLoading)
     {
         <MudContainer Class="mt-8">
             <RiseLoader />
