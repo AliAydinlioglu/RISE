@@ -9,7 +9,7 @@ public partial class Details : ComponentBase
 
     private bool _showError;
     
-    private SchoolEventDto.Detail _schoolEvent;
+    private SchoolEventDto.Detail? _schoolEvent;
     [Inject] public required ISchoolEventService SchoolEventService { get; set; }
     [Inject] public required NavigationManager NavigationManager { get; set; }
 
@@ -45,10 +45,5 @@ public partial class Details : ComponentBase
         }
         
         await InvokeAsync(StateHasChanged);
-    }
-
-    public void NavigateTo(string url)
-    {
-        NavigationManager.NavigateTo(url);
     }
 }
