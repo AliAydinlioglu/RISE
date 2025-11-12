@@ -37,7 +37,9 @@
 
         if (_showError)
         {
-            <MudAlert Severity="Severity.Error">Er liep iets fout bij het ophalen van de evenementen.</MudAlert>
+            <RiseNotification Severity="Error" Title="Error">
+                Er liep iets fout bij het ophalen van het evenement.
+            </RiseNotification>
         }
         else if (!_schoolEvents.Any())
         {

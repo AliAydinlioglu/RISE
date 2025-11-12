@@ -22,7 +22,9 @@ else
 
             @if (_showError)
             {
-                <MudAlert Severity="Severity.Error">Er liep iets fout bij het ophalen van het evenement.</MudAlert>
+                <RiseNotification Severity="Error" Title="Error">
+                    Er liep iets fout bij het ophalen van het evenement.
+                </RiseNotification>
             }
             else
             {
