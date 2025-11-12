@@ -16,7 +16,7 @@ public static class FakeClaimsPrincipal
     public static ClaimsPrincipal WithClaimsForLoginCallback(string oid, string email, string role) =>
         new(new ClaimsIdentity([
             new Claim("oid", oid),
-            new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Name, email),
             new Claim(ClaimTypes.Role, role)
         ], "SomeAuthType"));
 }

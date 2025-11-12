@@ -34,27 +34,25 @@ public class UserService(
     /// Gets a user by oid. If not found, a new user is created and known info is returned.
     /// </summary>
     /// <returns>Info of authenticated user</returns>
-    public async Task<Result<AccountResponse.LoginCallback>> GetOrCreateUserAsync()
+    public async Task<Result<AccountResponse.LoginCallback>> GetOrCreateUserAsync(string oid)
     {
         var claimsPrincipal = sessionProvider.User;
 
         if (claimsPrincipal is not { Identity.IsAuthenticated: true })
             return Result.Unauthorized("User is not authenticated");
 
-        var oidString = claimsPrincipal.GetOid();
-
-        if (string.IsNullOrWhiteSpace(oidString))
-            return Result.Unauthorized("Oid is missing, so user is not authenticated");
-        
-        if(!Guid.TryParse(oidString, out var oid))
-            return Result.Error("Oid is in a wrong format");
-        
         var email = claimsPrincipal.GetEmail();
         
         if(string.IsNullOrWhiteSpace(email))
             return Result.Error("Email is required");
+
+        if (string.IsNullOrWhiteSpace(oid))
+            return Result.Error("Oid is required");
         
-        var user = await GetApplicationUserAsync(oid, SsoProviders.MicrosoftEntra, email);
+        if(!Guid.TryParse(oid, out var oidGuid))
+            return Result.Error("Oid is in a wrong format");
+        
+        var user = await GetApplicationUserAsync(oidGuid, SsoProviders.MicrosoftEntra, email);
         
         // user found => update
         if (user != null)
@@ -70,10 +68,10 @@ public class UserService(
             claimsPrincipal.GetLastName(),
             null,
             DateTimeOffset.UtcNow, 
-            oid,
+            oidGuid,
             SsoProviders.MicrosoftEntra);
 
-        return await TryCreateUserWithResultAsync(user, oid, SsoProviders.MicrosoftEntra, email);
+        return await TryCreateUserWithResultAsync(user, oidGuid, SsoProviders.MicrosoftEntra, email);
     }
 
     /// <summary>

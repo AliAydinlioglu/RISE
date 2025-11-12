@@ -1,0 +1,81 @@
+﻿.login {
+    position: fixed;
+    top: 0;
+    left: 0; 
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: 0;
+    z-index: 0; 
+}
+
+
+@media only screen and (min-width: 770px) {
+    .login {
+        left: var(--mud-drawer-width-left, 240px);
+        width: calc(100vw - var(--mud-drawer-width-left, 240px));
+    }
+}
+/*stelt een foto vor achtergrond in*/
+.login-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    width: 100%;
+    max-height:100vh;
+    overflow:hidden;
+}
+
+/*Zorgt voor een donkere overlay over de foto*/
+.login-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.login-center {
+    position: relative;
+    z-index: 2;
+    padding: 0 1rem;
+}
+
+.login-box {
+    display: grid;
+    gap: 1rem;
+    padding: 2rem;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.15)
+}
+
+.login-input {
+    background-color:#000000;
+    color: black !important;
+    font-family: 'Montserrat';
+}
+
+.control.has-icons-right .login-input {
+    padding-right: 2.25rem;
+}
+.control.has-icons-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.button-field {
+    text-align: center;
+}
+
+@media (max-width: 420px) {
+    .login-center {
+        width: min(94vw, 420px);
+    }
+}
