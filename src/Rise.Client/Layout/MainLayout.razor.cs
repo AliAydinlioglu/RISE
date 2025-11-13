@@ -69,7 +69,7 @@ public partial class MainLayout
     {
         var subscription = await JSRuntime.InvokeAsync<NotificationSubscription>(
             "blazorPushNotifications.requestSubscription");
-        
+        await JSRuntime.InvokeVoidAsync("console.log", subscription);
         if (subscription is not null)
         {
             try

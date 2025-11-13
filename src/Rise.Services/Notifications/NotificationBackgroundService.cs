@@ -29,13 +29,13 @@ public class NotificationBackgroundService(
                 try
                 {
                     await SendNotificationAsync(s, "Je bericht hier");
-                    await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(ex, "Failed to send notification to {Endpoint}", s.Url);
                 }
             }
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
         logger.LogInformation("NotificationBackgroundService stopping.");
     }
@@ -47,8 +47,7 @@ public class NotificationBackgroundService(
 
         var pushSubscription = new PushSubscription(subscription.Url,
             subscription.P256dh, subscription.Auth);
-        var vapidDetails = new VapidDetails("Notification", publicKey,
-            privateKey);
+        var vapidDetails = new VapidDetails("mailto:admin@example.com", publicKey, privateKey);
         var webPushClient = new WebPushClient();
 
         try

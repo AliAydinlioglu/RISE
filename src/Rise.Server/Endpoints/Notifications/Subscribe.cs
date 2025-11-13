@@ -5,7 +5,7 @@ namespace Rise.Server.Endpoints.Notifications;
 
 public class SubscribeRequest
 {
-    public string Endpoint { get; set; } = default!;
+    public string Url { get; set; } = default!;
     public string P256dh { get; set; } = default!;
     public string Auth { get; set; } = default!;
 }
@@ -37,7 +37,7 @@ public class Subscribe(INotificationService notificationService, IHttpContextAcc
         var subscription = new NotificationSubscription
         {
             UserId = userId,
-            Url = req.Endpoint,
+            Url = req.Url,
             P256dh = req.P256dh,
             Auth = req.Auth
         };
@@ -50,7 +50,7 @@ public class Subscribe(INotificationService notificationService, IHttpContextAcc
 
     private string? GetUserId()
     {
-        return httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
+        return httpContextAccessor.HttpContext?.User?.Identity?.Name;
         // Pas eventueel aan op jouw claim type (bijv. ClaimTypes.NameIdentifier)
     }
 }

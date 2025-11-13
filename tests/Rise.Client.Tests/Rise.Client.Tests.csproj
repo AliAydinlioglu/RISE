@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <RootNamespace>Rise.Client</RootNamespace>
+        <Configurations>Debug;Release;test</Configurations>
     </PropertyGroup>
 
     <ItemGroup>

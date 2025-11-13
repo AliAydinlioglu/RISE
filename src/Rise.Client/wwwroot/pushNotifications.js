@@ -4,17 +4,26 @@
     window.blazorPushNotifications = {
         requestSubscription: async () => {
             const worker = await navigator.serviceWorker.getRegistration();
-            const existingSubscription = await worker.pushManager.getSubscription();
-            if (!existingSubscription) {
-                const newSubscription = await subscribe(worker);
-                if (newSubscription) {
-                    return {
-                        url: newSubscription.endpoint,
-                        p256dh: arrayBufferToBase64(newSubscription.getKey('p256dh')),
-                        auth: arrayBufferToBase64(newSubscription.getKey('auth'))
-                    };
-                }
+            if (!worker) {
+                console.error("Geen service worker geregistreerd");
+                return null;
             }
+
+            let subscription = await worker.pushManager.getSubscription();
+            if (!subscription) {
+                subscription = await subscribe(worker); // zorg dat subscribe returnt!
+            }
+
+            if (!subscription) {
+                console.error("Kon geen subscription maken");
+                return null;
+            }
+
+            return {
+                url: subscription.endpoint,
+                p256dh: arrayBufferToBase64(subscription.getKey('p256dh')),
+                auth: arrayBufferToBase64(subscription.getKey('auth'))
+            };
         }
     };
 
