@@ -45,7 +45,7 @@ pipeline {
                     // Use credentials for private repository
                     checkout([
                         $class: 'GitSCM',
-                        branches: [[name: '*/ops/main-cloud']],
+                        branches: [[name: '*/main']],
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [],
                         submoduleCfg: [],
