@@ -28,6 +28,7 @@ public static class CalendarSeeder
         await dbContext.Lessons.AddRangeAsync(CreateLessonSeedData(courses));
         await dbContext.Deadlines.AddRangeAsync(CreateDeadlineSeedData(courses));
         await dbContext.Exams.AddRangeAsync(CreateExamSeedData(courses));
+        await dbContext.Announcements.AddRangeAsync(CreateAnnouncementSeedData(courses));
 
         await dbContext.SaveChangesAsync();
     }
@@ -186,5 +187,36 @@ public static class CalendarSeeder
         }
 
         return exams;
+    }
+
+    private static List<Announcement> CreateAnnouncementSeedData(List<Course> courses)
+    {
+        if (_dbContext.Announcements.Any())
+            return [];
+
+        var announcements = new List<Announcement>();
+
+        foreach (var course in courses)
+        {
+            var count = _random.Next(0, 3);
+            var semester = course.AcademicSemester;
+            var totalDaysInSemester = (semester.ExamStartDate - semester.DateRange.StartDate).Days;
+            var randomOffset = _random.Next(0, totalDaysInSemester);
+            var lecturerNames = course.Lecturer.Split(" ");
+
+            for (var i = 0; i < count; i++)
+            {
+                var announcement = new Announcement(
+                    title: $"Vaknieuwstitel {i + 1}",
+                    sender: new Lecturer(lecturerNames[1], lecturerNames[0]),
+                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                    timestamp: semester.DateRange.StartDate.AddDays(randomOffset)
+                );
+                course.AddAnnouncement(announcement);
+                announcements.Add(announcement);
+            }
+        }
+
+        return announcements;
     }
 }

@@ -188,11 +188,25 @@ public partial class MainLayout
                 FontWeight = "800"
             },
             
+            H2 = new H2Typography
+            {
+                FontSize = "36px",
+                FontWeight = "600",
+                LineHeight = "1.25",
+            },
+            
             H3 = new H3Typography
             {
-                FontWeight = "600",
                 FontSize = "28px",
+                FontWeight = "600",
                 LineHeight = "1.3",
+            },
+            
+            H4 = new H4Typography
+            {
+                FontSize = "22px",
+                FontWeight = "600",
+                LineHeight = "1.4",
             },
             
             Body1 = new Body1Typography
@@ -205,6 +219,13 @@ public partial class MainLayout
             Button = new ButtonTypography()
             {
                 FontWeight = "800"
+            },
+            
+            Caption = new CaptionTypography
+            {
+                FontSize = "12px",
+                LineHeight = "1.4",
+                LetterSpacing = "0.02em"
             }
         }
     };

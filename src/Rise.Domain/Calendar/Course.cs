@@ -49,4 +49,8 @@ public class Course : Entity
         _exams.Add(exam);
     }
 
+    public void AddAnnouncement(Announcement announcement)
+    {
+        _announcements.Add(announcement);
+    }
 }
