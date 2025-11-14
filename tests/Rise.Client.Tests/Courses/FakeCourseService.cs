@@ -3,13 +3,13 @@ using Rise.Shared.Courses;
 
 namespace Rise.Client.Courses;
 
-public class FakeCourseService(bool withDelay) : ICourseService
+public class FakeCourseService(bool withDelay, bool hasAnnouncements) : ICourseService
 {
     public async Task<Result<CourseDetailResponse.Get>> GetCourseDetailAsync(string userId, int courseId, DateOnly date)
     {
         if (withDelay)
             await Task.Delay(100);
-        
+
         return await Task.FromResult(Result.Success(_response));
     }
 
@@ -31,6 +31,17 @@ public class FakeCourseService(bool withDelay) : ICourseService
             PostalCode = 9000,
             City = "Gent",
             Room = "B.2.040"
-        }
+        },
+        Announcements = hasAnnouncements
+            ? new List<CourseDetailResponse.AnnouncementInfo>
+            {
+                new()
+                {
+                    Title = "Test Announcement",
+                    Sender = "Test sender",
+                    Message = "Test message",
+                }
+            }
+            : []
     };
 }

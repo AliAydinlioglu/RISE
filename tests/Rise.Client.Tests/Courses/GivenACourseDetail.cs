@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Rise.Client.Components;
 using Rise.Client.Courses.Components;
 using Rise.Client.Faker;
@@ -8,7 +9,7 @@ using Shouldly;
 
 namespace Rise.Client.Courses;
 
-public class GivenACourseDetail : TestContext
+public class GivenACourseDetail : MudBlazorTestSetup
 {
     private const int TestCourseId = 1;
     private readonly DateOnly _testDate = new(2024, 11, 13);
@@ -52,10 +53,54 @@ public class GivenACourseDetail : TestContext
         gridItems[0].ClassList.ShouldContain("mud-grid-item-xs-6");
         gridItems[1].ClassList.ShouldContain("mud-grid-item-xs-6");
     }
-
-    private IRenderedComponent<Detail> RenderedComponent(bool isLoading = false)
+    
+    [Fact(DisplayName = "When rendering course detail, then 'Vaknieuws' heading should be shown")]
+    public void VaknieuwsHeadingTest()
     {
-        var fakeCourseService = new FakeCourseService(isLoading);
+        var cut = RenderedComponent();
+
+        var heading = cut.Find("h2");
+        heading.TextContent.ShouldContain("Vaknieuws");
+    }
+    
+    [Fact(DisplayName = "When course has no announcements, then notification should be shown")]
+    public void NoAnnouncementsTest()
+    {
+        var cut = RenderedComponent(hasAnnouncements: false);
+
+        var notification = cut.FindComponent<RiseNotification>();
+        notification.ShouldNotBeNull();
+        notification.Instance.Title.ShouldBe("Geen vaknieuws beschikbaar");
+        notification.Instance.Severity.ShouldBe(RiseNotification.NotificationSeverity.Info);
+    }
+    
+    [Fact(DisplayName = "When course has announcements, then each should display title, sender and message")]
+    public void AnnouncementContentTest()
+    {
+        var cut = RenderedComponent();
+
+        var papers = cut.FindComponents<MudPaper>();
+        var firstPaper = papers.First();
+
+        var title = firstPaper.Find(".mud-typography-h4");
+        title.ShouldNotBeNull();
+        title.TextContent.ShouldNotBeNullOrEmpty();
+
+        var sender = firstPaper.Find(".mud-typography-caption");
+        sender.ShouldNotBeNull();
+        sender.TextContent.ShouldNotBeNullOrEmpty();
+
+        var divider = firstPaper.FindComponent<MudDivider>();
+        divider.ShouldNotBeNull();
+
+        var message = firstPaper.Find(".mud-typography-body2");
+        message.ShouldNotBeNull();
+        message.TextContent.ShouldNotBeNullOrEmpty();
+    }
+
+     private IRenderedComponent<Detail> RenderedComponent(bool isLoading = false, bool hasAnnouncements = true)
+    {
+        var fakeCourseService = new FakeCourseService(isLoading, hasAnnouncements);
         Services.AddScoped<ICourseService>(_ => fakeCourseService);
 
         var navigationManager = Services.GetRequiredService<FakeNavigationManager>();

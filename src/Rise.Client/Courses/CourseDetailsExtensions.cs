@@ -13,8 +13,15 @@ public static class CourseDetailsExtensions
         Location = new LocationViewModel
         {
             Campus = $"Campus {response.Campus.Name}",
-            Adress = $"{response.Campus.Street} {response.Campus.HouseNumber}, {response.Campus.PostalCode} {response.Campus.City}",
+            Adress =
+                $"{response.Campus.Street} {response.Campus.HouseNumber}, {response.Campus.PostalCode} {response.Campus.City}",
             Room = response.Campus.Room
-        }
+        },
+        Announcements = response.Announcements.Select(it => new AnnouncementViewModel
+        {
+            Title = it.Title,
+            Sender = it.Sender,
+            Message = it.Message,
+        }).ToList()
     };
 }
