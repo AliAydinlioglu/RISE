@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Components;
+using Rise.Client.Components.Card;
 using Rise.Client.Courses.Components;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
@@ -97,10 +98,57 @@ public class GivenACourseDetail : MudBlazorTestSetup
         message.ShouldNotBeNull();
         message.TextContent.ShouldNotBeNullOrEmpty();
     }
-
-     private IRenderedComponent<Detail> RenderedComponent(bool isLoading = false, bool hasAnnouncements = true)
+    
+    [Fact(DisplayName = "When rendering course detail, then 'Deadlines' heading should be shown")]
+    public void DeadlinesHeadingTest()
     {
-        var fakeCourseService = new FakeCourseService(isLoading, hasAnnouncements);
+        var cut = RenderedComponent();
+
+        var headings = cut.FindAll("h2");
+        
+        headings.First().TextContent.ShouldContain("Vaknieuws");
+        headings.ElementAt(1).TextContent.ShouldContain("Deadlines");
+    }
+    
+    [Fact(DisplayName = "When course has no deadlines, then notification should be shown")]
+    public void NoDeadlinesTest()
+    {
+        var cut = RenderedComponent(hasDeadlines: false);
+
+        var notification = cut.FindComponent<RiseNotification>();
+        notification.ShouldNotBeNull();
+        notification.Instance.Title.ShouldBe("Geen deadlines beschikbaar");
+        notification.Instance.Severity.ShouldBe(RiseNotification.NotificationSeverity.Info);
+    }
+    
+    [Fact(DisplayName = "When course has deadlines, cards should be rendered")]
+    public void DeadlineContentTest()
+    {
+        var cut = RenderedComponent();
+
+        var card = cut.FindComponent<RiseCard>();
+        
+        card.ShouldNotBeNull();
+    }
+    
+    [Fact(DisplayName = "When course no announcements nor deadlines, then two notifications should be shown")]
+    public void NotificationsTest()
+    {
+        var cut = RenderedComponent(hasAnnouncements: false, hasDeadlines: false);
+
+        var notifications = cut.FindComponents<RiseNotification>();
+        
+        notifications.Count.ShouldBe(2);
+        notifications[0].Instance.Title.ShouldBe("Geen vaknieuws beschikbaar");
+        notifications[1].Instance.Title.ShouldBe("Geen deadlines beschikbaar");
+    }
+
+     private IRenderedComponent<Detail> RenderedComponent(
+         bool isLoading = false, 
+         bool hasAnnouncements = true, 
+         bool hasDeadlines = true)
+    {
+        var fakeCourseService = new FakeCourseService(isLoading, hasAnnouncements, hasDeadlines);
         Services.AddScoped<ICourseService>(_ => fakeCourseService);
 
         var navigationManager = Services.GetRequiredService<FakeNavigationManager>();
