@@ -1,0 +1,42 @@
+<div class="box mb-5 @GetBackgroundColorClass() @GetWidthClass()">
+    <div class="has-text-centered mb-4">
+        <p class="title is-4 is-capitalized has-text-centered @GetForegroundColorClass()">
+            @Title
+        </p>
+        <div class="is-flex is-align-items-center is-justify-content-center">
+            <button class="button is-ghost @GetForegroundColorClass()" @onclick="OnPreviousWeek" style="text-decoration: none;">
+                <span class="icon is-small">
+                    <i class="fas fa-chevron-left"></i>
+                </span>
+            </button>
+            <p class="subtitle is-5 @GetForegroundColorClass() mb-0 mx-5">
+                Week @GetWeekNumber()
+            </p>
+            <button class="button is-ghost @GetForegroundColorClass()" @onclick="OnNextWeek" style="text-decoration: none;">
+                <span class="icon is-small">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <div class="columns is-mobile is-gapless">
+        @foreach (var day in GetSchooldaysOfCurrentWeek())
+        {
+            var isSelected = day.Date == SelectedDate.Date;
+            <div class="column is-flex is-justify-content-center is-align-items-center">
+                <button @onclick="() => OnDateSelected(day)">
+                    <div class="has-text-centered @GetForegroundColorClass()">
+                        <p class="is-size-7 has-text-weight-semibold is-capitalized mb-2">
+                            @day.ToString("ddd")
+                        </p>
+                        <div class="@GetBackgroundColorClassWhenSelected(isSelected) is-inline-flex is-justify-content-center is-align-items-center"
+                             style="width: 2.5rem; height: 2.5rem; border-radius: 50%;">
+                            <span class="has-text-weight-bold @GetForegroundColorClassWhenSelected(isSelected)">@day.Day</span>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        }
+    </div>
+</div>

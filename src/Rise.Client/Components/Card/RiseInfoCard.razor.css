@@ -1,0 +1,52 @@
+﻿.info-card {
+    border: 2px solid black;
+    border-radius: 4px;
+    background: white;
+    overflow: hidden;
+}
+
+/* HEADER 
+    Mischien later bekijken om een ander css file te maken
+    zonder images
+*/
+.info-card-header {
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(200, 200, 200, 0.1);
+    background-image: url('https://www.hogent.be/sites/hogent/assets/Image/banner66.jpg');
+    text-align: center;
+}
+
+/* Title inside header */
+.info-card-header h2 {
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+/* CARD BODY */
+.info-card-content {
+    font-size: 0.95rem;
+    color: #111;
+}
+
+.info-card-content a {
+    color: black;
+    text-decoration: underline;
+}
+
+/* Mobile font scaling */
+@media screen and (max-width: 768px) {
+    .info-card-header {
+        height: 90px;
+    }
+
+    .info-card-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .info-card-content {
+        font-size: 0.85rem;
+    }
+}

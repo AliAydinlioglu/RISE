@@ -1,6 +1,5 @@
 @page "/kalender"
 @using Rise.Client.Calendar.Components
-@using Rise.Client.Components
 
 <PageTitle>Kalender</PageTitle>
 
@@ -22,7 +21,7 @@ else
 
     private RenderFragment RenderCalendarView() => __builder =>
     {
-        <WeekHeader SelectedDate="_selectedDate"
+        <RiseWeekCalendar SelectedDate="_selectedDate"
                     SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
                     Title="@_selectedDate.ToString("MMMM yyyy")"
                     OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
@@ -34,7 +33,7 @@ else
 
     private RenderFragment RenderLessenroosterView() => __builder =>
     {
-        <WeekHeader SelectedDate="_selectedDate"
+        <RiseWeekCalendar SelectedDate="_selectedDate"
                     SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
                     Title="@($"{_selectedDate:MMMM yyyy}")"
                     OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"

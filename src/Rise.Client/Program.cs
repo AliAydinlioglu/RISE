@@ -6,14 +6,18 @@ using Rise.Client;
 using Rise.Client.Calendar;
 using Rise.Client.Courses;
 using Rise.Client.Products;
-using Rise.Client.Shared;
+using Rise.Client.SchoolEvents;
 using Rise.Client.StudentActivities;
+using Rise.Client.Shared;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Shared.Courses;
 using Rise.Shared.Products;
+using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using DateTimeService = Rise.Client.DateTimeService;
+using Rise.Shared.Contact;
+using Rise.Client.Contact;
 
 try
 {
@@ -75,6 +79,16 @@ try
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
+    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
     builder.Services.AddMudServices();
     await builder.Build().RunAsync();
 }

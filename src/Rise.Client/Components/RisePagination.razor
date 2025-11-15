@@ -1,0 +1,29 @@
+<section class="section pagination-section"> 
+    <nav class="pagination is-rounded is-centered" role="navigation">
+                
+        <button class="pagination-previous"
+                disabled="@(CurrentPage <= 1)"
+                @onclick="() => OnPageChanged(CurrentPage - 1)">
+            Previous
+        </button>
+        <button class="pagination-next"
+                disabled="@(CurrentPage >= TotalPages)"
+                @onclick="() => OnPageChanged(CurrentPage + 1)">
+            Next
+        </button>
+                
+        <ul class="pagination-list">
+            @for (var i = 1; i <= TotalPages; i++)
+            {
+                var pageNumber = i;
+                <li>
+                    <button class="pagination-link @(CurrentPage == pageNumber ? "is-current" : "")"
+                            @onclick="() => OnPageChanged(pageNumber)">
+                        @pageNumber
+                    </button>
+                </li>
+            }
+        </ul>
+                
+    </nav>
+</section>

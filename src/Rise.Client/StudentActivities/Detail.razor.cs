@@ -26,8 +26,8 @@ public partial class Detail
             return;
         }
 
-        var IdValue = int.Parse(Id);
-        var result = await StudentActivityService.GetDetailByIdAsync(IdValue, CancellationToken.None);
+        var idValue = int.Parse(Id);
+        var result = await StudentActivityService.GetDetailByIdAsync(idValue, CancellationToken.None);
         studentActivity = result.Value.StudentActivity;
         if (studentActivity != null)
         {
@@ -35,7 +35,7 @@ public partial class Detail
             Description = studentActivity.Description;
             Address =
                 $"{studentActivity.Location.Street} {studentActivity.Location.HouseNumber} {studentActivity.Location.BusNumber}, {studentActivity.Location.Postcode} {studentActivity.Location.City}";
-            LocationName = studentActivity.Location.Name;
+            LocationName = studentActivity.Location?.Name ?? "";
             TimeString = $"{studentActivity.StartTime:HH:mm} - {studentActivity.EndTime:HH:mm}";
             LocalDateString = studentActivity.Date.LocalDateTime.ToString("dd.MM.yyyy");
             StudentClubName = studentActivity.StudentClub.Name;

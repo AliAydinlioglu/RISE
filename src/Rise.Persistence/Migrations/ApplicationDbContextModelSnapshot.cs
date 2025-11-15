@@ -412,7 +412,7 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Lesson", (string)null);
                 });
 
-            modelBuilder.Entity("Rise.Domain.Contact.Service", b =>
+            modelBuilder.Entity("Rise.Domain.Contact.Facility", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -450,7 +450,7 @@ namespace Rise.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Service", (string)null);
+                    b.ToTable("Facility", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.Identity.Role", b =>
@@ -482,6 +482,58 @@ namespace Rise.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Locations.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BusNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int>("HouseNumber")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<int>("Postcode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.Navigation.ContentLocation", b =>
@@ -729,7 +781,7 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Technician", (string)null);
                 });
 
-            modelBuilder.Entity("Rise.Domain.StudentActivities.Location", b =>
+            modelBuilder.Entity("Rise.Domain.SchoolEvents.SchoolEvent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -737,11 +789,10 @@ namespace Rise.Persistence.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("BusNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
 
-                    b.Property<string>("City")
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
@@ -751,22 +802,45 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("HouseNumber")
-                        .HasColumnType("int");
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("varchar(2048)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(250)
-                        .HasColumnType("varchar(250)");
-
-                    b.Property<int>("Postcode")
+                    b.Property<int>("LocationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Street")
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Publicity")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("varchar(2048)");
+
+                    b.Property<string>("RegisterLink")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("varchar(2048)");
+
+                    b.Property<bool>("Registrable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar(250)");
@@ -778,7 +852,9 @@ namespace Rise.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location", (string)null);
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("SchoolEvent", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.StudentActivities.StudentActivity", b =>
@@ -1188,8 +1264,81 @@ namespace Rise.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rise.Domain.Contact.Service", b =>
+            modelBuilder.Entity("Rise.Domain.Contact.Facility", b =>
                 {
+                    b.OwnsOne("Rise.Domain.Contact.FacilityCategory", "FacilityCategory", b1 =>
+                        {
+                            b1.Property<int>("FacilityId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("varchar(100)")
+                                .HasColumnName("FacilityCategoryName");
+
+                            b1.HasKey("FacilityId");
+
+                            b1.ToTable("Facility");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FacilityId");
+                        });
+
+                    b.OwnsOne("Rise.Domain.Contact.FacilityLocation", "Location", b1 =>
+                        {
+                            b1.Property<int>("FacilityId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("LocationName")
+                                .IsRequired()
+                                .HasMaxLength(250)
+                                .HasColumnType("varchar(250)");
+
+                            b1.HasKey("FacilityId");
+
+                            b1.ToTable("Facility");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FacilityId");
+
+                            b1.OwnsOne("Rise.Domain.Common.StructuredAddress", "FaclitityAddress", b2 =>
+                                {
+                                    b2.Property<int>("FacilityLocationFacilityId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("BusNumber")
+                                        .HasMaxLength(20)
+                                        .HasColumnType("varchar(20)");
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("varchar(100)");
+
+                                    b2.Property<int>("HouseNumber")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("Postcode")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("Street")
+                                        .IsRequired()
+                                        .HasMaxLength(250)
+                                        .HasColumnType("varchar(250)");
+
+                                    b2.HasKey("FacilityLocationFacilityId");
+
+                                    b2.ToTable("Facility");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("FacilityLocationFacilityId");
+                                });
+
+                            b1.Navigation("FaclitityAddress")
+                                .IsRequired();
+                        });
+
                     b.OwnsMany("Rise.Domain.Contact.CommunicationChannel", "CommunicationChannels", b1 =>
                         {
                             b1.Property<int>("Id")
@@ -1216,7 +1365,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("Id", "Id1");
 
-                            b1.ToTable("ServiceCommunicationChannels", (string)null);
+                            b1.ToTable("FacilityCommunicationChannels", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("Id");
@@ -1238,7 +1387,7 @@ namespace Rise.Persistence.Migrations
 
                             b1.HasKey("Id", "Id1");
 
-                            b1.ToTable("ServiceContactPeriods", (string)null);
+                            b1.ToTable("FacilityContactPeriods", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("Id");
@@ -1265,7 +1414,7 @@ namespace Rise.Persistence.Migrations
 
                                     b2.HasKey("ContactPeriodId", "ContactPeriodId1", "Id");
 
-                                    b2.ToTable("ServiceContactPeriods_ContactHours");
+                                    b2.ToTable("FacilityContactPeriods_ContactHours");
 
                                     b2.WithOwner()
                                         .HasForeignKey("ContactPeriodId", "ContactPeriodId1");
@@ -1274,87 +1423,14 @@ namespace Rise.Persistence.Migrations
                             b1.Navigation("ContactHours");
                         });
 
-                    b.OwnsOne("Rise.Domain.Contact.ServiceCategory", "ServiceCategory", b1 =>
-                        {
-                            b1.Property<int>("ServiceId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("varchar(100)")
-                                .HasColumnName("ServiceCategoryName");
-
-                            b1.HasKey("ServiceId");
-
-                            b1.ToTable("Service");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ServiceId");
-                        });
-
-                    b.OwnsOne("Rise.Domain.Contact.ServiceLocation", "Location", b1 =>
-                        {
-                            b1.Property<int>("ServiceId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("LocationName")
-                                .IsRequired()
-                                .HasMaxLength(250)
-                                .HasColumnType("varchar(250)");
-
-                            b1.HasKey("ServiceId");
-
-                            b1.ToTable("Service");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ServiceId");
-
-                            b1.OwnsOne("Rise.Domain.Common.StructuredAddress", "ServiceAddress", b2 =>
-                                {
-                                    b2.Property<int>("ServiceLocationServiceId")
-                                        .HasColumnType("int");
-
-                                    b2.Property<string>("BusNumber")
-                                        .HasMaxLength(20)
-                                        .HasColumnType("varchar(20)");
-
-                                    b2.Property<string>("City")
-                                        .IsRequired()
-                                        .HasMaxLength(100)
-                                        .HasColumnType("varchar(100)");
-
-                                    b2.Property<int>("HouseNumber")
-                                        .HasColumnType("int");
-
-                                    b2.Property<int>("Postcode")
-                                        .HasColumnType("int");
-
-                                    b2.Property<string>("Street")
-                                        .IsRequired()
-                                        .HasMaxLength(250)
-                                        .HasColumnType("varchar(250)");
-
-                                    b2.HasKey("ServiceLocationServiceId");
-
-                                    b2.ToTable("Service");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ServiceLocationServiceId");
-                                });
-
-                            b1.Navigation("ServiceAddress")
-                                .IsRequired();
-                        });
-
                     b.Navigation("CommunicationChannels");
+
+                    b.Navigation("FacilityCategory")
+                        .IsRequired();
 
                     b.Navigation("Location");
 
                     b.Navigation("OpeningHours");
-
-                    b.Navigation("ServiceCategory")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rise.Domain.Navigation.RoleNavigationItemContentLocation", b =>
@@ -1466,9 +1542,44 @@ namespace Rise.Persistence.Migrations
                     b.Navigation("Technician");
                 });
 
+            modelBuilder.Entity("Rise.Domain.SchoolEvents.SchoolEvent", b =>
+                {
+                    b.HasOne("Rise.Domain.Locations.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.OwnsOne("Rise.Domain.Common.TimeRange", "TimeRange", b1 =>
+                        {
+                            b1.Property<int>("SchoolEventId")
+                                .HasColumnType("int");
+
+                            b1.Property<TimeOnly>("EndTime")
+                                .HasColumnType("time(6)")
+                                .HasColumnName("EndTime");
+
+                            b1.Property<TimeOnly>("StartTime")
+                                .HasColumnType("time(6)")
+                                .HasColumnName("StartTime");
+
+                            b1.HasKey("SchoolEventId");
+
+                            b1.ToTable("SchoolEvent");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SchoolEventId");
+                        });
+
+                    b.Navigation("Location");
+
+                    b.Navigation("TimeRange")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Rise.Domain.StudentActivities.StudentActivity", b =>
                 {
-                    b.HasOne("Rise.Domain.StudentActivities.Location", "Location")
+                    b.HasOne("Rise.Domain.Locations.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.NoAction)

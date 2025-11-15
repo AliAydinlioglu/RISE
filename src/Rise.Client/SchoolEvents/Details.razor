@@ -1,0 +1,90 @@
+@page "/school-events/{Id?}"
+@using Rise.Client.Components
+
+@if (_schoolEvent == null)
+{
+    <MudContainer Class="mt-8">
+        <RiseLoader/>
+    </MudContainer>
+}
+else
+{
+    <PageTitle>@_schoolEvent.Title</PageTitle>
+
+    <div data-bunit="se-detail" class="container is-widescreen detail-se">
+        <a href="/school-events" class="has-text-black hover:has-text-underline">
+        <span class="icon">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+            <span>Terug naar evenementen</span>
+        </a>
+        <div class="section">
+
+            @if (_showError)
+            {
+                <RiseNotification Severity="Error" Title="Error">
+                    Er liep iets fout bij het ophalen van het evenement.
+                </RiseNotification>
+            }
+            else
+            {
+                <RiseHeadTitle>@_schoolEvent.Title</RiseHeadTitle>
+
+                <div class="content">
+                    <div class="box">
+                        <div data-bunit='se-detail-organisator' class="field">
+                            <label class="label">Categorie:</label>
+                            <p class="is-size-6">@_schoolEvent.Category</p>
+                        </div>
+
+                        <div data-bunit='se-detail-date' class="field">
+                            <label class="label">Datum & Tijd:</label>
+                            <span class="is-size-6">@_schoolEvent.Date.ToString("dddd d MMMM yyyy")</span><br/>
+                            <span class="is-size-6 has-text-black">@_schoolEvent.TimeString</span>
+                        </div>
+
+                        <div data-bunit='se-detail-location' class="field">
+                            <label class="label">Locatie:</label>
+                            <span class="is-size-6">@_schoolEvent.Location.Name</span><br/>
+                            @{ var address = _schoolEvent.Location.GetAddressWithoutName(); }
+                            <a class="is-size-6 has-text-black se-address" href="https://www.google.com/maps?q=@address"
+                               target="_blank">@address</a>
+                        </div>
+
+                        <div data-bunit='se-detail-description' class="field">
+                            <label class="label">Prijs:</label>
+                            <div class="content">
+                                <p>@(_schoolEvent.IsFree() ? "Gratis" : "€ " + _schoolEvent.Price.ToString("0.00"))</p>
+                            </div>
+                        </div>
+
+                        <div data-bunit='se-detail-description' class="field">
+                            <label class="label">Beschrijving:</label>
+                            <div class="content">
+                                <p>@_schoolEvent.Description</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <RiseButton
+                        ButtonType="ButtonType.Button"
+                        Size="RiseButton.RiseButtonSize.Medium">
+                        <MudIcon Icon="@Icons.Material.Filled.Add"/>
+                        Voeg toe aan kalender
+                    </RiseButton>
+
+                    <RiseButton
+                        ButtonType="ButtonType.Button"
+                        Size="RiseButton.RiseButtonSize.Medium"
+                        OnClick="() => NavigationManager.NavigateTo(_schoolEvent.RegisterLink)">
+                        <MudIcon Icon="@Icons.Material.Filled.Add"/>
+                        Inschrijven
+                    </RiseButton>
+
+                </div>
+            }
+
+        </div>
+    </div>
+}
