@@ -1,8 +1,7 @@
 using Ardalis.Result;
-using Rise.Domain.Locations;
 using Rise.Domain.SchoolEvents;
+using Rise.Services.SchoolEvents;
 using Rise.Shared.Common;
-using Rise.Shared.Locations;
 using Rise.Shared.SchoolEvents;
 using Rise.TestDoubles;
 
@@ -39,7 +38,7 @@ public class FakeSchoolEventService : ISchoolEventService
         var events = _schoolEventsForIndex?
             .Skip(request.Skip)?
             .Take(request.Take)?
-            .Select(ToIndexDto)?
+            .Select(se => se.ToIndexDto())
             .ToList();
         
         var result = new SchoolEventResponse.Index
@@ -55,65 +54,9 @@ public class FakeSchoolEventService : ISchoolEventService
     {   
         var result = new SchoolEventResponse.Detail()
         {
-            SchoolEvent = _schoolEventsForDetails != null ? ToDetailDto(_schoolEventsForDetails) : null
+            SchoolEvent = _schoolEventsForDetails != null ? _schoolEventsForDetails.ToDetailDto() : null
         };
         
         return Task.FromResult(Result.Success(result));
-    }
-    
-    private static SchoolEventDto.Detail ToDetailDto(SchoolEvent se)
-    {
-        return new SchoolEventDto.Detail
-        {
-            Id = se.Id,
-            Title = se.Title,
-            Description = se.Description,
-            Date = se.Date,
-            StartTime = se.TimeRange.StartTime,
-            EndTime = se.TimeRange.EndTime,
-            Price = se.Price,
-            RegisterLink = se.RegisterLink,
-            Capacity = se.Capacity,
-            Registrable = se.Registrable,
-            Publicity = se.Publicity,
-            Category = se.Category,
-            ImageUrl = se.ImageUrl,
-            Location = ToLocationDto(se.Location),
-        };
-    }
-    
-    private static SchoolEventDto.Index ToIndexDto(SchoolEvent se)
-    {
-        return new SchoolEventDto.Index
-        {
-            Id = se.Id,
-            Title = se.Title,
-            Description = se.Description,
-            Date = se.Date,
-            StartTime = se.TimeRange.StartTime,
-            EndTime = se.TimeRange.EndTime,
-            Price = se.Price,
-            RegisterLink = se.RegisterLink,
-            Capacity = se.Capacity,
-            Registrable = se.Registrable,
-            Publicity = se.Publicity,
-            Category = se.Category,
-            ImageUrl = se.ImageUrl,
-            Location = ToLocationDto(se.Location),
-        };
-    }
-    
-    private static LocationDto.Index ToLocationDto(Location loc)
-    {
-        return new LocationDto.Index
-        {
-            Id = loc.Id,
-            Name = loc.Name,
-            Street = loc.Street,
-            HouseNumber = loc.HouseNumber,
-            City = loc.City,
-            Postcode = loc.Postcode,
-            BusNumber = loc.BusNumber
-        };
     }
 }

@@ -1,5 +1,6 @@
 using AngleSharp.Dom;
 using Rise.Client.Components;
+using Rise.Client.Components.Calendar;
 
 namespace Rise.Client.Calendar;
 
@@ -29,7 +30,13 @@ public static class CalendarTestHelpers
 
     public static string GetSelectedDayNumber(this IRenderedComponent<CalendarIndex> component)
     {
-        return component.Find("[data-bunit='wc-span-with-day']").TextContent.Trim();
+        var cssSelector = ".has-background-white.has-text-black";
+        if (component.FindComponents<RiseWeekCalendar>().Count > 0)
+        {
+            cssSelector = "[data-bunit='calendar-day']";
+        }
+        
+        return component!.Find(cssSelector).TextContent.Trim();
     }
 
     public static void ClickDay(this IRenderedComponent<CalendarIndex> component, int dayIndex)
