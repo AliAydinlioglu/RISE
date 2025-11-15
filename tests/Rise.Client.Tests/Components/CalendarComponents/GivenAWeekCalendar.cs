@@ -22,7 +22,7 @@ public class GivenAWeekCalendar : TestContext
         );
 
         // act
-        var dayButtons = cut.FindAll("[data-bunit='wc-span-with-day']").Where(b => int.TryParse(b.TextContent, out _)).ToList();
+        var dayButtons = cut.FindAll("[data-bunit='calendar-day']").Where(b => int.TryParse(b.TextContent, out _)).ToList();
 
         // assert
         dayButtons.Count.ShouldBe(5); // schooldays only
@@ -39,7 +39,7 @@ public class GivenAWeekCalendar : TestContext
         );
 
         // act
-        var dayButtons = cut.FindAll("[data-bunit='wc-span-with-day']").Where(b => int.TryParse(b.TextContent, out _)).ToList();
+        var dayButtons = cut.FindAll("[data-bunit='calendar-day']").Where(b => int.TryParse(b.TextContent, out _)).ToList();
         
         // assert
         dayButtons.Count.ShouldBe(7); // full week
@@ -59,7 +59,7 @@ public class GivenAWeekCalendar : TestContext
 
         // act
         var dayToSelect = initialDate.AddDays(1);
-        var buttonToSelect = cut.FindAll("[data-bunit='wc-span-with-day']").First(b => b.TextContent.Contains(dayToSelect.Day.ToString()));
+        var buttonToSelect = cut.FindAll("[data-bunit='calendar-day']").First(b => b.TextContent.Contains(dayToSelect.Day.ToString()));
         buttonToSelect.Click();
 
         // assert 

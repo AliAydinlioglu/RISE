@@ -11,6 +11,8 @@ namespace Rise.Client.SchoolEvents;
 
 public class DetailsShould : TestContext
 {
+    private const int ValidId = 1;
+    
     public DetailsShould(ITestOutputHelper output)
     {
         Services.AddXunitLogger(output);
@@ -19,25 +21,17 @@ public class DetailsShould : TestContext
         Services.AddScoped<NavigationManager, FakeNavigationManager>();
         Services.AddMudServices();
     }
-
-    [Fact]
-    public void ShowError_WhenIdIsNullOrEmpty()
-    {
-        // arrange
-        var cut = RenderComponent<Details>(p => p.Add(x => x.Id, null));
-
-        // assert
-        cut.Markup.ShouldContain("Er liep iets fout bij het ophalen van het evenement.");
-    }
     
     [Fact]
     public void ShowError_WhenIdIsInvalid()
     {
         // arrange
-        var cut = RenderComponent<Details>(p => p.Add(x => x.Id,"abc"));
+        var nav = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
+        
+        RenderComponent<Details>(p => p.Add(x => x.Id,-1));
 
         // assert
-        cut.Markup.ShouldContain("Er liep iets fout bij het ophalen van het evenement.");
+        nav!.Uri.ShouldEndWith("/notfound");
     }
 
     [Fact]
@@ -48,7 +42,7 @@ public class DetailsShould : TestContext
         var schoolEventService = Services.GetService<ISchoolEventService>() as FakeSchoolEventService;
         schoolEventService!.SetSchoolEventForDetails(SchoolEventTestDataFactory.CreateDefaultSchoolEvent());
         var evt = schoolEventService!.GetSchoolEventForDetails();
-        var cut = RenderComponent<Details>(p => p.Add(x => x.Id, evt!.Id.ToString()));
+        var cut = RenderComponent<Details>(p => p.Add(x => x.Id, ValidId));
 
         // assert
         var container = cut.Find("[data-bunit='se-detail']");
@@ -64,17 +58,15 @@ public class DetailsShould : TestContext
         // arrange
         Services.AddScoped<ISchoolEventService, FakeSchoolEventService>();
         var schoolEventService = Services.GetService<ISchoolEventService>() as FakeSchoolEventService;
-        schoolEventService!.SetSchoolEventForDetails(SchoolEventTestDataFactory.CreateDefaultSchoolEvent());
         var location = SchoolEventTestDataFactory.CreateDefaultLocation();
-        schoolEventService.SetSchoolEventForDetails(SchoolEventTestDataFactory.CreateSchoolEvent(
+        schoolEventService!.SetSchoolEventForDetails(SchoolEventTestDataFactory.CreateSchoolEvent(
             "test", 
             "test beschrijving", 
             DateTimeOffset.Now, 
             location,
             0));
         
-        var evt = schoolEventService!.GetSchoolEventForDetails();
-        var cut = RenderComponent<Details>(p => p.Add(x => x.Id, evt!.Id.ToString()));
+        var cut = RenderComponent<Details>(p => p.Add(x => x.Id, ValidId));
 
         // assert
         cut.Find("[data-bunit='se-detail-price']").InnerHtml.ShouldContain("Gratis");
@@ -90,7 +82,7 @@ public class DetailsShould : TestContext
         var evt = schoolEventService!.GetSchoolEventForDetails();
         var nav = Services.GetRequiredService<NavigationManager>() as FakeNavigationManager;
 
-        var cut = RenderComponent<Details>(p => p.Add(x => x.Id, evt.Id.ToString()));
+        var cut = RenderComponent<Details>(p => p.Add(x => x.Id, ValidId));
 
         cut.WaitForAssertion(() =>
         {

@@ -11,7 +11,7 @@
 </div>
 
 <section class="mt-5 container school-events">
-    @if (_isLoading)
+    @if (_schoolEvents == null)
     {
         <MudContainer Class="mt-8">
             <RiseLoader />
@@ -35,15 +35,9 @@
             
         </MudGrid>
 
-        if (_showError)
+        if(!_schoolEvents.Any())
         {
-            <RiseNotification Severity="Error" Title="Error">
-                Er liep iets fout bij het ophalen van het evenement.
-            </RiseNotification>
-        }
-        else if (!_schoolEvents.Any())
-        {
-            <div class="notification is-light">
+            <div data-bunit="se-no-events-message" class="notification is-light">
                 <p class="has-text-centered">Geen evenementen voor deze dag.</p>
             </div>
         }
@@ -52,7 +46,7 @@
             <div class="is-flex columns  is-multiline  mb-4">
                 @foreach (var schoolEvent in _schoolEvents)
                 {
-                    <article class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
+                    <article data-bunit="se-index-card" class="mb-4 column is-12-mobile is-6-tablet is-3-desktop ">
                 
                         <a href="/school-events/@schoolEvent.Id">
                             <!-- Desktop/Tablet: Vertical Card -->
