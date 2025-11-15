@@ -1,6 +1,5 @@
 @page "/lessen/{CourseId}"
 @using Rise.Client.Courses.Components
-@using Colors = Rise.Client.Theme.Colors
 
 @if (_isLoading)
 {
@@ -30,12 +29,12 @@ else
             </MudItem>
         </MudGrid>
     </MudContainer>
-    
+
     <MudContainer Class="py-4">
         <MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Vaknieuws</MudText>
         @if (_course.Announcements.Count == 0)
         {
-            <RiseNotification Title="Geen vaknieuws beschikbaar" Severity="Info" />
+            <RiseNotification Title="Geen vaknieuws beschikbaar" Severity="Info"/>
         }
         else
         {
@@ -49,11 +48,30 @@ else
                         <MudText Typo="Typo.caption" Style=@($"color: {Colors.Gray.Gray50}") Class="mb-3">
                             @announcement.Sender
                         </MudText>
-                        <MudDivider Class="mb-3" Style=@($"background-color: {Colors.Gray.Gray50}") />
+                        <MudDivider Class="mb-3" Style=@($"background-color: {Colors.Gray.Gray50}")/>
                         <MudText Typo="Typo.body2" Class="text-justify">
                             @announcement.Message
                         </MudText>
                     </MudPaper>
+                }
+            </MudStack>
+        }
+    </MudContainer>
+
+    <MudContainer Class="py-4">
+        <MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Deadlines</MudText>
+        @if (_course.Deadlines.Count == 0)
+        {
+            <RiseNotification Title="Geen deadlines beschikbaar" Severity="Info"/>
+        }
+        else
+        {
+            <MudStack Spacing="3">
+                @foreach (var deadline in _course.Deadlines)
+                {
+                    <RiseCard Date="@deadline.Date"
+                              Title="@deadline.Title"
+                              Description="@deadline.Description"/>
                 }
             </MudStack>
         }
