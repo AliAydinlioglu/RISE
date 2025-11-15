@@ -1,4 +1,6 @@
+using System.Globalization;
 using Rise.Client.Calendar.Fakers;
+using Rise.Client.Components;
 using Rise.Client.Components.Calendar;
 using Rise.Client.Components.Card;
 using Rise.Client.Faker;
@@ -16,9 +18,9 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
 
     protected GivenACalendarBase()
     {
-        var culture = System.Globalization.CultureInfo.GetCultureInfo("nl-NL");
-        System.Globalization.CultureInfo.CurrentCulture = culture;
-        System.Globalization.CultureInfo.CurrentUICulture = culture;
+        var culture = CultureInfo.GetCultureInfo("nl-NL");
+        CultureInfo.CurrentCulture = culture;
+        CultureInfo.CurrentUICulture = culture;
         
         var dateTimeServiceMock = new FakeDateTimeService(_fixedDate);
         var pageTitleService = new FakePageTitleService();
@@ -34,7 +36,8 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
         Services.AddScoped<ICalendarService>(_ => fakeCalendarService);
 
         var cut = RenderComponent<CalendarIndex>();
-        cut.Find("p em").TextContent.ShouldBe("Loading...");
+        
+        cut.FindComponent<RiseLoader>().ShouldNotBeNull();
     }
 
     [Fact]

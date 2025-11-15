@@ -29,6 +29,7 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
         var dateAsOffset = new DateTimeOffset(date.ToDateTime(TimeOnly.MinValue));
         var response = CourseDetailMapper.MapToResponse(course, date, dateAsOffset);
         
+        Log.Debug(response.ToString()!);
         return Result.Success(response);
     }
 

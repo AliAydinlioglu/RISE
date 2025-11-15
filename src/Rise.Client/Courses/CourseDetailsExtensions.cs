@@ -22,6 +22,12 @@ public static class CourseDetailsExtensions
             Title = it.Title,
             Sender = it.Sender,
             Message = it.Message,
+        }).ToList(),
+        Deadlines = response.Deadlines.Select(it => new DeadlineViewModel
+        {
+            Date = it.DeadlineTimestamp.DateTime,
+            Title = it.DeadlineTitle,
+            Description = it.DeadlineDescription
         }).ToList()
     };
 }

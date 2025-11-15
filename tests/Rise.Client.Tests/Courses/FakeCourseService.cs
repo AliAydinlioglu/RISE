@@ -3,7 +3,10 @@ using Rise.Shared.Courses;
 
 namespace Rise.Client.Courses;
 
-public class FakeCourseService(bool withDelay, bool hasAnnouncements) : ICourseService
+public class FakeCourseService(
+    bool withDelay, 
+    bool hasAnnouncements, 
+    bool hasDeadlines) : ICourseService
 {
     public async Task<Result<CourseDetailResponse.Get>> GetCourseDetailAsync(string userId, int courseId, DateOnly date)
     {
@@ -32,7 +35,13 @@ public class FakeCourseService(bool withDelay, bool hasAnnouncements) : ICourseS
             City = "Gent",
             Room = "B.2.040"
         },
-        Announcements = hasAnnouncements
+        Announcements = GenerateAnnounements(hasAnnouncements),
+        Deadlines = GenerateDeadlines(hasDeadlines)
+    };
+
+    private static List<CourseDetailResponse.AnnouncementInfo> GenerateAnnounements(bool hasAnnouncements)
+    {
+        return hasAnnouncements
             ? new List<CourseDetailResponse.AnnouncementInfo>
             {
                 new()
@@ -42,6 +51,22 @@ public class FakeCourseService(bool withDelay, bool hasAnnouncements) : ICourseS
                     Message = "Test message",
                 }
             }
-            : []
-    };
+            : [];
+    }
+
+    private static List<CourseDetailResponse.DeadlineInfo> GenerateDeadlines(bool hasDeadlines)
+    {
+        return hasDeadlines
+            ? new List<CourseDetailResponse.DeadlineInfo>
+            {
+                new()
+                {
+                    DeadlineId = "1",
+                    DeadlineTitle = "Test Deadline",
+                    DeadlineDescription = "Test Deadline description",
+                    DeadlineTimestamp = DateTime.Now
+                }
+            }
+            : [];
+    }
 }

@@ -8,6 +8,7 @@ public class CourseDetailViewModel
     public string LessonTime { get; set; }
     public LocationViewModel Location { get; set; }
     public IList<AnnouncementViewModel> Announcements { get; set; }
+    public IList<DeadlineViewModel> Deadlines { get; set; }
 }
 
 public class LocationViewModel
@@ -22,4 +23,11 @@ public class AnnouncementViewModel
     public string Title { get; set; }
     public string Sender { get; set; }
     public string Message { get; set; }
+}
+
+public class DeadlineViewModel
+{
+    public DateTime Date { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
 }
