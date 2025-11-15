@@ -11,18 +11,18 @@ public class ServiceLocationShould
     [Fact]
     public void BeCreated_WithValidParameters()
     {
-        var location = new ServiceLocation(_address, LocationName);
+        var location = new FacilityLocation(_address, LocationName);
 
         location.ShouldNotBeNull();
-        location.ServiceAddress.ShouldBe(_address);
+        location.FaclitityAddress.ShouldBe(_address);
         location.LocationName.ShouldBe(LocationName);
     }
 
     [Fact]
     public void BeEqual_WhenAddressAndLocationNameAreTheSame()
     {
-        var location1 = new ServiceLocation(_address, LocationName);
-        var location2 = new ServiceLocation(_address, LocationName);
+        var location1 = new FacilityLocation(_address, LocationName);
+        var location2 = new FacilityLocation(_address, LocationName);
 
         location1.ShouldBe(location2);
     }
@@ -30,8 +30,8 @@ public class ServiceLocationShould
     [Fact]
     public void NotBeEqual_WhenLocationNamesAreDifferent()
     {
-        var location1 = new ServiceLocation(_address, "Schoonmeersen");
-        var location2 = new ServiceLocation(_address, "Mercator");
+        var location1 = new FacilityLocation(_address, "Schoonmeersen");
+        var location2 = new FacilityLocation(_address, "Mercator");
 
         location1.ShouldNotBe(location2);
     }
@@ -41,8 +41,8 @@ public class ServiceLocationShould
     {
         var address1 = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
         var address2 = new StructuredAddress("Henleykaai", 84, 9000, "Gent", "");
-        var location1 = new ServiceLocation(address1, LocationName);
-        var location2 = new ServiceLocation(address2, LocationName);
+        var location1 = new FacilityLocation(address1, LocationName);
+        var location2 = new FacilityLocation(address2, LocationName);
 
         location1.ShouldNotBe(location2);
     }
@@ -55,14 +55,14 @@ public class ServiceLocationShould
     {
         var address = new StructuredAddress(street, houseNumber, postcode, city, "");
 
-        var location = new ServiceLocation(address, campus);
+        var location = new FacilityLocation(address, campus);
 
         location.ShouldNotBeNull();
         location.LocationName.ShouldBe(campus);
-        location.ServiceAddress.Street.ShouldBe(street);
-        location.ServiceAddress.HouseNumber.ShouldBe(houseNumber);
-        location.ServiceAddress.Postcode.ShouldBe(postcode);
-        location.ServiceAddress.City.ShouldBe(city);
+        location.FaclitityAddress.Street.ShouldBe(street);
+        location.FaclitityAddress.HouseNumber.ShouldBe(houseNumber);
+        location.FaclitityAddress.Postcode.ShouldBe(postcode);
+        location.FaclitityAddress.City.ShouldBe(city);
     }
 }
 

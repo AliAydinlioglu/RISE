@@ -1,0 +1,15 @@
+.rise-calendar-width-small{
+    flex-grow: 0;
+}
+
+.rise-calendar-width-medium{
+    flex-grow: 0.25;
+}
+
+.rise-calendar-width-large{
+    flex-grow: 0.5;
+}
+
+.rise-calendar-width-x-large{
+    flex-grow: 1;
+}

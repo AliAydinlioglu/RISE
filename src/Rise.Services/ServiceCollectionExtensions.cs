@@ -21,6 +21,8 @@ using Rise.Shared.StudentActivities;
 using Rise.Services.Identity;
 using Rise.Shared.Courses;
 using Rise.Shared.Identity;
+using Rise.Shared.SchoolEvents;
+using Rise.Services.SchoolEvents;
 
 namespace Rise.Services;
 
@@ -46,6 +48,7 @@ public static class ServiceCollectionExtensions
         
         // Add other application services here.
         services.AddScoped<IStudentActivityService, StudentActivityService>();
+        services.AddScoped<ISchoolEventService, SchoolEventService>();
         return services;
     }
 }

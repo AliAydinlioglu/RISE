@@ -1,0 +1,95 @@
+@page "/school-events"
+
+@using Rise.Client.Components
+@using Rise.Client.Components.Calendar
+@using Rise.Client.Components.Card
+
+<PageTitle>Evenementen</PageTitle>
+
+<div class="container">
+    <RiseHeadTitle>Evenementen</RiseHeadTitle>
+</div>
+
+<section class="mt-5 container school-events">
+    @if (_isLoading)
+    {
+        <MudContainer Class="mt-8">
+            <RiseLoader />
+        </MudContainer>
+    }
+    else
+    {
+        <MudGrid>
+            
+            <MudItem lg="12" Class="d-flex align-center justify-center">
+                <RiseWeekCalendar 
+                    SelectedDate="_selectedDate"
+                    SelectedDateChanged="(date) => OnDateChangedAsync(date)"
+                    Title="@($"{_selectedDate:MMMM yyyy}")"
+                    CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Secondary"
+                    CalendarWidth="RiseWeekCalendar.RiseWeekCalendarWidth.Medium"
+                    ShowOnlySchoolDays="false"
+                    OnPreviousWeek="() => SetDateRelativeToCurrentDateAsync(-7)"
+                    OnNextWeek="() => SetDateRelativeToCurrentDateAsync(7)"/>
+            </MudItem>
+            
+        </MudGrid>
+
+        if (_showError)
+        {
+            <RiseNotification Severity="Error" Title="Error">
+                Er liep iets fout bij het ophalen van het evenement.
+            </RiseNotification>
+        }
+        else if (!_schoolEvents.Any())
+        {
+            <div class="notification is-light">
+                <p class="has-text-centered">Geen evenementen voor deze dag.</p>
+            </div>
+        }
+        else
+        {
+            <div class="is-flex columns  is-multiline  mb-4">
+                @foreach (var schoolEvent in _schoolEvents)
+                {
+                    <article class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
+                
+                        <a href="/school-events/@schoolEvent.Id">
+                            <!-- Desktop/Tablet: Vertical Card -->
+                            <div class="is-hidden-mobile">
+                                <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                    <RiseSchoolEventCardContent 
+                                        ImageUrl="@schoolEvent.ImageUrl"
+                                        Category="@schoolEvent.Category"
+                                        StartTime="@schoolEvent.StartTime"
+                                        EndTime="@schoolEvent.EndTime"
+                                        Location="@schoolEvent.Location"
+                                        Date="@schoolEvent.Date.LocalDateTime"/>
+                                </RiseVerticalCard>
+                            </div>
+
+                            <!-- Mobile: Regular Card -->
+                            <div class="is-hidden-tablet">
+                                <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                    <RiseSchoolEventCardContent 
+                                        ImageUrl="@schoolEvent.ImageUrl"
+                                        Category="@schoolEvent.Category"
+                                        StartTime="@schoolEvent.StartTime"
+                                        EndTime="@schoolEvent.EndTime"
+                                        Location="@schoolEvent.Location"
+                                        Date="@schoolEvent.Date.LocalDateTime"/>
+                                </RiseCard>
+                            </div>
+                        </a>
+                    </article>
+                }
+            </div>
+            
+            <RisePagination 
+                CurrentPage="_currentPage" 
+                PageSize="PageSize"
+                TotalPages="TotalPages"
+                CurrentPageChanged="OnPageChangedAsync"/>
+        }
+    }
+</section>

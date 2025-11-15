@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Rise.Shared.Locations;
 
 public static class LocationDto
@@ -13,5 +15,22 @@ public static class LocationDto
         
         public string? BusNumber { get; set; } = String.Empty;
 
+        public string GetAddressWithName()
+        {
+            return !string.IsNullOrWhiteSpace(Name) ? Name : GetAddressWithoutName();
+        }
+        
+        public string GetAddressWithoutName()
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append($"{Street} {HouseNumber}");
+
+            if (!string.IsNullOrWhiteSpace(BusNumber)) 
+                stringBuilder.Append($" {BusNumber}");
+                
+            stringBuilder.Append($", {Postcode} {City}");
+            
+            return stringBuilder.ToString();
+        }
     }
 }

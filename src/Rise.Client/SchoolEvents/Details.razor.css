@@ -1,0 +1,8 @@
+.detail-se .content, .detail-se .box, .detail-se .box-content, .detail-se .label{
+    background: white;
+    color: black;
+}
+
+.se-address{
+    text-decoration: underline;
+}

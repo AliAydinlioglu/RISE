@@ -9,7 +9,7 @@ public class ServiceCategoryShould
     [Fact]
     public void BeCreated_WithValidName()
     {
-        var category = new ServiceCategory(CategoryName);
+        var category = new FacilityCategory(CategoryName);
 
         category.ShouldNotBeNull();
         category.Name.ShouldBe(CategoryName);
@@ -18,8 +18,8 @@ public class ServiceCategoryShould
     [Fact]
     public void BeEqual_WhenNamesAreTheSame()
     {
-        var category1 = new ServiceCategory(CategoryName);
-        var category2 = new ServiceCategory(CategoryName);
+        var category1 = new FacilityCategory(CategoryName);
+        var category2 = new FacilityCategory(CategoryName);
 
         category1.ShouldBe(category2);
     }
@@ -27,8 +27,8 @@ public class ServiceCategoryShould
     [Fact]
     public void NotBeEqual_WhenNamesAreDifferent()
     {
-        var category1 = new ServiceCategory("Administratief");
-        var category2 = new ServiceCategory("Ondersteunend");
+        var category1 = new FacilityCategory("Administratief");
+        var category2 = new FacilityCategory("Ondersteunend");
 
         category1.ShouldNotBe(category2);
     }
@@ -39,8 +39,8 @@ public class ServiceCategoryShould
     [InlineData("Veiligheid en welzijn", "Veiligheid en welzijn", true)]
     public void CompareEquality_Correctly(string name1, string name2, bool expectedEqual)
     {
-        var category1 = new ServiceCategory(name1);
-        var category2 = new ServiceCategory(name2);
+        var category1 = new FacilityCategory(name1);
+        var category2 = new FacilityCategory(name2);
 
         var areEqual = category1.Equals(category2);
 

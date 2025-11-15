@@ -30,7 +30,7 @@ public class ContactServiceShould
         var result = await service.GetIndexAsync(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Services.Count().ShouldBe(expectedCount);
+        result.Value.Facilities.Count().ShouldBe(expectedCount);
     }
 
     [Fact]
@@ -47,12 +47,12 @@ public class ContactServiceShould
         var request = new QueryRequest.SkipTake { Skip = 0, Take = 20 };
 
         var result = await service.GetIndexAsync(request, CancellationToken.None);
-        var resultServices = result.Value.Services.ToList();
+        var resultServices = result.Value.Facilities.ToList();
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Services.Count().ShouldBe(11);
+        result.Value.Facilities.Count().ShouldBe(11);
         result.Value.TotalCount.ShouldBe(11);
-        resultServices.First().ServiceCategoryName.ShouldBe("Administratief");
+        resultServices.First().FacilityCategoryName.ShouldBe("Administratief");
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class ContactServiceShould
         var result = await service.GetIndexAsync(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Services.Count().ShouldBe(3);
+        result.Value.Facilities.Count().ShouldBe(3);
         result.Value.TotalCount.ShouldBe(11);
     }
 
@@ -99,7 +99,7 @@ public class ContactServiceShould
         var result = await service.GetIndexAsync(request, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Services.First().Name.ShouldBe(expectedFirst);
+        result.Value.Facilities.First().Name.ShouldBe(expectedFirst);
     }
 
     [Fact]
@@ -120,7 +120,7 @@ public class ContactServiceShould
         result.IsSuccess.ShouldBeTrue();
         result.Value.Service.Id.ShouldBe(existingService.Id);
         result.Value.Service.Name.ShouldBe(existingService.Name);
-        result.Value.Service.ServiceCategoryName.ShouldNotBeNullOrWhiteSpace();
+        result.Value.Service.FacilityCategoryName.ShouldNotBeNullOrWhiteSpace();
     }
 
     [Fact]
@@ -161,8 +161,8 @@ public class ContactServiceShould
         var result = await service.GetByCategoryAsync(category, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Services.ShouldAllBe(s => s.ServiceCategoryName == category);
-        result.Value.Services.Count().ShouldBe(expectedCount);
+        result.Value.Facilities.ShouldAllBe(s => s.FacilityCategoryName == category);
+        result.Value.Facilities.Count().ShouldBe(expectedCount);
     }
 
     [Theory]
@@ -204,8 +204,8 @@ public class ContactServiceShould
         var result = await service.GetByCampusAsync(campus, CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Services.ShouldAllBe(s => s.Location != null && s.Location.LocationName == campus);
-        result.Value.Services.Count().ShouldBe(expectedCount);
+        result.Value.Facilities.ShouldAllBe(s => s.Location != null && s.Location.LocationName == campus);
+        result.Value.Facilities.Count().ShouldBe(expectedCount);
     }
 
     [Theory]
@@ -244,8 +244,8 @@ public class ContactServiceShould
         var result = await service.GetStaticServicesAsync(CancellationToken.None);
 
         result.IsSuccess.ShouldBeTrue();
-        result.Value.Services.ShouldAllBe(s => s.Location == null);
-        result.Value.Services.Count().ShouldBe(4);
+        result.Value.Facilities.ShouldAllBe(s => s.Location == null);
+        result.Value.Facilities.Count().ShouldBe(4);
     }
 
     private DbContextOptions<ApplicationDbContext> GetDbContextOptions(string dbName)
@@ -255,13 +255,13 @@ public class ContactServiceShould
             .Options;
     }
 
-    private List<Service> CreateTestServices()
+    private List<Facility> CreateTestServices()
     {
-        var service1 = new Service("Studentensecretariaat Schoonmeersen", new ServiceCategory("Administratief"));
+        var service1 = new Facility("Studentensecretariaat Schoonmeersen", new FacilityCategory("Administratief"));
         service1.DescribeService(
             "Het studentensecretariaat helpt je met administratieve vragen over je inschrijving, studiebewijzen, en studiefinanciering.");
         var address1 = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location1 = new ServiceLocation(address1, "Schoonmeersen");
+        var location1 = new FacilityLocation(address1, "Schoonmeersen");
         service1.ChangeLocation(location1);
         var openingHours1 = new List<ContactPeriod>
         {
@@ -276,68 +276,68 @@ public class ContactServiceShould
         service1.AddCommunicationChannel(new CommunicationChannel("E-mail",
             "mailto:studentensecretariaat.dit@hogent.be", CommunicationTypes.Email));
 
-        var service2 = new Service("Bibliotheek Schoonmeersen", new ServiceCategory("Ondersteunend"));
+        var service2 = new Facility("Bibliotheek Schoonmeersen", new FacilityCategory("Ondersteunend"));
         service2.DescribeService(
             "De bibliotheek biedt een uitgebreide collectie boeken, tijdschriften en online bronnen.");
         var address2 = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location2 = new ServiceLocation(address2, "Schoonmeersen");
+        var location2 = new FacilityLocation(address2, "Schoonmeersen");
         service2.ChangeLocation(location2);
         service2.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:bibschoonmeersen@hogent.be",
             CommunicationTypes.Email));
 
-        var service3 = new Service("Standaard Studenten Shop Schoonmeersen", new ServiceCategory("Ondersteunend"));
+        var service3 = new Facility("Standaard Studenten Shop Schoonmeersen", new FacilityCategory("Ondersteunend"));
         service3.DescribeService("Bij de Standaard kan je terecht voor studiemateriaal, boeken en veel meer.");
         var address3 = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location3 = new ServiceLocation(address3, "Schoonmeersen");
+        var location3 = new FacilityLocation(address3, "Schoonmeersen");
         service3.ChangeLocation(location3);
         service3.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:ks.hogent@standaardboekhandel.be",
             CommunicationTypes.Email));
 
-        var service4 = new Service("Studentensecretariaat Mercator", new ServiceCategory("Administratief"));
+        var service4 = new Facility("Studentensecretariaat Mercator", new FacilityCategory("Administratief"));
         service4.DescribeService("Het studentensecretariaat helpt je met administratieve vragen.");
         var address4 = new StructuredAddress("Henleykaai", 84, 9000, "Gent", "");
-        var location4 = new ServiceLocation(address4, "Mercator");
+        var location4 = new FacilityLocation(address4, "Mercator");
         service4.ChangeLocation(location4);
         service4.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:info@hogent.be",
             CommunicationTypes.Email));
 
-        var service5 = new Service("Bibliotheek Mercator", new ServiceCategory("Ondersteunend"));
+        var service5 = new Facility("Bibliotheek Mercator", new FacilityCategory("Ondersteunend"));
         service5.DescribeService(
             "De bibliotheek biedt een uitgebreide collectie boeken, tijdschriften en online bronnen.");
         var address5 = new StructuredAddress("Henleykaai", 84, 9000, "Gent", "");
-        var location5 = new ServiceLocation(address5, "Mercator");
+        var location5 = new FacilityLocation(address5, "Mercator");
         service5.ChangeLocation(location5);
         service5.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:bibmercator@hogent.be",
             CommunicationTypes.Email));
 
-        var service6 = new Service("Standaard Studenten Shop Gent", new ServiceCategory("Ondersteunend"));
+        var service6 = new Facility("Standaard Studenten Shop Gent", new FacilityCategory("Ondersteunend"));
         service6.DescribeService("Bij de Standaard kan je terecht voor studiemateriaal, boeken en veel meer.");
         var address6 = new StructuredAddress("Bagattenstraat", 51, 9000, "Gent", "");
-        var location6 = new ServiceLocation(address6, "Gent Campus");
+        var location6 = new FacilityLocation(address6, "Gent Campus");
         service6.ChangeLocation(location6);
         service6.AddCommunicationChannel(new CommunicationChannel("E-mail", "ks.hogent@standaardboekhandel.be",
             CommunicationTypes.Email));
 
-        var service7 = new Service("iBaMaFlex!", new ServiceCategory("Administratief"));
+        var service7 = new Facility("iBaMaFlex!", new FacilityCategory("Administratief"));
         service7.DescribeService("Online studentenplatform voor studievoortgang, punten en examens.");
         service7.AddCommunicationChannel(new CommunicationChannel("Platform", "https://ibamaflex.hogent.be/Main.aspx",
             CommunicationTypes.Form));
 
-        var service8 = new Service("Staking: Wat nu?", new ServiceCategory("Ondersteunend"));
+        var service8 = new Facility("Staking: Wat nu?", new FacilityCategory("Ondersteunend"));
         service8.DescribeService("Info over wat te doen bij stakingen van openbaar vervoer.");
         service8.AddCommunicationChannel(new CommunicationChannel("Staking info pagina",
             "https://www.hogent.be/student/praktische-info/staking/", CommunicationTypes.Form));
 
-        var service9 = new Service("Psychosociale ondersteuning", new ServiceCategory("Veiligheid en welzijn"));
+        var service9 = new Facility("Psychosociale ondersteuning", new FacilityCategory("Veiligheid en welzijn"));
         service9.DescribeService(
             "Vertrouwelijke gesprekken met professionele begeleiders voor studiestress en persoonlijke problemen.");
         var address9 = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
-        var location9 = new ServiceLocation(address9, "Schoonmeersen");
+        var location9 = new FacilityLocation(address9, "Schoonmeersen");
         service9.ChangeLocation(location9);
         service9.AddCommunicationChannel(new CommunicationChannel("Email", "mailto:zorg@hogent.be",
             CommunicationTypes.Email));
 
-        var service10 = new Service("Ongeval melden", new ServiceCategory("Veiligheid en welzijn"));
+        var service10 = new Facility("Ongeval melden", new FacilityCategory("Veiligheid en welzijn"));
         service10.DescribeService(
             "Ben je getuige of slachtoffer van een ongeval? Meld dit altijd aan de Dienst Preventie en Welzijn");
         service10.AddCommunicationChannel(new CommunicationChannel("Formulier",
@@ -347,13 +347,13 @@ public class ContactServiceShould
         service10.AddCommunicationChannel(new CommunicationChannel("Noodgevallen", "tel:+32 9 248 88 88",
             CommunicationTypes.Phone));
 
-        var service11 = new Service("Overige vragen", new ServiceCategory("Onbekend"));
+        var service11 = new Facility("Overige vragen", new FacilityCategory("Onbekend"));
         service11.DescribeService("Voor alle andere vragen die niet in bovenstaande categorieën passen.");
         service11.AddRemark("Vragen over studentenkaart");
         service11.AddRemark("Vragen over afwezigheden");
         service11.AddRemark("Vragen over studiekosten");
 
-        return new List<Service>
+        return new List<Facility>
         {
             service1, service2, service3, service4, service5, service6, service7, service8, service9, service10,
             service11

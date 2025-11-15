@@ -1,0 +1,67 @@
+﻿@page "/contact"
+<PageTitle>Contact</PageTitle>
+<div class="container ">
+    <RiseHeadTitle>Contact</RiseHeadTitle>
+</div>
+
+<section class="mt-5 container">
+    @if (contactFacilities == null)
+    {
+        <MudContainer Class="mt-8">
+            <RiseLoader />
+        </MudContainer>
+    }
+    else
+    {
+        <div class="is-flex columns is-multiline mb-4">
+            @foreach (var contactFacility in contactFacilities)
+            {
+                <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop">
+                    <RiseInfoCard Title="@contactFacility.Name">
+                        <div class="columns is-mobile">
+                            <div class="column">
+                                <ContactLocation Location="contactFacility.Location"></ContactLocation>
+                                <ContactCommunication Channels="contactFacility.CommunicationChannels"></ContactCommunication>
+                            </div>
+                            <div class="column">
+                                <ShowFacilityOpen IsFacilityOpen="contactFacility.IsFacilityOpen"></ShowFacilityOpen>
+                                <ContactOpeningHours OpeningHours="contactFacility.OpeningHours"></ContactOpeningHours>
+                                <ContactRemarks Remarks="contactFacility.Remarks"></ContactRemarks>
+                            </div>
+                        </div>
+                    </RiseInfoCard>
+                </article>
+
+            
+            }
+        
+        </div>
+        <section class="section pagination-section"> 
+        
+            <nav class="pagination is-rounded is-centered" role="navigation">
+                <button class="pagination-previous" 
+                        disabled="@(currentPage <= 1)"
+                        @onclick="() => OnPageChangedAsync(currentPage - 1)">
+                    Previous
+                </button>
+                <button class="pagination-next" 
+                        disabled="@(currentPage >= totalPages)"
+                        @onclick="() => OnPageChangedAsync(currentPage + 1)">
+                    Next
+                </button>
+                <ul class="pagination-list">
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        var pageNumber = i;
+                        <li>
+                            <button class="pagination-link @(currentPage == pageNumber ? "is-current" : "")"
+                                    @onclick="() => OnPageChangedAsync(pageNumber)">
+                                @pageNumber
+                            </button>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </section>
+        }
+</section>

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Rise.Domain.Locations;
 using Rise.Domain.StudentActivities;
 using Rise.Persistence;
 using Rise.Services.Identity;

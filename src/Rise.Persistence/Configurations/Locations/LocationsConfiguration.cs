@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Rise.Domain.StudentActivities;
+using Rise.Domain.Locations;
 
 namespace Rise.Persistence.Configurations.Locations;
 

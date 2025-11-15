@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
 using Rise.Domain.Contact;
 using Rise.Domain.Identity;
+using Rise.Domain.Locations;
 using Rise.Domain.Navigation;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
+using Rise.Domain.SchoolEvents;
 using Rise.Domain.StudentActivities;
 using Rise.Persistence.Models.Identity;
 
@@ -31,7 +33,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();
     public DbSet<Location> Locations => Set<Location>();
     public DbSet<StudentClub> StudentClubs => Set<StudentClub>();
-    public DbSet<Service> Services => Set<Service>();
+    public DbSet<SchoolEvent> SchoolEvents => Set<SchoolEvent>();
+    public DbSet<Facility> Services => Set<Facility>();
     
     public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
     public DbSet<Course> Courses => Set<Course>();
