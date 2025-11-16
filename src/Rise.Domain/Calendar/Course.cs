@@ -6,7 +6,7 @@ namespace Rise.Domain.Calendar;
 public class Course : Entity
 {
     public string Title { get; private set; }
-    public string Lecturer { get; private set; }
+    public Lecturer Lecturer { get; private set; }
     public string ClassGroup { get; private set; }
     
     public int AcademicSemesterId { get; private set; }
@@ -26,10 +26,10 @@ public class Course : Entity
 
     private Course() { }
 
-    public Course(string title, string lecturer, string classGroup, AcademicSemester academicSemester)
+    public Course(string title, Lecturer lecturer, string classGroup, AcademicSemester academicSemester)
     {
         Title = Guard.Against.NullOrWhiteSpace(title);
-        Lecturer = Guard.Against.NullOrWhiteSpace(lecturer);
+        Lecturer = Guard.Against.Null(lecturer);
         ClassGroup = Guard.Against.NullOrWhiteSpace(classGroup);
         AcademicSemester = Guard.Against.Null(academicSemester);
     }

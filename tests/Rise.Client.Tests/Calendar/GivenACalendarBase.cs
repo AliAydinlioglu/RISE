@@ -1,5 +1,6 @@
 using System.Globalization;
 using Rise.Client.Calendar.Fakers;
+using Rise.Client.Components;
 using Rise.Client.Components.Calendar;
 using Rise.Client.Components.Card;
 using Rise.Client.Faker;

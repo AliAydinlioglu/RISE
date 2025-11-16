@@ -12,6 +12,22 @@ public static class CalendarSeeder
     [
         "GSCHB.1.001", "GSCHC.1.404", "GSCHG.0.201", "IAT-POT.418", "GSCHB.3.503"
     ];
+    
+    private static readonly List<(string FirstName, string LastName)> LecturerData =
+    [
+        ("Robert", "C. Martin"),
+        ("Eric", "Evans"),
+        ("Martin", "Fowler"),
+        ("Kent", "Beck"),
+        ("Vaughn", "Vernon"),
+        ("Alberto", "Brandolini")
+    ];
+
+    private static Lecturer GetRandomLecturer()
+    {
+        var data = LecturerData[_random.Next(LecturerData.Count)];
+        return new Lecturer(data.FirstName, data.LastName);
+    }
 
     public static async Task Seed(ApplicationDbContext dbContext)
     {
@@ -66,30 +82,20 @@ public static class CalendarSeeder
         var sem1 = semesters.First(s => s.Type == SemesterType.Sem1);
         var sem2 = semesters.First(s => s.Type == SemesterType.Sem2);
 
-        var lecturers = new List<string>
-        {
-            "Robert C. Martin",
-            "Eric Evans",
-            "Martin Fowler",
-            "Kent Beck",
-            "Vaughn Vernon",
-            "Alberto Brandolini"
-        };
-
         var courses = new List<Course>
         {
-            new("OOSDI", lecturers[_random.Next(lecturers.Count)], "TIAO1", sem1),
-            new("OOSDII", lecturers[_random.Next(lecturers.Count)], "TIAO1", sem2),
-            new("Software Analyse", lecturers[_random.Next(lecturers.Count)], "TIAO1", sem1),
-            new("IT Fundamentals", lecturers[_random.Next(lecturers.Count)], "TIAO1", sem1),
-            new("ASDI", lecturers[_random.Next(lecturers.Count)], "TIAO2", sem2),
-            new("ASDII", lecturers[_random.Next(lecturers.Count)], "TIAO2", sem2),
-            new("Functionele Analyse", lecturers[_random.Next(lecturers.Count)], "TIAO2", sem1),
-            new("IT Professional", lecturers[_random.Next(lecturers.Count)], "TIAO2", sem1),
-            new("Webservices", lecturers[_random.Next(lecturers.Count)], "TIAO2", sem2),
-            new("RISE", lecturers[_random.Next(lecturers.Count)], "TIAO3", sem1),
-            new("C#", lecturers[_random.Next(lecturers.Count)], "TIAO3", sem2),
-            new("Modern Data Architectures", lecturers[_random.Next(lecturers.Count)], "TIAO3", sem2),
+            new("OOSDI", GetRandomLecturer(), "TIAO1", sem1),
+            new("OOSDII", GetRandomLecturer(), "TIAO1", sem2),
+            new("Software Analyse", GetRandomLecturer(), "TIAO1", sem1),
+            new("IT Fundamentals", GetRandomLecturer(), "TIAO1", sem1),
+            new("ASDI", GetRandomLecturer(), "TIAO2", sem2),
+            new("ASDII", GetRandomLecturer(), "TIAO2", sem2),
+            new("Functionele Analyse", GetRandomLecturer(), "TIAO2", sem1),
+            new("IT Professional", GetRandomLecturer(), "TIAO2", sem1),
+            new("Webservices", GetRandomLecturer(), "TIAO2", sem2),
+            new("RISE", GetRandomLecturer(), "TIAO3", sem1),
+            new("C#", GetRandomLecturer(), "TIAO3", sem2),
+            new("Modern Data Architectures", GetRandomLecturer(), "TIAO3", sem2),
         };
 
         return courses;
@@ -202,13 +208,12 @@ public static class CalendarSeeder
             var semester = course.AcademicSemester;
             var totalDaysInSemester = (semester.ExamStartDate - semester.DateRange.StartDate).Days;
             var randomOffset = _random.Next(0, totalDaysInSemester);
-            var lecturerNames = course.Lecturer.Split(" ");
 
             for (var i = 0; i < count; i++)
             {
                 var announcement = new Announcement(
                     title: $"Vaknieuwstitel {i + 1}",
-                    sender: new Lecturer(lecturerNames[1], lecturerNames[0]),
+                    sender: GetRandomLecturer(),
                     message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     timestamp: semester.DateRange.StartDate.AddDays(randomOffset)
                 );

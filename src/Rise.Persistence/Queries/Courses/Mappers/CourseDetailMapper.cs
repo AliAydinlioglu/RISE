@@ -16,7 +16,7 @@ public static class CourseDetailMapper
         {
             CourseId = course.Id.ToString(),
             CourseTitle = course.Title,
-            Lecturer = course.Lecturer,
+            Lecturer = $"{course.Lecturer.FirstName} {course.Lecturer.LastName}", // TODO convert this to an object
             Lesson = MapLessonDetail(lesson, date),
             Campus = MapCampus(lesson),
             Announcements = MapAnnouncements(course),

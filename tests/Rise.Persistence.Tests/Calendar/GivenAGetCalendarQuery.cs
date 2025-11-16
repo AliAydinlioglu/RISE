@@ -39,7 +39,7 @@ public class GivenAGetCalendarQuery: IDisposable
         calendar.Courses.Count.ShouldBe(2);
 
         var riseCourse = calendar.Courses.First(c => c.CourseTitle == "RISE");
-        riseCourse.Lecturer.ShouldBe("Alice");
+        riseCourse.Lecturer.ShouldBe("Alice Alisson");
         riseCourse.Lessons.Count.ShouldBe(2);
 
         var fallCourse = calendar.Courses.First(c => c.CourseTitle == "FALL");
@@ -69,7 +69,7 @@ public class GivenAGetCalendarQuery: IDisposable
         );
         
         _dateTimeService.SetDateTime(new DateTime(2025, 11, 13));
-        var course = new Course("RISE", "Alice", "TIAO-01", academicSemester);
+        var course = new Course("RISE", new Lecturer("Alice", "Alisson"), "TIAO-01", academicSemester);
         _context.Courses.Add(course);
         await _context.SaveChangesAsync();
 
@@ -91,7 +91,7 @@ public class GivenAGetCalendarQuery: IDisposable
         _context.AcademicSemesters.Add(academicSemester);
         await _context.SaveChangesAsync();
 
-        var riseCourse = new Course("RISE", "Alice", "TIAO-01", academicSemester);
+        var riseCourse = new Course("RISE", new Lecturer("Alice", "Alisson"), "TIAO-01", academicSemester);
         var riseLesson1 = new Lesson(
             DayOfWeek.Monday,
             new TimeRange(new TimeOnly(8, 30), new TimeOnly(10, 30)),
@@ -108,7 +108,7 @@ public class GivenAGetCalendarQuery: IDisposable
         _context.Courses.Add(riseCourse);
         _context.Lessons.AddRange(riseLesson1, riseLesson2);
 
-        var fallCourse = new Course("FALL", "Bob", "TIAO-01", academicSemester);
+        var fallCourse = new Course("FALL", new Lecturer("Bob", "Bobson"), "TIAO-01", academicSemester);
         var deadline = new Deadline(
             "Campus App",
             "I like bananas",
