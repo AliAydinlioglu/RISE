@@ -12,18 +12,14 @@ else
                 <MudText Typo="Typo.h4" Class="mb-1">
                     @announcement.Title
                 </MudText>
-                <MudText Typo="Typo.caption" Style=@($"color: {Colors.Gray.Gray50}") Class="mb-3">
+                <MudText Typo="Typo.caption" Style=@($"color: {Colors.Shades.Black50}") Class="mb-3">
                     @announcement.Sender
                 </MudText>
-                <MudDivider Class="mb-3" Style=@($"background-color: {Colors.Gray.Gray50}")/>
+                <MudDivider Class="mb-3" Style=@($"background-color: {Colors.Shades.Black50}")/>
                 <MudText Typo="Typo.body2" Class="text-justify">
                     @announcement.Message
                 </MudText>
             </MudPaper>
         }
     </MudStack>
-}
-
-@code {
-    [Parameter, EditorRequired] public required IList<AnnouncementViewModel> Announcements { get; set; }
 }

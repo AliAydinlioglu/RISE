@@ -11,7 +11,7 @@ public partial class Detail
     [SupplyParameterFromQuery(Name = "datum")] public DateOnly Date { get; set; }
 
     [Parameter] public required string CourseId { get; set; }
-    private CourseDetailViewModel _course = null!;
+    private CourseDetailViewModels _course = null!;
     private bool _isLoading;
 
     protected override async Task OnInitializedAsync()
