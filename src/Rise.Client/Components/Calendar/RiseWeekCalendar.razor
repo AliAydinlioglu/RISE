@@ -25,14 +25,14 @@
         {
             var isSelected = day.Date == SelectedDate.Date;
             <div class="column is-flex is-justify-content-center is-align-items-center">
-                <button @onclick="() => OnDateSelected(day)">
+                <button data-bunit="wc-day-button" @onclick="() => OnDateSelected(day)">
                     <div class="has-text-centered @GetForegroundColorClass()">
                         <p class="is-size-7 has-text-weight-semibold is-capitalized mb-2">
                             @day.ToString("ddd")
                         </p>
                         <div class="@GetBackgroundColorClassWhenSelected(isSelected) is-inline-flex is-justify-content-center is-align-items-center"
                              style="width: 2.5rem; height: 2.5rem; border-radius: 50%;">
-                            <span class="has-text-weight-bold @GetForegroundColorClassWhenSelected(isSelected)">@day.Day</span>
+                            <span data-bunit="calendar-day" class="has-text-weight-bold @GetForegroundColorClassWhenSelected(isSelected)">@day.Day</span>
                         </div>
                     </div>
                 </button>
