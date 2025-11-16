@@ -9,18 +9,21 @@ namespace Rise.Services.SchoolEvents
     public class SchoolEventService(ApplicationDbContext dbContext, ISessionContextProvider sessionContextProvider) : ISchoolEventService
     {
         public async Task<Result<SchoolEventResponse.Index>> GetIndexAsync(QueryRequest.SkipTake request, CancellationToken ctx)
-        {
-            if (!request.Filters.TryGetValue("Date", out var dateFilter) || 
-                !DateTime.TryParse(dateFilter!.ToString()![..10], out var dateFilterDate))
-            {
-                Log.Error("{0}: Invalid filter date", dateFilter);
-                return Result.Error("Date filter is missing or in wrong format.");
-            }
-            
+        {   
             var query = dbContext.SchoolEvents
                 .Include(sa => sa.Location)
-                .Where(sa => sa.Date.Date == dateFilterDate.Date)
                 .AsQueryable();
+            
+            if (request.Filters.TryGetValue("Date", out var dateFilter))
+            {
+                if (!DateTime.TryParse(dateFilter!.ToString()![..10], out var dateFilterDate))
+                {
+                    Log.Error("{0}: Invalid filter date", dateFilter);
+                    return Result.Error("Date filter is in wrong format.");
+                }
+                
+                query = query.Where(sa => sa.Date.Date == dateFilterDate.Date);
+            }
 
             var totalCount = await query.CountAsync(ctx);
 
