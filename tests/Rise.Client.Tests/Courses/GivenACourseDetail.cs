@@ -61,8 +61,8 @@ public class GivenACourseDetail : MudBlazorTestSetup
     {
         var cut = RenderedComponent();
 
-        var heading = cut.Find("h2");
-        heading.TextContent.ShouldContain("Vaknieuws");
+        var heading = cut.FindAll("h2");
+        heading[1].TextContent.ShouldContain("Vaknieuws");
     }
     
     [Fact(DisplayName = "When course has no announcements, then notification should be shown")]
@@ -82,7 +82,7 @@ public class GivenACourseDetail : MudBlazorTestSetup
         var cut = RenderedComponent();
 
         var papers = cut.FindComponents<MudPaper>();
-        var firstPaper = papers.First();
+        var firstPaper = papers.ElementAt(1);
 
         var title = firstPaper.Find(".mud-typography-h4");
         title.ShouldNotBeNull();
@@ -107,8 +107,9 @@ public class GivenACourseDetail : MudBlazorTestSetup
 
         var headings = cut.FindAll("h2");
         
-        headings.First().TextContent.ShouldContain("Vaknieuws");
-        headings.ElementAt(1).TextContent.ShouldContain("Deadlines");
+        headings.First().TextContent.ShouldContain("Lesinfo");
+        headings.ElementAt(1).TextContent.ShouldContain("Vaknieuws");
+        headings.ElementAt(2).TextContent.ShouldContain("Deadlines");
     }
     
     [Fact(DisplayName = "When course has no deadlines, then notification should be shown")]

@@ -1,15 +1,20 @@
-@page "/school-events/{Id?}"
-@using Rise.Client.Components
+@page "/school-events/{id:int}"
 
-@if (_schoolEvent == null)
+@if (_schoolEvent == null && !_showError)
 {
     <MudContainer Class="mt-8">
         <RiseLoader/>
     </MudContainer>
 }
+else if (_showError)
+{
+    <RiseNotification Severity="Error" Title="Error">
+        Er liep iets fout bij het ophalen van het evenement.
+    </RiseNotification>
+}
 else
 {
-    <PageTitle>@_schoolEvent.Title</PageTitle>
+    <PageTitle>@_schoolEvent!.Title</PageTitle>
 
     <div data-bunit="se-detail" class="container is-widescreen detail-se">
         <a href="/school-events" class="has-text-black hover:has-text-underline">
@@ -20,21 +25,13 @@ else
         </a>
         <div class="section">
 
-            @if (_showError)
-            {
-                <RiseNotification Severity="Error" Title="Error">
-                    Er liep iets fout bij het ophalen van het evenement.
-                </RiseNotification>
-            }
-            else
-            {
-                <RiseHeadTitle>@_schoolEvent.Title</RiseHeadTitle>
+            <RiseHeadTitle>@_schoolEvent!.Title</RiseHeadTitle>
 
                 <div class="content">
                     <div class="box">
-                        <div data-bunit='se-detail-organisator' class="field">
+                        <div data-bunit='se-detail-category' class="field">
                             <label class="label">Categorie:</label>
-                            <p class="is-size-6">@_schoolEvent.Category</p>
+                            <p class="is-size-6">@_schoolEvent!.Category</p>
                         </div>
 
                         <div data-bunit='se-detail-date' class="field">
@@ -51,7 +48,7 @@ else
                                target="_blank">@address</a>
                         </div>
 
-                        <div data-bunit='se-detail-description' class="field">
+                        <div data-bunit='se-detail-price' class="field">
                             <label class="label">Prijs:</label>
                             <div class="content">
                                 <p>@(_schoolEvent.IsFree() ? "Gratis" : "€ " + _schoolEvent.Price.ToString("0.00"))</p>
@@ -83,7 +80,6 @@ else
                     </RiseButton>
 
                 </div>
-            }
 
         </div>
     </div>
