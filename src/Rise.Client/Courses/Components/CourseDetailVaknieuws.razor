@@ -1,0 +1,29 @@
+<MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Vaknieuws</MudText>
+@if (Announcements.Count == 0)
+{
+    <RiseNotification Title="Geen vaknieuws beschikbaar" Severity="Info"/>
+}
+else
+{
+    <MudStack Spacing="3">
+        @foreach (var announcement in Announcements)
+        {
+            <MudPaper Class="pa-4" Elevation="1" Style="border-radius: 8px;">
+                <MudText Typo="Typo.h4" Class="mb-1">
+                    @announcement.Title
+                </MudText>
+                <MudText Typo="Typo.caption" Style=@($"color: {Colors.Gray.Gray50}") Class="mb-3">
+                    @announcement.Sender
+                </MudText>
+                <MudDivider Class="mb-3" Style=@($"background-color: {Colors.Gray.Gray50}")/>
+                <MudText Typo="Typo.body2" Class="text-justify">
+                    @announcement.Message
+                </MudText>
+            </MudPaper>
+        }
+    </MudStack>
+}
+
+@code {
+    [Parameter, EditorRequired] public required IList<AnnouncementViewModel> Announcements { get; set; }
+}

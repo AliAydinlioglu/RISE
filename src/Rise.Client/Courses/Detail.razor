@@ -1,6 +1,5 @@
 @page "/lessen/{CourseId}"
 @using Rise.Client.Courses.Components
-@using Colors = Colors
 
 @if (_isLoading)
 {
@@ -9,70 +8,21 @@
 else
 {
     <MudContainer Class="py-4 px-6">
-        <MudGrid>
-            <MudItem xs="6">
-                <MetaDataLabel LabelText="Datum">@_course.LessonDate</MetaDataLabel>
+        <MudGrid Spacing="12">
+            <MudItem xs="12" lg="3" Class="order-0 order-lg-2">
+                <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                    <MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Lesinfo</MudText>
+                </MudHidden>
+                <CourseDetailGeneralInfo Course="_course"/>
             </MudItem>
-            <MudItem xs="6">
-                <MetaDataLabel LabelText="Uur">@_course.LessonTime</MetaDataLabel>
+            
+            <MudItem xs="12" lg="5" Class="order-1 order-lg-0">
+                <CourseDetailVaknieuws Announcements="_course.Announcements" />
             </MudItem>
-            <MudItem xs="12">
-                <MetaDataLabel LabelText="Locatie">
-                    <p>@_course.Location.Campus</p>
-                    <p>@_course.Location.Adress</p>
-                    <p>@_course.Location.Room</p>
-                </MetaDataLabel>
-            </MudItem>
-            <MudItem xs="12">
-                <MetaDataLabel LabelText="Docent">@_course.Lecturer</MetaDataLabel>
+            
+            <MudItem xs="12" lg="4" Class="order-2 order-lg-1">
+                <CourseDetailDeadlines Deadlines="_course.Deadlines" />
             </MudItem>
         </MudGrid>
-    </MudContainer>
-
-    <MudContainer Class="py-4">
-        <MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Vaknieuws</MudText>
-        @if (_course.Announcements.Count == 0)
-        {
-            <RiseNotification Title="Geen vaknieuws beschikbaar" Severity="Info"/>
-        }
-        else
-        {
-            <MudStack Spacing="3">
-                @foreach (var announcement in _course.Announcements)
-                {
-                    <MudPaper Class="pa-4" Elevation="1" Style="border-radius: 8px;">
-                        <MudText Typo="Typo.h4" Class="mb-1">
-                            @announcement.Title
-                        </MudText>
-                        <MudText Typo="Typo.caption" Style=@($"color: {Colors.Gray.Gray50}") Class="mb-3">
-                            @announcement.Sender
-                        </MudText>
-                        <MudDivider Class="mb-3" Style=@($"background-color: {Colors.Gray.Gray50}")/>
-                        <MudText Typo="Typo.body2" Class="text-justify">
-                            @announcement.Message
-                        </MudText>
-                    </MudPaper>
-                }
-            </MudStack>
-        }
-    </MudContainer>
-
-    <MudContainer Class="py-4">
-        <MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Deadlines</MudText>
-        @if (_course.Deadlines.Count == 0)
-        {
-            <RiseNotification Title="Geen deadlines beschikbaar" Severity="Info"/>
-        }
-        else
-        {
-            <MudStack Spacing="3">
-                @foreach (var deadline in _course.Deadlines)
-                {
-                    <RiseCard Date="@deadline.Date"
-                              Title="@deadline.Title"
-                              Description="@deadline.Description"/>
-                }
-            </MudStack>
-        }
     </MudContainer>
 }
