@@ -15,12 +15,15 @@ public partial class RiseCard
     [Parameter] public string CardHeader { get; set; } = Empty;
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string? OnClickNavigateTo { get; set; }
+    [Parameter] public double Scale { get; set; } = 1.0;
     
     protected string DayOfMonth { get; set; } = Empty;
     protected string MonthAbbreviation { get; set; } = Empty;
     protected string BackgroundTitle { get; set; } = Empty;
     protected string DateString { get; set; } = Empty;
     
+    private string ScaleString => Scale.ToString(CultureInfo.InvariantCulture);
+
     protected override void OnParametersSet()
     {
         DayOfMonth = Date.ToString("dd");
