@@ -1,0 +1,20 @@
+<MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Deadlines</MudText>
+@if (Deadlines.Count == 0)
+{
+    <RiseNotification Title="Geen deadlines beschikbaar" Severity="Info"/>
+}
+else
+{
+    <MudStack Spacing="3">
+        @foreach (var deadline in Deadlines)
+        {
+            <RiseCard Date="@deadline.Date"
+                      Title="@deadline.Title"
+                      Description="@deadline.Description"/>
+        }
+    </MudStack>
+}
+
+@code {
+    [Parameter, EditorRequired] public required IList<DeadlineViewModel> Deadlines { get; set; }    
+}
