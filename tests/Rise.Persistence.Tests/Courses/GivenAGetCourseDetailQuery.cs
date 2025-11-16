@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
 using Rise.Domain.Common;
@@ -14,6 +15,9 @@ public class GivenAGetCourseDetailQuery : IDisposable
 
     public GivenAGetCourseDetailQuery()
     {
+        var culture = CultureInfo.GetCultureInfo("nl-NL");
+        CultureInfo.CurrentCulture = culture;
+        
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
@@ -37,7 +41,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
         detail.CourseTitle.ShouldBe("RISE");
         detail.Lecturer.FirstName.ShouldBe("Alice");
         detail.Lecturer.LastName.ShouldBe("Johnson");
-        detail.Lesson.Date.ShouldBe("4/11/2024");
+        detail.Lesson.Date.ShouldBe("04-11-2024");
         detail.Lesson.StartTime.ShouldBe("08:30");
         detail.Lesson.EndTime.ShouldBe("10:30");
         detail.Campus.Name.ShouldBe("Schoonmeersen");
