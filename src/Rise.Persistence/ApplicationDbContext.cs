@@ -37,6 +37,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Facility> Services => Set<Facility>();
     
     public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
+    public DbSet<Lecturer> Lecturers => Set<Lecturer>();
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Deadline> Deadlines => Set<Deadline>();
