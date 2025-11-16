@@ -155,6 +155,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "Schoonmeersen",
             "GSCHB.2.001"
         );
+        _riseCourse.AddLesson(mondayLesson);
         
         var thursdayLesson = new Lesson(
             DayOfWeek.Thursday,
@@ -162,6 +163,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "Schoonmeersen",
             "GSCHB.2.001"
         );
+        _riseCourse.AddLesson(thursdayLesson);
 
         var recentAnnouncement = new Announcement(
             "Recent Announcement",
@@ -169,6 +171,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "This is a recent message",
             new DateTimeOffset(2024, 11, 3, 14, 0, 0, TimeSpan.Zero)
         );
+        _riseCourse.AddAnnouncement(recentAnnouncement);
         
         var oldAnnouncement = new Announcement(
             "Old Announcement",
@@ -176,26 +179,16 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "This is an older message",
             new DateTimeOffset(2024, 11, 1, 10, 0, 0, TimeSpan.Zero)
         );
+        _riseCourse.AddAnnouncement(oldAnnouncement);
 
         var deadline = new Deadline(
             "Project Deadline",
             "Complete the project",
             new DateTimeOffset(2024, 12, 14, 23, 59, 59, TimeSpan.Zero)
         );
+        _riseCourse.AddDeadline(deadline);
 
         _context.Courses.Add(_riseCourse);
-        _context.Lessons.AddRange(mondayLesson, thursdayLesson);
-        _context.Announcements.AddRange(recentAnnouncement, oldAnnouncement);
-        _context.Deadlines.Add(deadline);
-        await _context.SaveChangesAsync();
-
-        // Set foreign keys
-        mondayLesson.GetType().GetProperty("CourseId")!.SetValue(mondayLesson, _riseCourse.Id);
-        thursdayLesson.GetType().GetProperty("CourseId")!.SetValue(thursdayLesson, _riseCourse.Id);
-        recentAnnouncement.GetType().GetProperty("Course")!.SetValue(recentAnnouncement, _riseCourse);
-        oldAnnouncement.GetType().GetProperty("Course")!.SetValue(oldAnnouncement, _riseCourse);
-        deadline.GetType().GetProperty("CourseId")!.SetValue(deadline, _riseCourse.Id);
-        
         await _context.SaveChangesAsync();
     }
 

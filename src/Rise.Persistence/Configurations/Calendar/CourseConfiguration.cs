@@ -32,17 +32,14 @@ internal class CourseConfiguration: EntityConfiguration<Course>
         
         builder.HasMany(it => it.Lessons)
             .WithOne(it => it.Course)
-            .HasForeignKey(it => it.CourseId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(it => it.Deadlines)
             .WithOne(it => it.Course)
-            .HasForeignKey(it => it.CourseId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(it => it.Exams)
             .WithOne(it => it.Course)
-            .HasForeignKey(it => it.CourseId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasMany(it => it.Announcements)
