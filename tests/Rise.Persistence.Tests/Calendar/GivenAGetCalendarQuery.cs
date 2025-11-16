@@ -39,7 +39,8 @@ public class GivenAGetCalendarQuery: IDisposable
         calendar.Courses.Count.ShouldBe(2);
 
         var riseCourse = calendar.Courses.First(c => c.CourseTitle == "RISE");
-        riseCourse.Lecturer.ShouldBe("Alice Alisson");
+        riseCourse.Lecturer.FirstName.ShouldBe("Alice");
+        riseCourse.Lecturer.LastName.ShouldBe("Alisson");
         riseCourse.Lessons.Count.ShouldBe(2);
 
         var fallCourse = calendar.Courses.First(c => c.CourseTitle == "FALL");

@@ -7,7 +7,7 @@ public static class CourseDetailsExtensions
     public static CourseDetailViewModels ToViewModel(this CourseDetailResponse.Get response) => new()
     {
         CourseTitle = response.CourseTitle,
-        Lecturer = response.Lecturer,
+        Lecturer = $"{response.Lecturer.FirstName} {response.Lecturer.LastName}",
         LessonDate = response.Lesson.Date,
         LessonTime = $"{response.Lesson.StartTime} - {response.Lesson.EndTime}",
         Location = new LocationViewModel

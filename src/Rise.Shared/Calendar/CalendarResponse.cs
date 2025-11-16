@@ -23,7 +23,7 @@ public static class CalendarResponse
     {
         public string CourseId { get; set; }
         public string CourseTitle { get; set; }
-        public string Lecturer { get; set; }
+        public LecturerInfo Lecturer { get; set; }
         public List<LessonInfo> Lessons { get; set; } = new();
         public List<DeadlineInfo> Deadlines { get; set; } = new();
         public List<ExamInfo> Exams { get; set; } = new();
@@ -53,5 +53,11 @@ public static class CalendarResponse
         public DateTimeOffset ExamTimestamp { get; set; }
         public string Campus { get; set; }
         public string Room { get; set; }
+    }
+
+    public class LecturerInfo
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

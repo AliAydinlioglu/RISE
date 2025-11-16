@@ -46,7 +46,7 @@ public static class CalendarExtensions
                 Type = CalendarViewItem.CalendarEventType.Course,
                 Date = date,
                 Title = course.CourseTitle,
-                Description = course.Lecturer,
+                Description = $"{course.Lecturer.FirstName} {course.Lecturer.LastName}",
                 Header = $"{lesson.StartTime} | {lesson.Room}"
             };
         }

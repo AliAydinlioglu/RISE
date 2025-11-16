@@ -19,7 +19,11 @@ public class FakeCourseService(
     private readonly CourseDetailResponse.Get _response = new()
     {
         CourseTitle = "Test Course",
-        Lecturer = "Dr. Test",
+        Lecturer = new CourseDetailResponse.LecturerInfo
+        {
+            FirstName = "Dr.",
+            LastName = "Test"
+        },
         Lesson = new CourseDetailResponse.LessonDetail
         {
             Date = "13 november 2024",

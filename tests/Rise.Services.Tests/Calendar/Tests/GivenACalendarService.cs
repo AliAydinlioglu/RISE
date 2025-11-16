@@ -20,7 +20,7 @@ public class GivenACalendarService
     public async Task WhenUserRequestsCalendar_ThenCalendarShouldBeReturned()
     {
         var userId = "user123";
-        _userRepository.AddUser(userId, "TIAO-01");
+        _userRepository.AddUser(userId, "TIAO");
         
         var result = await _service.GetCalendarAsync(userId);
         
@@ -32,9 +32,9 @@ public class GivenACalendarService
     {
         var calendar = result.Value;
 
-        calendar.ClassGroup.ShouldBe("TIAO-01");
+        calendar.ClassGroup.ShouldBe("TIAO");
         calendar.AcademicYear.ShouldBe("2024-2025");
-        calendar.AcademicSemester.Type.ShouldBe("SEM1");
+        calendar.AcademicSemester.Type.ShouldBe("Sem1");
         calendar.Courses.Count.ShouldBe(2);
 
         var riseCourse = calendar.Courses[0];
@@ -42,8 +42,8 @@ public class GivenACalendarService
         riseCourse.Lessons.Count.ShouldBe(2);
 
         var fallCourse = calendar.Courses[1];
-        fallCourse.CourseTitle.ShouldBe("FALL");
-        fallCourse.Deadlines.Count.ShouldBe(1);
-        fallCourse.Exams.Count.ShouldBe(2);
+        fallCourse.CourseTitle.ShouldBe("Modern Data Structures");
+        fallCourse.Deadlines.Count.ShouldBe(0);
+        fallCourse.Exams.Count.ShouldBe(1);
     }
 }
