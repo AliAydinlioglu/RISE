@@ -2,7 +2,6 @@
 using Rise.Domain.Common;
 using Rise.Domain.Locations;
 using Rise.Domain.SchoolEvents;
-using Rise.Domain.StudentActivities;
 
 namespace Rise.TestDoubles;
 

@@ -21,9 +21,9 @@ public class GivenACard : TestContext
             cardHeader: cardHeader
         );
 
-        cut.Find(".course-info .is-size-4").TextContent.ShouldBe(title);
-        cut.Find(".course-info .is-size-6").TextContent.ShouldBe(description ?? "");
-        cut.Find(".course-info .is-size-7").TextContent.ShouldBe(cardHeader ?? "");
+        cut.Find(".title-label").TextContent.ShouldBe(title);
+        cut.Find(".description-label").TextContent.ShouldBe(description ?? "");
+        cut.Find(".header-label").TextContent.ShouldBe(cardHeader ?? "");
     }
 
     [Theory]
@@ -33,8 +33,8 @@ public class GivenACard : TestContext
     {
         var cut = RenderComponentCardComponent(dateInput: date);
 
-        cut.Find(".inner-date-square .is-size-1").TextContent.ShouldBe(expectedDay);
-        cut.Find(".inner-date-square .is-size-3").TextContent.ShouldBe(expectedMonth);
+        cut.Find(".day-of-month-label").TextContent.ShouldBe(expectedDay);
+        cut.Find(".month-abbr-label").TextContent.ShouldBe(expectedMonth);
     }
     
     [Fact]
@@ -44,10 +44,8 @@ public class GivenACard : TestContext
 
         var cut = RenderComponentCardComponent(dateInput: date);
 
-        cut.Find(".inner-date-square .is-size-3").TextContent.ShouldNotContain(".");
-
+        cut.Find(".month-abbr-label").TextContent.ShouldNotContain(".");
     }
-
 
     [Theory]
     [MemberData(nameof(CardTestData.BackgroundTitleData), MemberType = typeof(CardTestData))]

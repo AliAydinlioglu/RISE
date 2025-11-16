@@ -1,13 +1,8 @@
 <MudStack Row Spacing="1">
-    <MudText Typo="Typo.h3" Style="min-width:120px;">
+    <MudText Typo="Typo.h4" Style="min-width:92px;">
         @LabelText
     </MudText>
-    <MudText Typo="Typo.body1" Style="margin-top: 6px">
+    <MudText Typo="Typo.body1" Style="margin-top: 3px">
         @ChildContent
     </MudText>
 </MudStack>
-
-@code {
-    [Parameter, EditorRequired] public required string LabelText { get; set; }
-    [Parameter, EditorRequired] public required RenderFragment ChildContent { get; set; }
-}

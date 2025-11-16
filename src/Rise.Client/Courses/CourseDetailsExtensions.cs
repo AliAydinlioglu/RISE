@@ -4,7 +4,7 @@ namespace Rise.Client.Courses;
 
 public static class CourseDetailsExtensions
 {
-    public static CourseDetailViewModel ToViewModel(this CourseDetailResponse.Get response) => new()
+    public static CourseDetailViewModels ToViewModel(this CourseDetailResponse.Get response) => new()
     {
         CourseTitle = response.CourseTitle,
         Lecturer = $"{response.Lecturer.FirstName} {response.Lecturer.LastName}",

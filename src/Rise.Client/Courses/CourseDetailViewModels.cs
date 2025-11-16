@@ -1,6 +1,6 @@
 namespace Rise.Client.Courses;
 
-public class CourseDetailViewModel
+public class CourseDetailViewModels
 {
     public string CourseTitle { get; set; }
     public string Lecturer { get; set; }
