@@ -9,7 +9,6 @@ public class Deadline : Entity
     public string? TaskDescription { get; private set; }
     public DateTimeOffset DeadlineTimestamp { get; private set; }
 
-    public int CourseId { get; private set; }
     public Course Course { get; private set; } = null!;
 
     private Deadline() { }

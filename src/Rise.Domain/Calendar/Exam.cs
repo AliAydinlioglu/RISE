@@ -10,7 +10,6 @@ public class Exam : Entity
     public string Campus { get; private set; }
     public string Room { get; private set; }
 
-    public int CourseId { get; private set; }
     public Course Course { get; private set; } = null!;
 
     private Exam() { }
