@@ -1,0 +1,22 @@
+@page "/restaurant"
+<div class="mb-4">
+    <RiseHeadTitle SubTitle="Swipe om te wisselen tussen tabbladen">@GetCurrentViewTitle()</RiseHeadTitle>
+    
+</div>
+<div class="tabs is-centered mb-4">
+    <ul>
+        <li class="@(_currentView == 0 ? "is-active" : "")">
+            <a @onclick="() => OnViewChanged(0)">
+                <span class="icon is-small"><i class="fas fa-calendar"></i></span>
+                <span>Weekmenu</span>
+            </a>
+        </li>
+        <li class="@(_currentView == 1 ? "is-active" : "")">
+            <a @onclick="() => OnViewChanged(1)">
+                <span class="icon is-small"><i class="fas fa-book"></i></span>
+                <span>Prijslijsten</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<RiseCarousel Items="_carouselItems" CurrentIndex="_currentView" CurrentIndexChanged="OnViewChanged"/>
