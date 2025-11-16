@@ -7,6 +7,7 @@ public static class CalendarSeeder
 {
     private static ApplicationDbContext _dbContext = null!;
     private static Random _random = null!;
+    private static List<Lecturer> _lecturers = null!;
 
     private static readonly List<string> Rooms =
     [
@@ -25,8 +26,7 @@ public static class CalendarSeeder
 
     private static Lecturer GetRandomLecturer()
     {
-        var data = LecturerData[_random.Next(LecturerData.Count)];
-        return new Lecturer(data.FirstName, data.LastName);
+        return _lecturers[_random.Next(_lecturers.Count)];
     }
 
     public static async Task Seed(ApplicationDbContext dbContext)
@@ -34,8 +34,13 @@ public static class CalendarSeeder
         _dbContext = dbContext;
         _random = new Random();
 
+        _lecturers = CreateLecturerSeedData();
+        await dbContext.Lecturers.AddRangeAsync(_lecturers);
+        await dbContext.SaveChangesAsync();
+
         var academicSemesters = CreateAcademicSemesterSeedData();
         await dbContext.AcademicSemesters.AddRangeAsync(academicSemesters);
+        await dbContext.SaveChangesAsync();
 
         var courses = CreateCourseSeedData(academicSemesters);
         await dbContext.Courses.AddRangeAsync(courses);
@@ -47,6 +52,16 @@ public static class CalendarSeeder
         await dbContext.Announcements.AddRangeAsync(CreateAnnouncementSeedData(courses));
 
         await dbContext.SaveChangesAsync();
+    }
+
+    private static List<Lecturer> CreateLecturerSeedData()
+    {
+        if (_dbContext.Lecturers.Any())
+            return _dbContext.Lecturers.ToList();
+
+        return LecturerData
+            .Select(data => new Lecturer(data.FirstName, data.LastName))
+            .ToList();
     }
 
     private static List<AcademicSemester> CreateAcademicSemesterSeedData()

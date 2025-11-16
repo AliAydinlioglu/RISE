@@ -43,6 +43,7 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
             .Include(c => c.Announcements)
                 .ThenInclude(a => a.Sender)
             .Include(c => c.Deadlines)
+            .Include(c => c.Lecturer)
             .FirstOrDefaultAsync(c => c.Id == courseId);
     }
 

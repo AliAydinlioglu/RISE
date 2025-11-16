@@ -22,6 +22,7 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
         
         var courses = await dbContext.Courses
             .Where(it => it.ClassGroup == userClassGroup && it.AcademicSemester == academicSemester)
+            .Include(it => it.Lecturer)
             .Include(it => it.Lessons)
             .Include(it => it.Deadlines)
             .Include(it => it.Exams)
