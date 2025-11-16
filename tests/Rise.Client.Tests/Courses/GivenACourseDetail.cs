@@ -49,7 +49,8 @@ public class GivenACourseDetail : MudBlazorTestSetup
     {
         var cut = RenderedComponent();
 
-        var gridItems = cut.FindAll(".mud-grid-item");
+        var generalInfo = cut.FindComponent<CourseDetailGeneralInfo>();
+        var gridItems = generalInfo.FindAll(".mud-grid-item");
 
         gridItems[0].ClassList.ShouldContain("mud-grid-item-xs-6");
         gridItems[1].ClassList.ShouldContain("mud-grid-item-xs-6");
