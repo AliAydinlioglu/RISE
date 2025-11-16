@@ -5,7 +5,7 @@ namespace Rise.Client.SchoolEvents;
 
 public partial class Details : ComponentBase
 {
-    [Parameter] public string? Id { get; set; }
+    [Parameter] public int Id { get; set; }
 
     private bool _showError;
     
@@ -15,23 +15,14 @@ public partial class Details : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrWhiteSpace(Id))
+        if (Id <= 0)
         {
-            Log.Error("Id is NULL or Whitespace");
-            
-            _showError = true;
-            await InvokeAsync(StateHasChanged);
-        }
-
-        if (!int.TryParse(Id, out var idAsInt))
-        {
-            Log.Error("Parsing Id failed");
-            
-            _showError = true;
-            await InvokeAsync(StateHasChanged);
+            Log.Error("Id is invalid");
+            NavigationManager.NavigateTo("/notfound");
+            return;
         }
         
-        var result = await SchoolEventService.GetDetailByIdAsync(idAsInt, CancellationToken.None);
+        var result = await SchoolEventService.GetDetailByIdAsync(Id, CancellationToken.None);
 
         if (result is { IsSuccess: true, Value: not null, Value.SchoolEvent: not null})
         {

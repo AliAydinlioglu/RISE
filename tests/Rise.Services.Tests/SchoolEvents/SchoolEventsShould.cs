@@ -81,6 +81,10 @@ public class SchoolEventsShould
         const int AMOUNT_OF_EVENTS = 5;
         const int SKIP = 1;
         const int TAKE = 2;
+        var filters = new Dictionary<string, object?>()
+        {
+            { "Date", new DateTime(2025,9,5) }
+        };
 
         // Arrange
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -90,7 +94,7 @@ public class SchoolEventsShould
         using var dbContext = new ApplicationDbContext(options);
 
         var location = SchoolEventTestDataFactory.CreateDefaultLocation();
-        var events = SchoolEventTestDataFactory.CreateTestSchoolEvents(AMOUNT_OF_EVENTS, location);
+        var events = SchoolEventTestDataFactory.CreateTestSchoolEventsSameDate(AMOUNT_OF_EVENTS, location);
 
         dbContext.Locations.Add(location);
         dbContext.SchoolEvents.AddRange(events);
@@ -100,7 +104,7 @@ public class SchoolEventsShould
 
         // Act
         var result = await service.GetIndexAsync(
-            new QueryRequest.SkipTake { Skip = SKIP, Take = TAKE },
+            new QueryRequest.SkipTake { Skip = SKIP, Take = TAKE, Filters = filters},
             CancellationToken.None);
 
         // Assert
@@ -214,7 +218,10 @@ public class SchoolEventsShould
 
         // Act - alleen toekomstige events
         var result = await service.GetIndexAsync(
-            new QueryRequest.SkipTake { },
+            new QueryRequest.SkipTake
+            {
+                Filters = new Dictionary<string, object?>{ { "Date", new DateTime(2026,1,1) } }
+            },
             CancellationToken.None);
 
         // Assert
