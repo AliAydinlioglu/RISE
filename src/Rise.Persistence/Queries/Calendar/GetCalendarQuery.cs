@@ -56,7 +56,7 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
         {
             CourseId = course.Id.ToString(),
             CourseTitle = course.Title,
-            Lecturer = course.Lecturer,
+            Lecturer = $"{course.Lecturer.FirstName} {course.Lecturer.LastName}", // TODO convert this to an object
             Lessons = course.Lessons.Select(it => MapLesson(it)).ToList(),
             Deadlines = course.Deadlines.Select(it => MapDeadline(it)).ToList(),
             Exams = course.Exams.Select(it => MapExam(it)).ToList()

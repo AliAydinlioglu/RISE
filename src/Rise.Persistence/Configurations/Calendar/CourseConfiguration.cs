@@ -11,7 +11,18 @@ internal class CourseConfiguration: EntityConfiguration<Course>
         base.Configure(builder);
 
         builder.Property(it => it.Title).IsRequired().HasMaxLength(250);
-        builder.Property(it => it.Lecturer).IsRequired().HasMaxLength(250);
+
+        builder.OwnsOne(it => it.Lecturer, lecturer =>
+        {
+            lecturer.Property(it => it.FirstName)
+                .IsRequired()
+                .HasColumnName(nameof(Lecturer.FirstName));
+            
+            lecturer.Property(it => it.LastName)
+                .IsRequired()
+                .HasColumnName(nameof(Lecturer.LastName));
+        }).Navigation(it => it.Lecturer).IsRequired();
+
         builder.Property(it => it.ClassGroup).IsRequired().HasMaxLength(50);
         
         builder.HasOne(it => it.AcademicSemester)

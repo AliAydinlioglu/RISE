@@ -151,7 +151,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
         _context.AcademicSemesters.Add(_academicSemester);
         await _context.SaveChangesAsync();
 
-        _riseCourse = new Course("RISE", "Alice Johnson", "TIAO-01", _academicSemester);
+        _riseCourse = new Course("RISE", new Lecturer("Alice", "Johnson"), "TIAO-01", _academicSemester);
         
         var mondayLesson = new Lesson(
             DayOfWeek.Monday,
