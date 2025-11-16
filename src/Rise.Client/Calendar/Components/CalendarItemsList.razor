@@ -1,15 +1,13 @@
-@using Rise.Client.Components.Card
-
 <div class="calendar-events">
     @if (Items != null && Items.Any())
     {
         @foreach (var item in Items)
         {
             <RiseCard Date="@item.Date"
-                  Title="@item.Title"
-                  Description="@item.Description"
-                  CardHeader="@item.Header" 
-                  OnClickNavigateTo=@($"/lessen/{item.CourseId}?datum={item.Date:yyyy-MM-dd}")/>
+                      Title="@item.Title"
+                      Description="@item.Description"
+                      CardHeader="@item.Header" 
+                      OnClickNavigateTo="@(AllowClickThrough ? $"/lessen/{item.CourseId}?datum={item.Date:yyyy-MM-dd}" : null)"/>
         }
     }
     else
