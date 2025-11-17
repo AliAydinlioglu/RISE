@@ -1,6 +1,13 @@
-﻿<div class="contact-remarks">
-@foreach(var remark in Remarks)
-{
-    <p>@remark</p>
-}
+﻿﻿<div class="contact-remarks">
+    @foreach(var remark in Remarks)
+    {
+        <div class="mb-2">
+            <span class="icon-text">
+                <span class="icon has-text-warning">
+                    <i class="fas fa-exclamation-circle"></i>
+                </span>
+                <span>@remark</span>
+            </span>
+        </div>
+    }
 </div>
