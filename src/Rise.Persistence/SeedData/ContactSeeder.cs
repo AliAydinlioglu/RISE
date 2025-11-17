@@ -320,7 +320,7 @@ public static class ContactSeeder
 
         service.AddRemark("Gesloten op vakantieperiodes en op feest-, brug- en weekenddagen");
 
-        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "ks.hogent@standaardboekhandel.be",
+        service.AddCommunicationChannel(new CommunicationChannel("E-mail","mailto:ks.hogent@standaardboekhandel.be",
             CommunicationTypes.Email));
         service.AddCommunicationChannel(new CommunicationChannel("Website",
             "https://hogent.standaardstudentshop.be/Practical", CommunicationTypes.Form));
