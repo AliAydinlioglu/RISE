@@ -1,9 +1,16 @@
-﻿<p class="has-text-weight-semibold">
-    @Location?.LocationName 
-</p>
-@ExtraInfo
-@if(HasAddress())
+﻿@if (Location != null)
 {
-        <p>@Location.FacilityAddress.Street @Location.FacilityAddress.HouseNumber @Location.FacilityAddress.BusNumber</p>
-        <p>@Location.FacilityAddress.Postcode @Location.FacilityAddress.City</p>
+    <div class="mb-2" style="margin-left: 0.25rem;">
+        <p class="contact-location__campus">@Location!.LocationName</p>
+        @ExtraInfo
+        @if (HasAddress())
+        {
+            <p class="contact-location__address">
+                @Location!.FacilityAddress.Street @Location.FacilityAddress.HouseNumber@(!string.IsNullOrWhiteSpace(Location.FacilityAddress.BusNumber) ? $" bus {Location.FacilityAddress.BusNumber}" : "")
+            </p>
+            <p class="contact-location__address">
+                @Location.FacilityAddress.Postcode @Location.FacilityAddress.City
+            </p>
+        }
+    </div>
 }

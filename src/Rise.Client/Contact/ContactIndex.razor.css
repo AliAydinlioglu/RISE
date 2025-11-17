@@ -1,1 +1,55 @@
-﻿
+﻿.contact-category-title {
+    color: var(--teal-hogent);
+}
+
+.contact-service-card:hover {
+    box-shadow: 0 4px 12px rgba(22, 176, 165, 0.15);
+}
+
+.contact-service-card.is-active {
+    box-shadow: 0 4px 16px rgba(22, 176, 165, 0.25);
+}
+
+/* Header cursor + hover feedback */
+.contact-service-header {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.contact-service-header:hover {
+    background-color: rgba(22, 176, 165, 0.03);
+}
+
+/* Collapsible details */
+.contact-service-details {
+    animation: contact-slide-down 0.25s ease;
+}
+
+@keyframes contact-slide-down {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 1000px;
+    }
+}
+
+/* HR divider */
+.contact-hr {
+    background-color: #e3e3e3;
+    margin-top: 0;
+}
+
+/* Section titles */
+.contact-section-title {
+    color: var(--teal-hogent);
+}
+
+.contact-section-title--teal {
+    color: var(--teal-hogent);
+}
+
+
+

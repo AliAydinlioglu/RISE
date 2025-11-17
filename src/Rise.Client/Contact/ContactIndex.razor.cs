@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Shared.Contact;
@@ -9,12 +9,28 @@ namespace Rise.Client.Contact;
 [HomeBlock(icon: @Icons.Material.Outlined.EventNote, label: "Contact", route: "/contact")]
 public partial class ContactIndex
 {
-    private IEnumerable<ContactDto.Index> contactFacilities = [];
-    [Inject] public required IContactService ContactService{ get; set; }
-    private int currentPage = 1;
-    private int pageSize = 8;
-    private int totalCount = 0;
-    private int totalPages => (int)Math.Ceiling((double)totalCount / pageSize);
+    private IEnumerable<ContactDto.Index>? _contactFacilities;
+    private IEnumerable<ContactDto.Index> _filteredFacilities = [];
+    
+    [Inject] public required IContactService ContactService { get; set; }
+    
+    private int? _expandedServiceId;
+    private string _selectedCampus = string.Empty;
+    private string _selectedCategory = string.Empty;
+
+    protected IEnumerable<ContactDto.Index>? contactFacilities => _contactFacilities;
+    protected IEnumerable<ContactDto.Index> filteredFacilities => _filteredFacilities;
+    protected int? expandedServiceId => _expandedServiceId;
+    protected string selectedCampus
+    {
+        get => _selectedCampus;
+        set => _selectedCampus = value;
+    }
+    protected string selectedCategory
+    {
+        get => _selectedCategory;
+        set => _selectedCategory = value;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -25,21 +41,75 @@ public partial class ContactIndex
     {
         var request = new QueryRequest.SkipTake
         {
-            Skip = (currentPage - 1) * pageSize,
-            Take = pageSize,
+            Skip = 0,
+            Take = 1000
         };
 
         var result = await ContactService.GetIndexAsync(request);
-        contactFacilities = result.Value.Facilities;
-        totalCount = result.Value.TotalCount;
+        if (result.IsSuccess)
+        {
+            _contactFacilities = result.Value.Facilities;
+            ApplyFilters();
+        }
     }
 
-    private async Task OnPageChangedAsync(int page)
+    private void ApplyFilters()
     {
-        currentPage = page;
-        await LoadContactFacilitiesAsync();
+        _filteredFacilities = _contactFacilities ?? [];
+
+        // Filter by campus
+        if (!string.IsNullOrEmpty(_selectedCampus))
+        {
+            if (_selectedCampus == "Geen locatie")
+            {
+                _filteredFacilities = _filteredFacilities.Where(f => f.Location == null);
+            }
+            else
+            {
+                _filteredFacilities = _filteredFacilities.Where(f => 
+                    f.Location != null && f.Location.LocationName == _selectedCampus);
+            }
+        }
+
+        // Filter by category
+        if (!string.IsNullOrEmpty(_selectedCategory))
+        {
+            _filteredFacilities = _filteredFacilities.Where(f => 
+                f.FacilityCategoryName == _selectedCategory);
+        }
+
+        // Reset expanded service when filters change
+        _expandedServiceId = null;
     }
 
+    protected void OnCampusFilterChanged()
+    {
+        ApplyFilters();
+    }
+
+    protected void OnCategoryFilterChanged()
+    {
+        ApplyFilters();
+    }
+
+    protected void ClearFilters()
+    {
+        _selectedCampus = string.Empty;
+        _selectedCategory = string.Empty;
+        ApplyFilters();
+    }
+
+    protected void ToggleService(int serviceId)
+    {
+        if (_expandedServiceId == serviceId)
+        {
+            _expandedServiceId = null; // Collapse if already expanded
+        }
+        else
+        {
+            _expandedServiceId = serviceId; // Expand clicked service
+        }
+    }
 }
 
 

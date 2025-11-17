@@ -1,12 +1,30 @@
-﻿@if(@OpeningHours.Any()) {
-    <p class="has-text-weight-semibold">Openingsuren</p>
-    <div class="opening-hours">
+﻿﻿@if(@OpeningHours.Any()) {
+    <div class="opening-hours" style="margin-left: 0.25rem;">
         @foreach (var day in OpeningHours)
         {
-            <p>
-                @day.ContactDate.DayOfWeek.ToString().Substring(0, 2):
-                @string.Join(", ", day.ContactHours.Select(v => $"{v.StartTime:hh\\:mm}-{v.EndTime:hh\\:mm}"))
-            </p>
+            <div class="mb-2">
+                <span class="has-text-weight-semibold">@GetDayName(day.ContactDate.DayOfWeek):</span>
+                <span class="ml-2">
+                    @string.Join(", ", day.ContactHours.Select(v => $"{v.StartTime:HH\\:mm}-{v.EndTime:HH\\:mm}"))
+                </span>
+            </div>
         }
     </div>
+}
+
+@code {
+    private string GetDayName(DayOfWeek day)
+    {
+        return day switch
+        {
+            DayOfWeek.Monday => "Ma",
+            DayOfWeek.Tuesday => "Di",
+            DayOfWeek.Wednesday => "Wo",
+            DayOfWeek.Thursday => "Do",
+            DayOfWeek.Friday => "Vr",
+            DayOfWeek.Saturday => "Za",
+            DayOfWeek.Sunday => "Zo",
+            _ => day.ToString().Substring(0, 2)
+        };
+    }
 }
