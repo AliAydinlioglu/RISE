@@ -1,5 +1,5 @@
 ﻿.contact-category-title {
-    color: var(--teal-hogent);
+    color: var(--black-hogent);
 }
 
 .contact-service-card:hover {
@@ -42,13 +42,22 @@
     margin-top: 0;
 }
 
-/* Section titles */
-.contact-section-title {
-    color: var(--teal-hogent);
+
+.select:not(.is-multiple):not(.is-loading)::after {
+    border-color: #ffffff;
 }
 
-.contact-section-title--teal {
-    color: var(--teal-hogent);
+/* Clear filters button */
+.button.is-light {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    border-color: rgb(0, 0, 0);
+}
+
+.button.is-light:hover {
+    background-color: #f80000;
+    border-color: rgba(0, 0, 0);
+    color: rgb(255, 255, 255);
 }
 
 
