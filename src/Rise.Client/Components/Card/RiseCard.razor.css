@@ -71,6 +71,10 @@
     color: black;
 }
 
+.course-info {
+    min-width: 0;
+}
+
 .card-header {
     color: #9c9c9c;
 }
@@ -80,8 +84,14 @@
 }
 
 .month-abbr-label,
-.title-label{
+.title-label {
     font-size: calc(2rem * var(--scale));
+}
+
+.title-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description-label {
