@@ -1,0 +1,9 @@
+<MudSwitch T="bool" @bind-Checked="@bindChecked" Label="Dark Mode" Color="Color.Primary"/>
+
+@code {
+    [Parameter]
+    public bool bindChecked { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> bindCheckedChanged { get; set; } 
+}

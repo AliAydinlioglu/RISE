@@ -2,7 +2,7 @@
 @inherits LayoutComponentBase
 
 @* Required *@
-<MudThemeProvider Theme="@MyCustomTheme"/>
+<MudThemeProvider Theme="@ThemingService.Theme" IsDarkMode="@ThemingService.IsDarkMode"/>
 <MudPopoverProvider/>
 @* Needed for dialogs *@
 <MudDialogProvider/>

@@ -30,9 +30,9 @@
                                   Title="@PreviewTitle"
                                   Description="@PreviewCategory"
                                   CardHeader="@($"{PreviewStartTime:HH:mm} | {PreviewLocation}")"
-                                  ImageUrl="@(ImagesOff ? null : "img/HOGENT_bg1.jpg")"
+                                  ImageUrl="@(ThemingService.ImagesOff ? null : "img/HOGENT_bg1.jpg")"
                                   Scale="1.0"
-                                  Class="@(CurrentTheme == "dark" ? "dark-theme" : "")">
+                                  Class="@(ThemingService.IsDarkMode ? "dark-theme" : "")">
                             <p class="course-details-link" style="@GetCategoryStyle()">
                                 Course details >
                             </p>
@@ -50,7 +50,7 @@
                 <div class="setting-item mb-4">
                     <div class="d-flex justify-space-between align-center">
                         <MudText Typo="Typo.subtitle1">Light</MudText>
-                        <MudSwitch @bind-Value="IsDarkTheme"
+                        <MudSwitch @bind-Value="ThemingService.IsDarkTheme"
                                    Color="Color.Primary"
                                    UnCheckedColor="Color.Default" />
                         <MudText Typo="Typo.subtitle1">Dark</MudText>
@@ -61,7 +61,7 @@
                 <div class="setting-item mb-4">
                     <div class="d-flex justify-space-between align-center">
                         <MudText Typo="Typo.subtitle1">Images On</MudText>
-                        <MudSwitch @bind-Value="ImagesOff"
+                        <MudSwitch @bind-Value="ThemingService.ImagesOff"
                                    Color="Color.Primary"
                                    UnCheckedColor="Color.Default" />
                         <MudText Typo="Typo.subtitle1">Images Off</MudText>
@@ -72,7 +72,7 @@
                 <div class="setting-item mb-4">
                     <div class="d-flex justify-space-between align-center">
                         <MudText Typo="Typo.subtitle1">Colorful</MudText>
-                        <MudSwitch @bind-Value="IsNeutral"
+                        <MudSwitch @bind-Value="ThemingService.IsNeutral"
                                    Color="Color.Primary"
                                    UnCheckedColor="Color.Default" />
                         <MudText Typo="Typo.subtitle1">Neutral</MudText>
