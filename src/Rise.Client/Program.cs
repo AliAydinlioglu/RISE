@@ -23,6 +23,7 @@ using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
+using Rise.Client.Theme;
 using Rise.Client.Restaurant;
 using Rise.Shared.UserPreferences;
 using Rise.Client.UserPreferences;
@@ -79,6 +80,7 @@ try
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
     builder.Services.AddSingleton<IEventStreamService, EventStreamService>();
+    builder.Services.AddSingleton<IThemingService, ThemingService>();
 
     builder.Services.AddScoped<IPaginationStateService, PaginationStateService>();
     builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();

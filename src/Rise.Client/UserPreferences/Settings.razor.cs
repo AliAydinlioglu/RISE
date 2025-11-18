@@ -14,6 +14,7 @@ namespace Rise.Client.UserPreferences;
 public partial class Settings : IDisposable
 {
     [Inject] private IUserPreferenceStateService PreferenceState { get; set; } = default!;
+    [Inject] private IUserPreferenceService UserPreferenceService { get; set; } = default!;
     [Inject] private IThemingService ThemingService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Inject] private NavigationManager Navigation { get; set; } = default!;

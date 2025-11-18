@@ -1,0 +1,124 @@
+@page "/components"
+@using Rise.Client.Calendar
+@using Rise.Shared.Locations
+@using Rise.Shared.SchoolEvents
+
+<RiseCard Title="Component Sheet Demo" Date="@DateTime.Now" >
+    <RiseCardContent >
+        <MudText Typo="Typo.h5">Component Sheet</MudText>
+        <MudText Typo="Typo.body1">
+            This is a component sheet demonstrating various UI components.
+        </MudText>
+    </RiseCardContent>
+</RiseCard>
+
+<RiseInfoCard Title="Calendar View">
+    <RiseCardContent>
+        <MudCalendarView ItemsFunc="GetItemsForSelectedDate" />
+    </RiseCardContent>
+</RiseInfoCard>
+
+<RiseSchoolEventCardContent ImageUrl="@_schoolEvent.ImageUrl"
+                            Category="@_schoolEvent.Category"
+                            StartTime="@_schoolEvent.StartTime"
+                            EndTime="@_schoolEvent.EndTime"
+                            Location="@_schoolEvent.Location"
+                            Date="@_schoolEvent.Date.LocalDateTime"></RiseSchoolEventCardContent>
+
+<RiseVerticalCard Date="@_schoolEvent.Date.LocalDateTime" Title="@_schoolEvent.Title">
+    <RiseSchoolEventCardContent 
+        ImageUrl="@_schoolEvent.ImageUrl"
+        Category="@_schoolEvent.Category"
+        StartTime="@_schoolEvent.StartTime"
+        EndTime="@_schoolEvent.EndTime"
+        Location="@_schoolEvent.Location"
+        Date="@_schoolEvent.Date.LocalDateTime"/>
+</RiseVerticalCard>
+
+<RiseStudentActivitiesCardContent 
+    StartTime="@_schoolEvent.StartTime"
+        EndTime="@_schoolEvent.EndTime"
+        Location="@_schoolEvent.Location"
+        StudentClubName="ExampleClub" />
+
+
+<RiseAppHeader>
+    <IconMenu>
+        <MudIconButton Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" />
+    </IconMenu>
+    <ProfileSection>
+        <MudAvatar Size="Size.Medium" Alt="User Avatar" Src="img/user_avatar.png" />
+    </ProfileSection>
+</RiseAppHeader>
+
+<RiseButton ButtonType="ButtonType.Submit">Example</RiseButton>
+
+@* <RiseCarousel Items="@Items"></RiseCarousel> *@
+
+
+@* <RiseHeadTitle ImageUrl="img/headtitle_background.webp" OverlayColor="rgba(0, 0, 0, 0.5)">
+    Welcome to the Component Sheet
+    <SubTitle>
+        Explore various UI components used in the application.
+    </SubTitle>
+</RiseHeadTitle> *@
+
+@* <RiseHomeBlock Href="/home" Icon="@Icons.Material.Filled.Home">
+    Go to Home
+</RiseHomeBlock> *@
+
+@* <RiseItemLink Href="/items/1" Icon="@Icons.Material.Filled.Info" Size="Size.Medium">
+    View Item Details
+</RiseItemLink>  *@
+
+@* <RiseLoader></RiseLoader> *@
+
+@* <RiseNotification Title="Notification Title" Subtitle="This is a subtitle." Severity="Severity.Info">
+    This is the content of the notification.
+</RiseNotification> *@
+
+@* <RisePagination CurrentPage="1" TotalPages="5" OnPageChanged="page => Console.WriteLine($"Page changed to {page}")" /> *@
+
+@code {
+    private IEnumerable<CalendarViewItem> GetItemsForSelectedDate()
+    {
+        var targetDate = DateTime.Today;
+        return new List<CalendarViewItem>
+        {
+            new CalendarViewItem()
+            {
+                CourseId = "123",
+                Type = CalendarViewItem.CalendarEventType.Course,
+                Date = targetDate,
+                Title = "Mock Event",
+                Description = "This is a mock event",
+                Header = "Mock Header"
+            }
+        };
+    }
+
+SchoolEventDto.Index _schoolEvent = new SchoolEventDto.Index
+{
+    Id = 1,
+    Title = "Sample School Event",
+    Date = DateTimeOffset.Now,
+    ImageUrl = "img/school_event.webp",
+    Category = "Seminar",
+    StartTime = new TimeOnly(10, 0),
+    EndTime = new TimeOnly(12, 0),
+    Location = new LocationDto.Index
+    {
+        Id = 1,
+        Name = "Auditorium",
+        Street = "Campus Street",
+        HouseNumber = 100,
+        City = "Brussels",
+        Postcode = 1000
+    },
+    Price = 0.0m,  // or whatever default price makes sense
+    RegisterLink = string.Empty,  // or a valid URL
+    Capacity = 100,  // or your desired capacity
+    Registrable = false,  // or true if registration is open
+    Publicity = "Public"  // or whatever publicity level is appropriate
+};
+}
