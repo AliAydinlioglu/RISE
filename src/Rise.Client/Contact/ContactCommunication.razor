@@ -15,18 +15,3 @@
     }
 </div>
 
-@code {
-
-    private string GetIconForCommunicationType(string type)
-    {
-        return type switch
-        {
-            "Email" => "fa-envelope",
-            "Phone" => "fa-phone",
-            "Form" => "fa-external-link-alt",
-            "SocialMedia" => "fa-share-alt",
-            _ => "fa-link"
-        };
-    }
-
-}
