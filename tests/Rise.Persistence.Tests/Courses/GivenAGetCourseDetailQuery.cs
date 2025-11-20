@@ -39,7 +39,8 @@ public class GivenAGetCourseDetailQuery : IDisposable
         
         detail.CourseId.ShouldBe(_riseCourse.Id.ToString());
         detail.CourseTitle.ShouldBe("RISE");
-        detail.Lecturer.ShouldBe("Alice Johnson");
+        detail.Lecturer.FirstName.ShouldBe("Alice");
+        detail.Lecturer.LastName.ShouldBe("Johnson");
         detail.Lesson.Date.ShouldBe("04-11-2024");
         detail.Lesson.StartTime.ShouldBe("08:30");
         detail.Lesson.EndTime.ShouldBe("10:30");
