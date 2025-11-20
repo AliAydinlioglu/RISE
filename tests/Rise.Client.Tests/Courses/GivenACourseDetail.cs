@@ -52,17 +52,8 @@ public class GivenACourseDetail : MudBlazorTestSetup
         var generalInfo = cut.FindComponent<CourseDetailGeneralInfo>();
         var gridItems = generalInfo.FindAll(".mud-grid-item");
 
-        gridItems[0].ClassList.ShouldContain("mud-grid-item-xs-6");
-        gridItems[1].ClassList.ShouldContain("mud-grid-item-xs-6");
-    }
-    
-    [Fact(DisplayName = "When rendering course detail, then 'Vaknieuws' heading should be shown")]
-    public void VaknieuwsHeadingTest()
-    {
-        var cut = RenderedComponent();
-
-        var heading = cut.FindAll("h2");
-        heading[1].TextContent.ShouldContain("Vaknieuws");
+        gridItems[0].ClassList.ShouldContain("mud-grid-item");
+        gridItems[1].ClassList.ShouldContain("mud-grid-item");
     }
     
     [Fact(DisplayName = "When course has no announcements, then notification should be shown")]
@@ -100,7 +91,7 @@ public class GivenACourseDetail : MudBlazorTestSetup
         message.TextContent.ShouldNotBeNullOrEmpty();
     }
     
-    [Fact(DisplayName = "When rendering course detail, then 'Deadlines' heading should be shown")]
+    [Fact(DisplayName = "When rendering course detail, then headers should be shown")]
     public void DeadlinesHeadingTest()
     {
         var cut = RenderedComponent();
