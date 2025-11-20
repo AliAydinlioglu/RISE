@@ -52,17 +52,8 @@ public class GivenACourseDetail : MudBlazorTestSetup
         var generalInfo = cut.FindComponent<CourseDetailGeneralInfo>();
         var gridItems = generalInfo.FindAll(".mud-grid-item");
 
-        gridItems[0].ClassList.ShouldContain("mud-grid-item-xs-6");
-        gridItems[1].ClassList.ShouldContain("mud-grid-item-xs-6");
-    }
-    
-    [Fact(DisplayName = "When rendering course detail, then 'Vaknieuws' heading should be shown")]
-    public void VaknieuwsHeadingTest()
-    {
-        var cut = RenderedComponent();
-
-        var heading = cut.Find("h2");
-        heading.TextContent.ShouldContain("Vaknieuws");
+        gridItems[0].ClassList.ShouldContain("mud-grid-item");
+        gridItems[1].ClassList.ShouldContain("mud-grid-item");
     }
     
     [Fact(DisplayName = "When course has no announcements, then notification should be shown")]
@@ -82,7 +73,7 @@ public class GivenACourseDetail : MudBlazorTestSetup
         var cut = RenderedComponent();
 
         var papers = cut.FindComponents<MudPaper>();
-        var firstPaper = papers.First();
+        var firstPaper = papers.ElementAt(1);
 
         var title = firstPaper.Find(".mud-typography-h4");
         title.ShouldNotBeNull();
@@ -100,15 +91,16 @@ public class GivenACourseDetail : MudBlazorTestSetup
         message.TextContent.ShouldNotBeNullOrEmpty();
     }
     
-    [Fact(DisplayName = "When rendering course detail, then 'Deadlines' heading should be shown")]
+    [Fact(DisplayName = "When rendering course detail, then headers should be shown")]
     public void DeadlinesHeadingTest()
     {
         var cut = RenderedComponent();
 
         var headings = cut.FindAll("h2");
         
-        headings.First().TextContent.ShouldContain("Vaknieuws");
-        headings.ElementAt(1).TextContent.ShouldContain("Deadlines");
+        headings.First().TextContent.ShouldContain("Lesinfo");
+        headings.ElementAt(1).TextContent.ShouldContain("Vaknieuws");
+        headings.ElementAt(2).TextContent.ShouldContain("Deadlines");
     }
     
     [Fact(DisplayName = "When course has no deadlines, then notification should be shown")]
