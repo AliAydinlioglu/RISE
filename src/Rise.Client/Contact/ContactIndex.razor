@@ -1,5 +1,6 @@
 ﻿@page "/contact"
 @attribute [AllowAnonymous]
+@using Rise.Client.Components.Dropdown
 <PageTitle>Contact</PageTitle>
 <div class="container">
     <RiseHeadTitle>Contact</RiseHeadTitle>
@@ -18,27 +19,20 @@
         <div class="mb-5">
             <div class="field is-grouped is-grouped-multiline">
                 <div class="control">
-                    <div class="select is-medium">
-                        <select @bind="selectedCampus" @bind:after="OnCampusFilterChanged">
-                            <option value="">Alle campussen</option>
-                            <option value="Schoonmeersen">Schoonmeersen</option>
-                            <option value="Mercator">Mercator</option>
-                            <option value="Gent Campus">Gent Campus</option>
-                            <option value="Geen locatie">Geen locatie (Online diensten)</option>
-                        </select>
-                    </div>
+                    <RiseSelectionDropdown TItem="FilterOption"
+                                         Items="campusOptions"
+                                         SelectedItem="selectedCampus"
+                                         SelectedItemChanged="OnCampusFilterChanged"
+                                         Placeholder="Alle campussen" />
                 </div>
                 <div class="control">
-                    <div class="select is-medium">
-                        <select @bind="selectedCategory" @bind:after="OnCategoryFilterChanged">
-                            <option value="">Alle categorieën</option>
-                            <option value="Administratief">Administratief</option>
-                            <option value="Ondersteunend">Ondersteunend</option>
-                            <option value="Veiligheid en welzijn">Veiligheid en welzijn</option>
-                        </select>
-                    </div>
+                    <RiseSelectionDropdown TItem="FilterOption"
+                                         Items="categoryOptions"
+                                         SelectedItem="selectedCategory"
+                                         SelectedItemChanged="OnCategoryFilterChanged"
+                                         Placeholder="Alle categorieën" />
                 </div>
-                @if (!string.IsNullOrEmpty(selectedCampus) || !string.IsNullOrEmpty(selectedCategory))
+                @if (HasActiveFilters)
                 {
                     <div class="control">
                         <button class="button is-light is-medium" @onclick="ClearFilters">

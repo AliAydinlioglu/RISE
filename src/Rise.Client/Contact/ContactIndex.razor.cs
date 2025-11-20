@@ -15,18 +15,37 @@ public partial class ContactIndex
     [Inject] public required IContactService ContactService { get; set; }
     
     private int? _expandedServiceId;
-    private string _selectedCampus = string.Empty;
-    private string _selectedCategory = string.Empty;
+    private FilterOption? _selectedCampus;
+    private FilterOption? _selectedCategory;
+
+    private readonly List<FilterOption> _campusOptions = new()
+    {
+        new FilterOption("", "Alle campussen"),
+        new FilterOption("Schoonmeersen", "Schoonmeersen"),
+        new FilterOption("Mercator", "Mercator"),
+        new FilterOption("Gent Campus", "Gent Campus"),
+        new FilterOption("Geen locatie", "Geen locatie (Online diensten)")
+    };
+
+    private readonly List<FilterOption> _categoryOptions = new()
+    {
+        new FilterOption("", "Alle categorieën"),
+        new FilterOption("Administratief", "Administratief"),
+        new FilterOption("Ondersteunend", "Ondersteunend"),
+        new FilterOption("Veiligheid en welzijn", "Veiligheid en welzijn")
+    };
 
     protected IEnumerable<ContactDto.Index>? contactFacilities => _contactFacilities;
     protected IEnumerable<ContactDto.Index> filteredFacilities => _filteredFacilities;
     protected int? expandedServiceId => _expandedServiceId;
-    protected string selectedCampus
+    protected List<FilterOption> campusOptions => _campusOptions;
+    protected List<FilterOption> categoryOptions => _categoryOptions;
+    protected FilterOption? selectedCampus
     {
         get => _selectedCampus;
         set => _selectedCampus = value;
     }
-    protected string selectedCategory
+    protected FilterOption? selectedCategory
     {
         get => _selectedCategory;
         set => _selectedCategory = value;
@@ -34,6 +53,8 @@ public partial class ContactIndex
 
     protected override async Task OnInitializedAsync()
     {
+        _selectedCampus = _campusOptions[0];
+        _selectedCategory = _categoryOptions[0];
         await LoadContactFacilitiesAsync();
     }
 
@@ -58,45 +79,56 @@ public partial class ContactIndex
         _filteredFacilities = _contactFacilities ?? [];
 
         // Filter by campus
-        if (!string.IsNullOrEmpty(_selectedCampus))
+        if (!string.IsNullOrEmpty(_selectedCampus?.Value))
         {
-            if (_selectedCampus == "Geen locatie")
+            if (_selectedCampus.Value == "Geen locatie")
             {
                 _filteredFacilities = _filteredFacilities.Where(f => f.Location == null);
             }
             else
             {
                 _filteredFacilities = _filteredFacilities.Where(f => 
-                    f.Location != null && f.Location.LocationName == _selectedCampus);
+                    f.Location != null && f.Location.LocationName == _selectedCampus.Value);
             }
         }
 
         // Filter by category
-        if (!string.IsNullOrEmpty(_selectedCategory))
+        if (!string.IsNullOrEmpty(_selectedCategory?.Value))
         {
             _filteredFacilities = _filteredFacilities.Where(f => 
-                f.FacilityCategoryName == _selectedCategory);
+                f.FacilityCategoryName == _selectedCategory.Value);
         }
 
         // Reset expanded service when filters change
         _expandedServiceId = null;
     }
 
-    protected void OnCampusFilterChanged()
+    protected void OnCampusFilterChanged(FilterOption option)
     {
+        _selectedCampus = option;
         ApplyFilters();
     }
 
-    protected void OnCategoryFilterChanged()
+    protected void OnCategoryFilterChanged(FilterOption option)
     {
+        _selectedCategory = option;
         ApplyFilters();
     }
 
     protected void ClearFilters()
     {
-        _selectedCampus = string.Empty;
-        _selectedCategory = string.Empty;
+        _selectedCampus = _campusOptions[0];
+        _selectedCategory = _categoryOptions[0];
         ApplyFilters();
+    }
+
+    protected bool HasActiveFilters => 
+        !string.IsNullOrEmpty(_selectedCampus?.Value) || 
+        !string.IsNullOrEmpty(_selectedCategory?.Value);
+
+    public record FilterOption(string Value, string Label)
+    {
+        public override string ToString() => Label;
     }
 
     protected void ToggleService(int serviceId)
