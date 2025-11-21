@@ -74,7 +74,8 @@
                         {
                             <div class="contact-service-item mb-3">
                                 <div
-                                    class="box p-0 contact-service-card @(expandedServiceId == facility.Id ? "is-active" : "")">
+                                    class="box p-0 contact-service-card @(expandedServiceId == facility.Id ? "is-active" : "")"
+                                    style="--bg-image: url('@GetBackgroundImageUrl(facility.Id)');">
 
                                     <!-- Service Header (Always Visible) -->
                                     <div class="contact-service-header p-4 is-clickable"

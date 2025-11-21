@@ -2,6 +2,35 @@
     color: var(--black-hogent);
 }
 
+.contact-service-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--bg-image, url('/img/banner42.webp'));
+    background-size: cover;
+    background-position: center;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-service-card:hover::before {
+    opacity: 0.12;
+}
+
+.contact-service-card.is-active::before {
+    opacity: 0.15;
+}
+
 .contact-service-card:hover {
     box-shadow: 0 4px 12px rgba(22, 176, 165, 0.15);
 }
@@ -14,6 +43,8 @@
 .contact-service-header {
     cursor: pointer;
     transition: background-color 0.2s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .contact-service-header:hover {
@@ -23,6 +54,8 @@
 /* Collapsible details */
 .contact-service-details {
     animation: contact-slide-down 0.25s ease;
+    position: relative;
+    z-index: 1;
 }
 
 @keyframes contact-slide-down {
