@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+﻿using System.Security.Claims;
 using MudBlazor.Services;
 using Rise.Client.Faker;
 using Rise.Client.Layout;
 using Rise.Client.Shared;
+using Rise.Shared.Notifications;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit.Abstractions;
 
 namespace Rise.Client.Identity
@@ -24,6 +18,7 @@ namespace Rise.Client.Identity
             JSInterop.Mode = JSRuntimeMode.Loose;
             var pageTitleService = new FakePageTitleService();
             Services.AddScoped<IPageTitleService>(_ => pageTitleService);
+            Services.AddScoped<INotificationService, FakeNotificationService>();
         }
 
         [Fact]
