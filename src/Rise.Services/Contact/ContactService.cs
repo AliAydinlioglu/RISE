@@ -97,7 +97,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
             {
                 Name = cc.Name,
                 Link = cc.Link,
-                TypeOfCommunication = cc.TypeOfCommunication.ToString()
+                TypeOfCommunication = cc.TypeOfCommunication
             }).ToList()
         };
 

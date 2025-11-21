@@ -11,6 +11,8 @@ public partial class ContactIndex
 {
     private IEnumerable<ContactDto.Index>? _contactFacilities;
     private IEnumerable<ContactDto.Index> _filteredFacilities = [];
+    private readonly Dictionary<int, string> _facilityBackgroundImages = new();
+    private static readonly Random Random = new();
     
     [Inject] public required IContactService ContactService { get; set; }
     
@@ -24,7 +26,7 @@ public partial class ContactIndex
         new FilterOption("Schoonmeersen", "Schoonmeersen"),
         new FilterOption("Mercator", "Mercator"),
         new FilterOption("Gent Campus", "Gent Campus"),
-        new FilterOption("Geen locatie", "Geen locatie (Online diensten)")
+        new FilterOption("Geen locatie", "Locatieloos")
     };
 
     private readonly List<FilterOption> _categoryOptions = new()
@@ -70,8 +72,27 @@ public partial class ContactIndex
         if (result.IsSuccess)
         {
             _contactFacilities = result.Value.Facilities;
+            AssignRandomBackgroundImages();
             ApplyFilters();
         }
+    }
+
+    private void AssignRandomBackgroundImages()
+    {
+        if (_contactFacilities == null) return;
+
+        foreach (var facility in _contactFacilities)
+        {
+            var randomBannerNumber = Random.Next(1, 131);
+            _facilityBackgroundImages[facility.Id] = $"/img/banner{randomBannerNumber}.webp";
+        }
+    }
+
+    protected string GetBackgroundImageUrl(int facilityId)
+    {
+        return _facilityBackgroundImages.TryGetValue(facilityId, out var imageUrl) 
+            ? imageUrl 
+            : "/img/banner42.webp";
     }
 
     private void ApplyFilters()

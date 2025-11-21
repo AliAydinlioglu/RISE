@@ -1,3 +1,5 @@
+using Rise.Domain.Contact;
+
 namespace Rise.Shared.Contact;
 
 public static class ContactDto
@@ -46,7 +48,7 @@ public static class ContactDto
     {
         public required string Name { get; set; }
         public required string Link { get; set; }
-        public required string TypeOfCommunication { get; set; }
+        public required CommunicationTypes TypeOfCommunication { get; set; }
     }
 }
 
