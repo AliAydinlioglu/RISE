@@ -1,6 +1,6 @@
-namespace Rise.Domain.WeekMenu;
+namespace Rise.Domain.Menu;
 
-public class Allergen : Entity, IFoodRestriction
+public class Allergen : Entity
 {
     public string Name { get; set; } = null!;
     public string Symbol { get; set; } = null!;
