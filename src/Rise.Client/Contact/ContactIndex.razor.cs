@@ -24,7 +24,7 @@ public partial class ContactIndex
         new FilterOption("Schoonmeersen", "Schoonmeersen"),
         new FilterOption("Mercator", "Mercator"),
         new FilterOption("Gent Campus", "Gent Campus"),
-        new FilterOption("Geen locatie", "Geen locatie (Online diensten)")
+        new FilterOption("Geen locatie", "Locatieloos")
     };
 
     private readonly List<FilterOption> _categoryOptions = new()
