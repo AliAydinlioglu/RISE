@@ -1,1 +1,125 @@
-﻿
+﻿.contact-category-title {
+    color: var(--black-hogent);
+}
+
+.contact-service-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--bg-image, url('/img/banner42.webp'));
+    background-size: cover;
+    background-position: center;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-service-card:hover::before {
+    opacity: 0.12;
+}
+
+.contact-service-card.is-active::before {
+    opacity: 0.15;
+}
+
+.contact-service-card:hover {
+    box-shadow: 0 4px 12px rgba(22, 176, 165, 0.15);
+}
+
+.contact-service-card.is-active {
+    box-shadow: 0 4px 16px rgba(22, 176, 165, 0.25);
+}
+
+/* Header cursor + hover feedback */
+.contact-service-header {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-service-header:hover {
+    background-color: rgba(22, 176, 165, 0.03);
+}
+
+/* Collapsible details */
+.contact-service-details {
+    animation: contact-slide-down 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes contact-slide-down {
+    from {
+        opacity: 0;
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 1000px;
+    }
+}
+
+/* HR divider */
+.contact-hr {
+    background-color: #e3e3e3;
+    margin-top: 0;
+}
+
+
+.select:not(.is-multiple):not(.is-loading)::after {
+    border-color: #ffffff;
+}
+
+/* Clear filters button */
+.button.is-light {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    display: flex !important;
+    align-items: center !important;
+    width: 220px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    min-width: 200px !important;
+    padding: 8px 12px !important;
+    font-size: 16px;
+    border: 2px solid var(--mud-palette-primary);
+}
+
+.button.is-light:hover {
+    background-color: #f80000;
+    border-color: rgba(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+
+/*alle 3 fields grouped up*/
+.field.is-grouped {
+    justify-content: center;
+}
+
+/*toont of dat er resultaten gevonden zijn*/
+.has-text-grey1 {
+    display: grid;
+    justify-content: center;
+}
+
+.has-text-grey {
+    color: #ffffffd1 !important
+}
+
+span.icon-text {
+    line-height: 26px
+}
+
+
+
+

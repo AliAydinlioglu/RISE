@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+        <Configurations>Debug;Release;test</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +18,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.9" PrivateAssets="all" />
         <PackageReference Include="MudBlazor" Version="8.13.0" />
         <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="8.0.0" />
+        <PackageReference Include="WebPush" Version="1.0.12" />
     </ItemGroup>
 
     <ItemGroup>

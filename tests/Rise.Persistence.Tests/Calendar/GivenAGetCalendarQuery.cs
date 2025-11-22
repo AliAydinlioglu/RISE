@@ -39,7 +39,8 @@ public class GivenAGetCalendarQuery: IDisposable
         calendar.Courses.Count.ShouldBe(2);
 
         var riseCourse = calendar.Courses.First(c => c.CourseTitle == "RISE");
-        riseCourse.Lecturer.ShouldBe("Alice");
+        riseCourse.Lecturer.FirstName.ShouldBe("Alice");
+        riseCourse.Lecturer.LastName.ShouldBe("Alisson");
         riseCourse.Lessons.Count.ShouldBe(2);
 
         var fallCourse = calendar.Courses.First(c => c.CourseTitle == "FALL");
@@ -69,7 +70,7 @@ public class GivenAGetCalendarQuery: IDisposable
         );
         
         _dateTimeService.SetDateTime(new DateTime(2025, 11, 13));
-        var course = new Course("RISE", "Alice", "TIAO-01", academicSemester);
+        var course = new Course("RISE", new Lecturer("Alice", "Alisson"), "TIAO-01", academicSemester);
         _context.Courses.Add(course);
         await _context.SaveChangesAsync();
 
@@ -91,51 +92,46 @@ public class GivenAGetCalendarQuery: IDisposable
         _context.AcademicSemesters.Add(academicSemester);
         await _context.SaveChangesAsync();
 
-        var riseCourse = new Course("RISE", "Alice", "TIAO-01", academicSemester);
+        var riseCourse = new Course("RISE", new Lecturer("Alice", "Alisson"), "TIAO-01", academicSemester);
         var riseLesson1 = new Lesson(
             DayOfWeek.Monday,
             new TimeRange(new TimeOnly(8, 30), new TimeOnly(10, 30)),
             "Schoonmeersen",
             "GSCHB.2.001"
         );
+        riseCourse.AddLesson(riseLesson1);
+        
         var riseLesson2 = new Lesson(
             DayOfWeek.Thursday,
             new TimeRange(new TimeOnly(10, 45), new TimeOnly(13, 0)),
             "Schoonmeersen",
             "GSCHB.2.001"
         );
+        riseCourse.AddLesson(riseLesson2);
         
         _context.Courses.Add(riseCourse);
-        _context.Lessons.AddRange(riseLesson1, riseLesson2);
 
-        var fallCourse = new Course("FALL", "Bob", "TIAO-01", academicSemester);
+        var fallCourse = new Course("FALL", new Lecturer("Bob", "Bobson"), "TIAO-01", academicSemester);
         var deadline = new Deadline(
             "Campus App",
             "I like bananas",
             new DateTimeOffset(2025, 12, 14, 23, 59, 59, TimeSpan.Zero)
         );
+        fallCourse.AddDeadline(deadline);
+        
         var exam = new Exam(
             "FALL - Theory",
             new DateTimeOffset(2025, 1, 10, 9, 0, 0, TimeSpan.Zero),
             "Schoonmeersen",
             "GSCHT.1.101"
         );
-
+        fallCourse.AddExam(exam);
+        
         _context.Courses.Add(fallCourse);
-        _context.Deadlines.Add(deadline);
-        _context.Exams.Add(exam);
-
-        await _context.SaveChangesAsync();
-
-        riseLesson1.GetType().GetProperty("CourseId")!.SetValue(riseLesson1, riseCourse.Id);
-        riseLesson2.GetType().GetProperty("CourseId")!.SetValue(riseLesson2, riseCourse.Id);
-        deadline.GetType().GetProperty("CourseId")!.SetValue(deadline, fallCourse.Id);
-        exam.GetType().GetProperty("CourseId")!.SetValue(exam, fallCourse.Id);
 
         await _context.SaveChangesAsync();
     }
 
-    
     public void Dispose()
     {
         _context.Database.EnsureDeleted();

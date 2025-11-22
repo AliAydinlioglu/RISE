@@ -66,7 +66,7 @@ public class GivenADesktopCalendar : GivenACalendarBase<CalendarDesktop>
     [Fact]
     public void WhenNoDeadlinesExist_ThenDeadlinesSectionShouldShowEmptyMessage()
     {
-        var calendarServiceMock = new FakeCalendarServiceWithoutDeadlines();
+        var calendarServiceMock = new FakeCalendarService(false, false);
         Services.AddScoped<ICalendarService>(_ => calendarServiceMock);
 
         var cut = RenderComponent<CalendarDesktop>();

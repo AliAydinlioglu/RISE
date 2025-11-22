@@ -29,6 +29,7 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
         var dateAsOffset = new DateTimeOffset(date.ToDateTime(TimeOnly.MinValue));
         var response = CourseDetailMapper.MapToResponse(course, date, dateAsOffset);
         
+        Log.Debug(response.ToString()!);
         return Result.Success(response);
     }
 
@@ -42,6 +43,7 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
             .Include(c => c.Announcements)
                 .ThenInclude(a => a.Sender)
             .Include(c => c.Deadlines)
+            .Include(c => c.Lecturer)
             .FirstOrDefaultAsync(c => c.Id == courseId);
     }
 
@@ -64,8 +66,10 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
             return Result.Invalid(new ValidationError("Date is outside the academic semester"));
         }
 
-        var lesson = course.Lessons.FirstOrDefault(l => l.DayOfWeek == date.DayOfWeek);
-        if (lesson is null)
+        var lessonsForDay = course.Lessons
+            .Where(l => l.DayOfWeek == date.DayOfWeek)
+            .ToList();
+        if (lessonsForDay.Count == 0)
         {
             Log.Warning($"No lesson scheduled on {date.DayOfWeek} for this course");
             return Result.NotFound($"No lesson scheduled on {date.DayOfWeek} for this course");

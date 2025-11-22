@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.JSInterop;
 using MudBlazor;
 using Rise.Client.Identity;
+using Rise.Client.Shared;
+using Rise.Shared.Notifications;
 
 namespace Rise.Client.Layout;
 
@@ -12,6 +15,8 @@ public partial class MainLayout
     private SignOutSessionStateManager SignOutManager { get; set; } = default!;
     [Inject]
     private NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] private INotificationService NotificationService { get; set; } = default!;
     [CascadingParameter]
     private Task<AuthenticationState>? AuthenticationState { get; set; }
 
@@ -55,6 +60,28 @@ public partial class MainLayout
         }
     }
 
+    protected override void OnInitialized()
+    {
+        _ = RequestNotificationSubscriptionAsync();
+    }
+
+    async Task RequestNotificationSubscriptionAsync()
+    {
+        var subscription = await JSRuntime.InvokeAsync<NotificationSubscription>(
+            "blazorPushNotifications.requestSubscription");
+        await JSRuntime.InvokeVoidAsync("console.log", subscription);
+        if (subscription is not null)
+        {
+            try
+            {
+                await NotificationService.SubscribeToNotifications(subscription);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                ex.Redirect();
+            }
+        }
+    }
     private string GetInitials(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -179,17 +206,53 @@ public partial class MainLayout
         {
             Default = new DefaultTypography()
             {
-                FontFamily = new[] { "Montserrat", "Arial", "sans-serif" }
+                FontFamily = new[] { "Montserrat", "Arial", "sans-serif" },
+                LetterSpacing = "0em"
             },
             
-            H1 = new H1Typography()
+            H1 = new H1Typography
             {
                 FontWeight = "800"
+            },
+            
+            H2 = new H2Typography
+            {
+                FontSize = "36px",
+                FontWeight = "600",
+                LineHeight = "1.25",
+            },
+            
+            H3 = new H3Typography
+            {
+                FontSize = "28px",
+                FontWeight = "600",
+                LineHeight = "1.3",
+            },
+            
+            H4 = new H4Typography
+            {
+                FontSize = "22px",
+                FontWeight = "600",
+                LineHeight = "1.4",
+            },
+            
+            Body1 = new Body1Typography
+            {
+                FontWeight = "400",
+                FontSize = "18px",
+                LineHeight = "1.5",
             },
             
             Button = new ButtonTypography()
             {
                 FontWeight = "800"
+            },
+            
+            Caption = new CaptionTypography
+            {
+                FontSize = "12px",
+                LineHeight = "1.4",
+                LetterSpacing = "0.02em"
             }
         }
     };

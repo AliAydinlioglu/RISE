@@ -1,0 +1,32 @@
+@page "/lessen/{CourseId}"
+@using Rise.Client.Courses.Components
+
+@if (_isLoading)
+{
+    <RiseLoader/>
+}
+else
+{
+    <MudContainer Class="py-4 px-4">
+        <MudGrid Spacing="6">
+            <MudItem xs="12" lg="4" Class="order-0 order-lg-2">
+                <MudPaper Elevation="1" Class="pa-4">
+                    <MudText Typo="Typo.h2" Class="mb-4 font-weight-bold">Lesinfo</MudText>
+                    <CourseDetailGeneralInfo Course="_course"/>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" lg="4" Class="order-1 order-lg-0">
+                <MudPaper Elevation="1" Class="pa-4">
+                    <CourseDetailVaknieuws Announcements="_course.Announcements"/>
+                </MudPaper>
+            </MudItem>
+
+            <MudItem xs="12" lg="4" Class="order-2 order-lg-1">
+                <MudPaper Elevation="1" Class="pa-4">
+                    <CourseDetailDeadlines Deadlines="_course.Deadlines"/>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}

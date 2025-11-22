@@ -6,7 +6,7 @@ public static class CourseDetailResponse
     {
         public string CourseId { get; set; }
         public string CourseTitle { get; set; }
-        public string Lecturer { get; set; }
+        public LecturerInfo Lecturer { get; set; }
         public LessonDetail Lesson { get; set; }
         public CampusInfo Campus { get; set; }
         public List<AnnouncementInfo> Announcements { get; set; }
@@ -45,5 +45,11 @@ public static class CourseDetailResponse
         public string DeadlineTitle { get; set; }
         public string DeadlineDescription { get; set; }
         public DateTimeOffset DeadlineTimestamp { get; set; }
+    }
+
+    public class LecturerInfo
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

@@ -6,8 +6,8 @@ namespace Rise.Persistence.Queries.Courses.Mappers;
 public static class CourseDetailMapper
 {
     public static CourseDetailResponse.Get MapToResponse(
-        Course course, 
-        DateOnly date, 
+        Course course,
+        DateOnly date,
         DateTimeOffset dateAsOffset)
     {
         var lesson = course.Lessons.First(lesson => lesson.DayOfWeek == date.DayOfWeek);
@@ -16,15 +16,15 @@ public static class CourseDetailMapper
         {
             CourseId = course.Id.ToString(),
             CourseTitle = course.Title,
-            Lecturer = course.Lecturer,
-            Lesson = MapLessonDetail(lesson, date),
-            Campus = MapCampus(lesson),
-            Announcements = MapAnnouncements(course),
-            Deadlines = MapUpcomingDeadlines(course, dateAsOffset)
+            Lecturer = course.Lecturer.ToLecturerInfo(),
+            Lesson = lesson.ToLessonDetail(date),
+            Campus = lesson.ToCampusInfo(),
+            Announcements = course.ToAnnouncementsInfo(),
+            Deadlines = course.ToUpcommingDeadlinesInfo(dateAsOffset)
         };
     }
 
-    private static CourseDetailResponse.LessonDetail MapLessonDetail(Lesson lesson, DateOnly date)
+    private static CourseDetailResponse.LessonDetail ToLessonDetail(this Lesson lesson, DateOnly date)
     {
         return new CourseDetailResponse.LessonDetail
         {
@@ -34,7 +34,7 @@ public static class CourseDetailMapper
         };
     }
 
-    private static CourseDetailResponse.CampusInfo MapCampus(Lesson lesson)
+    private static CourseDetailResponse.CampusInfo ToCampusInfo(this Lesson lesson)
     {
         // Hardcoded for now to Campus Schoonmeersen
         return new CourseDetailResponse.CampusInfo
@@ -48,7 +48,7 @@ public static class CourseDetailMapper
         };
     }
 
-    private static List<CourseDetailResponse.AnnouncementInfo> MapAnnouncements(Course course)
+    private static List<CourseDetailResponse.AnnouncementInfo> ToAnnouncementsInfo(this Course course)
     {
         return course.Announcements
             .OrderByDescending(it => it.Timestamp)
@@ -63,8 +63,7 @@ public static class CourseDetailMapper
             .ToList();
     }
 
-    private static List<CourseDetailResponse.DeadlineInfo> MapUpcomingDeadlines(
-        Course course, 
+    private static List<CourseDetailResponse.DeadlineInfo> ToUpcommingDeadlinesInfo(this Course course,
         DateTimeOffset fromDate)
     {
         return course.Deadlines
@@ -78,5 +77,14 @@ public static class CourseDetailMapper
                 DeadlineTimestamp = it.DeadlineTimestamp
             })
             .ToList();
+    }
+
+    private static CourseDetailResponse.LecturerInfo ToLecturerInfo(this Lecturer courseLecturer)
+    {
+        return new CourseDetailResponse.LecturerInfo
+        {
+            FirstName = courseLecturer.FirstName,
+            LastName = courseLecturer.LastName,
+        };
     }
 }

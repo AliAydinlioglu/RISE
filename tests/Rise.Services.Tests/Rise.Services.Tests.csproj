@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
         <UserSecretsId>a91d1be7-5e39-4a45-8a63-1ad233564a9d</UserSecretsId>
+        <Configurations>Debug;Release;test</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,8 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Xunit"/>
-        <Using Include="Shouldly"/>
+        <Using Include="Xunit" />
+        <Using Include="Shouldly" />
     </ItemGroup>
 
     <ItemGroup>

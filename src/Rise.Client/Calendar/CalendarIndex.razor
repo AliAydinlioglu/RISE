@@ -6,7 +6,7 @@
 
 @if (_isLoading)
 {
-    <p><em>Loading...</em></p>
+    <RiseLoader />
 }
 else
 {
@@ -47,6 +47,7 @@ else
     private RenderFragment RenderDeadlineView() => __builder =>
     {
         <CalendarItemsList Items="GetAllDeadlines()"
-                           EmptyMessage="Geen deadlines beschikbaar"/>
+                           EmptyMessage="Geen deadlines beschikbaar"
+                           AllowClickThrough="false"/>
     };
 }

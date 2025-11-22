@@ -1,5 +1,7 @@
-<div class="box is-flex p-0 is-align-items-stretch">
-    <div class="stacking-container">
+<div @onclick="HandleClick" 
+     class="box is-flex p-0 is-align-items-stretch"
+     style="--scale: @ScaleString; @(OnClickNavigateTo is null ? null : "cursor: pointer;")">
+    <div class="stacking-container scalable">
         @* BACKGROUND *@
         <div class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
             <p>@BackgroundTitle</p>
@@ -9,15 +11,15 @@
         <div class="square stacking-container-foreground mr-3">
             <div
                 class="inner-date-square is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
-                <p class="has-text-weight-bold is-size-1 m-0">@DayOfMonth</p>
-                <p class="has-text-weight-bold is-size-3 is-uppercase m-0">@MonthAbbreviation</p>
+                <p class="day-of-month-label has-text-weight-bold m-0">@DayOfMonth</p>
+                <p class="month-abbr-label has-text-weight-bold is-uppercase m-0">@MonthAbbreviation</p>
             </div>
         </div>
     </div>
     <div class="course-info py-2">
-        <p class="card-header has-text-weight-light is-size-7 mb-1">@CardHeader</p>
-        <p class="has-text-weight-semibold is-size-4 mb-0">@Title</p>
-        <p class="is-size-6 m-0">@Description</p>
+        <p class="header-label card-header has-text-weight-light mb-1">@CardHeader</p>
+        <p class="title-label has-text-weight-semibold mb-0">@Title</p>
+        <p class="description-label m-0">@Description</p>
         
         @ChildContent
     </div>

@@ -1,19 +1,11 @@
 ﻿.contact-communications {
-    font-size: 0.7rem;
-    margin: 0;
-    line-height: 1.3;
+    font-size: 0.8rem;
 }
 
 .contact-communications .channel {
     margin-bottom: 0.25rem;
     display: flex;
     align-items: center;
-}
-
-.contact-communications .channel .category{
-    display: inline-block;
-    min-width: 50px;
-    font-weight: bold;
 }
 
 .contact-communications a {
@@ -23,8 +15,3 @@
     color: inherit;
 }
 
-@media screen and (max-width: 768px) {
-    .contact-communications {
-        font-size: 0.6rem;
-    }
-}

@@ -98,7 +98,7 @@ public class GivenAMobileCalendar : GivenACalendarBase<CalendarMobile>
     [Fact]
     public void WhenOnDeadlinesView_ThenEmptyMessageShouldBeShownIfNoDeadlinesAreAvailable()
     {
-        var calendarServiceMock = new FakeCalendarServiceWithoutDeadlines();
+        var calendarServiceMock = new FakeCalendarService(false, false);
         Services.AddScoped<ICalendarService>(_ => calendarServiceMock);
 
         var cut = RenderComponent<CalendarMobile>();

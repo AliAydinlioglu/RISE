@@ -22,6 +22,7 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
         
         var courses = await dbContext.Courses
             .Where(it => it.ClassGroup == userClassGroup && it.AcademicSemester == academicSemester)
+            .Include(it => it.Lecturer)
             .Include(it => it.Lessons)
             .Include(it => it.Deadlines)
             .Include(it => it.Exams)
@@ -32,7 +33,7 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
             ClassGroup = userClassGroup,
             AcademicYear = academicSemester.AcademicYear,
             AcademicSemester = MapAcademicSemester(academicSemester),
-            Courses = courses.Select(it => MapCourse(it)).ToList()
+            Courses = courses.Select(MapCourse).ToList()
         };
         
         return Result.Success(response);
@@ -56,10 +57,10 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
         {
             CourseId = course.Id.ToString(),
             CourseTitle = course.Title,
-            Lecturer = course.Lecturer,
-            Lessons = course.Lessons.Select(it => MapLesson(it)).ToList(),
-            Deadlines = course.Deadlines.Select(it => MapDeadline(it)).ToList(),
-            Exams = course.Exams.Select(it => MapExam(it)).ToList()
+            Lecturer = MapLecturerInfo(course.Lecturer),
+            Lessons = course.Lessons.Select(MapLesson).ToList(),
+            Deadlines = course.Deadlines.Select(MapDeadline).ToList(),
+            Exams = course.Exams.Select(MapExam).ToList()
         };
     }
     
@@ -95,6 +96,15 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
             ExamTimestamp = exam.ExamTimestamp,
             Campus = exam.Campus,
             Room = exam.Room
+        };
+    }
+    
+    private static CalendarResponse.LecturerInfo MapLecturerInfo(Lecturer courseLecturer)
+    {
+        return new CalendarResponse.LecturerInfo
+        {
+            FirstName = courseLecturer.FirstName,
+            LastName = courseLecturer.LastName,
         };
     }
 

@@ -1,4 +1,5 @@
-﻿using Rise.Domain.Common;
+﻿using System.Runtime.Intrinsics.X86;
+using Rise.Domain.Common;
 using Rise.Domain.Locations;
 using Rise.Domain.SchoolEvents;
 

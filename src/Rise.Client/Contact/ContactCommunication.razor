@@ -1,9 +1,17 @@
-﻿<div class="contact-communications">
+﻿﻿
+<div class="contact-communications">
     @foreach (var channel in Channels.Where(c => !string.IsNullOrWhiteSpace(c.Name)))
     {
-        <div class="channel">
-            <span class="category">@channel.TypeOfCommunication</span>
-            <a href="@channel.Link" target="_blank">@channel.Name</a>
+        <div class="mb-2">
+            <span class="icon-text">
+                <span class="icon has-text-grey-light">
+                    <i class="fas @GetIconForCommunicationType(channel.TypeOfCommunication)"></i>
+                </span>
+                <span>
+                    <a href="@channel.Link" target="_blank" class="has-text-link">@channel.Name</a>
+                </span>
+            </span>
         </div>
     }
 </div>
+

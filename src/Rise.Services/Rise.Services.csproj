@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;test</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,11 @@
       <ProjectReference Include="..\Rise.Domain\Rise.Domain.csproj" />
       <ProjectReference Include="..\Rise.Persistence\Rise.Persistence.csproj" />
       <ProjectReference Include="..\Rise.Shared\Rise.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.0" />
+      <PackageReference Include="WebPush" Version="1.0.12" />
     </ItemGroup>
 
 </Project>

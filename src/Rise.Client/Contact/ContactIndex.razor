@@ -1,6 +1,8 @@
 ﻿@page "/contact"
+@attribute [AllowAnonymous]
+@using Rise.Client.Components.Dropdown
 <PageTitle>Contact</PageTitle>
-<div class="container ">
+<div class="container">
     <RiseHeadTitle>Contact</RiseHeadTitle>
 </div>
 
@@ -8,60 +10,177 @@
     @if (contactFacilities == null)
     {
         <MudContainer Class="mt-8">
-            <RiseLoader />
+            <RiseLoader/>
         </MudContainer>
     }
     else
     {
-        <div class="is-flex columns is-multiline mb-4">
-            @foreach (var contactFacility in contactFacilities)
-            {
-                <article data-bunit="sa-index" class="mb-4 column is-12-mobile is-6-tablet is-6-desktop">
-                    <RiseInfoCard Title="@contactFacility.Name">
-                        <div class="columns is-mobile">
-                            <div class="column">
-                                <ContactLocation Location="contactFacility.Location"></ContactLocation>
-                                <ContactCommunication Channels="contactFacility.CommunicationChannels"></ContactCommunication>
-                            </div>
-                            <div class="column">
-                                <ShowFacilityOpen IsFacilityOpen="contactFacility.IsFacilityOpen"></ShowFacilityOpen>
-                                <ContactOpeningHours OpeningHours="contactFacility.OpeningHours"></ContactOpeningHours>
-                                <ContactRemarks Remarks="contactFacility.Remarks"></ContactRemarks>
-                            </div>
-                        </div>
-                    </RiseInfoCard>
-                </article>
+        <!-- Filter Section -->
+        <div class="mb-5">
+            <div class="field is-grouped is-grouped-multiline">
+                <div class="control">
+                    <RiseSelectionDropdown TItem="FilterOption"
+                                         Items="campusOptions"
+                                         SelectedItem="selectedCampus"
+                                         SelectedItemChanged="OnCampusFilterChanged"
+                                         Placeholder="Alle campussen" />
+                </div>
+                <div class="control">
+                    <RiseSelectionDropdown TItem="FilterOption"
+                                         Items="categoryOptions"
+                                         SelectedItem="selectedCategory"
+                                         SelectedItemChanged="OnCategoryFilterChanged"
+                                         Placeholder="Alle categorieën" />
+                </div>
+                @if (HasActiveFilters)
+                {
+                    <div class="control">
+                        <button class="button is-light is-medium" @onclick="ClearFilters">
+                            <span class="icon">
+                                <i class="fas fa-times"></i>
+                            </span>
+                            <span>Filters wissen</span>
+                        </button>
+                    </div>
+                }
+            </div>
 
-            
+            @if (filteredFacilities.Any())
+            {
+                <div class="mt-3">
+                    <p class="has-text-grey1">@filteredFacilities.Count() resultaten gevonden</p>
+                </div>
             }
-        
         </div>
-        <section class="section pagination-section"> 
-        
-            <nav class="pagination is-rounded is-centered" role="navigation">
-                <button class="pagination-previous" 
-                        disabled="@(currentPage <= 1)"
-                        @onclick="() => OnPageChangedAsync(currentPage - 1)">
-                    Previous
-                </button>
-                <button class="pagination-next" 
-                        disabled="@(currentPage >= totalPages)"
-                        @onclick="() => OnPageChangedAsync(currentPage + 1)">
-                    Next
-                </button>
-                <ul class="pagination-list">
-                    @for (int i = 1; i <= totalPages; i++)
-                    {
-                        var pageNumber = i;
-                        <li>
-                            <button class="pagination-link @(currentPage == pageNumber ? "is-current" : "")"
-                                    @onclick="() => OnPageChangedAsync(pageNumber)">
-                                @pageNumber
-                            </button>
-                        </li>
-                    }
-                </ul>
-            </nav>
-        </section>
+
+        <!-- Services grouped by category -->
+        @if (!filteredFacilities.Any())
+        {
+            <div class="notification is-info is-light">
+                <p class="has-text-centered">Geen diensten gevonden met de geselecteerde filters.</p>
+            </div>
         }
+        else
+        {
+            @foreach (var categoryGroup in filteredFacilities.GroupBy(f => f.FacilityCategoryName).OrderBy(g => g.Key))
+            {
+                <div class="mb-6">
+                    <h2 class="title is-4 has-text-weight-bold mb-4 contact-category-title">
+                        @categoryGroup.Key
+                    </h2>
+
+                    <div class="contact-services-list">
+                        @foreach (var facility in categoryGroup)
+                        {
+                            <div class="contact-service-item mb-3">
+                                <div
+                                    class="box p-0 contact-service-card @(expandedServiceId == facility.Id ? "is-active" : "")"
+                                    style="--bg-image: url('@GetBackgroundImageUrl(facility.Id)');">
+
+                                    <!-- Service Header (Always Visible) -->
+                                    <div class="contact-service-header p-4 is-clickable"
+                                         @onclick="() => ToggleService(facility.Id)">
+                                        <div class="is-flex is-justify-content-space-between is-align-items-center">
+                                            <div class="is-flex-grow-1">
+                                                <h3 class="title is-5 mb-2">
+                                                    @facility.Name
+                                                </h3>
+                                                @if (!string.IsNullOrEmpty(facility.Description))
+                                                {
+                                                    <p class="subtitle is-6 has-text-grey mb-2">@facility.Description</p>
+                                                }
+                                                <ShowFacilityOpen IsFacilityOpen="facility.IsFacilityOpen"></ShowFacilityOpen>
+                                            </div>
+                                            <div class="ml-4">
+                                                <span class="icon is-medium has-text-grey">
+                                                    <i class="fas @(expandedServiceId == facility.Id ? "fa-chevron-up" : "fa-chevron-down")"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Service Details (Collapsible) -->
+                                    @if (expandedServiceId == facility.Id)
+                                    {
+                                        <div class="contact-service-details is-open p-4 pt-0">
+                                            <hr class="mb-4 contact-hr">
+
+                                            <div class="columns">
+                                                <div class="column is-half">
+                                                    @if (facility.Location != null)
+                                                    {
+                                                        <div class="mb-4">
+                                                            <p class="has-text-weight-bold mb-2 contact-section-title contact-section-title--teal">
+                                                                <span class="icon-text">
+                                                                    <span class="icon">
+                                                                        <i class="fas fa-map-marker-alt"></i>
+                                                                    </span>
+                                                                    <span>Locatie</span>
+                                                                </span>
+                                                            </p>
+                                                            <ContactLocation
+                                                                Location="facility.Location"></ContactLocation>
+                                                        </div>
+                                                    }
+
+                                                    @if (facility.CommunicationChannels.Any())
+                                                    {
+                                                        <div class="mb-4">
+                                                            <p class="has-text-weight-bold mb-2 contact-section-title contact-section-title--teal">
+                                                                <span class="icon-text">
+                                                                    <span class="icon">
+                                                                        <i class="fas fa-phone"></i>
+                                                                    </span>
+                                                                    <span>Contact</span>
+                                                                </span>
+                                                            </p>
+                                                            <ContactCommunication
+                                                                Channels="facility.CommunicationChannels"></ContactCommunication>
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                <div class="column is-half">
+                                                    @if (facility.OpeningHours.Any())
+                                                    {
+                                                        <div class="mb-4">
+                                                            <p class="has-text-weight-bold mb-2 contact-section-title contact-section-title--teal">
+                                                                <span class="icon-text">
+                                                                    <span class="icon">
+                                                                        <i class="fas fa-clock"></i>
+                                                                    </span>
+                                                                    <span>Openingsuren</span>
+                                                                </span>
+                                                            </p>
+                                                            <ContactOpeningHours
+                                                                OpeningHours="facility.OpeningHours"></ContactOpeningHours>
+                                                        </div>
+                                                    }
+
+                                                    @if (facility.Remarks.Any())
+                                                    {
+                                                        <div class="mb-4">
+                                                            <p class="has-text-weight-bold mb-2 contact-section-title contact-section-title--orange">
+                                                                <span class="icon-text">
+                                                                    <span class="icon" style="line-height: 25px;">
+                                                                        <i class="fas fa-info-circle"></i>
+                                                                    </span>
+                                                                    <span>Opmerkingen</span>
+                                                                </span>
+                                                            </p>
+                                                            <ContactRemarks Remarks="facility.Remarks"></ContactRemarks>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    }
 </section>

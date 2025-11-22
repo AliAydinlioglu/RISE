@@ -1,0 +1,18 @@
+<MudGrid>
+    <MudItem xs="12">
+        <MetaDataLabel LabelText="Datum">@Course.LessonDate</MetaDataLabel>
+    </MudItem>
+    <MudItem xs="12">
+        <MetaDataLabel LabelText="Uur">@Course.LessonTime</MetaDataLabel>
+    </MudItem>
+    <MudItem xs="12">
+        <MetaDataLabel LabelText="Locatie">
+            <p>@Course.Location.Campus</p>
+            <p>@Course.Location.Adress</p>
+            <p>@Course.Location.Room</p>
+        </MetaDataLabel>
+    </MudItem>
+    <MudItem xs="12">
+        <MetaDataLabel LabelText="Docent">@Course.Lecturer</MetaDataLabel>
+    </MudItem>
+</MudGrid>

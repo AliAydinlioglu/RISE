@@ -4,17 +4,21 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using Rise.Client;
 using Rise.Client.Calendar;
+using Rise.Client.Courses;
 using Rise.Client.Products;
 using Rise.Client.SchoolEvents;
 using Rise.Client.StudentActivities;
 using Rise.Client.Shared;
 using Rise.Shared;
 using Rise.Shared.Calendar;
+using Rise.Shared.Courses;
+using Rise.Shared.Notifications;
 using Rise.Shared.Products;
 using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
+using DateTimeService = Rise.Client.DateTimeService;
 
 try
 {
@@ -54,7 +58,7 @@ try
     // register the shared Singletons
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
-    builder.Services.AddSingleton<IDateTimeService, Rise.Client.DateTimeService>();
+    builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {
@@ -62,6 +66,11 @@ try
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services.AddHttpClient<ICalendarService, CalendarService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddHttpClient<ICourseService, CourseService>(client =>
     {
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
@@ -77,6 +86,11 @@ try
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
     
     builder.Services.AddHttpClient<IContactService, ContactService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<INotificationService, NotificationService>(client =>
     {
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();

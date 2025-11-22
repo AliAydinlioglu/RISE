@@ -6,4 +6,5 @@ public partial class CalendarItemsList
 {
     [Parameter, EditorRequired] public IEnumerable<CalendarViewItem>? Items { get; set; }
     [Parameter, EditorRequired] public string EmptyMessage { get; set; } = string.Empty;
+    [Parameter] public bool AllowClickThrough { get; set; } = true;
 }

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
 using Rise.Domain.Common;
@@ -14,6 +15,9 @@ public class GivenAGetCourseDetailQuery : IDisposable
 
     public GivenAGetCourseDetailQuery()
     {
+        var culture = CultureInfo.GetCultureInfo("nl-NL");
+        CultureInfo.CurrentCulture = culture;
+        
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
@@ -35,8 +39,9 @@ public class GivenAGetCourseDetailQuery : IDisposable
         
         detail.CourseId.ShouldBe(_riseCourse.Id.ToString());
         detail.CourseTitle.ShouldBe("RISE");
-        detail.Lecturer.ShouldBe("Alice Johnson");
-        detail.Lesson.Date.ShouldBe("04/11/2024");
+        detail.Lecturer.FirstName.ShouldBe("Alice");
+        detail.Lecturer.LastName.ShouldBe("Johnson");
+        detail.Lesson.Date.ShouldBe("04-11-2024");
         detail.Lesson.StartTime.ShouldBe("08:30");
         detail.Lesson.EndTime.ShouldBe("10:30");
         detail.Campus.Name.ShouldBe("Schoonmeersen");
@@ -147,7 +152,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
         _context.AcademicSemesters.Add(_academicSemester);
         await _context.SaveChangesAsync();
 
-        _riseCourse = new Course("RISE", "Alice Johnson", "TIAO-01", _academicSemester);
+        _riseCourse = new Course("RISE", new Lecturer("Alice", "Johnson"), "TIAO-01", _academicSemester);
         
         var mondayLesson = new Lesson(
             DayOfWeek.Monday,
@@ -155,6 +160,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "Schoonmeersen",
             "GSCHB.2.001"
         );
+        _riseCourse.AddLesson(mondayLesson);
         
         var thursdayLesson = new Lesson(
             DayOfWeek.Thursday,
@@ -162,6 +168,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "Schoonmeersen",
             "GSCHB.2.001"
         );
+        _riseCourse.AddLesson(thursdayLesson);
 
         var recentAnnouncement = new Announcement(
             "Recent Announcement",
@@ -169,6 +176,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "This is a recent message",
             new DateTimeOffset(2024, 11, 3, 14, 0, 0, TimeSpan.Zero)
         );
+        _riseCourse.AddAnnouncement(recentAnnouncement);
         
         var oldAnnouncement = new Announcement(
             "Old Announcement",
@@ -176,26 +184,16 @@ public class GivenAGetCourseDetailQuery : IDisposable
             "This is an older message",
             new DateTimeOffset(2024, 11, 1, 10, 0, 0, TimeSpan.Zero)
         );
+        _riseCourse.AddAnnouncement(oldAnnouncement);
 
         var deadline = new Deadline(
             "Project Deadline",
             "Complete the project",
             new DateTimeOffset(2024, 12, 14, 23, 59, 59, TimeSpan.Zero)
         );
+        _riseCourse.AddDeadline(deadline);
 
         _context.Courses.Add(_riseCourse);
-        _context.Lessons.AddRange(mondayLesson, thursdayLesson);
-        _context.Announcements.AddRange(recentAnnouncement, oldAnnouncement);
-        _context.Deadlines.Add(deadline);
-        await _context.SaveChangesAsync();
-
-        // Set foreign keys
-        mondayLesson.GetType().GetProperty("CourseId")!.SetValue(mondayLesson, _riseCourse.Id);
-        thursdayLesson.GetType().GetProperty("CourseId")!.SetValue(thursdayLesson, _riseCourse.Id);
-        recentAnnouncement.GetType().GetProperty("Course")!.SetValue(recentAnnouncement, _riseCourse);
-        oldAnnouncement.GetType().GetProperty("Course")!.SetValue(oldAnnouncement, _riseCourse);
-        deadline.GetType().GetProperty("CourseId")!.SetValue(deadline, _riseCourse.Id);
-        
         await _context.SaveChangesAsync();
     }
 

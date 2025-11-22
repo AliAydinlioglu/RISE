@@ -14,15 +14,8 @@ internal class AnnouncementConfiguration : EntityConfiguration<Announcement>
         builder.Property(it => it.Message).IsRequired();
         builder.Property(it => it.Timestamp).IsRequired();
         
-        builder.OwnsOne(it => it.Sender, lecturer =>
-        {
-            lecturer.Property(it => it.FirstName)
-                .IsRequired()
-                .HasColumnName(nameof(Lecturer.FirstName));
-            
-            lecturer.Property(it => it.LastName)
-                .IsRequired()
-                .HasColumnName(nameof(Lecturer.LastName));
-        }).Navigation(it => it.Sender).IsRequired();
+        builder.HasOne(it => it.Sender)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

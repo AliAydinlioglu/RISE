@@ -62,65 +62,6 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
         return Result.Success(new ContactResponse.Detail { Service = detail });
     }
 
-    public async Task<Result<ContactResponse.Index>> GetByCategoryAsync(string categoryName, CancellationToken ctx = default)
-    {
-        if (string.IsNullOrWhiteSpace(categoryName))
-        {
-            return Result.Error("Category name is required.");
-        }
-
-        var services = await dbContext.Services
-            .AsNoTracking()
-            .Where(s => s.FacilityCategory.Name == categoryName)
-            .OrderBy(s => s.Name)
-            .Select(s => ToIndexDto(s))
-            .ToListAsync(ctx);
-
-        return Result.Success(new ContactResponse.Index
-        {
-            Facilities = services,
-            TotalCount = services.Count
-        });
-    }
-
-    public async Task<Result<ContactResponse.Index>> GetByCampusAsync(string campusName, CancellationToken ctx = default)
-    {
-        if (string.IsNullOrWhiteSpace(campusName))
-        {
-            return Result.Error("Campus name is required.");
-        }
-
-        var services = await dbContext.Services
-            .AsNoTracking()
-            .Where(s => s.Location != null && s.Location.LocationName == campusName)
-            .OrderBy(s => s.FacilityCategory.Name)
-            .ThenBy(s => s.Name)
-            .Select(s => ToIndexDto(s))
-            .ToListAsync(ctx);
-
-        return Result.Success(new ContactResponse.Index
-        {
-            Facilities = services,
-            TotalCount = services.Count
-        });
-    }
-
-    public async Task<Result<ContactResponse.Index>> GetStaticServicesAsync(CancellationToken ctx = default)
-    {
-        var services = await dbContext.Services
-            .AsNoTracking()
-            .Where(s => s.Location == null)
-            .OrderBy(s => s.FacilityCategory.Name)
-            .ThenBy(s => s.Name)
-            .Select(s => ToIndexDto(s))
-            .ToListAsync(ctx);
-
-        return Result.Success(new ContactResponse.Index
-        {
-            Facilities = services,
-            TotalCount = services.Count
-        });
-    }
 
     private static ContactDto.Index ToIndexDto(Facility service)
     {
@@ -156,7 +97,7 @@ public class ContactService(ApplicationDbContext dbContext) : IContactService
             {
                 Name = cc.Name,
                 Link = cc.Link,
-                TypeOfCommunication = cc.TypeOfCommunication.ToString()
+                TypeOfCommunication = cc.TypeOfCommunication
             }).ToList()
         };
 
