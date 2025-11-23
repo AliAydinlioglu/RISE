@@ -10,6 +10,7 @@ using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.SchoolEvents;
 using Rise.Domain.StudentActivities;
+using Rise.Domain.UserPreferences;
 using Rise.Persistence.Models.Identity;
 using Rise.Shared.Notifications;
 
@@ -37,7 +38,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<StudentClub> StudentClubs => Set<StudentClub>();
     public DbSet<SchoolEvent> SchoolEvents => Set<SchoolEvent>();
     public DbSet<Facility> Services => Set<Facility>();
-    
+    public DbSet<UserPreference> UserPreferences => Set<UserPreference>();
     public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
     public DbSet<Lecturer> Lecturers => Set<Lecturer>();
     public DbSet<Course> Courses => Set<Course>();
