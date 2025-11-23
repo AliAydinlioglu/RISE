@@ -78,17 +78,17 @@ try
     builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    });
 
     builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    });
     
     builder.Services.AddHttpClient<IContactService, ContactService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    });
     
     builder.Services.AddHttpClient<INotificationService, NotificationService>(client =>
     {
