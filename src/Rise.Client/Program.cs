@@ -75,7 +75,6 @@ try
     builder.Services.AddScoped<RiseHttpMessageHandler>();
     builder.Services.AddScoped<IConnectionService, ConnectionService>();
     
-    builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();

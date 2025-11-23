@@ -185,3 +185,17 @@ main {
         padding-right: 12px;
     }
 }
+@media (max-width: 770px) {
+    .mud-overlay-content {
+        height: 100%;
+        width: 100%;
+    }
+    .mud-overlay{
+        z-index: 999999!important;
+    }
+
+   .pricelist .mud-expand-panel .mud-expand-panel-header, .pricelist .mud-expand-panel .mud-expand-panel-content.mud-expand-panel-gutters{
+        padding-left:0;
+        padding-right:0;
+    }
+}

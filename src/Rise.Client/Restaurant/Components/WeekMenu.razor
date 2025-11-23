@@ -1,0 +1,41 @@
+@using Rise.Client.Components.Calendar
+
+<div class="container">
+<RiseWeekCalendar SelectedDate="_selectedDate"
+                  SelectedDateChanged="(date) => OnDateChangedAsync(date)"
+                  Title="@_selectedDate.ToString("MMMM yyyy")"
+                  OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                  OnNextWeek="() => SetDateRelativeToCurrentDate(7)"
+                  ShowWeek="false"/>
+
+<div class="is-flex is-flex-direction-row is-justify-content-space-between gap-2 mb-3" >
+    
+    <span class="is-flex-grow-1 ">
+        <RiseButton OnClick="OpenRestoSelector" Size="RiseButton.RiseButtonSize.Small" Type="RiseButton.RiseButtonType.Primary">
+            Selecteer Restaurant
+        </RiseButton>
+    </span>
+    <RiseButton Type="RiseButton.RiseButtonType.Secondary" Size="RiseButton.RiseButtonSize.Small"> i </RiseButton>
+</div>
+
+<RestaurantFilter @bind-isVisible="_visible"/>
+
+@if (MenuItems != null && MenuItems.MenuItemCategories.Any())
+{
+    @foreach (var category in MenuItems.MenuItemCategories)
+    {
+        <p class="mb-3 has-text-weight-semibold">@category.CategoryName</p>
+        @foreach (var menuItem in category.MenuItems)
+        {
+            <div class="is-flex is-flex-direction-column p-3 mb-4 " style="border: 1px solid #ccc; border-radius: 8px;">    
+                <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
+                @if (menuItem.Allergens != null && @menuItem.Allergens.Any())
+                {
+                    <AllergenList Allergens="@menuItem.Allergens"/>
+                }
+            </div>
+        }
+    }
+}
+
+</div>
