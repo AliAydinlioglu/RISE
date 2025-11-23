@@ -7,7 +7,7 @@ public partial class RestaurantFilter : ComponentBase
     [Inject] public required IWeekmenuService WeekmenuService { get; set; }
     [Parameter] public bool IsVisible { get; set; } = false;
     [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
-    
+    [Parameter] public EventCallback<RestoOverviewDTO> OnSelect { get; set; }
     protected override async Task OnInitializedAsync()
     {
        await getRestaurants();
@@ -24,10 +24,9 @@ public partial class RestaurantFilter : ComponentBase
         }
     }
 
-    private Task OnRestaurantSelect(RestoOverviewDTO resto)
+    private async Task OnRestaurantSelect(RestoOverviewDTO resto)
     {
-       // TODO: Implement restaurant selection logic with parent method callback
-       throw new NotImplementedException();
+         await OnSelect.InvokeAsync(resto);
     }
     
     private async Task HandleVisibilityChange(bool isVisible)
