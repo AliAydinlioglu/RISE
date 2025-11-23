@@ -13,6 +13,46 @@ namespace Rise.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Allergen",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Symbol = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Allergen", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "DietaryRestriction",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Symbol = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DietaryRestriction", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "MenuCategory",
                 columns: table => new
                 {
@@ -107,10 +147,10 @@ namespace Rise.Persistence.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    StudentPrice = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    ExternPrice = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true),
                     IsHighlighted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     HasCategoryRemark = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    StudentPrice = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    ExternPrice = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true),
                     PriceListCategoryId = table.Column<int>(type: "int", nullable: false),
                     PriceListId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -124,8 +164,7 @@ namespace Rise.Persistence.Migrations
                         name: "FK_PriceListItem_PriceListCategory_PriceListCategoryId",
                         column: x => x.PriceListCategoryId,
                         principalTable: "PriceListCategory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_PriceListItem_PriceList_PriceListId",
                         column: x => x.PriceListId,
@@ -141,7 +180,7 @@ namespace Rise.Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTimeOffset>(type: "datetime(6)", nullable: false),
-                    RestoId = table.Column<int>(type: "int", nullable: false),
+                    RestoId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
@@ -153,8 +192,7 @@ namespace Rise.Persistence.Migrations
                         name: "FK_Menu_Resto_RestoId",
                         column: x => x.RestoId,
                         principalTable: "Resto",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -202,8 +240,7 @@ namespace Rise.Persistence.Migrations
                         name: "FK_MenuItem_MenuCategory_MenuCategoryId",
                         column: x => x.MenuCategoryId,
                         principalTable: "MenuCategory",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_MenuItem_Menu_MenuId",
                         column: x => x.MenuId,
@@ -236,66 +273,54 @@ namespace Rise.Persistence.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Allergen",
+                name: "MenuItemAllergen",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Symbol = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    MenuItemId = table.Column<int>(type: "int", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
+                    AllergensId = table.Column<int>(type: "int", nullable: false),
+                    MenuItemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Allergen", x => x.Id);
+                    table.PrimaryKey("PK_MenuItemAllergen", x => new { x.AllergensId, x.MenuItemId });
                     table.ForeignKey(
-                        name: "FK_Allergen_MenuItem_MenuItemId",
+                        name: "FK_MenuItemAllergen_Allergen_AllergensId",
+                        column: x => x.AllergensId,
+                        principalTable: "Allergen",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MenuItemAllergen_MenuItem_MenuItemId",
                         column: x => x.MenuItemId,
                         principalTable: "MenuItem",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DietaryRestriction",
+                name: "MenuItemDietaryRestriction",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Symbol = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    MenuItemId = table.Column<int>(type: "int", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false, defaultValue: false)
+                    DietaryRestrictionsId = table.Column<int>(type: "int", nullable: false),
+                    MenuItemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DietaryRestriction", x => x.Id);
+                    table.PrimaryKey("PK_MenuItemDietaryRestriction", x => new { x.DietaryRestrictionsId, x.MenuItemId });
                     table.ForeignKey(
-                        name: "FK_DietaryRestriction_MenuItem_MenuItemId",
+                        name: "FK_MenuItemDietaryRestriction_DietaryRestriction_DietaryRestric~",
+                        column: x => x.DietaryRestrictionsId,
+                        principalTable: "DietaryRestriction",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MenuItemDietaryRestriction_MenuItem_MenuItemId",
                         column: x => x.MenuItemId,
                         principalTable: "MenuItem",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Allergen_MenuItemId",
-                table: "Allergen",
-                column: "MenuItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DietaryRestriction_MenuItemId",
-                table: "DietaryRestriction",
-                column: "MenuItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Menu_RestoId",
@@ -311,6 +336,16 @@ namespace Rise.Persistence.Migrations
                 name: "IX_MenuItem_MenuId",
                 table: "MenuItem",
                 column: "MenuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuItemAllergen_MenuItemId",
+                table: "MenuItemAllergen",
+                column: "MenuItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuItemDietaryRestriction_MenuItemId",
+                table: "MenuItemDietaryRestriction",
+                column: "MenuItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PriceListItem_PriceListCategoryId",
@@ -337,16 +372,22 @@ namespace Rise.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Allergen");
+                name: "MenuItemAllergen");
 
             migrationBuilder.DropTable(
-                name: "DietaryRestriction");
+                name: "MenuItemDietaryRestriction");
 
             migrationBuilder.DropTable(
                 name: "PriceListItem");
 
             migrationBuilder.DropTable(
                 name: "RestoContactPeriods_ContactHours");
+
+            migrationBuilder.DropTable(
+                name: "Allergen");
+
+            migrationBuilder.DropTable(
+                name: "DietaryRestriction");
 
             migrationBuilder.DropTable(
                 name: "MenuItem");

@@ -12,7 +12,7 @@ using Rise.Persistence;
 namespace Rise.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251121213050_WeekMenu")]
+    [Migration("20251123225356_WeekMenu")]
     partial class WeekMenu
     {
         /// <inheritdoc />
@@ -24,6 +24,36 @@ namespace Rise.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("MenuItemAllergen", b =>
+                {
+                    b.Property<int>("AllergensId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AllergensId", "MenuItemId");
+
+                    b.HasIndex("MenuItemId");
+
+                    b.ToTable("MenuItemAllergen");
+                });
+
+            modelBuilder.Entity("MenuItemDietaryRestriction", b =>
+                {
+                    b.Property<int>("DietaryRestrictionsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DietaryRestrictionsId", "MenuItemId");
+
+                    b.HasIndex("MenuItemId");
+
+                    b.ToTable("MenuItemDietaryRestriction");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
@@ -603,9 +633,6 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<int?>("MenuItemId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -622,8 +649,6 @@ namespace Rise.Persistence.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MenuItemId");
 
                     b.ToTable("Allergen", (string)null);
                 });
@@ -646,9 +671,6 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<int?>("MenuItemId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -665,8 +687,6 @@ namespace Rise.Persistence.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MenuItemId");
 
                     b.ToTable("DietaryRestriction", (string)null);
                 });
@@ -692,7 +712,7 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("RestoId")
+                    b.Property<int?>("RestoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -753,10 +773,6 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<decimal?>("ExternPrice")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
-
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(1)")
@@ -772,10 +788,6 @@ namespace Rise.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
-
-                    b.Property<decimal?>("StudentPrice")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -874,10 +886,6 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("datetime(6)")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<decimal?>("ExternPrice")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
-
                     b.Property<bool>("HasCategoryRemark")
                         .HasColumnType("tinyint(1)");
 
@@ -899,10 +907,6 @@ namespace Rise.Persistence.Migrations
 
                     b.Property<int?>("PriceListId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("StudentPrice")
-                        .HasPrecision(5, 2)
-                        .HasColumnType("decimal(5,2)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
@@ -1504,6 +1508,65 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Rise.Shared.Notifications.NotificationSubscription", b =>
+                {
+                    b.Property<int>("NotificationSubscriptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("NotificationSubscriptionId"));
+
+                    b.Property<string>("Auth")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("P256dh")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("NotificationSubscriptionId");
+
+                    b.ToTable("NotificationSubscriptions");
+                });
+
+            modelBuilder.Entity("MenuItemAllergen", b =>
+                {
+                    b.HasOne("Rise.Domain.Menu.Allergen", null)
+                        .WithMany()
+                        .HasForeignKey("AllergensId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.Menu.MenuItem", null)
+                        .WithMany()
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MenuItemDietaryRestriction", b =>
+                {
+                    b.HasOne("Rise.Domain.Menu.DietaryRestriction", null)
+                        .WithMany()
+                        .HasForeignKey("DietaryRestrictionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.Menu.MenuItem", null)
+                        .WithMany()
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Rise.Persistence.Models.Identity.ApplicationRole", null)
@@ -1846,29 +1909,11 @@ namespace Rise.Persistence.Migrations
                     b.Navigation("OpeningHours");
                 });
 
-            modelBuilder.Entity("Rise.Domain.Menu.Allergen", b =>
-                {
-                    b.HasOne("Rise.Domain.Menu.MenuItem", null)
-                        .WithMany("Projects")
-                        .HasForeignKey("MenuItemId");
-                });
-
-            modelBuilder.Entity("Rise.Domain.Menu.DietaryRestriction", b =>
-                {
-                    b.HasOne("Rise.Domain.Menu.MenuItem", null)
-                        .WithMany("DietaryRestrictions")
-                        .HasForeignKey("MenuItemId");
-                });
-
             modelBuilder.Entity("Rise.Domain.Menu.Menu", b =>
                 {
-                    b.HasOne("Rise.Domain.Menu.Resto", "Resto")
+                    b.HasOne("Rise.Domain.Menu.Resto", null)
                         .WithMany("Menus")
-                        .HasForeignKey("RestoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Resto");
+                        .HasForeignKey("RestoId");
                 });
 
             modelBuilder.Entity("Rise.Domain.Menu.MenuItem", b =>
@@ -1876,14 +1921,39 @@ namespace Rise.Persistence.Migrations
                     b.HasOne("Rise.Domain.Menu.MenuCategory", "MenuCategory")
                         .WithMany()
                         .HasForeignKey("MenuCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Rise.Domain.Menu.Menu", null)
                         .WithMany("MenuItems")
                         .HasForeignKey("MenuId");
 
+                    b.OwnsOne("Rise.Domain.Common.Price", "Price", b1 =>
+                        {
+                            b1.Property<int>("MenuItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<decimal?>("Extern")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("ExternPrice");
+
+                            b1.Property<decimal?>("Student")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("StudentPrice");
+
+                            b1.HasKey("MenuItemId");
+
+                            b1.ToTable("MenuItem");
+
+                            b1.WithOwner()
+                                .HasForeignKey("MenuItemId");
+                        });
+
                     b.Navigation("MenuCategory");
+
+                    b.Navigation("Price")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rise.Domain.Menu.PriceListItem", b =>
@@ -1891,12 +1961,37 @@ namespace Rise.Persistence.Migrations
                     b.HasOne("Rise.Domain.Menu.PriceListCategory", "PriceListCategory")
                         .WithMany()
                         .HasForeignKey("PriceListCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Rise.Domain.Menu.PriceList", null)
                         .WithMany("PriceListItems")
                         .HasForeignKey("PriceListId");
+
+                    b.OwnsOne("Rise.Domain.Common.Price", "Price", b1 =>
+                        {
+                            b1.Property<int>("PriceListItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<decimal?>("Extern")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("ExternPrice");
+
+                            b1.Property<decimal>("Student")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("StudentPrice");
+
+                            b1.HasKey("PriceListItemId");
+
+                            b1.ToTable("PriceListItem");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PriceListItemId");
+                        });
+
+                    b.Navigation("Price")
+                        .IsRequired();
 
                     b.Navigation("PriceListCategory");
                 });
@@ -2178,13 +2273,6 @@ namespace Rise.Persistence.Migrations
             modelBuilder.Entity("Rise.Domain.Menu.Menu", b =>
                 {
                     b.Navigation("MenuItems");
-                });
-
-            modelBuilder.Entity("Rise.Domain.Menu.MenuItem", b =>
-                {
-                    b.Navigation("DietaryRestrictions");
-
-                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("Rise.Domain.Menu.PriceList", b =>

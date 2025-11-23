@@ -3,8 +3,7 @@ namespace Rise.Domain.Menu;
 public class MenuItem : Entity
 {
     public string Name { get; set; } = null!;
-    public decimal? StudentPrice { get; set; }
-    public decimal? ExternPrice { get; set; }
+    public Price Price { get; set; } = null!;
 
     public MenuCategory MenuCategory { get; init; } = null!;
     
@@ -12,20 +11,18 @@ public class MenuItem : Entity
     public IReadOnlyList<DietaryRestriction> DietaryRestrictions => _dietaryRestrictions.AsReadOnly();
     
     private readonly List<Allergen> _allergens = [];
-    public IReadOnlyList<Allergen> Projects => _allergens.AsReadOnly();
+    public IReadOnlyList<Allergen> Allergens => _allergens.AsReadOnly();
 
     private MenuItem() { }
     
     public MenuItem(
         string name,
         MenuCategory menuCategory,
-        decimal? studentPrice = null,
-        decimal? externPrice = null)
+        Price price)
     {
         Name = Guard.Against.NullOrWhiteSpace(name);
         MenuCategory = Guard.Against.Null(menuCategory);
-        StudentPrice = studentPrice;
-        ExternPrice = externPrice;
+        Price = Guard.Against.Null(price);
     }
 
     public void AddDietaryRestrictions(IEnumerable<DietaryRestriction> dietaryRestrictions)

@@ -1,3 +1,4 @@
+using Rise.Domain.Common;
 using Rise.Domain.Locations;
 using Rise.Domain.Menu;
 
@@ -30,9 +31,9 @@ public static class MenuSeeder
         var priceList = new PriceList("Schoonmeersen Prijslijst");
         priceList.AddPriceListItems(new List<PriceListItem>
         {
-            new PriceListItem("Coca-Cola", 1.5m, 2.0m, drinks),
-            new PriceListItem("Broodje Kaas", 2.5m, 3.0m, snacks),
-            new PriceListItem("Pasta Bolognese", 5.0m, 6.0m, mains)
+            new PriceListItem("Coca-Cola", Price.ForPriceListItem(1.5m, 2.0m), drinks),
+            new PriceListItem("Broodje Kaas", Price.ForPriceListItem(2.5m, 3.0m), snacks),
+            new PriceListItem("Pasta Bolognese", Price.ForPriceListItem(5.0m, 6.0m), mains)
         });
         dbContext.PriceLists.Add(priceList);
         await dbContext.SaveChangesAsync();
@@ -59,14 +60,14 @@ public static class MenuSeeder
             for (int dayOffset = 0; dayOffset < 14; dayOffset++)
             {
                 var menuDate = DateTimeOffset.Now.Date.AddDays(dayOffset);
-                var menu = new Menu(menuDate, resto);
+                var menu = new Menu(menuDate);
 
                 // 3 menu items per menu
                 var menuItems = new List<MenuItem>
                 {
-                    new MenuItem($"Soep dag {dayOffset+1}", new MenuCategory("Soepen"), 2.50m, 3.50m),
-                    new MenuItem($"Hoofdgerecht dag {dayOffset+1}", new MenuCategory("Hoofdgerechten"), 5.00m, 6.50m),
-                    new MenuItem($"Dessert dag {dayOffset+1}", new MenuCategory("Desserts"), 3.00m, 4.00m)
+                    new MenuItem($"Soep dag {dayOffset+1}", new MenuCategory("Soepen"), Price.ForMenuItem(2.50m, 3.50m)),
+                    new MenuItem($"Hoofdgerecht dag {dayOffset+1}", new MenuCategory("Hoofdgerechten"), Price.ForMenuItem(5.00m, 6.50m)),
+                    new MenuItem($"Dessert dag {dayOffset+1}", new MenuCategory("Desserts"), Price.ForMenuItem(3.00m, 4.00m))
                 };
 
                 // Random allergen & dietary restriction

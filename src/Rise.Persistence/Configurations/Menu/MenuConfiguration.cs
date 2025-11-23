@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Rise.Persistence.Configurations.Menu;
@@ -8,5 +9,9 @@ internal class MenuConfiguration : EntityConfiguration<Domain.Menu.Menu>
     {
         base.Configure(builder);
         builder.Property(m => m.Date).IsRequired();
+        
+        builder.HasMany(m => m.MenuItems)
+            .WithOne()
+            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }
