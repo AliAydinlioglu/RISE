@@ -1,0 +1,11 @@
+<div class="tabs is-centered mb-4">
+    <ul>
+        @foreach (var tab in Enum.GetValues(typeof(NavigationTab)))
+        {
+            <li class="@(ActiveTab == (NavigationTab) tab ? "is-active" : "")">
+                <NavLink href="@GetTabUrl((NavigationTab) tab)"> @tab</NavLink>
+            </li>
+        }
+            
+    </ul>
+</div>
