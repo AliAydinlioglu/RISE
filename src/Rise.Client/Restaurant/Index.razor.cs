@@ -4,6 +4,7 @@ using Rise.Client.Attributes;
 using Rise.Client.Calendar;
 using Rise.Client.Calendar.Components;
 using Rise.Client.Components.Calendar;
+using Rise.Client.Restaurant.Components;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 
@@ -15,17 +16,13 @@ public partial class Index : ComponentBase
 
     private bool _isLoading;
     
-    protected DateTime _selectedDate;
     protected int _currentView;
     protected List<RenderFragment> _carouselItems = [];
-
-    [Inject] public required IDateTimeService DateTimeService { get; set; }
-
+    
     protected override async Task OnInitializedAsync()
     {
         _isLoading = true;
-        _selectedDate = DateTimeService.Today;
-
+        BuildCarouselItems();
         _isLoading = false;
     }
 
@@ -41,5 +38,22 @@ public partial class Index : ComponentBase
             1 => "Prijslijst",
             _ => "Weekmenu"
         };
+    }
+
+    private void BuildCarouselItems()
+    {
+        _carouselItems.Add(builder =>
+            {
+                builder.OpenComponent(0, typeof(WeekMenu));
+                builder.CloseComponent();
+            }
+        );
+        
+        _carouselItems.Add(builder =>
+            {
+                builder.OpenComponent(0, typeof(Pricelist));
+                builder.CloseComponent();
+            }
+        );
     }
 }

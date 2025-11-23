@@ -18,6 +18,7 @@ using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
+using Rise.Client.Restaurant.Components;
 using DateTimeService = Rise.Client.DateTimeService;
 
 try
@@ -60,6 +61,11 @@ try
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
+    builder.Services.AddHttpClient<IWeekmenuService, WeekmenuService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {
         client.BaseAddress = baseUrl;

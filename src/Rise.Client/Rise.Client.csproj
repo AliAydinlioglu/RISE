@@ -446,7 +446,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Restaurant\Components\" />
+    <Compile Update="Restaurant\Components\WeekmenuService.cs">
+      <DependentUpon>WeekMenu.razor</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
