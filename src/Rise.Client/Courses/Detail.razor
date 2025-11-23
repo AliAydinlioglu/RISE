@@ -5,6 +5,14 @@
 {
     <RiseLoader/>
 }
+else if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <RiseNotification
+        Title="Er liep iets mis..."
+        Subtitle="@_errorMessage"
+        Severity="Error"
+    />
+}
 else
 {
     <MudContainer Class="py-4 px-4">

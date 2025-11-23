@@ -19,7 +19,7 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
         if (course is null)
         {
             Log.Warning($"Course with Id {courseId} not found.");
-            return Result.NotFound("Course not found");
+            return Result.Forbidden("Course not found");
         }
 
         var validationResult = ValidateCourse(course, date, userClassGroup);
@@ -71,8 +71,8 @@ public class GetCourseDetailQuery(ApplicationDbContext dbContext) : IGetCourseDe
             .ToList();
         if (lessonsForDay.Count == 0)
         {
-            Log.Warning($"No lesson scheduled on {date.DayOfWeek} for this course");
-            return Result.NotFound($"No lesson scheduled on {date.DayOfWeek} for this course");
+            Log.Warning($"No lesson scheduled on {date.DayOfWeek} for course with id {course.Id}");
+            return Result.NotFound($"No lesson scheduled on {date.DayOfWeek} for with id {course.Id}");
         }
 
         return Result.Success();
