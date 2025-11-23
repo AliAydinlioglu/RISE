@@ -21,14 +21,16 @@
     
         <span class="is-flex-grow-1 ">
             <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small" Type="RiseButton.RiseButtonType.Primary">
-                Huidig Restaurant: @currentResto.Name 
+                @currentResto.Name  &nbsp;
+                <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
             </RiseButton>
         </span>
-        <RiseButton Type="RiseButton.RiseButtonType.Secondary" Size="RiseButton.RiseButtonSize.Small"> i </RiseButton>
+        <RiseButton Type="RiseButton.RiseButtonType.Secondary" Size="RiseButton.RiseButtonSize.Small"> <MudIcon Icon="@Icons.Material.Outlined.Info" /> </RiseButton>
     </div>
 
     <RestaurantFilter @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection" OnClose="ToggleRestoSelector"/>
 
+    <AsyncData IsLoading="_isLoading">
     @if (MenuItems != null && MenuItems.MenuItemCategories.Any())
     {
         @foreach (var category in MenuItems.MenuItemCategories)
@@ -46,4 +48,5 @@
             }
         }
     }
+    </AsyncData>
 </div>
