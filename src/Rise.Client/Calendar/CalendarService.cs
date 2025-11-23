@@ -7,7 +7,14 @@ public class CalendarService(HttpClient httpClient) : ICalendarService
 {
     public async Task<Result<CalendarResponse.Get>> GetCalendarAsync(string userId)
     {
-        var result = await httpClient.GetFromJsonAsync<Result<CalendarResponse.Get>>("/api/calendar");
-        return result!;
+        try
+        {
+            var result = await httpClient.GetFromJsonAsync<Result<CalendarResponse.Get>>("/api/calendar");
+            return result!;
+        }
+        catch (Exception _)
+        {
+            return Result<CalendarResponse.Get>.Error();
+        }
     }
 }

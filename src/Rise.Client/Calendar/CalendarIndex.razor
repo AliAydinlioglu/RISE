@@ -9,6 +9,12 @@
     {
         <RiseLoader/>
     }
+    else if (_showError)
+    {
+        <RiseNotification Title="Er liep iets mis..."
+                          Subtitle="Er trad een onverwachte fout op. Gelieve later opnieuw te proberen"
+                          Severity="Error"/>
+    }
     else
     {
         <div class="is-hidden-tablet">

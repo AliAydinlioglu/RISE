@@ -6,8 +6,8 @@ namespace Rise.Services.Tests.Calendar;
 
 public class FakeGetCalendarQuery: IGetCalendarQuery
 {
-    public Task<Result<CalendarResponse.Get>> ExecuteAsync(string userClassGroup)
+    public Task<CalendarResponse.Get> ExecuteAsync(string userClassGroup)
     {
-        return Task.FromResult(Result.Success(CalendarObjectMother.BuildGetResponse()));
+        return Task.FromResult(CalendarObjectMother.BuildGetResponse());
     }
 }

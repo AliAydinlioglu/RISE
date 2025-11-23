@@ -2,5 +2,5 @@ namespace Rise.Shared.Calendar;
 
 public interface IGetCalendarQuery
 {
-    Task<Result<CalendarResponse.Get>> ExecuteAsync(string userClassGroup);
+    Task<CalendarResponse.Get> ExecuteAsync(string userClassGroup);
 }

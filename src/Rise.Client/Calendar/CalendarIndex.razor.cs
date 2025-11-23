@@ -17,6 +17,7 @@ public partial class CalendarIndex
     protected DateTime _selectedDate;
     protected int _currentView;
     protected List<RenderFragment> _carouselItems = [];
+    private bool _showError;
 
     [Inject] public required ICalendarService CalendarService { get; set; }
     [Inject] public required IDateTimeService DateTimeService { get; set; }
@@ -27,10 +28,22 @@ public partial class CalendarIndex
         _selectedDate = DateTimeService.Today;
 
         var result = await CalendarService.GetCalendarAsync(DummyUserId);
-        _calendarItems = result.Value.ToCalendarListItems();
-        InitializeCarouselItems();
-        
+        MapResult(result);
+
         _isLoading = false;
+    }
+
+    private void MapResult(Result<CalendarResponse.Get> result)
+    {
+        if (result.IsSuccess)
+        {
+            _calendarItems = result.Value.ToCalendarListItems();
+            InitializeCarouselItems();
+        }
+        else
+        {
+            _showError = true;
+        }
     }
 
     private void InitializeCarouselItems()
