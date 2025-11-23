@@ -12,13 +12,13 @@
     
     <span class="is-flex-grow-1 ">
         <RiseButton OnClick="OpenRestoSelector" Size="RiseButton.RiseButtonSize.Small" Type="RiseButton.RiseButtonType.Primary">
-            Selecteer Restaurant
+            Huidig Restaurant: @currentResto.Name 
         </RiseButton>
     </span>
     <RiseButton Type="RiseButton.RiseButtonType.Secondary" Size="RiseButton.RiseButtonSize.Small"> i </RiseButton>
 </div>
 
-<RestaurantFilter @bind-isVisible="_visible"/>
+<RestaurantFilter @bind-isVisible="_visible" OnSelect="@ApplyRestoSelection"/>
 
 @if (MenuItems != null && MenuItems.MenuItemCategories.Any())
 {

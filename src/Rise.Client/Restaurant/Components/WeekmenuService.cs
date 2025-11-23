@@ -301,6 +301,7 @@ public class FoodRestrictionDTO
 
 public class RestoOverviewDTO
 {
+    public int RestoId { get; set; }
     public string Name { get; set; }
     // public LocationDTO Location { get; set; } // Commented out as I don't have this class definition
     public RestoOpeningHourDTO[] OpeningHours { get; set; } = []; // Added property Name

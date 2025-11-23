@@ -9,7 +9,11 @@ namespace Rise.Client.Restaurant.Components;
 public partial class WeekMenu : ComponentBase
 {
     private DateTime _selectedDate;
-    private int selectedRestoId = 1;
+    private RestoOverviewDTO currentResto = new RestoOverviewDTO()
+    {
+        RestoId = 1,
+        Name = "Schoonmeersen B",
+    };
     private bool _visible = false;
     
     private WeekMenuResponse.DayMenu? MenuItems = null;
@@ -27,6 +31,7 @@ public partial class WeekMenu : ComponentBase
         else if (_selectedDate.DayOfWeek == DayOfWeek.Sunday)
             _selectedDate = _selectedDate.AddDays(1);
         
+        //TODO: Get favorite resto from user settings else default
         await LoadMenuAsync();
     }
 
@@ -34,7 +39,7 @@ public partial class WeekMenu : ComponentBase
     {
         var request = new WeekmenuService.WeekMenuRequest.DayMenu
         {
-            RestoID = selectedRestoId,
+            RestoID = currentResto.RestoId,
             Date = new DateTimeOffset(_selectedDate)
         };
 
@@ -52,13 +57,14 @@ public partial class WeekMenu : ComponentBase
         _visible = true;
     }
     
-    private async Task ApplyRestoSelection()
+    private async Task ApplyRestoSelection(RestoOverviewDTO resto)
     {
+        currentResto = resto;
+        // TODO: store current selected resto in storage for history
         _visible = false;
         await LoadMenuAsync();
     }
 
-    // todo: make on select interaction for the filter
     private async Task OnDateChangedAsync(DateTime date)
     {
         Log.Information("{0}: {1}", nameof(OnDateChangedAsync), $"{date:dd/MM/yyyy}");
