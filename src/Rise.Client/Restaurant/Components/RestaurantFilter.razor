@@ -1,13 +1,13 @@
-<MudOverlay Visible="IsVisible" VisibleChanged="HandleVisibilityChange" Class="mud-skip-overlay-section" @onclick:stopPropagation="true" AutoClose="true" DarkBackground="true">
-    <div class="resto-selector @(IsVisible ? "visible" : "")"  @onclick:stopPropagation="true">
+<MudOverlay Visible="IsVisible" VisibleChanged="HandleVisibilityChange" Class="mud-skip-overlay-section" AutoClose="true" DarkBackground="true">
+    <div class="resto-selector @(IsVisible ? "visible" : "")">
         <div class="resto-selector-header">
-            <p class="is-hidden-tablet"> &#8592; Terug</p>
+            <p class="is-hidden-tablet" @onclick="HandleClose"> &#8592; Terug</p>
             <h3>Kies een restaurant</h3>
         </div>
         <div class="resto-selector-content is-flex is-flex-direction-column gap-2">
             @foreach(var resto in Restaurants)
             {
-                <RiseButton OnClick="() => OnRestaurantSelect(resto)"> @resto.Name</RiseButton>
+                <RiseButton OnClick="() => HandleRestaurantSelect(resto)"> @resto.Name</RiseButton>
             }
         </div>
     </div>
