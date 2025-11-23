@@ -24,6 +24,9 @@ using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
 using Rise.Client.Restaurant;
+using Rise.Shared.UserPreferences;
+using Rise.Client.UserPreferences;
+using Rise.Client.Offline;
 using TG.Blazor.IndexedDB;
 using Rise.Shared.Menu;
 using Rise.Client.Services;
@@ -130,13 +133,20 @@ try
     builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>();
 
-    builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; })
-        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-    builder.Services
-        .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })
-        .AddHttpMessageHandler<RiseHttpMessageHandler>()
-        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    builder.Services.AddHttpClient<IUserPreferenceService, UserPreferenceService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
 
