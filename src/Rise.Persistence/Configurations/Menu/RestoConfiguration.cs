@@ -21,5 +21,9 @@ internal class RestoConfiguration : EntityConfiguration<Resto>
             });
             oh.ToTable("RestoContactPeriods");
         });
+
+        builder.HasMany(r => r.Menus)
+            .WithOne()
+            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }
