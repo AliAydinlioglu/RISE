@@ -446,8 +446,8 @@
     <_ContentIncludedByDefault Remove="Components\Navigation\NavItem.razor" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Restaurant\Components\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Restaurant\Components\" />
+    </ItemGroup>
 
 </Project>
