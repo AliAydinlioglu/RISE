@@ -1,0 +1,10 @@
+@if (IsLoading)
+{
+    <MudContainer Class="mt-8">
+        <RiseLoader />
+    </MudContainer>
+}
+else
+{
+   @ChildContent
+}

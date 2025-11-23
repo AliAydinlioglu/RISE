@@ -21,9 +21,10 @@ public partial class Index : ComponentBase
         Name = "Schoonmeersen B",
     };
 
-    private bool _visible = false;
+    private bool _visible;
 
-    private WeekMenuResponse.DayMenu? MenuItems = null;
+    private WeekMenuResponse.DayMenu? MenuItems;
+    private bool _isLoading;
 
     [Inject] public required IDateTimeService DateTimeService { get; set; }
     [Inject] public required IWeekmenuService WeekmenuService { get; set; }
@@ -44,6 +45,7 @@ public partial class Index : ComponentBase
 
     private async Task LoadMenuAsync()
     {
+        _isLoading = true;
         var request = new WeekmenuService.WeekMenuRequest.DayMenu
         {
             RestoID = currentResto.RestoId,
@@ -51,6 +53,7 @@ public partial class Index : ComponentBase
         };
 
         MenuItems = await WeekmenuService.GetDayMenuAsync(request);
+        _isLoading = false;
     }
 
     private void SetDateRelativeToCurrentDate(int days)
