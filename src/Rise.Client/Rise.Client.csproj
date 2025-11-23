@@ -446,10 +446,4 @@
     <_ContentIncludedByDefault Remove="Components\Navigation\NavItem.razor" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Restaurant\Components\WeekmenuService.cs">
-      <DependentUpon>WeekMenu.razor</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
 </Project>

@@ -10,50 +10,74 @@ using Rise.Shared.Calendar;
 
 namespace Rise.Client.Restaurant;
 
-[HomeBlock(icon:@Icons.Material.Filled.RestaurantMenu, label:"Weekmenu", route:"/restaurant/")]
+[HomeBlock(icon: @Icons.Material.Filled.RestaurantMenu, label: "Weekmenu", route: "/restaurant/")]
 public partial class Index : ComponentBase
 {
+    private DateTime _selectedDate;
 
-    private bool _isLoading;
-    
-    protected int _currentView;
-    protected List<RenderFragment> _carouselItems = [];
-    
+    private RestoOverviewDTO currentResto = new RestoOverviewDTO()
+    {
+        RestoId = 1,
+        Name = "Schoonmeersen B",
+    };
+
+    private bool _visible = false;
+
+    private WeekMenuResponse.DayMenu? MenuItems = null;
+
+    [Inject] public required IDateTimeService DateTimeService { get; set; }
+    [Inject] public required IWeekmenuService WeekmenuService { get; set; }
+    [Inject] public required IDialogService? DialogService { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        _isLoading = true;
-        BuildCarouselItems();
-        _isLoading = false;
+        _selectedDate = DateTimeService.Now;
+
+        if (_selectedDate.DayOfWeek == DayOfWeek.Saturday)
+            _selectedDate = _selectedDate.AddDays(2);
+        else if (_selectedDate.DayOfWeek == DayOfWeek.Sunday)
+            _selectedDate = _selectedDate.AddDays(1);
+
+        //TODO: Get favorite resto from user settings else default
+        await LoadMenuAsync();
     }
 
-    private void OnViewChanged(int newIndex)
+    private async Task LoadMenuAsync()
     {
-        _currentView = newIndex;
-    }
-
-    private string GetCurrentViewTitle()
-    {
-        return _currentView switch
+        var request = new WeekmenuService.WeekMenuRequest.DayMenu
         {
-            1 => "Prijslijst",
-            _ => "Weekmenu"
+            RestoID = currentResto.RestoId,
+            Date = new DateTimeOffset(_selectedDate)
         };
+
+        MenuItems = await WeekmenuService.GetDayMenuAsync(request);
     }
 
-    private void BuildCarouselItems()
+    private void SetDateRelativeToCurrentDate(int days)
     {
-        _carouselItems.Add(builder =>
-            {
-                builder.OpenComponent(0, typeof(WeekMenu));
-                builder.CloseComponent();
-            }
-        );
-        
-        _carouselItems.Add(builder =>
-            {
-                builder.OpenComponent(0, typeof(Pricelist));
-                builder.CloseComponent();
-            }
-        );
+        _selectedDate = _selectedDate.AddDays(days);
+        _selectedDate = CalendarHelpers.GetMondayOfWeek(_selectedDate);
+    }
+
+    private void ToggleRestoSelector()
+    {
+        _visible = !_visible;
+    }
+
+    private async Task ApplyRestoSelection(RestoOverviewDTO resto)
+    {
+        currentResto = resto;
+        // TODO: store current selected resto in storage for history
+        _visible = false;
+        await LoadMenuAsync();
+    }
+
+    private async Task OnDateChangedAsync(DateTime date)
+    {
+        Log.Information("{0}: {1}", nameof(OnDateChangedAsync), $"{date:dd/MM/yyyy}");
+
+        _selectedDate = date;
+
+        await LoadMenuAsync();
     }
 }

@@ -1,47 +1,55 @@
+@page "/restaurant/prijslijst"
 <div class="pricelist">
-<MudExpansionPanels MultiExpansion="true"  Class="breakout" Dense="true" Gutters="false" Elevation="0">
-    <MudExpansionPanel>
-        <TitleContent>
-            <div class="d-flex w-100">
-                <span class="flex-grow-1">
-                    Ontbijt en snacks
-                </span>
-                <span style="width: 85px; text-align: center;">Studenten</span>
-                <span style="width: 85px; text-align: center;">Externen</span>
-            </div>
-        </TitleContent>
-        <ChildContent>
-            <div class="d-flex w-100">
-                <span class="flex-grow-1">
-                    Ontbijtkoek
-                </span>
-                <span style="width: 85px; text-align: center;">1.20</span>
-                <span style="width: 85px; text-align: center;">1.65</span>
-            </div>
-        </ChildContent>
-    </MudExpansionPanel>
-    <MudExpansionPanel>
-        <TitleContent>
-            <div class="d-flex justify-space-between ">
-                <span>
-                    Warme maaltijden
-                </span>
-                
-                <div class="d-flex gap-2">
-                    <span>Studenten</span>
-                    <span>Externen</span>
-                </div>
-            </div>
-        </TitleContent>
-        <ChildContent>
-            Panel Content
-        </ChildContent>
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Panel Three">
-        Panel Three Content
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Panel Four">
-        Panel Four Content
-    </MudExpansionPanel>
-</MudExpansionPanels>
+    <div class="mb-4">
+        <RiseHeadTitle>Prijslijst</RiseHeadTitle>
+    </div>
+    
+    <div class="container">
+        <NavigationTabs ActiveTab="NavigationTab.Prijslijst"/>
+        <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0">
+            <MudExpansionPanel>
+                <TitleContent>
+                    <div class="d-flex w-100">
+                        <span class="flex-grow-1">
+                            Ontbijt en snacks
+                        </span>
+                        <span style="width: 85px; text-align: center;">Studenten</span>
+                        <span style="width: 85px; text-align: center;">Externen</span>
+                    </div>
+                </TitleContent>
+                <ChildContent>
+                    <div class="d-flex w-100">
+                        <span class="flex-grow-1">
+                            Ontbijtkoek
+                        </span>
+                        <span style="width: 85px; text-align: center;">1.20</span>
+                        <span style="width: 85px; text-align: center;">1.65</span>
+                    </div>
+                </ChildContent>
+            </MudExpansionPanel>
+            <MudExpansionPanel>
+                <TitleContent>
+                    <div class="d-flex justify-space-between ">
+                        <span>
+                            Warme maaltijden
+                        </span>
+
+                        <div class="d-flex gap-2">
+                            <span>Studenten</span>
+                            <span>Externen</span>
+                        </div>
+                    </div>
+                </TitleContent>
+                <ChildContent>
+                    Panel Content
+                </ChildContent>
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Panel Three">
+                Panel Three Content
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Panel Four">
+                Panel Four Content
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    </div>
 </div>

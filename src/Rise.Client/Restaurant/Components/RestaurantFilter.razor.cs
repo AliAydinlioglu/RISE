@@ -8,6 +8,8 @@ public partial class RestaurantFilter : ComponentBase
     [Parameter] public bool IsVisible { get; set; } = false;
     [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
     [Parameter] public EventCallback<RestoOverviewDTO> OnSelect { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
        await getRestaurants();
@@ -24,18 +26,19 @@ public partial class RestaurantFilter : ComponentBase
         }
     }
 
-    private async Task OnRestaurantSelect(RestoOverviewDTO resto)
+    private async Task HandleRestaurantSelect(RestoOverviewDTO resto)
     {
          await OnSelect.InvokeAsync(resto);
     }
     
+    private async Task HandleClose()
+    {
+        await OnClose.InvokeAsync();
+    }
+    
     private async Task HandleVisibilityChange(bool isVisible)
     {
-        // Update the local state (optional, but good practice)
-        
         IsVisible = isVisible;
-        
-        // CRITICAL: Tell the parent the overlay closed!
         await IsVisibleChanged.InvokeAsync(isVisible);
     }
     
