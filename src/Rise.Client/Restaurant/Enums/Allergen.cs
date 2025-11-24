@@ -17,5 +17,3 @@ public enum Allergen
     Lupin,
     Molluscs
 }
-
-

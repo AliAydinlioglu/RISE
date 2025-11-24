@@ -4,7 +4,6 @@ namespace Rise.Client.Restaurant.Components;
 
 public partial class Pricelist : ComponentBase
 {
-
     private RestoOverviewDTO currentResto;
     private bool _visible;
     [Inject] public required IRestaurantSelectionService RestaurantSelectionService { get; set; }

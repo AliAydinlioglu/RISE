@@ -2,7 +2,6 @@ using Rise.Client.Restaurant.Enums;
 
 namespace Rise.Client.Restaurant.Helpers;
 
-
 public static class AllergenHelper
 {
     public static string GetAllergenImage(Allergen allergen) =>
@@ -24,7 +23,7 @@ public static class AllergenHelper
             Allergen.Molluscs => "/Images/allergens/molluscs.webp",
             _ => "/Images/allergens/default.webp"
         };
-    
+
     public static string GetAllergenName(Allergen allergen) =>
         allergen switch
         {

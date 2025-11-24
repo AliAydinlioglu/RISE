@@ -2,11 +2,8 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Client.Calendar;
-using Rise.Client.Calendar.Components;
-using Rise.Client.Components.Calendar;
 using Rise.Client.Restaurant.Components;
 using Rise.Shared;
-using Rise.Shared.Calendar;
 
 namespace Rise.Client.Restaurant;
 

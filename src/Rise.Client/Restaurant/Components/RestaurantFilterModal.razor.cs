@@ -12,10 +12,10 @@ public partial class RestaurantFilterModal : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-       await getRestaurants();
+        await getRestaurants();
     }
-    
-    private ISet<RestoOverviewDTO> Restaurants = new HashSet<RestoOverviewDTO>() ;
+
+    private ISet<RestoOverviewDTO> Restaurants = new HashSet<RestoOverviewDTO>();
 
     private async Task getRestaurants()
     {
@@ -28,18 +28,17 @@ public partial class RestaurantFilterModal : ComponentBase
 
     private async Task HandleRestaurantSelect(RestoOverviewDTO resto)
     {
-         await OnSelect.InvokeAsync(resto);
+        await OnSelect.InvokeAsync(resto);
     }
-    
+
     private async Task HandleClose()
     {
         await OnClose.InvokeAsync();
     }
-    
+
     private async Task HandleVisibilityChange(bool isVisible)
     {
         IsVisible = isVisible;
         await IsVisibleChanged.InvokeAsync(isVisible);
     }
-    
 }
