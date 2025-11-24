@@ -5,7 +5,7 @@ public static partial class MenuResponse
     
     public class Pricelist
     {
-        public MenuItemCategoryDto[] PricelistCategories{ get; set; }
+        public PriceListCategoryDto[] PricelistCategories { get; set; } = [];
     }  
 
 }

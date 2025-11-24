@@ -4,7 +4,7 @@ public static partial class MenuRequest
 {
     public class Resto
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
     }
 }
 

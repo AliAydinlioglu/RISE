@@ -8,7 +8,7 @@ public class RestoDetail
     {
         public override void Configure()
         {
-            Get("/api/menu/restos");
+            Get("/api/menu/restos/{id}");
             AllowAnonymous();
         }
 
