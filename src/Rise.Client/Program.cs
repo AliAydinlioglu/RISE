@@ -20,6 +20,7 @@ using Rise.Shared.Contact;
 using Rise.Client.Contact;
 using Rise.Client.Offline;
 using TG.Blazor.IndexedDB;
+using Rise.Client.Restaurant;
 using Rise.Client.Restaurant.Components;
 using DateTimeService = Rise.Client.DateTimeService;
 
@@ -73,6 +74,7 @@ try
     builder.Services.AddScoped<RiseHttpMessageHandler>();
     builder.Services.AddScoped<IConnectionService, ConnectionService>();
     
+    builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();

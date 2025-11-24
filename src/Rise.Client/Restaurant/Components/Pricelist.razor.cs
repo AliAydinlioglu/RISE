@@ -4,15 +4,16 @@ namespace Rise.Client.Restaurant.Components;
 
 public partial class Pricelist : ComponentBase
 {
-    
-    private RestoOverviewDTO currentResto = new RestoOverviewDTO()
-    {
-        RestoId = 1,
-        Name = "Schoonmeersen B",
-    };
 
-    private bool _visible = false;
-    
+    private RestoOverviewDTO currentResto;
+    private bool _visible;
+    [Inject] public required IRestaurantSelectionService RestaurantSelectionService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentResto = await RestaurantSelectionService.GetSelectedRestoAsync();
+    }
+
     private void ToggleRestoSelector()
     {
         _visible = !_visible;
@@ -21,9 +22,9 @@ public partial class Pricelist : ComponentBase
     private async Task ApplyRestoSelection(RestoOverviewDTO resto)
     {
         currentResto = resto;
-        // TODO: store current selected resto in storage for history
+        await RestaurantSelectionService.SetSelectedRestoAsync(resto);
         _visible = false;
-        // TODO: load from server
+        // TODO: load pricelist from server
         // await LoadMenuAsync();
     }
 }
