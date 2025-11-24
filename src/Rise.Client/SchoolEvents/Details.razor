@@ -27,59 +27,59 @@ else
 
             <RiseHeadTitle>@_schoolEvent!.Title</RiseHeadTitle>
 
-                <div class="content">
-                    <div class="box">
-                        <div data-bunit='se-detail-category' class="field">
-                            <label class="label">Categorie:</label>
-                            <p class="is-size-6">@_schoolEvent!.Category</p>
-                        </div>
-
-                        <div data-bunit='se-detail-date' class="field">
-                            <label class="label">Datum & Tijd:</label>
-                            <span class="is-size-6">@_schoolEvent.Date.ToString("dddd d MMMM yyyy")</span><br/>
-                            <span class="is-size-6 has-text-black">@_schoolEvent.TimeString</span>
-                        </div>
-
-                        <div data-bunit='se-detail-location' class="field">
-                            <label class="label">Locatie:</label>
-                            <span class="is-size-6">@_schoolEvent.Location.Name</span><br/>
-                            @{ var address = _schoolEvent.Location.GetAddressWithoutName(); }
-                            <a class="is-size-6 has-text-black se-address" href="https://www.google.com/maps?q=@address"
-                               target="_blank">@address</a>
-                        </div>
-
-                        <div data-bunit='se-detail-price' class="field">
-                            <label class="label">Prijs:</label>
-                            <div class="content">
-                                <p>@(_schoolEvent.IsFree() ? "Gratis" : "€ " + _schoolEvent.Price.ToString("0.00"))</p>
-                            </div>
-                        </div>
-
-                        <div data-bunit='se-detail-description' class="field">
-                            <label class="label">Beschrijving:</label>
-                            <div class="content">
-                                <p>@_schoolEvent.Description</p>
-                            </div>
-                        </div>
-
+            <div class="content">
+                <div class="box">
+                    <div data-bunit='se-detail-category' class="field">
+                        <label class="label">Categorie:</label>
+                        <p class="is-size-6">@_schoolEvent!.Category</p>
                     </div>
 
-                    <RiseButton
-                        ButtonType="ButtonType.Button"
-                        Size="RiseButton.RiseButtonSize.Medium">
-                        <MudIcon Icon="@Icons.Material.Filled.Add"/>
-                        Voeg toe aan kalender
-                    </RiseButton>
+                    <div data-bunit='se-detail-date' class="field">
+                        <label class="label">Datum & Tijd:</label>
+                        <span class="is-size-6">@_schoolEvent.Date.ToString("dddd d MMMM yyyy")</span><br/>
+                        <span class="is-size-6 has-text-black">@_schoolEvent.TimeString</span>
+                    </div>
 
-                    <RiseButton
-                        ButtonType="ButtonType.Button"
-                        Size="RiseButton.RiseButtonSize.Medium"
-                        OnClick="() => NavigationManager.NavigateTo(_schoolEvent.RegisterLink)">
-                        <MudIcon Icon="@Icons.Material.Filled.Add"/>
-                        Inschrijven
-                    </RiseButton>
+                    <div data-bunit='se-detail-location' class="field">
+                        <label class="label">Locatie:</label>
+                        <span class="is-size-6">@_schoolEvent.Location.Name</span><br/>
+                        @{ var address = _schoolEvent.Location.GetAddressWithoutName(); }
+                        <a class="is-size-6 has-text-black se-address" href="https://www.google.com/maps?q=@address"
+                           target="_blank">@address</a>
+                    </div>
 
-                </div>
+                    <div data-bunit='se-detail-price' class="field">
+                        <label class="label">Prijs:</label>
+                        <div class="content">
+                            <p>@(_schoolEvent.IsFree() ? "Gratis" : "€ " + _schoolEvent.Price.ToString("0.00"))</p>
+                        </div>
+                    </div>
+
+                    <div data-bunit='se-detail-description' class="field">
+                        <label class="label">Beschrijving:</label>
+                        <div class="content">
+                            <p>@_schoolEvent.Description</p>
+                        </div>
+                    </div>
+
+            </div>
+
+            <div class="button-group">
+                <RiseButton
+                    ButtonType="ButtonType.Button"
+                    Size="RiseButton.RiseButtonSize.Medium">
+                    Voeg toe aan kalender
+                </RiseButton>
+
+                <RiseButton
+                    ButtonType="ButtonType.Button"
+                    Size="RiseButton.RiseButtonSize.Medium"
+                    OnClick="() => NavigationManager.NavigateTo(_schoolEvent.RegisterLink)">
+                    Inschrijven
+                </RiseButton>
+            </div>
+
+        </div>
 
         </div>
     </div>

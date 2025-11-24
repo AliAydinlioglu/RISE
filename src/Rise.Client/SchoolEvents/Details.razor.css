@@ -6,3 +6,10 @@
 .se-address{
     text-decoration: underline;
 }
+
+/* Add margin-bottom to buttons in button-group */
+.button-group > button,
+.button-group ::deep button {
+    margin-bottom: 10px;
+}
+
