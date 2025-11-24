@@ -47,12 +47,15 @@ public partial class Login
         }
     }
 
-    public void HandleLogin()
+    public async Task HandleLogin()
     {
         try
         {
-            var returnUrl = ReturnUrl ?? "/kalender";
-            Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(returnUrl)}");
+            var returnUrl = ReturnUrl ?? "/student-activities";
+
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "loginReturnUrl", returnUrl);
+
+            Navigation.NavigateTo("authentication/login");
         }
         catch (Exception ex)
         {
