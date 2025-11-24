@@ -1,13 +1,29 @@
-    
-
-.menuitem-container{
+.menuitem-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
+.week-calendar {
+    width: 700px;
+    margin: 0 auto;
+}
+
+::deep .rise-calendar-width-small .columns{
+    width: 700px;
+    margin: 0 auto;
+}
+
 @media (max-width: 700px) {
-    .menuitem-container{
+    .menuitem-container {
         grid-template-columns: 1fr;
+    }
+
+    .week-calendar {
+        width: 100%;
+        margin: 0 auto;
+    }
+    ::deep .rise-calendar-width-small .columns{
+        width: 100%;
     }
 }

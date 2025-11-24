@@ -10,13 +10,14 @@
 <div class="container">
     <RestaurantNavigationTabs ActiveTab="NavigationTab.Weekmenu"/>
 
+    <div class="">
     <RiseWeekCalendar SelectedDate="_selectedDate"
                       SelectedDateChanged="(date) => OnDateChangedAsync(date)"
                       Title="@_selectedDate.ToString("MMMM yyyy")"
                       OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
                       OnNextWeek="() => SetDateRelativeToCurrentDate(7)"
                       ShowWeek="false"/>
-
+    </div>
     <div class="is-flex is-flex-direction-row is-justify-content-space-between gap-2 mb-3">
     
         <span class="is-flex-grow-1 ">
@@ -42,7 +43,7 @@
                 <div class="menuitem-container ">
                 @foreach (var menuItem in category.MenuItems)
                 {
-                    <div class="is-flex is-flex-direction-column p-3 mb-1 menu-item "
+                    <div class="is-flex is-flex-direction-column p-3 menu-item "
                          style="border: 1px solid #ccc; border-radius: 8px;">
                         <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
                         @if (menuItem.Allergens != null && menuItem.Allergens.Any())
@@ -50,7 +51,7 @@
                             <AllergenList Allergens="@menuItem.Allergens"/>
                         }
                     </div>
-                    <div class="is-flex is-flex-direction-column p-3 mb-1 menu-item "
+                    <div class="is-flex is-flex-direction-column p-3  menu-item "
                          style="border: 1px solid #ccc; border-radius: 8px;">
                         <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
                         @if (menuItem.Allergens != null && menuItem.Allergens.Any())
@@ -58,7 +59,7 @@
                             <AllergenList Allergens="@menuItem.Allergens"/>
                         }
                     </div>
-                    <div class="is-flex is-flex-direction-column p-3 mb-1 menu-item "
+                    <div class="is-flex is-flex-direction-column p-3 menu-item "
                          style="border: 1px solid #ccc; border-radius: 8px;">
                         <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
                         @if (menuItem.Allergens != null && menuItem.Allergens.Any())
@@ -66,7 +67,7 @@
                             <AllergenList Allergens="@menuItem.Allergens"/>
                         }
                     </div>
-                    <div class="is-flex is-flex-direction-column p-3 mb-1 menu-item "
+                    <div class="is-flex is-flex-direction-column p-3 menu-item "
                          style="border: 1px solid #ccc; border-radius: 8px;">
                         <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
                         @if (menuItem.Allergens != null && menuItem.Allergens.Any())
