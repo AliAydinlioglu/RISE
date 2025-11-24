@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Rise.Client.Restaurant.Components;
 
-public partial class RestaurantFilter : ComponentBase
+public partial class RestaurantFilterModal : ComponentBase
 {
     [Inject] public required IWeekmenuService WeekmenuService { get; set; }
     [Parameter] public bool IsVisible { get; set; } = false;

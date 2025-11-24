@@ -17,7 +17,8 @@ public partial class Index : ComponentBase
 
     private RestoOverviewDTO currentResto;
 
-    private bool _visible;
+    private bool _visibleRestaurantSelector;
+    private bool _visibleInfoModal;
 
     private WeekMenuResponse.DayMenu? MenuItems;
     private bool _isLoading;
@@ -61,14 +62,14 @@ public partial class Index : ComponentBase
 
     private void ToggleRestoSelector()
     {
-        _visible = !_visible;
+        _visibleRestaurantSelector = !_visibleRestaurantSelector;
     }
 
     private async Task ApplyRestoSelection(RestoOverviewDTO resto)
     {
         currentResto = resto;
         await RestaurantSelectionService.SetSelectedRestoAsync(resto);
-        _visible = false;
+        _visibleRestaurantSelector = false;
         await LoadMenuAsync();
     }
 
@@ -79,5 +80,10 @@ public partial class Index : ComponentBase
         _selectedDate = date;
 
         await LoadMenuAsync();
+    }
+
+    private void ToggleInfoModal()
+    {
+        _visibleInfoModal = !_visibleInfoModal;
     }
 }

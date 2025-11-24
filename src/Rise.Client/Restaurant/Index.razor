@@ -27,13 +27,16 @@
                 <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
             </RiseButton>
         </span>
-        <RiseButton Type="RiseButton.RiseButtonType.Secondary" Size="RiseButton.RiseButtonSize.Small">
+        <RiseButton OnClick="ToggleInfoModal" Type="RiseButton.RiseButtonType.Secondary" Size="RiseButton.RiseButtonSize.Small">
             <MudIcon Icon="@Icons.Material.Outlined.Info"/>
         </RiseButton>
     </div>
 
-    <RestaurantFilter @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection" OnClose="ToggleRestoSelector"/>
+    <RestaurantFilterModal @bind-IsVisible="_visibleRestaurantSelector" OnSelect="@ApplyRestoSelection" OnClose="ToggleRestoSelector"/>
 
+    <MenuInfoModal @bind-Visible="_visibleInfoModal" /> 
+    
+    
     <AsyncData IsLoading="_isLoading">
         @if (MenuItems != null && MenuItems.MenuItemCategories.Any())
         {

@@ -1,0 +1,6 @@
+<ModalOverlay Visible="IsVisible" VisibleChanged="HandleVisibilityChange" Title="Kies een restaurant" OnClose="HandleClose">
+    @foreach(var resto in Restaurants)
+    {
+        <RiseButton OnClick="() => HandleRestaurantSelect(resto)">@resto.Name</RiseButton>
+    }
+</ModalOverlay>
