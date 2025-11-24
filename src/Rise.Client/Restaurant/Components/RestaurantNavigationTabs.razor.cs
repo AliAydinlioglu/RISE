@@ -5,7 +5,7 @@ namespace Rise.Client.Restaurant.Components;
 public partial class RestaurantNavigationTabs : ComponentBase
 {
     [Parameter] public NavigationTab ActiveTab { get; set; }
-    
+
     private string GetTabUrl(NavigationTab tab) =>
         tab switch
         {

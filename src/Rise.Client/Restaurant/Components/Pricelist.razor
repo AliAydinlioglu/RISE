@@ -3,20 +3,22 @@
     <div class="mb-4">
         <RiseHeadTitle>Prijslijst</RiseHeadTitle>
     </div>
-    
+
     <div class="container">
         <RestaurantNavigationTabs ActiveTab="NavigationTab.Prijslijst"/>
-        
+
         <div class="mb-2">
-            <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small" Type="RiseButton.RiseButtonType.Primary">
+            <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
+                        Type="RiseButton.RiseButtonType.Primary">
                 @currentResto.Name &nbsp;
                 <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
             </RiseButton>
         </div>
-        
-        <RestaurantFilterModal @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection" OnClose="ToggleRestoSelector"/>
 
-        
+        <RestaurantFilterModal @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection"
+                               OnClose="ToggleRestoSelector"/>
+
+
         <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0">
             <MudExpansionPanel>
                 <TitleContent>
@@ -29,7 +31,7 @@
                 <ChildContent>
                     <table>
                         <col class="fooditem"/>
-                        <col span="2" class="prices" />
+                        <col span="2" class="prices"/>
                         <thead>
                         <tr>
                             <th></th>
