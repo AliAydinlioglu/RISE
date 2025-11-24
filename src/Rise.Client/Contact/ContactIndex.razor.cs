@@ -83,7 +83,7 @@ public partial class ContactIndex
 
         foreach (var facility in _contactFacilities)
         {
-            var randomBannerNumber = Random.Next(1, 131);
+            var randomBannerNumber = Random.Next(1, 128);
             _facilityBackgroundImages[facility.Id] = $"/img/banner{randomBannerNumber}.webp";
         }
     }
