@@ -2,7 +2,9 @@ namespace Rise.Domain.Menu;
 
 public class Menu : Entity
 {
-    public DateTimeOffset Date { get; set; } 
+    public DateTimeOffset Date { get; set; }
+
+    public Resto Resto { get; set; }
     
     private readonly List<MenuItem> _menuItems = [];
     public IReadOnlyList<MenuItem> MenuItems => _menuItems.AsReadOnly();

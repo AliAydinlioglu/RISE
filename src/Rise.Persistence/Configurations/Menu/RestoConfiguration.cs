@@ -23,7 +23,7 @@ internal class RestoConfiguration : EntityConfiguration<Resto>
         });
 
         builder.HasMany(r => r.Menus)
-            .WithOne()
+            .WithOne(m => m.Resto)
             .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

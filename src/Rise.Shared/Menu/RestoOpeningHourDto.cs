@@ -2,8 +2,7 @@ namespace Rise.Shared.Menu;
 
 public class RestoOpeningHourDto
 {
-    public TimeSpan From { get; set; }
-    public TimeSpan To { get; set; }
-    public DateTimeOffset Date { get; set; }   
+    public DateOnly Date { get; set; }
+    public (TimeOnly From, TimeOnly To)[] Hours { get; set; } = [];
 
 }
