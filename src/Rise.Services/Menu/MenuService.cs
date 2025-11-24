@@ -8,10 +8,14 @@ public class MenuService(ApplicationDbContext dbContext) : IMenuService
 {
     public async Task<Result<MenuResponse.DayMenu>> GetDayMenuAsync(MenuRequest.DayMenu req, CancellationToken ct)
     {
-        //TODO: check for default or favorite resto when resto id null
+        if (req == null)
+            return Result.Error("Request is NULL.");
 
-        if (req.RestoId == null)
-            return Result.Error("Default or favorite resto is not implemented yet.");
+        //TODO: check for default or favorite resto when resto id null
+        var id = req.RestoId ?? 1;
+
+        if (id <= 0)
+            return Result.Error("Id has an invalid value.");
 
         var dayMenu = await dbContext.Menus
             .Include(m => m.MenuItems
@@ -23,10 +27,10 @@ public class MenuService(ApplicationDbContext dbContext) : IMenuService
             .Include(m => m.MenuItems
                 .Where(mi => !mi.IsDeleted))
             .ThenInclude(mi => mi.DietaryRestrictions)
-            .FirstOrDefaultAsync(m => 
+            .SingleOrDefaultAsync(m => 
                 !m.IsDeleted && 
                 m.Date == req.Date && 
-                m.Resto.Id == req.RestoId, ct);
+                m.Resto.Id == id, ct);
 
         if (dayMenu == null)
             return Result.NotFound("DayMenu for this resto and this date was not found.");

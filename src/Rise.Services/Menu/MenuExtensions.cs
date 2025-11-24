@@ -16,7 +16,17 @@ public static class MenuExtensions
             DietaryRestrictions = mi.DietaryRestrictions.Select(ToFoodRestrictionDto).ToArray()
         };
     }
-    
+
+    public static PriceListItemDto ToPriceListItemDto(this PriceListItem pli)
+    {
+        return new PriceListItemDto
+        {
+            Name = pli.Name,
+            StudentPrice = pli.Price.Student.Value,
+            ExternalPrice = pli.Price.Extern
+        };
+    }
+
     private static FoodRestrictionDto ToFoodRestrictionDto(this IFoodRestriction fr)
     {
         return new FoodRestrictionDto
