@@ -69,42 +69,56 @@
     border: 2px solid black;
     border-radius: 0;
     color: black;
-}
-
-.course-info {
-    min-width: 0;
+    overflow: hidden;
 }
 
 .card-header {
     color: #9c9c9c;
 }
-
-.day-of-month-label {
-    font-size: calc(3rem * var(--scale));
-}
-
-.month-abbr-label,
-.title-label {
-    font-size: calc(2rem * var(--scale));
-}
-
-.title-label {
+.description-label p{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.description-label {
-    font-size: calc(1.25rem * var(--scale));
 }
 
 .header-label {
     font-size: calc(1rem * var(--scale));
 }
 
-@media screen and (max-width: 768px) {
+/* Very small mobile screens */
+@media screen and (max-width: 480px) {
     .square {
         --base-size: 130px;
+        width: calc(var(--base-size) * var(--scale, 1));
+        height: calc(var(--base-size) * var(--scale, 1));
+    }
+
+    .inner-date-square {
+        border-width: calc(3px * var(--scale, 1));
+    }
+
+    .day-of-month-label {
+        font-size: calc(2rem * var(--scale));
+    }
+
+    .month-abbr-label,
+    .title-label {
+        font-size: calc(1.25rem * var(--scale));
+    }
+
+    .description-label {
+        font-size: calc(0.875rem * var(--scale));
+    }
+
+    .header-label {
+        font-size: calc(0.75rem * var(--scale));
+    }
+}
+
+/* Small mobile to tablet */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .square {
+        --base-size: 148px;
         width: calc(var(--base-size) * var(--scale, 1));
         height: calc(var(--base-size) * var(--scale, 1));
     }
