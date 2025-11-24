@@ -18,9 +18,9 @@ using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
+using Rise.Client.Restaurant;
 using Rise.Client.Offline;
 using TG.Blazor.IndexedDB;
-using Rise.Client.Restaurant;
 using Rise.Client.Restaurant.Components;
 using Rise.Shared.Menu;
 using DateTimeService = Rise.Client.DateTimeService;
@@ -82,6 +82,8 @@ try
     {
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
     
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {
