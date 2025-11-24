@@ -1,6 +1,6 @@
 namespace Rise.Shared.Menu;
 
-public static partial class WeekMenuRequest
+public static partial class MenuRequest
 {
     public class Resto
     {
@@ -8,11 +8,16 @@ public static partial class WeekMenuRequest
     }
 }
 
-public static partial class WeekMenuResponse
+public static partial class MenuResponse
 {
-    public class Resto
+    public class RestoOverview
     {
-        public RestoOverviewDto[] RestoOverview { get; set; } = []; 
+        public RestoOverviewDto[] Restos { get; set; } = []; 
     }   
+    
+    public class RestoDetail
+    {
+        public RestoDetailDto Resto { get; set; } = null!;
+    }  
 
 }

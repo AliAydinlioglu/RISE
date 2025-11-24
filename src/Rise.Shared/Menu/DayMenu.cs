@@ -1,6 +1,6 @@
 namespace Rise.Shared.Menu;
 
-public static partial class WeekMenuRequest
+public static partial class MenuRequest
 {
     public class DayMenu
     {
@@ -9,12 +9,10 @@ public static partial class WeekMenuRequest
     }  
 }
 
-public static partial class WeekMenuResponse
+public static partial class MenuResponse
 {
     public class DayMenu
     {
-        public string RestoName { get; set; } = null!;
-        public DateTimeOffset Date { get; set; }
         public MenuItemCategoryDto[] MenuItemCategories { get; set; } = [];      
     }
 }
