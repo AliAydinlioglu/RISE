@@ -1,0 +1,12 @@
+@using Rise.Client.Restaurant.Enums
+@using Rise.Client.Restaurant.Helpers
+<ModalOverlay Visible="Visible" VisibleChanged="HandleVisibilityChange" Title="Legenda" OnClose="HandleClose">
+        @foreach (var allergen in Enum.GetValues<Allergen>())
+        {
+                <div class="is-flex is-align-items-center gap-2">
+                        <img src="@AllergenHelper.GetAllergenImage(allergen)"
+                             alt="@AllergenHelper.GetAllergenName(allergen)" width="30px" height="30px"/>
+                        <span>@AllergenHelper.GetAllergenName(allergen)</span>
+                </div>
+        }
+</ModalOverlay>

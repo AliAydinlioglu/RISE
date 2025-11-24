@@ -14,7 +14,7 @@
             </RiseButton>
         </div>
         
-        <RestaurantFilter @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection" OnClose="ToggleRestoSelector"/>
+        <RestaurantFilterModal @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection" OnClose="ToggleRestoSelector"/>
 
         
         <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0">
