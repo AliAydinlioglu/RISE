@@ -70,12 +70,18 @@
     border-radius: 0;
     color: black;
     overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.box:hover {
+    transform: translateY(-4px);
 }
 
 .card-header {
     color: #9c9c9c;
 }
-.description-label p{
+
+.description-label p {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,7 +91,6 @@
     font-size: calc(1rem * var(--scale));
 }
 
-/* Very small mobile screens */
 @media screen and (max-width: 480px) {
     .square {
         --base-size: 130px;
@@ -115,29 +120,34 @@
     }
 }
 
-/* Small mobile to tablet */
-@media screen and (min-width: 481px) and (max-width: 768px) {
+
+/* Very small mobile screens */
+@media screen and (min-width: 480px) and (max-width: 769px) {
     .square {
-        --base-size: 148px;
+        --base-size: 130px;
         width: calc(var(--base-size) * var(--scale, 1));
         height: calc(var(--base-size) * var(--scale, 1));
     }
 
     .inner-date-square {
-        border-width: calc(4px * var(--scale, 1));
+        border-width: calc(3px * var(--scale, 1));
     }
 
-    .stacking-container-foreground .is-size-1 {
-        font-size: calc(2.25rem * var(--scale, 1)) !important;
+    .day-of-month-label {
+        font-size: calc(2rem * var(--scale));
     }
 
-    .course-info .is-size-4,
-    .stacking-container-foreground .is-size-3 {
-        font-size: calc(1.5rem * var(--scale, 1)) !important;
+    .month-abbr-label,
+    .title-label {
+        font-size: calc(1.25rem * var(--scale));
     }
 
-    .course-info .is-size-5 {
-        font-size: calc(1rem * var(--scale, 1)) !important;
+    .description-label {
+        font-size: calc(0.875rem * var(--scale));
+    }
+
+    .header-label {
+        font-size: calc(0.75rem * var(--scale));
     }
 }
 
@@ -151,7 +161,7 @@
 }
 
 /* Desktop */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1023px) {
     .square {
         --base-size: 180px;
         width: calc(var(--base-size) * var(--scale, 1));
