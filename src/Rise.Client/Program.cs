@@ -82,7 +82,7 @@ try
     {
         client.BaseAddress = baseUrl;
     });
-
+    
     builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
     {
         client.BaseAddress = baseUrl;
