@@ -15,11 +15,7 @@ public partial class Index : ComponentBase
 {
     private DateTime _selectedDate;
 
-    private RestoOverviewDTO currentResto = new RestoOverviewDTO()
-    {
-        RestoId = 1,
-        Name = "Schoonmeersen B",
-    };
+    private RestoOverviewDTO currentResto;
 
     private bool _visible;
 
@@ -28,6 +24,7 @@ public partial class Index : ComponentBase
 
     [Inject] public required IDateTimeService DateTimeService { get; set; }
     [Inject] public required IWeekmenuService WeekmenuService { get; set; }
+    [Inject] public required IRestaurantSelectionService RestaurantSelectionService { get; set; }
     [Inject] public required IDialogService? DialogService { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -39,7 +36,7 @@ public partial class Index : ComponentBase
         else if (_selectedDate.DayOfWeek == DayOfWeek.Sunday)
             _selectedDate = _selectedDate.AddDays(1);
 
-        //TODO: Get favorite resto from user settings else default
+        currentResto = await RestaurantSelectionService.GetSelectedRestoAsync();
         await LoadMenuAsync();
     }
 
@@ -70,7 +67,7 @@ public partial class Index : ComponentBase
     private async Task ApplyRestoSelection(RestoOverviewDTO resto)
     {
         currentResto = resto;
-        // TODO: store current selected resto in storage for history
+        await RestaurantSelectionService.SetSelectedRestoAsync(resto);
         _visible = false;
         await LoadMenuAsync();
     }

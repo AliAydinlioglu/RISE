@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Rise.Client.Restaurant.Components;
 
-public partial class NavigationTabs : ComponentBase
+public partial class RestaurantNavigationTabs : ComponentBase
 {
     [Parameter] public NavigationTab ActiveTab { get; set; }
     
