@@ -13,7 +13,7 @@ public class Menu : Entity
     
     public Menu(DateTimeOffset date)
     {
-        Date = Guard.Against.Null(date);
+        Date = Guard.Against.Default(date);
     }
 
     public void AddWeekMenuItems(IEnumerable<MenuItem> menuItems)
