@@ -5,13 +5,15 @@ namespace Rise.Client.Layout;
 
 public partial class Navigation : ComponentBase
 {
-    // TODO: Voorlopige oplossing, wordt vervangen door Wim's implementatie van navitems
- public HashSet<NavItem> NavItems = new()
+
+    public HashSet<NavItem> NavItems = new()
   {
     new NavItem { Title = "Home", Icon = Icons.Material.Outlined.Home, Href = "/" },
     new NavItem { Title = "Kalender", Icon = Icons.Material.Outlined.CalendarMonth, Href = "/kalender" },
     new NavItem { Title = "Activiteiten", Icon =Icons.Material.Outlined.EventNote, Href = "/student-activities" },
     new NavItem { Title = "Evenementen", Icon =Icons.Material.Outlined.CalendarToday, Href = "/school-events" },
+    new NavItem { Title = "Weekmenu", Icon = Icons.Material.Filled.RestaurantMenu, Href = "/restaurant" },
+    new NavItem { Title = "Prijslijst", Icon = Icons.Material.Filled.ReceiptLong, Href = "/restaurant/prijslijst" },
     new NavItem { Title = "Contact", Icon =Icons.Material.Outlined.Person, Href = "/contact" }
   };
 
