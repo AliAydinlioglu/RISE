@@ -3,8 +3,13 @@
      style="--scale: @ScaleString; @(OnClickNavigateTo is null ? null : "cursor: pointer;")">
     <div class="stacking-container scalable">
         @* BACKGROUND *@
-        <div class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
-            <p>@BackgroundTitle</p>
+        <div class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center"
+             style="@(!string.IsNullOrEmpty(ImageUrl) ? $"background-image: url('{ImageUrl}'); background-size: cover; background-position: center;" : "")">
+            @if (!string.IsNullOrEmpty(ImageUrl))
+            {
+                <div class="square-image-overlay"></div>
+            }
+            <p style="position: relative; z-index: 2;">@BackgroundTitle</p>
         </div>
         
         @* FOREGROUND *@

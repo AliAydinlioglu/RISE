@@ -16,6 +16,7 @@ public partial class RiseCard
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public string? OnClickNavigateTo { get; set; }
     [Parameter] public double Scale { get; set; } = 1.0;
+    [Parameter] public string? ImageUrl { get; set; }
     
     protected string DayOfMonth { get; set; } = Empty;
     protected string MonthAbbreviation { get; set; } = Empty;
