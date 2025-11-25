@@ -3,6 +3,15 @@
     border-end-end-radius: 0 !important;
     border-end-start-radius: 0 !important;
 }
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
 .card-content{
     background: white;
     border: 3px solid black;
@@ -14,10 +23,44 @@
 
 .column .card {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .column .card .card-content {
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+}
+
+.stacking-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    min-height: 120px;
+    flex-shrink: 0;
+}
+
+.stacking-container-background {
+    position: absolute;
+    inset: 0;
+    background-color: black;
+    z-index: 0;
+}
+
+.stacking-container-foreground {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vertical-card-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
 }

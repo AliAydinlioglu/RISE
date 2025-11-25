@@ -1,10 +1,9 @@
 @page "/student-activities"
-@using Rise.Client.Components
-@using Rise.Client.Components.Card
+
 
 <PageTitle>Studenten Activiteiten</PageTitle>
 <div class="container ">
-    <RiseHeadTitle>Studenten activiteiten</RiseHeadTitle>
+    <RiseHeadTitle ImageUrl="/img/banner35.webp">Studenten activiteiten</RiseHeadTitle>
 </div>
 <section class="mt-5 container student-activities">
     @if (studentActivities == null)
@@ -25,7 +24,7 @@
                     <a href="/student-activities/@studentActivity.Id">
                         <!-- Desktop/Tablet: Vertical Card -->
                         <div class="is-hidden-mobile">
-                            <RiseVerticalCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
+                            <RiseVerticalCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title" ImageUrl="@studentActivity.ImageUrl">
                                 <RiseStudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
                                                               Date="studentActivity.Date.LocalDateTime"
                                                               StartTime="studentActivity.StartTime"
@@ -36,7 +35,7 @@
 
                         <!-- Mobile: Regular Card -->
                         <div class="is-hidden-tablet">
-                            <RiseCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title">
+                            <RiseCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title" ImageUrl="@studentActivity.ImageUrl">
                                 <RiseStudentActivitiesCardContent StudentClubName="@studentActivity.StudentClub.Name"
                                                               Date="studentActivity.Date.LocalDateTime"
                                                               StartTime="studentActivity.StartTime"
