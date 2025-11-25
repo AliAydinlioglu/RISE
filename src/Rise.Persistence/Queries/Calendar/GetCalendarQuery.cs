@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Calendar;
 using Rise.Shared;
 using Rise.Shared.Calendar;
+using Serilog;
 
 namespace Rise.Persistence.Queries.Calendar;
 
 public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService dateTimeService): IGetCalendarQuery
 {
-    public async Task<Result<CalendarResponse.Get>> ExecuteAsync(string userClassGroup)
+    public async Task<CalendarResponse.Get> ExecuteAsync(string userClassGroup)
     {
         var now = dateTimeService.Now;
         
@@ -16,9 +17,12 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
             .Include(academicSemester => academicSemester.DateRange)
             .AsEnumerable()
             .FirstOrDefault(it => it.DateRange.StartDate <= now && it.DateRange.EndDate >= now);
-        
+
         if (academicSemester is null)
+        {
+            Log.Error($"{now} bevindt zich niet in een academisch semester");
             throw new InvalidOperationException("No active semester");
+        }
         
         var courses = await dbContext.Courses
             .Where(it => it.ClassGroup == userClassGroup && it.AcademicSemester == academicSemester)
@@ -36,7 +40,7 @@ public class GetCalendarQuery(ApplicationDbContext dbContext, IDateTimeService d
             Courses = courses.Select(MapCourse).ToList()
         };
         
-        return Result.Success(response);
+        return response;
     }
     
     private static CalendarResponse.AcademicSemesterInfo MapAcademicSemester(AcademicSemester academicSemester)

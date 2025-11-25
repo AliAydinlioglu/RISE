@@ -1,0 +1,19 @@
+<AuthorizeView>
+    <Authorized>
+        @ChildContent
+    </Authorized>
+    
+    <NotAuthorized>
+        @{
+            NavigationManager.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", forceLoad: true);
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Parameter] 
+    public RenderFragment? ChildContent { get; set; }
+
+    [Inject]
+    public required NavigationManager NavigationManager { get; set; }
+}

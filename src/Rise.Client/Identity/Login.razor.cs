@@ -39,20 +39,23 @@ public partial class Login
         }
     }
 
-    private void HandleKeyDown(KeyboardEventArgs e)
+    private async Task HandleKeyDown(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
-            HandleLogin();
+            await HandleLogin();
         }
     }
 
-    public void HandleLogin()
+    public async Task HandleLogin()
     {
         try
         {
-            var returnUrl = ReturnUrl ?? "/kalender";
-            Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(returnUrl)}");
+            var returnUrl = ReturnUrl ?? "/";
+
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "loginReturnUrl", returnUrl);
+
+            Navigation.NavigateTo("authentication/login");
         }
         catch (Exception ex)
         {

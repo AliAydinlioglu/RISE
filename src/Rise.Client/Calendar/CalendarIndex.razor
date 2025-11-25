@@ -4,50 +4,59 @@
 
 <PageTitle>Kalender</PageTitle>
 
-@if (_isLoading)
-{
-    <RiseLoader />
-}
-else
-{
-    <div class="is-hidden-tablet">
-        <CalendarMobile />
-    </div>
-    <div class="is-hidden-mobile">
-        <CalendarDesktop />
-    </div>
-}
-
-@code {
-
-    private RenderFragment RenderCalendarView() => __builder =>
+<RiseAuthorizedRoute>
+    @if (_isLoading)
     {
-        <RiseWeekCalendar SelectedDate="_selectedDate"
-                    SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
-                    Title="@_selectedDate.ToString("MMMM yyyy")"
-                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
-                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
-
-        <CalendarItemsList Items="@GetItemsForSelectedDate()"
-                           EmptyMessage="Geen evenementen voor deze dag"/>
-    };
-
-    private RenderFragment RenderLessenroosterView() => __builder =>
+        <RiseLoader/>
+    }
+    else if (_showError)
     {
-        <RiseWeekCalendar SelectedDate="_selectedDate"
-                    SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
-                    Title="@($"{_selectedDate:MMMM yyyy}")"
-                    OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
-                    OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
-
-        <CalendarItemsList Items="GetCoursesForSelectedDate()"
-                           EmptyMessage="Geen lessen voor deze dag"/>
-    };
-
-    private RenderFragment RenderDeadlineView() => __builder =>
+        <RiseNotification Title="Er liep iets mis..."
+                          Subtitle="Er trad een onverwachte fout op. Gelieve later opnieuw te proberen"
+                          Severity="Error"/>
+    }
+    else
     {
-        <CalendarItemsList Items="GetAllDeadlines()"
-                           EmptyMessage="Geen deadlines beschikbaar"
-                           AllowClickThrough="false"/>
-    };
-}
+        <div class="is-hidden-tablet">
+            <CalendarMobile/>
+        </div>
+        <div class="is-hidden-mobile">
+            <CalendarDesktop/>
+        </div>
+    }
+
+    @code {
+
+        private RenderFragment RenderCalendarView() => __builder =>
+        {
+            <RiseWeekCalendar SelectedDate="_selectedDate"
+                              SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
+                              Title="@_selectedDate.ToString("MMMM yyyy")"
+                              OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                              OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+
+            <CalendarItemsList Items="@GetItemsForSelectedDate()"
+                               EmptyMessage="Geen evenementen voor deze dag"/>
+        };
+
+        private RenderFragment RenderLessenroosterView() => __builder =>
+        {
+            <RiseWeekCalendar SelectedDate="_selectedDate"
+                              SelectedDateChanged="EventCallback.Factory.Create<DateTime>(this, date => _selectedDate = date)"
+                              Title="@($"{_selectedDate:MMMM yyyy}")"
+                              OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                              OnNextWeek="() => SetDateRelativeToCurrentDate(7)"/>
+
+            <CalendarItemsList Items="GetCoursesForSelectedDate()"
+                               EmptyMessage="Geen lessen voor deze dag"/>
+        };
+
+        private RenderFragment RenderDeadlineView() => __builder =>
+        {
+            <CalendarItemsList Items="GetAllDeadlines()"
+                               EmptyMessage="Geen deadlines beschikbaar"
+                               AllowClickThrough="false"/>
+        };
+
+    }
+</RiseAuthorizedRoute>

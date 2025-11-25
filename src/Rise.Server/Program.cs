@@ -92,7 +92,7 @@ try
                 .AllowCredentials();
         });
     });
-    builder.Services.AddHostedService<NotificationBackgroundService>();
+    //builder.Services.AddHostedService<NotificationBackgroundService>();
     var app = builder.Build();
     // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts) 
     // See: https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli

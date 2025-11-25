@@ -48,34 +48,28 @@ public partial class Authentication
                 var response = await httpClient.PostAsJsonAsync("/api/identity/accounts/login-callback",
                     new AccountRequest.LoginCallback { Oid = oid });
 
-                if (response.IsSuccessStatusCode)
+                var result = await response.Content.ReadFromJsonAsync<Result<AccountResponse.LoginCallback>>();
+                if (result?.IsSuccess == true)
                 {
-                    var result = await response.Content.ReadFromJsonAsync<Result<AccountResponse.LoginCallback>>();
-                    if (result?.IsSuccess == true)
-                    {
-                        Log.Information("User created/updated successfully: {Email}", result.Value?.Email);
-                        return;
-                    }
-                    else
-                    {
-                        var errors = string.Join(", ", result?.Errors ?? Array.Empty<string>());
-                        Log.Warning("Failed to create/update user: {Errors}", errors);
-                        await HandleLoginError($"Kon gebruiker niet aanmaken of bijwerken: {errors}");
-                        return;
-                    }
+                    Log.Information("User created/updated successfully: {Email}", result.Value?.Email);
+
+                    var returnUrl = await JSRuntime.InvokeAsync<string?>("localStorage.getItem", "loginReturnUrl");
+
+                    await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "loginReturnUrl");
+
+                    var targetUrl = returnUrl ?? "/kalender";
+                    Log.Information("Redirecting to: {TargetUrl}", targetUrl);
+
+                    Navigation.NavigateTo(targetUrl, forceLoad: true);
+                    return;
                 }
                 else
                 {
-                    Log.Error("Failed to create/update user: {StatusCode}", response.StatusCode);
-                    await HandleLoginError($"Backend fout: {response.StatusCode}");
+                    var errors = string.Join(", ", result?.Errors ?? Array.Empty<string>());
+                    Log.Warning("Failed to create/update user: {Errors}", errors);
+                    await HandleLoginError($"Kon gebruiker niet aanmaken of bijwerken: {errors}");
                     return;
                 }
-            }
-            else
-            {
-                Log.Warning("No access token available — user not authenticated?");
-                await HandleLoginError("Geen toegangstoken beschikbaar");
-                return;
             }
         }
         catch (Exception ex)

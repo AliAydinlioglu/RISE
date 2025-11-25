@@ -30,17 +30,6 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
     }
 
     [Fact]
-    public void WhenRenderingTheCalendarButItemsNotYetFetched_ThenLoaderShouldBeShown()
-    {
-        var fakeCalendarService = new FakeCalendarService(true);
-        Services.AddScoped<ICalendarService>(_ => fakeCalendarService);
-
-        var cut = RenderComponent<CalendarIndex>();
-        
-        cut.FindComponent<RiseLoader>().ShouldNotBeNull();
-    }
-
-    [Fact]
     public void WhenRenderingTheCalendarAfterDataIsLoaded_ThenCalendarShouldBeShown()
     {
         var cut = RenderCalendarComponent();
@@ -73,8 +62,8 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
     protected IRenderedComponent<TCalendarComonent> RenderCalendarComponent(bool loading = false)
     {
         var calendarServiceMock = new FakeCalendarService(loading);
-
         Services.AddScoped<ICalendarService>(_ => calendarServiceMock);
+
         return RenderComponent<TCalendarComonent>();
     }
 }

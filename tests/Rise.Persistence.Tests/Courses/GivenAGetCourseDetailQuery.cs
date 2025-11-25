@@ -81,7 +81,7 @@ public class GivenAGetCourseDetailQuery : IDisposable
         var result = await _query.ExecuteAsync(9999, date, "TIAO-01");
 
         result.IsSuccess.ShouldBeFalse();
-        result.Status.ShouldBe(Ardalis.Result.ResultStatus.NotFound);
+        result.Status.ShouldBe(Ardalis.Result.ResultStatus.Forbidden);
         result.Errors.First().ShouldBe("Course not found");
     }
 

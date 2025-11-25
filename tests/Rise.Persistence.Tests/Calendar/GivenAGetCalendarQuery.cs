@@ -30,8 +30,7 @@ public class GivenAGetCalendarQuery: IDisposable
 
         var result = await _query.ExecuteAsync("TIAO-01");
 
-        result.IsSuccess.ShouldBeTrue();
-        var calendar = result.Value;
+        var calendar = result;
         
         calendar.ClassGroup.ShouldBe("TIAO-01");
         calendar.AcademicYear.ShouldBe("2024-2025");
@@ -55,8 +54,7 @@ public class GivenAGetCalendarQuery: IDisposable
 
         var result = await _query.ExecuteAsync("TIAO-02");
 
-        result.IsSuccess.ShouldBeTrue();
-        result.Value.Courses.ShouldBeEmpty();
+        result.Courses.ShouldBeEmpty();
     }
     
     [Fact]
