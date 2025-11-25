@@ -10,7 +10,7 @@ public static class DietaryRestrictionHelper
         return dietaryRestriction switch
         {
             "Veganistisch" => @Icons.Material.Filled.ExpandCircleDown,
-            "Vegetarisch" => @Icons.Material.Filled.ExpandCircleDown,
+            "Vegetarisch" => @Icons.Material.Filled.KeyboardArrowDown,
             _ => ""
         };
     }
