@@ -1,6 +1,7 @@
 @page "/restaurant"
 @using Rise.Client.Components.Calendar
 @using Rise.Client.Restaurant.Components
+@using Rise.Client.Restaurant.Helpers
 
 <div class="mb-4">
     <RiseHeadTitle>Weekmenu</RiseHeadTitle>
@@ -11,12 +12,12 @@
     <RestaurantNavigationTabs ActiveTab="NavigationTab.Weekmenu"/>
 
     <div class="">
-    <RiseWeekCalendar SelectedDate="_selectedDate"
-                      SelectedDateChanged="(date) => OnDateChangedAsync(date)"
-                      Title="@_selectedDate.ToString("MMMM yyyy")"
-                      OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
-                      OnNextWeek="() => SetDateRelativeToCurrentDate(7)"
-                      ShowWeek="false"/>
+        <RiseWeekCalendar SelectedDate="_selectedDate"
+                          SelectedDateChanged="(date) => OnDateChangedAsync(date)"
+                          Title="@_selectedDate.ToString("MMMM yyyy")"
+                          OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                          OnNextWeek="() => SetDateRelativeToCurrentDate(7)"
+                          ShowWeek="false"/>
     </div>
     <div class="is-flex is-flex-direction-row is-justify-content-space-between gap-2 mb-3">
     
@@ -27,15 +28,17 @@
                 <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
             </RiseButton>
         </span>
-        <RiseButton OnClick="ToggleInfoModal" Type="RiseButton.RiseButtonType.Secondary" Size="RiseButton.RiseButtonSize.Small">
+        <RiseButton OnClick="ToggleInfoModal" Type="RiseButton.RiseButtonType.Secondary"
+                    Size="RiseButton.RiseButtonSize.Small">
             <MudIcon Icon="@Icons.Material.Outlined.Info"/>
         </RiseButton>
     </div>
 
-    <RestaurantFilterModal @bind-IsVisible="_visibleRestaurantSelector" OnSelect="@ApplyRestoSelection" OnClose="ToggleRestoSelector"/>
+    <RestaurantFilterModal @bind-IsVisible="_visibleRestaurantSelector" OnSelect="@ApplyRestoSelection"
+                           OnClose="ToggleRestoSelector"/>
 
-    <MenuInfoModal @bind-Visible="_visibleInfoModal" /> 
-    
+    <MenuInfoModal @bind-Visible="_visibleInfoModal"/>
+
     <AsyncData IsLoading="_isLoading" IsError="_isError">
         @if (_menuItems != null && _menuItems.Any())
         {
@@ -43,17 +46,28 @@
             {
                 <p class="mb-3 has-text-weight-semibold">@category.CategoryName</p>
                 <div class="menuitem-container ">
-                @foreach (var menuItem in category.MenuItems)
-                {
-                    <div class="is-flex is-flex-direction-column p-3 menu-item "
-                         style="border: 1px solid #ccc; border-radius: 8px;">
-                        <MudText Typo="Typo.body1" class="mb-2">@menuItem.Name</MudText>
-                        @if (menuItem.Allergens != null && menuItem.Allergens.Any())
-                        {
-                            <AllergenList Allergens="@menuItem.Allergens"/>
-                        }
-                    </div>
-                }
+                    @foreach (var menuItem in category.MenuItems)
+                    {
+                        <div class="is-flex is-flex-direction-column p-3 menu-item "
+                             style="border: 1px solid #ccc; border-radius: 8px;">
+
+                            <div class="is-flex gap-2">
+                                <MudText Typo="Typo.body1" class="mb-2">@menuItem.Name</MudText>
+                                <span class="is-flex gap-2">
+                                    @foreach (var dietaryRestriction in menuItem.DietaryRestrictions)
+                                    {
+                                        <MudIcon
+                                            Icon="@(DietaryRestrictionHelper.GetDietaryRestrictionIcon(dietaryRestriction.Name))"
+                                            Color="Color.Success"/>
+                                    }
+                                </span>
+                            </div>
+                            @if (menuItem.Allergens != null && menuItem.Allergens.Any())
+                            {
+                                <AllergenList Allergens="@menuItem.Allergens"/>
+                            }
+                        </div>
+                    }
                 </div>
             }
         }
