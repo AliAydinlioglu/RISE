@@ -39,11 +39,11 @@ public partial class Login
         }
     }
 
-    private void HandleKeyDown(KeyboardEventArgs e)
+    private async Task HandleKeyDown(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
         {
-            HandleLogin();
+            await HandleLogin();
         }
     }
 
@@ -51,7 +51,7 @@ public partial class Login
     {
         try
         {
-            var returnUrl = ReturnUrl ?? "/student-activities";
+            var returnUrl = ReturnUrl ?? "/";
 
             await JSRuntime.InvokeVoidAsync("localStorage.setItem", "loginReturnUrl", returnUrl);
 

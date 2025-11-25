@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit.Abstractions;
 
 namespace Rise.Client.Identity
@@ -14,7 +9,7 @@ namespace Rise.Client.Identity
         public LoginShould(ITestOutputHelper outputHelper)
         {
             Services.AddXunitLogger(outputHelper);
-
+            JSInterop.Mode = JSRuntimeMode.Loose;
         }
 
         [Fact]
