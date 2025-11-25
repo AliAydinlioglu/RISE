@@ -186,6 +186,9 @@ main {
     }
 }
 @media (max-width: 770px) {
+    .mud-main-content{
+        padding-top: 0!important;
+    }
     .mud-overlay-content {
         height: 100%;
         width: 100%;
