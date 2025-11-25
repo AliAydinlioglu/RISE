@@ -22,7 +22,7 @@ public partial class Index
     [Inject] public required ISchoolEventService SchoolEventService { get; set; }
     
     private async Task LoadSchoolEventsAsync()
-    {
+    {   
         var request = new QueryRequest.SkipTake
         {
             Skip = (_currentPage - 1) * PageSize,

@@ -10,7 +10,7 @@
         <div class="mb-2">
             <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
                         Type="RiseButton.RiseButtonType.Primary">
-                @currentResto.Name &nbsp;
+                @_currentResto.Name &nbsp;
                 <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
             </RiseButton>
         </div>
@@ -19,54 +19,53 @@
                                OnClose="ToggleRestoSelector"/>
 
 
-        <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0">
-            <MudExpansionPanel>
-                <TitleContent>
-                    <div class="d-flex w-100 ">
-                        <span class="flex-grow-1">
-                            Ontbijt en snacks
-                        </span>
-                    </div>
-                </TitleContent>
-                <ChildContent>
-                    <table>
-                        <col class="fooditem"/>
-                        <col span="2" class="prices"/>
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Studenten</th>
-                            <th>Externen</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Ontbijtkoek</td>
-                            <td>1.20</td>
-                            <td>1.65</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </ChildContent>
-            </MudExpansionPanel>
-            <MudExpansionPanel>
-                <TitleContent>
-                    <div class="d-flex justify-space-between ">
-                        <span>
-                            Warme maaltijden
-                        </span>
-                    </div>
-                </TitleContent>
-                <ChildContent>
-                    Panel Content
-                </ChildContent>
-            </MudExpansionPanel>
-            <MudExpansionPanel Text="Panel Three">
-                Panel Three Content
-            </MudExpansionPanel>
-            <MudExpansionPanel Text="Panel Four">
-                Panel Four Content
-            </MudExpansionPanel>
-        </MudExpansionPanels>
+        <AsyncData IsLoading="_isLoading" IsError="_isError">
+            @if (_pricelistCategories == null || !_pricelistCategories.Any())
+            {
+            <p>Er zijn momenteel geen prijslijsten beschikbaar voor dit restaurant.</p>
+            }
+            else
+            {
+            <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0">
+                @foreach (var priceListCategory in _pricelistCategories)
+                {
+                    <MudExpansionPanel>
+                        <TitleContent>
+                            <div class="d-flex w-100 ">
+                                <span class="flex-grow-1">
+                                    @priceListCategory.CategoryName
+                                </span>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+
+                            <table>
+                                <col class="fooditem"/>
+                                <col span="2" class="prices"/>
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Studenten</th>
+                                    <th>Externen</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in priceListCategory.PriceListItems)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.StudentPrice</td>
+                                        <td>@item.ExternalPrice</td>
+                                    </tr>
+                                    
+                                }
+                                </tbody>
+                            </table>
+                        </ChildContent>
+                    </MudExpansionPanel>
+                }
+            </MudExpansionPanels>
+            }
+        </AsyncData>
     </div>
 </div>

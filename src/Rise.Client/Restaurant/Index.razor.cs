@@ -4,6 +4,7 @@ using Rise.Client.Attributes;
 using Rise.Client.Calendar;
 using Rise.Client.Restaurant.Components;
 using Rise.Shared;
+using Rise.Shared.Menu;
 
 namespace Rise.Client.Restaurant;
 
@@ -11,19 +12,17 @@ namespace Rise.Client.Restaurant;
 public partial class Index : ComponentBase
 {
     private DateTime _selectedDate;
-
-    private RestoOverviewDTO currentResto;
-
+    private RestoOverviewDto _currentResto = null!;
     private bool _visibleRestaurantSelector;
     private bool _visibleInfoModal;
-
-    private WeekMenuResponse.DayMenu? MenuItems;
+    private IEnumerable<MenuItemCategoryDto> _menuItems = null!;
     private bool _isLoading;
+    private bool _isError;
 
     [Inject] public required IDateTimeService DateTimeService { get; set; }
-    [Inject] public required IWeekmenuService WeekmenuService { get; set; }
     [Inject] public required IRestaurantSelectionService RestaurantSelectionService { get; set; }
     [Inject] public required IDialogService? DialogService { get; set; }
+    [Inject] public required IMenuService MenuService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,21 +33,39 @@ public partial class Index : ComponentBase
         else if (_selectedDate.DayOfWeek == DayOfWeek.Sunday)
             _selectedDate = _selectedDate.AddDays(1);
 
-        currentResto = await RestaurantSelectionService.GetSelectedRestoAsync();
+        _currentResto = await RestaurantSelectionService.GetSelectedRestoAsync();
         await LoadMenuAsync();
     }
 
     private async Task LoadMenuAsync()
     {
-        _isLoading = true;
-        var request = new WeekmenuService.WeekMenuRequest.DayMenu
+        try
         {
-            RestoID = currentResto.RestoId,
-            Date = new DateTimeOffset(_selectedDate)
-        };
+            _isLoading = true;
+            _isError = false;
+            var request = new MenuRequest.DayMenu
+            {
+                RestoId = _currentResto.Id,
+                Date = _selectedDate
+            };
 
-        MenuItems = await WeekmenuService.GetDayMenuAsync(request);
-        _isLoading = false;
+            var response = await MenuService.GetDayMenuAsync(request, CancellationToken.None);
+            if (response.IsSuccess) _menuItems = response.Value.MenuItemCategories;
+        }
+        catch (HttpRequestException httpEx) when (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            _menuItems = null;
+        }
+        catch (Exception ex)
+        {
+            _menuItems = null;
+            _isError = true;
+            Log.Error(ex, "Error loading menu for resto {RestoId} on date {Date}", _currentResto.Id, _selectedDate);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
     private void SetDateRelativeToCurrentDate(int days)
@@ -62,9 +79,9 @@ public partial class Index : ComponentBase
         _visibleRestaurantSelector = !_visibleRestaurantSelector;
     }
 
-    private async Task ApplyRestoSelection(RestoOverviewDTO resto)
+    private async Task ApplyRestoSelection(RestoOverviewDto resto)
     {
-        currentResto = resto;
+        _currentResto = resto;
         await RestaurantSelectionService.SetSelectedRestoAsync(resto);
         _visibleRestaurantSelector = false;
         await LoadMenuAsync();

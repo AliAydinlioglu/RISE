@@ -22,6 +22,7 @@ using Rise.Client.Offline;
 using TG.Blazor.IndexedDB;
 using Rise.Client.Restaurant;
 using Rise.Client.Restaurant.Components;
+using Rise.Shared.Menu;
 using DateTimeService = Rise.Client.DateTimeService;
 
 try
@@ -78,9 +79,35 @@ try
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
+    builder.Services.AddScoped<IFavouriteRestoService, FavouriteRestoService>();
+    
+    builder.Services.AddHttpClient<IMenuService, MenuService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
     
     builder.Services.AddHttpClient<IWeekmenuService, WeekmenuService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    builder.Services.AddHttpClient<IRestoService, RestoService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    })
+    .AddHttpMessageHandler<RiseHttpMessageHandler>()
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<IProductService, ProductService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    })
+    .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; })
