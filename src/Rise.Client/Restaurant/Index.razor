@@ -23,7 +23,7 @@
         <span class="is-flex-grow-1 ">
             <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
                         Type="RiseButton.RiseButtonType.Primary">
-                @currentResto.Name &nbsp;
+                @(_currentResto?.Name ?? "Kies restaurant")
                 <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
             </RiseButton>
         </span>
@@ -36,11 +36,10 @@
 
     <MenuInfoModal @bind-Visible="_visibleInfoModal" /> 
     
-    
-    <AsyncData IsLoading="_isLoading">
-        @if (MenuItems != null && MenuItems.MenuItemCategories.Any())
+    <AsyncData IsLoading="_isLoading" IsError="_isError">
+        @if (_menuItems != null && _menuItems.Any())
         {
-            @foreach (var category in MenuItems.MenuItemCategories)
+            @foreach (var category in _menuItems)
             {
                 <p class="mb-3 has-text-weight-semibold">@category.CategoryName</p>
                 <div class="menuitem-container ">
@@ -48,31 +47,7 @@
                 {
                     <div class="is-flex is-flex-direction-column p-3 menu-item "
                          style="border: 1px solid #ccc; border-radius: 8px;">
-                        <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
-                        @if (menuItem.Allergens != null && menuItem.Allergens.Any())
-                        {
-                            <AllergenList Allergens="@menuItem.Allergens"/>
-                        }
-                    </div>
-                    <div class="is-flex is-flex-direction-column p-3  menu-item "
-                         style="border: 1px solid #ccc; border-radius: 8px;">
-                        <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
-                        @if (menuItem.Allergens != null && menuItem.Allergens.Any())
-                        {
-                            <AllergenList Allergens="@menuItem.Allergens"/>
-                        }
-                    </div>
-                    <div class="is-flex is-flex-direction-column p-3 menu-item "
-                         style="border: 1px solid #ccc; border-radius: 8px;">
-                        <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
-                        @if (menuItem.Allergens != null && menuItem.Allergens.Any())
-                        {
-                            <AllergenList Allergens="@menuItem.Allergens"/>
-                        }
-                    </div>
-                    <div class="is-flex is-flex-direction-column p-3 menu-item "
-                         style="border: 1px solid #ccc; border-radius: 8px;">
-                        <MudText Typo="Typo.body1" class="mb-2">@menuItem.MenuItemName</MudText>
+                        <MudText Typo="Typo.body1" class="mb-2">@menuItem.Name</MudText>
                         @if (menuItem.Allergens != null && menuItem.Allergens.Any())
                         {
                             <AllergenList Allergens="@menuItem.Allergens"/>
@@ -81,6 +56,10 @@
                 }
                 </div>
             }
+        }
+        else
+        {
+            <p>Nog geen menu beschikbaar voor deze datum. Kom later nog eens terug!</p>
         }
     </AsyncData>
 </div>

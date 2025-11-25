@@ -117,12 +117,18 @@ header #navbarBasicExample{
     padding: 15px 0;
 }
 
+
+
 @media only screen and (min-width: 770px)   {
     main {
         margin-top:var(--mud-appbar-height)
     }
+   
 }
 @media (max-width: 770px) {
+    .mud-main-content{
+        padding-top: 0!important;
+    }
     .mud-overlay-content {
         height: 100%;
         width: 100%;

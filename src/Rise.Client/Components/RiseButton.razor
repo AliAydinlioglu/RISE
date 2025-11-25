@@ -2,7 +2,7 @@
     ButtonType="@ButtonType"
     Variant="@GetVariant()"
     Color="Color.Primary"
-    Class=@($"border-2 {GetSizeClass()}")
+    Class=@($"border-2 {GetSizeClass()} {@Class}")
     OnClick="@OnClick"
     Disabled="@Disabled">
     @ChildContent

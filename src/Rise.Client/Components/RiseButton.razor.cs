@@ -11,7 +11,7 @@ public partial class RiseButton
     [Parameter] public ButtonType ButtonType { get; set; } = ButtonType.Button;
     [Parameter] public RiseButtonType Type { get; set; } = RiseButtonType.Primary;
     [Parameter] public RiseButtonSize Size { get; set; } = RiseButtonSize.Medium;
-
+    [Parameter] public string Class { get; set; } = string.Empty;
     private Variant GetVariant() => Type switch
     {
         RiseButtonType.Primary => Variant.Filled,

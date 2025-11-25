@@ -3,7 +3,7 @@
 <div class="is-flex gap-1 is-flex-wrap-wrap">
     @foreach (var allergen in Allergens)
     {
-        <img src="@AllergenHelper.GetAllergenImage((Allergen)Enum.Parse(typeof(Allergen), allergen.Name))" 
+        <img src="@AllergenHelper.GetAllergenImage(Enum.Parse<Allergen>(allergen.Name))"
              alt="@allergen.Name" width="30px" height="30px" />
     }
 </div>

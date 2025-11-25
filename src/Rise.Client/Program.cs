@@ -20,6 +20,7 @@ using Rise.Shared.Contact;
 using Rise.Client.Contact;
 using Rise.Client.Restaurant;
 using Rise.Client.Restaurant.Components;
+using Rise.Shared.Menu;
 using DateTimeService = Rise.Client.DateTimeService;
 
 try
@@ -62,12 +63,23 @@ try
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
-    builder.Services.AddHttpClient<IWeekmenuService, WeekmenuService>(client =>
+    builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
+    builder.Services.AddScoped<IFavouriteRestoService, FavouriteRestoService>();
+    
+    builder.Services.AddHttpClient<IMenuService, MenuService>(client =>
     {
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
-    builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
+    
+    builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<IRestoService, RestoService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
     
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {

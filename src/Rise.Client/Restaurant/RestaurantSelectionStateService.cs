@@ -1,35 +1,43 @@
+using Microsoft.AspNetCore.Components;
 using Rise.Client.Restaurant.Components;
+using Rise.Shared.Common;
+using Rise.Shared.Menu;
 
 namespace Rise.Client.Restaurant;
 
 public class RestaurantSelectionStateService : IRestaurantSelectionService
 {
-    public RestoOverviewDTO SelectedResto { get; private set; }
+    public RestoOverviewDto? SelectedResto { get; private set; }
     private bool _initialized;
-
+    private readonly IFavouriteRestoService _favouriteRestoService;
+    private readonly IRestoService _restoService;
+    public RestaurantSelectionStateService(IFavouriteRestoService favouriteRestoService, IRestoService restoService)
+    {
+        _favouriteRestoService = favouriteRestoService;
+        _restoService = restoService;
+    }
     public async Task OnInitializeAsync()
     {
         if (_initialized) return;
         _initialized = true;
 
         // TODO:  load favorite resto from server
+        SelectedResto = await _favouriteRestoService.GetFavouriteRestoAsync();
+        if (SelectedResto != null)
+            return;
 
-
-        // todo get default resto from server
-        SelectedResto = new RestoOverviewDTO()
-        {
-            RestoId = 1,
-            Name = "Schoonmeersen B",
-        };
+        var result = await _restoService.GetOverviewAsync(new QueryRequest.SkipTake(), CancellationToken.None);
+        if (result.IsSuccess)
+            SelectedResto = result.Value.Restos[0];
     }
 
-    public async Task<RestoOverviewDTO> GetSelectedRestoAsync()
+    public async Task<RestoOverviewDto> GetSelectedRestoAsync()
     {
         await OnInitializeAsync();
         return SelectedResto;
     }
 
-    public async Task SetSelectedRestoAsync(RestoOverviewDTO resto)
+    public async Task SetSelectedRestoAsync(RestoOverviewDto resto)
     {
         SelectedResto = resto;
     }
@@ -37,6 +45,6 @@ public class RestaurantSelectionStateService : IRestaurantSelectionService
 
 public interface IRestaurantSelectionService
 {
-    Task<RestoOverviewDTO> GetSelectedRestoAsync();
-    Task SetSelectedRestoAsync(RestoOverviewDTO resto);
+    Task<RestoOverviewDto> GetSelectedRestoAsync();
+    Task SetSelectedRestoAsync(RestoOverviewDto resto);
 }

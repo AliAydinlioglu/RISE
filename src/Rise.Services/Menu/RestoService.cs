@@ -22,6 +22,7 @@ public class RestoService(ApplicationDbContext dbContext) : IRestoService
             Restos = await restoQuery
                 .Select(r => new RestoOverviewDto
                 {
+                    Id = r.Id,
                     Name = r.Name,
                     IsFavorite = false //TODO
                 })
