@@ -1,0 +1,15 @@
+@if (IsError)
+{
+    <RiseNotification Severity="Error"
+                      Title="Er ging iets mis met het ophalen van deze informatie! Probeer later opnieuw!"/>
+}
+else if (IsLoading)
+{
+    <MudContainer Class="mt-8">
+        <RiseLoader/>
+    </MudContainer>
+}
+else
+{
+    @ChildContent
+}

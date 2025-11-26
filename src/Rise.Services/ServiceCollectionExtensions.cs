@@ -19,12 +19,14 @@ using Rise.Shared.Projects;
 using Rise.Shared.User;
 using Rise.Shared.StudentActivities;
 using Rise.Services.Identity;
+using Rise.Services.Menu;
 using Rise.Shared.Courses;
 using Rise.Shared.Identity;
 using Rise.Shared.SchoolEvents;
 using Rise.Services.SchoolEvents;
 using Rise.Shared.Notifications;
 using Rise.Services.Notifications;
+using Rise.Shared.Menu;
 
 namespace Rise.Services;
 
@@ -43,6 +45,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IMenuService, MenuService>();
+        services.AddScoped<IRestoService, RestoService>();
+        services.AddScoped<IPriceListService, PriceListService>();
         services.AddTransient<DbSeeder>();
         
         // queries

@@ -22,6 +22,36 @@ namespace Rise.Persistence.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("MenuItemAllergen", b =>
+                {
+                    b.Property<int>("AllergensId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AllergensId", "MenuItemId");
+
+                    b.HasIndex("MenuItemId");
+
+                    b.ToTable("MenuItemAllergen");
+                });
+
+            modelBuilder.Entity("MenuItemDietaryRestriction", b =>
+                {
+                    b.Property<int>("DietaryRestrictionsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DietaryRestrictionsId", "MenuItemId");
+
+                    b.HasIndex("MenuItemId");
+
+                    b.ToTable("MenuItemDietaryRestriction");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -580,6 +610,356 @@ namespace Rise.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Location", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.Allergen", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Allergen", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.DietaryRestriction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Symbol")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DietaryRestriction", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("RestoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestoId");
+
+                    b.ToTable("Menu", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.MenuCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MenuCategory", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.MenuItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("MenuCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuCategoryId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("MenuItem", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.PriceList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PriceList", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.PriceListCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("Remark")
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PriceListCategory", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.PriceListItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("HasCategoryRemark")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsHighlighted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("PriceListCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PriceListId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceListCategoryId");
+
+                    b.HasIndex("PriceListId");
+
+                    b.ToTable("PriceListItem", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.Resto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int?>("PriceListId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("PriceListId");
+
+                    b.ToTable("Resto", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.Navigation.ContentLocation", b =>
@@ -1154,6 +1534,36 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("NotificationSubscriptions");
                 });
 
+            modelBuilder.Entity("MenuItemAllergen", b =>
+                {
+                    b.HasOne("Rise.Domain.Menu.Allergen", null)
+                        .WithMany()
+                        .HasForeignKey("AllergensId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.Menu.MenuItem", null)
+                        .WithMany()
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MenuItemDietaryRestriction", b =>
+                {
+                    b.HasOne("Rise.Domain.Menu.DietaryRestriction", null)
+                        .WithMany()
+                        .HasForeignKey("DietaryRestrictionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.Menu.MenuItem", null)
+                        .WithMany()
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Rise.Persistence.Models.Identity.ApplicationRole", null)
@@ -1496,6 +1906,164 @@ namespace Rise.Persistence.Migrations
                     b.Navigation("OpeningHours");
                 });
 
+            modelBuilder.Entity("Rise.Domain.Menu.Menu", b =>
+                {
+                    b.HasOne("Rise.Domain.Menu.Resto", null)
+                        .WithMany("Menus")
+                        .HasForeignKey("RestoId");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.MenuItem", b =>
+                {
+                    b.HasOne("Rise.Domain.Menu.MenuCategory", "MenuCategory")
+                        .WithMany()
+                        .HasForeignKey("MenuCategoryId")
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.Menu.Menu", null)
+                        .WithMany("MenuItems")
+                        .HasForeignKey("MenuId");
+
+                    b.OwnsOne("Rise.Domain.Common.Price", "Price", b1 =>
+                        {
+                            b1.Property<int>("MenuItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<decimal?>("Extern")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("ExternPrice");
+
+                            b1.Property<decimal?>("Student")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("StudentPrice");
+
+                            b1.HasKey("MenuItemId");
+
+                            b1.ToTable("MenuItem");
+
+                            b1.WithOwner()
+                                .HasForeignKey("MenuItemId");
+                        });
+
+                    b.Navigation("MenuCategory");
+
+                    b.Navigation("Price")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.PriceListItem", b =>
+                {
+                    b.HasOne("Rise.Domain.Menu.PriceListCategory", "PriceListCategory")
+                        .WithMany()
+                        .HasForeignKey("PriceListCategoryId")
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.Menu.PriceList", null)
+                        .WithMany("PriceListItems")
+                        .HasForeignKey("PriceListId");
+
+                    b.OwnsOne("Rise.Domain.Common.Price", "Price", b1 =>
+                        {
+                            b1.Property<int>("PriceListItemId")
+                                .HasColumnType("int");
+
+                            b1.Property<decimal?>("Extern")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("ExternPrice");
+
+                            b1.Property<decimal>("Student")
+                                .HasPrecision(5, 2)
+                                .HasColumnType("decimal(5,2)")
+                                .HasColumnName("StudentPrice");
+
+                            b1.HasKey("PriceListItemId");
+
+                            b1.ToTable("PriceListItem");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PriceListItemId");
+                        });
+
+                    b.Navigation("Price")
+                        .IsRequired();
+
+                    b.Navigation("PriceListCategory");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.Resto", b =>
+                {
+                    b.HasOne("Rise.Domain.Locations.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rise.Domain.Menu.PriceList", "PriceList")
+                        .WithMany()
+                        .HasForeignKey("PriceListId");
+
+                    b.OwnsMany("Rise.Domain.Contact.ContactPeriod", "OpeningHours", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id1")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b1.Property<int>("Id1"));
+
+                            b1.Property<DateOnly>("ContactDate")
+                                .HasColumnType("date");
+
+                            b1.HasKey("Id", "Id1");
+
+                            b1.ToTable("RestoContactPeriods", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("Id");
+
+                            b1.OwnsMany("Rise.Domain.Common.TimeRange", "ContactHours", b2 =>
+                                {
+                                    b2.Property<int>("ContactPeriodId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("ContactPeriodId1")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<TimeOnly>("EndTime")
+                                        .HasColumnType("time(6)");
+
+                                    b2.Property<TimeOnly>("StartTime")
+                                        .HasColumnType("time(6)");
+
+                                    b2.HasKey("ContactPeriodId", "ContactPeriodId1", "Id");
+
+                                    b2.ToTable("RestoContactPeriods_ContactHours");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ContactPeriodId", "ContactPeriodId1");
+                                });
+
+                            b1.Navigation("ContactHours");
+                        });
+
+                    b.Navigation("Location");
+
+                    b.Navigation("OpeningHours");
+
+                    b.Navigation("PriceList");
+                });
+
             modelBuilder.Entity("Rise.Domain.Navigation.RoleNavigationItemContentLocation", b =>
                 {
                     b.HasOne("Rise.Domain.Navigation.ContentLocation", "ContentLocation")
@@ -1697,6 +2265,21 @@ namespace Rise.Persistence.Migrations
             modelBuilder.Entity("Rise.Domain.Identity.Role", b =>
                 {
                     b.Navigation("RoleNavigationItems");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.Menu", b =>
+                {
+                    b.Navigation("MenuItems");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.PriceList", b =>
+                {
+                    b.Navigation("PriceListItems");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Menu.Resto", b =>
+                {
+                    b.Navigation("Menus");
                 });
 
             modelBuilder.Entity("Rise.Domain.Navigation.ContentLocation", b =>
