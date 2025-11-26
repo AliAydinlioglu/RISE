@@ -1,4 +1,4 @@
-@page "/lessen/{CourseId}"
+@page "/kalender/lessen/{CourseId}"
 @using Rise.Client.Courses.Components
 
 @if (_isLoading)
@@ -15,6 +15,7 @@ else if (!string.IsNullOrEmpty(_errorMessage))
 }
 else
 {
+    <RiseBackButton NavigateTo="/kalender">Terug naar kalender</RiseBackButton>
     <MudContainer Class="py-4 px-4">
         <MudGrid Spacing="6">
             <MudItem xs="12" lg="4" Class="order-0 order-lg-2">

@@ -1,13 +1,7 @@
 @page "/student-activities/{Id?}"
-@using Rise.Client.Components
 
-<div data-bunit='sa-detail'  class="container is-widescreen detail-sa   ">
-    <a href="/student-activities" class="has-text-black hover:has-text-underline">
-        <span class="icon">
-            <i class="fas fa-arrow-left"></i>
-        </span>
-        <span>Terug naar activiteiten</span>
-    </a>
+<div data-bunit='sa-detail' class="container is-widescreen detail-sa">
+    <RiseBackButton NavigateTo="/student-activities">Terug naar activiteiten</RiseBackButton>
     <div class="section">
         <RiseHeadTitle>@Title</RiseHeadTitle>
 
@@ -19,7 +13,7 @@
                 </div>
 
                 <div data-bunit='sa-detail-date' class="field">
-                    <label  class="label">Datum & Tijd:</label>
+                    <label class="label">Datum & Tijd:</label>
                     <p class="is-size-6">@LocalDateString</p>
                     <p class="is-size-6 has-text-grey">@TimeString</p>
                 </div>

@@ -1,5 +1,5 @@
 <div class="d-flex flex-row  @Class" style="@Style">
-    <NavLink href=@Href Match="NavLinkMatch.All"  >
+    <NavLink href=@Href Match="@IsActiveLink">
         <MudIcon Icon="@Icon" Size="@Size"></MudIcon>
         <p class="@_sizeclass">@ChildContent</p>
     </NavLink>
