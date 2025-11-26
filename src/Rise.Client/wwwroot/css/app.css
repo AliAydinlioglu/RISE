@@ -131,8 +131,13 @@ main {
     }
 }
 
+@media (max-width: 768px) {
+    section.section{
+        padding-top: 15px !important;
+    }
+}
+
 /* Override MudMainContent padding-top */
 .mud-main-content.section {
     padding-top: 30px !important;
 }
-
