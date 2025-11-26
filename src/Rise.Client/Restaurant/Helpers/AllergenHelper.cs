@@ -7,22 +7,22 @@ public static class AllergenHelper
     public static string GetAllergenImage(Allergen allergen) =>
         allergen switch
         {
-            Allergen.Gluten => "/Images/allergens/gluten.webp",
-            Allergen.Schaaldieren => "/Images/allergens/crustaceans.webp",
-            Allergen.Eieren => "/Images/allergens/egg.webp",
-            Allergen.Vis => "/Images/allergens/fish.webp",
-            Allergen.Pinda => "/Images/allergens/peanuts.webp",
-            Allergen.Soja => "/Images/allergens/soyabeans.webp",
-            Allergen.Melk => "/Images/allergens/milk.webp",
-            Allergen.Lactose => "/Images/allergens/milk.webp",
-            Allergen.Noten => "/Images/allergens/treenuts.webp",
-            Allergen.Selderij => "/Images/allergens/celery.webp",
-            Allergen.Mosterd => "/Images/allergens/mustard.webp",
-            Allergen.Sesam => "/Images/allergens/sesame.webp",
-            Allergen.Sulfiet => "/Images/allergens/sulphites.webp",
-            Allergen.Lupine => "/Images/allergens/lupin.webp",
-            Allergen.Weekdieren => "/Images/allergens/molluscs.webp",
-            _ => "/Images/allergens/default.webp"
+            Allergen.Gluten => "/img/allergens/gluten.webp",
+            Allergen.Schaaldieren => "/img/allergens/crustaceans.webp",
+            Allergen.Eieren => "/img/allergens/egg.webp",
+            Allergen.Vis => "/img/allergens/fish.webp",
+            Allergen.Pinda => "/img/allergens/peanuts.webp",
+            Allergen.Soja => "/img/allergens/soyabeans.webp",
+            Allergen.Melk => "/img/allergens/milk.webp",
+            Allergen.Lactose => "/img/allergens/milk.webp",
+            Allergen.Noten => "/img/allergens/treenuts.webp",
+            Allergen.Selderij => "/img/allergens/celery.webp",
+            Allergen.Mosterd => "/img/allergens/mustard.webp",
+            Allergen.Sesam => "/img/allergens/sesame.webp",
+            Allergen.Sulfiet => "/img/allergens/sulphites.webp",
+            Allergen.Lupine => "/img/allergens/lupin.webp",
+            Allergen.Weekdieren => "/img/allergens/molluscs.webp",
+            _ => "/img/allergens/default.webp"
         };
 
     public static string GetAllergenName(Allergen allergen) =>
