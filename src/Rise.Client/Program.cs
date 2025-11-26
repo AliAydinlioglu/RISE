@@ -65,21 +65,21 @@ try
 
     builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
     builder.Services.AddScoped<IFavouriteRestoService, FavouriteRestoService>();
-    
+
     builder.Services.AddHttpClient<IMenuService, MenuService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
+    });
+
     builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
+    });
+
     builder.Services.AddHttpClient<IRestoService, RestoService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    });
     
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {
