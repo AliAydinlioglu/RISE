@@ -14,7 +14,7 @@ public partial class Navigation : ComponentBase
     new NavItem { Title = "Kalender", Icon = Icons.Material.Outlined.CalendarMonth, Href = "/kalender" },
     new NavItem { Title = "Activiteiten", Icon =Icons.Material.Outlined.EventNote, Href = "/student-activities" },
     new NavItem { Title = "Evenementen", Icon =Icons.Material.Outlined.CalendarToday, Href = "/school-events" },
-    new NavItem { Title = "Weekmenu", Icon = Icons.Material.Filled.RestaurantMenu, Href = "/restaurant" },
+    new NavItem { Title = "Weekmenu", Icon = Icons.Material.Filled.RestaurantMenu, Href = "/restaurant/weekmenu"},
     new NavItem { Title = "Prijslijst", Icon = Icons.Material.Filled.ReceiptLong, Href = "/restaurant/prijslijst" },
     new NavItem { Title = "Contact", Icon =Icons.Material.Outlined.Person, Href = "/contact" }
   };
@@ -56,4 +56,5 @@ public class NavItem
     public string Title { get; set; } = null!;
     public string Icon { get; set; } = null!;
     public string Href { get; set; } = null!;
+
 }
