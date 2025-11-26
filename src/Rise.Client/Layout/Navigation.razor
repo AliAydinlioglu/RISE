@@ -5,7 +5,13 @@
         <MudNavMenu Color="Color.Tertiary">
             @foreach (var item in NavItems)
             {
-                <MudNavLink Class="nav-link-custom" Href="@item.Href" Match="NavLinkMatch.All" Icon="@item.Icon" IconColor="Color.Inherit">@item.Title</MudNavLink>
+                <MudNavLink Class="nav-link-custom"
+                            Href="@item.Href"
+                            Match="@GetNavLinkMatch(item.Href)"
+                            Icon="@item.Icon"
+                            IconColor="Color.Inherit">
+                    @item.Title
+                </MudNavLink>
             }
 
         </MudNavMenu>
@@ -14,6 +20,11 @@
 <footer class="is-hidden-tablet justify-space-around container" >
     @foreach (var item in MobileNavItems)
     {
-        <RiseItemLink Href="@item.Href" Icon="@item.Icon">@item.Title</RiseItemLink>
+        <RiseItemLink
+            Href="@item.Href"
+            Icon="@item.Icon"
+            IsActiveLink="@GetNavLinkMatch(item.Href)">
+            @item.Title
+        </RiseItemLink>
     }
 </footer>
