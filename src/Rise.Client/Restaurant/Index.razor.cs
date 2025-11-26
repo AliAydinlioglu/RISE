@@ -15,7 +15,7 @@ public partial class Index : ComponentBase
     private RestoOverviewDto _currentResto = null!;
     private bool _visibleRestaurantSelector;
     private bool _visibleInfoModal;
-    private IEnumerable<MenuItemCategoryDto> _menuItems = null!;
+    private IEnumerable<MenuItemCategoryDto> _menuItems = Enumerable.Empty<MenuItemCategoryDto>();
     private bool _isLoading;
     private bool _isError;
 
