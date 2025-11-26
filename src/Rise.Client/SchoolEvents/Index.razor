@@ -1,8 +1,5 @@
 @page "/school-events"
-
-@using Rise.Client.Components
 @using Rise.Client.Components.Calendar
-@using Rise.Client.Components.Card
 
 <PageTitle>Evenementen</PageTitle>
 
@@ -19,23 +16,19 @@
     }
     else
     {
-        <MudGrid>
-            
-            <MudItem lg="12" Class="d-flex align-center justify-center">
-                <RiseWeekCalendar 
-                    SelectedDate="_selectedDate"
-                    SelectedDateChanged="(date) => OnDateChangedAsync(date)"
-                    Title="@($"{_selectedDate:MMMM yyyy}")"
-                    CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Secondary"
-                    CalendarWidth="RiseWeekCalendar.RiseWeekCalendarWidth.Medium"
-                    ShowOnlySchoolDays="false"
-                    OnPreviousWeek="() => SetDateRelativeToCurrentDateAsync(-7)"
-                    OnNextWeek="() => SetDateRelativeToCurrentDateAsync(7)"/>
-            </MudItem>
-            
-        </MudGrid>
-
-        if(!_schoolEvents.Any())
+        <div style="display: flex; justify-content: center; margin: auto 0;">
+            <RiseWeekCalendar
+                SelectedDate="_selectedDate"
+                SelectedDateChanged="(date) => OnDateChangedAsync(date)"
+                Title="@($"{_selectedDate:MMMM yyyy}")"
+                CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Secondary"
+                CalendarWidth="RiseWeekCalendar.RiseWeekCalendarWidth.Medium"
+                ShowOnlySchoolDays="false"
+                OnPreviousWeek="() => SetDateRelativeToCurrentDateAsync(-7)"
+                OnNextWeek="() => SetDateRelativeToCurrentDateAsync(7)"/>
+        </div>
+        
+        if (!_schoolEvents.Any())
         {
             <div data-bunit="se-no-events-message" class="notification is-light">
                 <p class="has-text-centered">Geen evenementen voor deze dag.</p>
