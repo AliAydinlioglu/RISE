@@ -44,9 +44,8 @@
                         <a href="/school-events/@schoolEvent.Id">
                             <!-- Desktop/Tablet: Vertical Card -->
                             <div class="is-hidden-mobile">
-                                <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title" ImageUrl="@schoolEvent.ImageUrl">
                                     <RiseSchoolEventCardContent 
-                                        ImageUrl="@schoolEvent.ImageUrl"
                                         Category="@schoolEvent.Category"
                                         StartTime="@schoolEvent.StartTime"
                                         EndTime="@schoolEvent.EndTime"
@@ -57,9 +56,8 @@
 
                             <!-- Mobile: Regular Card -->
                             <div class="is-hidden-tablet">
-                                <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title" ImageUrl="@schoolEvent.ImageUrl">
                                     <RiseSchoolEventCardContent 
-                                        ImageUrl="@schoolEvent.ImageUrl"
                                         Category="@schoolEvent.Category"
                                         StartTime="@schoolEvent.StartTime"
                                         EndTime="@schoolEvent.EndTime"
