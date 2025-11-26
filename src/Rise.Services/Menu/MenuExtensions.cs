@@ -23,7 +23,9 @@ public static class MenuExtensions
         {
             Name = pli.Name,
             StudentPrice = pli.Price.Student.Value,
-            ExternalPrice = pli.Price.Extern
+            ExternalPrice = pli.Price.Extern,
+            IsHighlighted = pli.IsHighlighted,
+            HasCategoryRemark = pli.HasCategoryRemark
         };
     }
 

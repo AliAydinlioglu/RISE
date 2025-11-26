@@ -62,10 +62,7 @@
                                     }
                                 </span>
                             </div>
-                            @if (menuItem.Allergens != null && menuItem.Allergens.Any())
-                            {
-                                <AllergenList Allergens="@menuItem.Allergens"/>
-                            }
+                            <AllergenList Allergens="@menuItem.Allergens"/>
                         </div>
                     }
                 </div>
