@@ -9,6 +9,10 @@
     margin: 0 auto;
 }
 
+.container{
+    padding-bottom: 1.5rem;
+}
+
 ::deep .rise-calendar-width-small .columns {
     width: 700px;
     margin: 0 auto;
