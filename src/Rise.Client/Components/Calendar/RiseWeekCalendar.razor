@@ -3,26 +3,15 @@
         <p class="title is-4 is-capitalized has-text-centered @GetForegroundColorClass()">
             @Title
         </p>
-        @if(ShowWeek){
-            <div class="is-flex is-align-items-center is-justify-content-center">
-                <button class="button is-ghost @GetForegroundColorClass()" @onclick="OnPreviousWeek" style="text-decoration: none;">
-                    <span class="icon is-small">
-                        <i class="fas fa-chevron-left"></i>
-                    </span>
-                </button>
-                <p class="subtitle is-5 @GetForegroundColorClass() mb-0 mx-5">
-                    Week @GetWeekNumber()
-                </p>
-                <button class="button is-ghost @GetForegroundColorClass()" @onclick="OnNextWeek" style="text-decoration: none;">
-                    <span class="icon is-small">
-                        <i class="fas fa-chevron-right"></i>
-                    </span>
-                </button>
-            </div>
-        }
     </div>
 
     <div class="columns is-mobile is-gapless">
+        <button class="button is-ghost mr-3 @GetForegroundColorClass()" @onclick="OnPreviousWeek" style="text-decoration: none;">
+            <span class="icon is-small">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+        </button>
+        
         @foreach (var day in GetSchooldaysOfCurrentWeek())
         {
             var isSelected = day.Date == SelectedDate.Date;
@@ -40,5 +29,11 @@
                 </button>
             </div>
         }
+
+        <button class="button is-ghost @GetForegroundColorClass() ml-3" @onclick="OnNextWeek" style="text-decoration: none;">
+            <span class="icon is-small">
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </button>
     </div>
 </div>

@@ -1,23 +1,22 @@
 @page "/school-events"
-
 @using Rise.Client.Components.Calendar
 
 <PageTitle>Evenementen</PageTitle>
 
 <div class="container">
-    <RiseHeadTitle ImageUrl="/img/banner15.webp">Evenementen</RiseHeadTitle>
+    <RiseHeadTitle>Evenementen</RiseHeadTitle>
 </div>
 
-<section class="mt-3 container school-events">
+<section class="mt-5 container school-events">
     @if (_schoolEvents == null)
     {
         <MudContainer Class="mt-8">
-            <RiseLoader/>
+            <RiseLoader />
         </MudContainer>
     }
     else
     {
-        <div class="is-flex is-justify-content-center mb-5" style="margin-bottom: 3px !important;">
+        <div style="display: flex; justify-content: center; margin: auto 0;">
             <RiseWeekCalendar
                 SelectedDate="_selectedDate"
                 SelectedDateChanged="(date) => OnDateChangedAsync(date)"
@@ -28,8 +27,8 @@
                 OnPreviousWeek="() => SetDateRelativeToCurrentDateAsync(-7)"
                 OnNextWeek="() => SetDateRelativeToCurrentDateAsync(7)"/>
         </div>
-
-        @if (!_schoolEvents.Any())
+        
+        if (!_schoolEvents.Any())
         {
             <div data-bunit="se-no-events-message" class="notification is-light">
                 <p class="has-text-centered">Geen evenementen voor deze dag.</p>
@@ -41,12 +40,13 @@
                 @foreach (var schoolEvent in _schoolEvents)
                 {
                     <article data-bunit="se-index-card" class="mb-4 column is-12-mobile is-6-tablet is-3-desktop ">
-
+                
                         <a href="/school-events/@schoolEvent.Id">
                             <!-- Desktop/Tablet: Vertical Card -->
                             <div class="is-hidden-mobile">
-                                <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title" ImageUrl="@schoolEvent.ImageUrl">
-                                    <RiseSchoolEventCardContent
+                                <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                    <RiseSchoolEventCardContent 
+                                        ImageUrl="@schoolEvent.ImageUrl"
                                         Category="@schoolEvent.Category"
                                         StartTime="@schoolEvent.StartTime"
                                         EndTime="@schoolEvent.EndTime"
@@ -57,8 +57,9 @@
 
                             <!-- Mobile: Regular Card -->
                             <div class="is-hidden-tablet">
-                                <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title" ImageUrl="@schoolEvent.ImageUrl">
-                                    <RiseSchoolEventCardContent
+                                <RiseCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title">
+                                    <RiseSchoolEventCardContent 
+                                        ImageUrl="@schoolEvent.ImageUrl"
                                         Category="@schoolEvent.Category"
                                         StartTime="@schoolEvent.StartTime"
                                         EndTime="@schoolEvent.EndTime"
@@ -70,9 +71,9 @@
                     </article>
                 }
             </div>
-
-            <RisePagination
-                CurrentPage="_currentPage"
+            
+            <RisePagination 
+                CurrentPage="_currentPage" 
                 PageSize="PageSize"
                 TotalPages="TotalPages"
                 CurrentPageChanged="OnPageChangedAsync"/>

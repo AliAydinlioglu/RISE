@@ -133,20 +133,4 @@ public class GivenAWeekCalendar : TestContext
         var rootDiv = cut.Find("div.box");
         rootDiv.ClassList.ShouldContain(expectedClass);
     }
-
-    [Fact]
-    public void WhenRenderedCalender_ThenWeekNumberIsCorrect()
-    {
-        // assign
-        var date = new DateTime(2025, 11, 12);
-        var cut = RenderComponent<RiseWeekCalendar>(parameters => parameters
-            .Add(p => p.SelectedDate, date)
-        );
-
-        var expectedWeek = System.Globalization.CultureInfo.CurrentCulture.Calendar
-            .GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-
-        // assert
-        cut.Markup.ShouldContain($"Week {expectedWeek}");
-    }
 }
