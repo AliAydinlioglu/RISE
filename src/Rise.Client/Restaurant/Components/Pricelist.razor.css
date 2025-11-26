@@ -16,6 +16,10 @@ tr {
     border-bottom: 1px solid lightgray;
 }
 
+tfoot {
+    border-top: 1px solid lightgray;
+}
+
 tr:last-child {
     border-bottom: none;
 }

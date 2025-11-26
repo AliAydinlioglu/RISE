@@ -1,9 +1,12 @@
 @using Rise.Client.Restaurant.Enums
 @using Rise.Client.Restaurant.Helpers
-<div class="is-flex gap-1 is-flex-wrap-wrap">
-    @foreach (var allergen in Allergens)
+<div class="is-flex gap-1 is-flex-wrap-wrap" style="min-height: 30px;">
+    @if (Allergens != null)
     {
-        <img src="@AllergenHelper.GetAllergenImage(Enum.Parse<Allergen>(allergen.Name))"
-             alt="@allergen.Name" width="30px" height="30px" />
+        @foreach (var allergen in Allergens)
+        {
+            <img src="@AllergenHelper.GetAllergenImage(Enum.Parse<Allergen>(allergen.Name))"
+                 alt="@allergen.Name" width="30px" height="30px" />
+        }
     }
 </div>
