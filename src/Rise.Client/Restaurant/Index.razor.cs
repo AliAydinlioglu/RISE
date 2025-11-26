@@ -8,7 +8,7 @@ using Rise.Shared.Menu;
 
 namespace Rise.Client.Restaurant;
 
-[HomeBlock(icon: @Icons.Material.Filled.RestaurantMenu, label: "Weekmenu", route: "/restaurant/")]
+[HomeBlock(icon: @Icons.Material.Filled.RestaurantMenu, label: "Weekmenu", route: "/restaurant/weekmenu")]
 public partial class Index : ComponentBase
 {
     private DateTime _selectedDate;

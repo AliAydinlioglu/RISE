@@ -9,7 +9,7 @@ public partial class RestaurantNavigationTabs : ComponentBase
     private string GetTabUrl(NavigationTab tab) =>
         tab switch
         {
-            NavigationTab.Weekmenu => "/restaurant/",
+            NavigationTab.Weekmenu => "/restaurant/weekmenu",
             NavigationTab.Prijslijst => "/restaurant/prijslijst",
             _ => "/restaurant/"
         };
