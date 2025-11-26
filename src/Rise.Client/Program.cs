@@ -81,17 +81,17 @@ try
     builder.Services.AddHttpClient<IWeekmenuService, WeekmenuService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
+    });
+
     builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
+    });
+
     builder.Services.AddHttpClient<IRestoService, RestoService>(client =>
     {
         client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    });
     
     builder.Services.AddHttpClient<IProductService, ProductService>(client =>
     {
