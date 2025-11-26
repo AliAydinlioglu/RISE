@@ -53,13 +53,21 @@
                                 @foreach (var item in priceListCategory.PriceListItems)
                                 {
                                     <tr>
-                                        <td>@item.Name</td>
+                                        <td class="@(item.IsHighlighted ? "has-text-weight-semibold" : "")">@item.Name @(item.HasCategoryRemark?"*":"")</td>
                                         <td>@item.StudentPrice</td>
                                         <td>@item.ExternalPrice</td>
                                     </tr>
                                     
                                 }
                                 </tbody>
+                                <tfoot>
+                                 @if(@priceListCategory.Remark !=null)
+                                 {
+                                    <tr>
+                                        <td colspan="3"><em>@((MarkupString)priceListCategory.Remark.Replace("\n", "<br />"))</em></td>
+                                    </tr>
+                                 }
+                                </tfoot>
                             </table>
                         </ChildContent>
                     </MudExpansionPanel>

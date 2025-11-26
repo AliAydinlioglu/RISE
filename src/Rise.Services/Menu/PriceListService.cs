@@ -41,7 +41,8 @@ public class PriceListService(ApplicationDbContext dbContext) : IPriceListServic
                     CategoryName = plc.Key.Name,
                     PriceListItems = plc
                         .Select(pli => pli.ToPriceListItemDto())
-                        .ToArray()
+                        .ToArray(),
+                    Remark = plc.Key.Remark
                 })
                 .ToArray()
         });
