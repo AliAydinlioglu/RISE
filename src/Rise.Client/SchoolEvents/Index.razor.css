@@ -1,21 +1,22 @@
-section.student-activities{
-    max-width: 1500px   ;
+section.school-events {
+    max-width: 1500px;
     margin: 0 auto;
 }
-
 
 .columns.is-multiline {
     align-items: stretch;
 }
-
+/* Mobile padding adjustment */
 @media screen and (max-width: 768px) {
-    article[data-bunit="sa-index"] {
+    article[data-bunit="se-index-card"].column {
         padding: 0 !important;
     }
 }
 
+/* Desktop/Tablet width adjustment */
 @media screen and (min-width: 769px) {
-    article[data-bunit="sa-index"] {
+    article[data-bunit="se-index-card"] {
         width: 50% !important;
     }
 }
+

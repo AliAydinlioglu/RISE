@@ -1,0 +1,6 @@
+@media screen and (max-width: 768px) {
+    section.section {
+        margin-top: -50px !important;
+    }
+}
+

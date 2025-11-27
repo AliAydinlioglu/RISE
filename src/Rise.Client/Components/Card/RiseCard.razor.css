@@ -81,15 +81,16 @@
     color: #9c9c9c;
 }
 
-.description-label p {
+.header-label {
+    font-size: calc(1rem * var(--scale));
+}
+
+.course-info {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.header-label {
-    font-size: calc(1rem * var(--scale));
-}
 
 @media screen and (max-width: 480px) {
     .square {
