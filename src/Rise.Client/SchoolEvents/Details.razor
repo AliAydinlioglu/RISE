@@ -23,7 +23,7 @@ else
         </span>
             <span>Terug naar evenementen</span>
         </a>
-        <div class="section" style="padding-top: 20px">
+        <div class="section">
 
             <RiseHeadTitle ImageUrl="/img/banner25.webp">@_schoolEvent!.Title</RiseHeadTitle>
 
@@ -62,24 +62,24 @@ else
                         </div>
                     </div>
 
+                </div>
+
+                <div class="button-group">
+                    <RiseButton
+                        ButtonType="ButtonType.Button"
+                        Size="RiseButton.RiseButtonSize.Medium">
+                        Voeg toe aan kalender
+                    </RiseButton>
+
+                    <RiseButton
+                        ButtonType="ButtonType.Button"
+                        Size="RiseButton.RiseButtonSize.Medium"
+                        OnClick="() => NavigationManager.NavigateTo(_schoolEvent.RegisterLink)">
+                        Inschrijven
+                    </RiseButton>
+                </div>
+
             </div>
-
-            <div class="button-group">
-                <RiseButton
-                    ButtonType="ButtonType.Button"
-                    Size="RiseButton.RiseButtonSize.Medium">
-                    Voeg toe aan kalender
-                </RiseButton>
-
-                <RiseButton
-                    ButtonType="ButtonType.Button"
-                    Size="RiseButton.RiseButtonSize.Medium"
-                    OnClick="() => NavigationManager.NavigateTo(_schoolEvent.RegisterLink)">
-                    Inschrijven
-                </RiseButton>
-            </div>
-
-        </div>
 
         </div>
     </div>

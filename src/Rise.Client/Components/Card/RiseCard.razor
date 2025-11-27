@@ -1,17 +1,18 @@
-<div @onclick="HandleClick" 
+<div @onclick="HandleClick"
      class="box is-flex p-0 is-align-items-stretch"
      style="--scale: @ScaleString; @(OnClickNavigateTo is null ? null : "cursor: pointer;")">
     <div class="stacking-container scalable">
         @* BACKGROUND *@
-        <div class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center"
-             style="@(!string.IsNullOrEmpty(ImageUrl) ? $"background-image: url('{ImageUrl}'); background-size: cover; background-position: center;" : "")">
+        <div
+            class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center"
+            style="@(!string.IsNullOrEmpty(ImageUrl) ? $"background-image: url('{ImageUrl}'); background-size: cover; background-position: center;" : "")">
             @if (!string.IsNullOrEmpty(ImageUrl))
             {
                 <div class="square-image-overlay"></div>
             }
             <p style="position: relative; z-index: 2;">@BackgroundTitle</p>
         </div>
-        
+
         @* FOREGROUND *@
         <div class="square stacking-container-foreground mr-3">
             <div
@@ -23,9 +24,9 @@
     </div>
     <div class="course-info py-2">
         <p class="header-label card-header has-text-weight-light mb-1">@CardHeader</p>
-        <p class="title-label has-text-weight-semibold mb-0" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">@Title</p>
+        <p class="title-label has-text-weight-semibold mb-0">@Title</p>
         <p class="description-label m-0">@Description</p>
-        
+
         @ChildContent
     </div>
 </div>
