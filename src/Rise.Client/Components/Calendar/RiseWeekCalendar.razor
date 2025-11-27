@@ -9,7 +9,7 @@
         
         @if (EnableWeekNav)
         {
-            <button class="button is-ghost mr-3 @GetForegroundColorClass()" @onclick="OnPreviousWeek" style="text-decoration: none;">
+            <button class="button is-ghost pr-3 @GetForegroundColorClass()" @onclick="OnPreviousWeek" style="text-decoration: none;">
                 <span class="icon is-small">
                     <i class="fas fa-chevron-left"></i>
                 </span>
@@ -36,7 +36,7 @@
 
         @if (EnableWeekNav)
         {
-            <button class="button is-ghost @GetForegroundColorClass() ml-3" @onclick="OnNextWeek" style="text-decoration: none;">
+            <button class="button is-ghost @GetForegroundColorClass() pl-3" @onclick="OnNextWeek" style="text-decoration: none;">
                 <span class="icon is-small">
                     <i class="fas fa-chevron-right"></i>
                 </span>
