@@ -1,9 +1,13 @@
-.detail-sa .content, .detail-sa .box, .detail-sa .box-content, .detail-sa .label{
+.detail-sa .content, .detail-sa .box, .detail-sa .box-content, .detail-sa .label {
     background: white;
     color: black;
 }
 
-.detail-sa a:hover{
+.detail-sa a:hover {
     text-decoration: underline;
+}
+
+.section {
+    padding-top: 20px !important;
 }
 
