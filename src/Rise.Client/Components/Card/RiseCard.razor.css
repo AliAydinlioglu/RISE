@@ -168,3 +168,16 @@
         height: calc(var(--base-size) * var(--scale, 1));
     }
 }
+
+.title-label{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    width: 90%;
+    font-size: calc(1.15rem * var(--scale));
+}
+
+.course-info{
+    width: 65%;
+}
