@@ -7,73 +7,75 @@
     <RiseHeadTitle>Weekmenu</RiseHeadTitle>
 </div>
 
+<RiseSwipeNavigationWrapper SwipeLeftUrl="/restaurant/prijslijst">
+    <div class="container">
+        <RestaurantNavigationTabs ActiveTab="NavigationTab.Weekmenu"/>
 
-<div class="container">
-    <RestaurantNavigationTabs ActiveTab="NavigationTab.Weekmenu"/>
-
-    <div class="">
-        <RiseWeekCalendar SelectedDate="_selectedDate"
-                          SelectedDateChanged="(date) => OnDateChangedAsync(date)"
-                          Title="@_selectedDate.ToString("MMMM yyyy")"
-                          OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
-                          OnNextWeek="() => SetDateRelativeToCurrentDate(7)"
-                          ShowWeek="false"/>
-    </div>
-    <div class="is-flex is-flex-direction-row is-justify-content-space-between gap-2 mb-3">
-    
-        <span class="is-flex-grow-1" data-bunit="restaurant-selector-button">
-            <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
-                        Type="RiseButton.RiseButtonType.Primary">
-                @(_currentResto?.Name ?? "Kies restaurant")
-                <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
+        <div class="">
+            <RiseWeekCalendar SelectedDate="_selectedDate"
+                              SelectedDateChanged="(date) => OnDateChangedAsync(date)"
+                              Title="@_selectedDate.ToString("MMMM yyyy")"
+                              OnPreviousWeek="() => SetDateRelativeToCurrentDate(-7)"
+                              OnNextWeek="() => SetDateRelativeToCurrentDate(7)"
+                              ShowWeek="false"/>
+        </div>
+        
+        <div class="is-flex is-flex-direction-row is-justify-content-space-between gap-2 mb-3">
+        
+            <span class="is-flex-grow-1" data-bunit="restaurant-selector-button">
+                <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
+                            Type="RiseButton.RiseButtonType.Primary">
+                    @(_currentResto?.Name ?? "Kies restaurant")
+                    <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
+                </RiseButton>
+            </span>
+            <RiseButton OnClick="ToggleInfoModal" Type="RiseButton.RiseButtonType.Secondary"
+                        Size="RiseButton.RiseButtonSize.Small">
+                <MudIcon Icon="@Icons.Material.Outlined.Info"/>
             </RiseButton>
-        </span>
-        <RiseButton OnClick="ToggleInfoModal" Type="RiseButton.RiseButtonType.Secondary"
-                    Size="RiseButton.RiseButtonSize.Small">
-            <MudIcon Icon="@Icons.Material.Outlined.Info"/>
-        </RiseButton>
-    </div>
+        </div>
 
-    <RestaurantFilterModal @bind-IsVisible="_visibleRestaurantSelector" OnSelect="@ApplyRestoSelection"
-                           OnClose="ToggleRestoSelector"/>
+        <RestaurantFilterModal @bind-IsVisible="_visibleRestaurantSelector" OnSelect="@ApplyRestoSelection"
+                               OnClose="ToggleRestoSelector"/>
 
-    <MenuInfoModal @bind-Visible="_visibleInfoModal"/>
+        <MenuInfoModal @bind-Visible="_visibleInfoModal"/>
 
-    <AsyncData IsLoading="_isLoading" IsError="_isError">
-        @if (_menuItems != null && _menuItems.Any())
-        {
-            <div data-bunit="menu-container">
-                @foreach (var category in _menuItems)
-                {
-                    <p class="mb-3 mt-2 has-text-weight-semibold" data-bunit="category-name">@category.CategoryName</p>
-                    <div class="menuitem-container ">
-                        @foreach (var menuItem in category.MenuItems)
-                        {
-                            <div class="is-flex is-flex-direction-column p-3 menu-item "
-                                 style="border: 1px solid #ccc; border-radius: 8px;"
-                                 data-bunit="menu-item">
+        <AsyncData IsLoading="_isLoading" IsError="_isError">
+            @if (_menuItems != null && _menuItems.Any())
+            {
+                <div data-bunit="menu-container">
+                    @foreach (var category in _menuItems)
+                    {
+                        <p class="mb-3 mt-2 has-text-weight-semibold" data-bunit="category-name">@category.CategoryName</p>
+                        <div class="menuitem-container ">
+                            @foreach (var menuItem in category.MenuItems)
+                            {
+                                <div class="is-flex is-flex-direction-column p-3 menu-item "
+                                     style="border: 1px solid #ccc; border-radius: 8px;"
+                                     data-bunit="menu-item">
 
-                                <div class="is-flex gap-2">
-                                    <MudText Typo="Typo.body1" class="mb-2" data-bunit="menu-item-name">@menuItem.Name</MudText>
-                                    <span data-bunit="dietary-restrictions" class="is-flex gap-2">
-                                        @foreach (var dietaryRestriction in menuItem.DietaryRestrictions)
-                                        {
-                                            <MudIcon
-                                                Icon="@(DietaryRestrictionHelper.GetDietaryRestrictionIcon(dietaryRestriction.Name))"
-                                                Color="Color.Success"/>
-                                        }
-                                    </span>
+                                    <div class="is-flex gap-2">
+                                        <MudText Typo="Typo.body1" class="mb-2" data-bunit="menu-item-name">@menuItem.Name</MudText>
+                                        <span data-bunit="dietary-restrictions" class="is-flex gap-2">
+                                            @foreach (var dietaryRestriction in menuItem.DietaryRestrictions)
+                                            {
+                                                <MudIcon
+                                                    Icon="@(DietaryRestrictionHelper.GetDietaryRestrictionIcon(dietaryRestriction.Name))"
+                                                    Color="Color.Success"/>
+                                            }
+                                        </span>
+                                    </div>
+                                    <AllergenList Allergens="@menuItem.Allergens"/>
                                 </div>
-                                <AllergenList Allergens="@menuItem.Allergens"/>
-                            </div>
-                        }
-                    </div>
-                }
-            </div>
-        }
-        else
-        {
-            <p data-bunit="no-items-message">Nog geen menu beschikbaar voor deze datum. Kom later nog eens terug!</p>
-        }
-    </AsyncData>
-</div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p data-bunit="no-items-message">Nog geen menu beschikbaar voor deze datum. Kom later nog eens terug!</p>
+            }
+        </AsyncData>
+    </div>
+</RiseSwipeNavigationWrapper>

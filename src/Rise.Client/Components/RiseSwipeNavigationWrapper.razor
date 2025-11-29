@@ -1,0 +1,17 @@
+<div @onpointerdown="HandlePointerDown"
+     @onpointermove="HandlePointerMove"
+     @onpointerup="HandlePointerUp"
+     @onpointercancel="HandlePointerCancel"
+     class="swipe-navigation-wrapper">
+    @ChildContent
+</div>
+
+<style>
+    .swipe-navigation-wrapper {
+        touch-action: pan-y pinch-zoom;
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+</style>

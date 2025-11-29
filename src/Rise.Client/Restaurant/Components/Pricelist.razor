@@ -1,79 +1,81 @@
 @page "/restaurant/prijslijst"
-<div class="pricelist">
-    <div class="mb-4">
-        <RiseHeadTitle>Prijslijst</RiseHeadTitle>
-    </div>
-
-    <div class="container">
-        <RestaurantNavigationTabs ActiveTab="NavigationTab.Prijslijst"/>
-
-        <div class="mb-2" data-bunit="restaurant-selector-button">
-            <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
-                        Type="RiseButton.RiseButtonType.Primary">
-                @_currentResto.Name &nbsp;
-                <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
-            </RiseButton>
+<RiseSwipeNavigationWrapper SwipeRightUrl="/restaurant/weekmenu">
+    <div class="pricelist">
+        <div class="mb-4">
+            <RiseHeadTitle>Prijslijst</RiseHeadTitle>
         </div>
 
-        <RestaurantFilterModal @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection"
-                               OnClose="ToggleRestoSelector"/>
+        <div class="container">
+            <RestaurantNavigationTabs ActiveTab="NavigationTab.Prijslijst"/>
+
+            <div class="mb-2" data-bunit="restaurant-selector-button">
+                <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
+                            Type="RiseButton.RiseButtonType.Primary">
+                    @_currentResto.Name &nbsp;
+                    <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
+                </RiseButton>
+            </div>
+
+            <RestaurantFilterModal @bind-IsVisible="_visible" OnSelect="@ApplyRestoSelection"
+                                   OnClose="ToggleRestoSelector"/>
 
 
-        <AsyncData IsLoading="_isLoading" IsError="_isError">
-            @if (_pricelistCategories == null || !_pricelistCategories.Any())
-            {
-            <p data-bunit="no-pricelist-message">Er zijn momenteel geen prijslijsten beschikbaar voor dit restaurant.</p>
-            }
-            else
-            {
-            <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0" data-bunit="pricelist-panels">
-                @foreach (var priceListCategory in _pricelistCategories)
+            <AsyncData IsLoading="_isLoading" IsError="_isError">
+                @if (_pricelistCategories == null || !_pricelistCategories.Any())
                 {
-                    <MudExpansionPanel data-bunit="pricelist-category">
-                        <TitleContent>
-                            <div class="d-flex w-100 ">
-                                <span class="flex-grow-1" data-bunit="category-name">
-                                    @priceListCategory.CategoryName
-                                </span>
-                            </div>
-                        </TitleContent>
-                        <ChildContent>
-
-                            <table data-bunit="pricelist-table">
-                                <col class="fooditem"/>
-                                <col span="2" class="prices"/>
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th data-bunit="student-header">Studenten</th>
-                                    <th data-bunit="external-header">Externen</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach (var item in priceListCategory.PriceListItems)
-                                {
-                                    <tr data-bunit="pricelist-item">
-                                        <td class="@(item.IsHighlighted ? "has-text-weight-semibold" : "")" data-bunit="item-name">@item.Name @(item.HasCategoryRemark?"*":"")</td>
-                                        <td data-bunit="student-price">@item.StudentPrice</td>
-                                        <td data-bunit="external-price">@item.ExternalPrice</td>
-                                    </tr>
-                                    
-                                }
-                                </tbody>
-                                <tfoot>
-                                 @if(@priceListCategory.Remark !=null)
-                                 {
-                                    <tr>
-                                        <td colspan="3" data-bunit="category-remark"><em>@((MarkupString)priceListCategory.Remark.Replace("\n", "<br />"))</em></td>
-                                    </tr>
-                                 }
-                                </tfoot>
-                            </table>
-                        </ChildContent>
-                    </MudExpansionPanel>
+                <p data-bunit="no-pricelist-message">Er zijn momenteel geen prijslijsten beschikbaar voor dit restaurant.</p>
                 }
-            </MudExpansionPanels>
-            }
-        </AsyncData>
+                else
+                {
+                <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0" data-bunit="pricelist-panels">
+                    @foreach (var priceListCategory in _pricelistCategories)
+                    {
+                        <MudExpansionPanel data-bunit="pricelist-category">
+                            <TitleContent>
+                                <div class="d-flex w-100 ">
+                                    <span class="flex-grow-1" data-bunit="category-name">
+                                        @priceListCategory.CategoryName
+                                    </span>
+                                </div>
+                            </TitleContent>
+                            <ChildContent>
+
+                                <table data-bunit="pricelist-table">
+                                    <col class="fooditem"/>
+                                    <col span="2" class="prices"/>
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th data-bunit="student-header">Studenten</th>
+                                        <th data-bunit="external-header">Externen</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var item in priceListCategory.PriceListItems)
+                                    {
+                                        <tr data-bunit="pricelist-item">
+                                            <td class="@(item.IsHighlighted ? "has-text-weight-semibold" : "")" data-bunit="item-name">@item.Name @(item.HasCategoryRemark?"*":"")</td>
+                                            <td data-bunit="student-price">@item.StudentPrice</td>
+                                            <td data-bunit="external-price">@item.ExternalPrice</td>
+                                        </tr>
+
+                                    }
+                                    </tbody>
+                                    <tfoot>
+                                     @if(@priceListCategory.Remark !=null)
+                                     {
+                                        <tr>
+                                            <td colspan="3" data-bunit="category-remark"><em>@((MarkupString)priceListCategory.Remark.Replace("\n", "<br />"))</em></td>
+                                        </tr>
+                                     }
+                                    </tfoot>
+                                </table>
+                            </ChildContent>
+                        </MudExpansionPanel>
+                    }
+                </MudExpansionPanels>
+                }
+            </AsyncData>
+        </div>
     </div>
-</div>
+</RiseSwipeNavigationWrapper>
