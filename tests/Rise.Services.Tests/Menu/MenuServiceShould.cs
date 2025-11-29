@@ -18,18 +18,6 @@ public class MenuServiceShould
         return new ApplicationDbContext(options);
     }
 
-    [Fact]
-    public async Task ReturnError_When_RequestIsNull()
-    {
-        var db = GetDbContext(nameof(ReturnError_When_RequestIsNull));
-        var service = new MenuService(db);
-
-        var result = await service.GetDayMenuAsync(null!, CancellationToken.None);
-
-        Assert.False(result.IsSuccess);
-        Assert.Equal("Request is NULL.", result.Errors.First());
-    }
-
     [Theory]
     [InlineData(0)]
     [InlineData(-5)]

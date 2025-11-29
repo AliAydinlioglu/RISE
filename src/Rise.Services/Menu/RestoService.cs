@@ -10,6 +10,8 @@ public class RestoService(ApplicationDbContext dbContext) : IRestoService
 {
     public async Task<Result<MenuResponse.RestoOverview>> GetOverviewAsync(QueryRequest.SkipTake req, CancellationToken ct)
     {
+        Log.Information($"{nameof(RestoService)} - {nameof(GetOverviewAsync)} was called)");
+        
         var restoQuery = dbContext.Restos
             .AsNoTracking()
             .Where(x => !x.IsDeleted)
@@ -31,16 +33,26 @@ public class RestoService(ApplicationDbContext dbContext) : IRestoService
 
     public async Task<Result<MenuResponse.RestoDetail>> GetDetailAsync(MenuRequest.Resto req, CancellationToken ct)
     {
+        Log.Information($"{nameof(RestoService)} - {nameof(GetDetailAsync)} was called)");
+
         if (req.Id <= 0)
+        {
+            Log.Error("Id has an invalid value.");
             return Result.Error("Id has an invalid value.");
+        }
         
         var resto = await dbContext.Restos
             .AsNoTracking()
             .Include(r => r.Location)
             .FirstOrDefaultAsync(r => r.Id == req.Id, ct);
-        
+
         if (resto == null)
+        {
+            Log.Error("Resto with id {ReqId} was not found.", req.Id);
             return Result.NotFound("Resto is not found.");
+        }
+        
+        Log.Information("Resto with id {ReqId} was found.", req.Id);
         
         return Result.Success(new MenuResponse.RestoDetail
         {
@@ -72,6 +84,9 @@ public class RestoService(ApplicationDbContext dbContext) : IRestoService
 
     public Task<Result<MenuResponse.RestoOverview>> SetFavoriteResto(MenuRequest.Resto req, CancellationToken ct)
     {
+        Log.Information($"{nameof(RestoService)} - {nameof(SetFavoriteResto)} was called)");
+        
+        Log.Error("This method is not implemented yet.");
         throw new NotImplementedException();
     }
 }

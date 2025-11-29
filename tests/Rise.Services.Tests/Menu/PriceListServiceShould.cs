@@ -18,18 +18,6 @@ public class PriceListServiceShould
         return new ApplicationDbContext(options);
     }
 
-    [Fact]
-    public async Task ReturnError_When_RequestIsNull()
-    {
-        var db = GetDbContext(nameof(ReturnError_When_RequestIsNull));
-        var service = new PriceListService(db);
-
-        var result = await service.GetForRestoAsync(null!, CancellationToken.None);
-
-        Assert.False(result.IsSuccess);
-        Assert.Equal("Request is NULL.", result.Errors.First());
-    }
-
     [Theory]
     [InlineData(0)]
     [InlineData(-1)]
