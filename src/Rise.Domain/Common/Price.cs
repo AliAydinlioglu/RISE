@@ -41,7 +41,4 @@ public class Price : ValueObject
         yield return Student;
         yield return Extern;
     }
-
-    public override string ToString()
-        => $"Student: {(Student?.ToString("0.00") ?? "-")}, Extern: {(Extern?.ToString("0.00") ?? "-")}";
 }

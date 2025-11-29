@@ -59,17 +59,4 @@ public class PriceShould
         Assert.Null(price.Student);
         Assert.Null(price.Extern);
     }
-
-    [Fact]
-    public void ToString_Should_Format_Correctly()
-    {
-        var culture = CultureInfo.GetCultureInfo("nl-NL");
-        CultureInfo.CurrentCulture = culture;
-        CultureInfo.CurrentUICulture = culture;
-        
-        var price = Price.ForMenuItem(1.5m, 3m);
-        var str = price.ToString();
-        Assert.Contains("1,50", str);
-        Assert.Contains("3,00", str);
-    }
 }
