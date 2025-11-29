@@ -61,6 +61,6 @@
 .vertical-card-image-overlay {
     position: absolute;
     inset: 0;
-    background: var(--mud-palette-primary-darken);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 1;
 }

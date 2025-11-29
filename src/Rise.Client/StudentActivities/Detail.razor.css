@@ -1,6 +1,6 @@
 .detail-sa .content, .detail-sa .box, .detail-sa .box-content, .detail-sa .label {
-    background: var(—mud-palette-secondary);
-    color: var(—mud-palette-text-primary);
+    background: var(--mud-palette-secondary) !important;
+    color: var(--mud-palette-text-primary) !important;
 }
 
 .detail-sa a:hover {
