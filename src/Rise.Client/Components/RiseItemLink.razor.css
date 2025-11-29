@@ -3,7 +3,7 @@
 }
 
 ::deep a.active{
-    color: var(--mud-palette-tertiary);
+    color: var(--mud-palette-tertiary) !important;
 }
 
 div{
