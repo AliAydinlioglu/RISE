@@ -2,8 +2,8 @@ namespace Rise.Domain.Menu;
 
 public class MenuItem : Entity
 {
-    public string Name { get; set; } = null!;
-    public Price Price { get; set; } = null!;
+    public string Name { get; init; } = null!;
+    public Price? Price { get; init; }
 
     public MenuCategory MenuCategory { get; init; } = null!;
     
@@ -22,7 +22,7 @@ public class MenuItem : Entity
     {
         Name = Guard.Against.NullOrWhiteSpace(name);
         MenuCategory = Guard.Against.Null(menuCategory);
-        Price = Guard.Against.Null(price);
+        Price = price;
     }
 
     public void AddDietaryRestrictions(IEnumerable<DietaryRestriction> dietaryRestrictions)
