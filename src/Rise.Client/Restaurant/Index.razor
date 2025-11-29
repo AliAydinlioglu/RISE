@@ -21,7 +21,7 @@
     </div>
     <div class="is-flex is-flex-direction-row is-justify-content-space-between gap-2 mb-3">
     
-        <span class="is-flex-grow-1 ">
+        <span class="is-flex-grow-1" data-bunit="restaurant-selector-button">
             <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
                         Type="RiseButton.RiseButtonType.Primary">
                 @(_currentResto?.Name ?? "Kies restaurant")
@@ -42,35 +42,38 @@
     <AsyncData IsLoading="_isLoading" IsError="_isError">
         @if (_menuItems != null && _menuItems.Any())
         {
-            @foreach (var category in _menuItems)
-            {
-                <p class="mb-3 mt-2 has-text-weight-semibold">@category.CategoryName</p>
-                <div class="menuitem-container ">
-                    @foreach (var menuItem in category.MenuItems)
-                    {
-                        <div class="is-flex is-flex-direction-column p-3 menu-item "
-                             style="border: 1px solid #ccc; border-radius: 8px;">
+            <div data-bunit="menu-container">
+                @foreach (var category in _menuItems)
+                {
+                    <p class="mb-3 mt-2 has-text-weight-semibold" data-bunit="category-name">@category.CategoryName</p>
+                    <div class="menuitem-container ">
+                        @foreach (var menuItem in category.MenuItems)
+                        {
+                            <div class="is-flex is-flex-direction-column p-3 menu-item "
+                                 style="border: 1px solid #ccc; border-radius: 8px;"
+                                 data-bunit="menu-item">
 
-                            <div class="is-flex gap-2">
-                                <MudText Typo="Typo.body1" class="mb-2">@menuItem.Name</MudText>
-                                <span class="is-flex gap-2">
-                                    @foreach (var dietaryRestriction in menuItem.DietaryRestrictions)
-                                    {
-                                        <MudIcon
-                                            Icon="@(DietaryRestrictionHelper.GetDietaryRestrictionIcon(dietaryRestriction.Name))"
-                                            Color="Color.Success"/>
-                                    }
-                                </span>
+                                <div class="is-flex gap-2">
+                                    <MudText Typo="Typo.body1" class="mb-2" data-bunit="menu-item-name">@menuItem.Name</MudText>
+                                    <span data-bunit="dietary-restrictions" class="is-flex gap-2">
+                                        @foreach (var dietaryRestriction in menuItem.DietaryRestrictions)
+                                        {
+                                            <MudIcon
+                                                Icon="@(DietaryRestrictionHelper.GetDietaryRestrictionIcon(dietaryRestriction.Name))"
+                                                Color="Color.Success"/>
+                                        }
+                                    </span>
+                                </div>
+                                <AllergenList Allergens="@menuItem.Allergens"/>
                             </div>
-                            <AllergenList Allergens="@menuItem.Allergens"/>
-                        </div>
-                    }
-                </div>
-            }
+                        }
+                    </div>
+                }
+            </div>
         }
         else
         {
-            <p>Nog geen menu beschikbaar voor deze datum. Kom later nog eens terug!</p>
+            <p data-bunit="no-items-message">Nog geen menu beschikbaar voor deze datum. Kom later nog eens terug!</p>
         }
     </AsyncData>
 </div>

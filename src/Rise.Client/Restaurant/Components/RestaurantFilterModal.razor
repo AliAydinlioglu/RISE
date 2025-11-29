@@ -1,9 +1,11 @@
-<ModalOverlay Visible="IsVisible" VisibleChanged="HandleVisibilityChange" Title="Kies een restaurant"
+<RiseModalOverlay Visible="IsVisible" VisibleChanged="HandleVisibilityChange" Title="Kies een restaurant"
               OnClose="HandleClose">
     @foreach (var resto in _restaurants)
     {
-        <div class="is-flex gap-2 ">
-            <RiseButton Class="flex-grow-1" OnClick="() => HandleRestaurantSelect(resto)">@resto.Name</RiseButton>
+        <div class="is-flex gap-2">
+            <div class="flex-grow-1" data-bunit="restaurant-option">
+                <RiseButton Class="flex-grow-1" OnClick="() => HandleRestaurantSelect(resto)">@resto.Name</RiseButton>
+            </div>
             <RiseButton Type="RiseButton.RiseButtonType.Secondary" OnClick="() => SelectFavoriteResto(resto)">
                 @if (@resto.IsFavorite){
                 <MudIcon Icon="@Icons.Material.Filled.Star" Style="color:#FFD700"/>
@@ -13,4 +15,4 @@
             </RiseButton>
         </div>
     }
-</ModalOverlay>
+</RiseModalOverlay>

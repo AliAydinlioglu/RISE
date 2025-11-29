@@ -7,7 +7,7 @@
     <div class="container">
         <RestaurantNavigationTabs ActiveTab="NavigationTab.Prijslijst"/>
 
-        <div class="mb-2">
+        <div class="mb-2" data-bunit="restaurant-selector-button">
             <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
                         Type="RiseButton.RiseButtonType.Primary">
                 @_currentResto.Name &nbsp;
@@ -22,40 +22,40 @@
         <AsyncData IsLoading="_isLoading" IsError="_isError">
             @if (_pricelistCategories == null || !_pricelistCategories.Any())
             {
-            <p>Er zijn momenteel geen prijslijsten beschikbaar voor dit restaurant.</p>
+            <p data-bunit="no-pricelist-message">Er zijn momenteel geen prijslijsten beschikbaar voor dit restaurant.</p>
             }
             else
             {
-            <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0">
+            <MudExpansionPanels MultiExpansion="true" Class="breakout" Dense="true" Gutters="false" Elevation="0" data-bunit="pricelist-panels">
                 @foreach (var priceListCategory in _pricelistCategories)
                 {
-                    <MudExpansionPanel>
+                    <MudExpansionPanel data-bunit="pricelist-category">
                         <TitleContent>
                             <div class="d-flex w-100 ">
-                                <span class="flex-grow-1">
+                                <span class="flex-grow-1" data-bunit="category-name">
                                     @priceListCategory.CategoryName
                                 </span>
                             </div>
                         </TitleContent>
                         <ChildContent>
 
-                            <table>
+                            <table data-bunit="pricelist-table">
                                 <col class="fooditem"/>
                                 <col span="2" class="prices"/>
                                 <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Studenten</th>
-                                    <th>Externen</th>
+                                    <th data-bunit="student-header">Studenten</th>
+                                    <th data-bunit="external-header">Externen</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach (var item in priceListCategory.PriceListItems)
                                 {
-                                    <tr>
-                                        <td class="@(item.IsHighlighted ? "has-text-weight-semibold" : "")">@item.Name @(item.HasCategoryRemark?"*":"")</td>
-                                        <td>@item.StudentPrice</td>
-                                        <td>@item.ExternalPrice</td>
+                                    <tr data-bunit="pricelist-item">
+                                        <td class="@(item.IsHighlighted ? "has-text-weight-semibold" : "")" data-bunit="item-name">@item.Name @(item.HasCategoryRemark?"*":"")</td>
+                                        <td data-bunit="student-price">@item.StudentPrice</td>
+                                        <td data-bunit="external-price">@item.ExternalPrice</td>
                                     </tr>
                                     
                                 }
@@ -64,7 +64,7 @@
                                  @if(@priceListCategory.Remark !=null)
                                  {
                                     <tr>
-                                        <td colspan="3"><em>@((MarkupString)priceListCategory.Remark.Replace("\n", "<br />"))</em></td>
+                                        <td colspan="3" data-bunit="category-remark"><em>@((MarkupString)priceListCategory.Remark.Replace("\n", "<br />"))</em></td>
                                     </tr>
                                  }
                                 </tfoot>

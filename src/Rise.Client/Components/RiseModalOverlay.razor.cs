@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Rise.Client.Components;
 
-public partial class ModalOverlay : ComponentBase
+public partial class RiseModalOverlay : ComponentBase
 {
     [Parameter] public bool Visible { get; set; }
     [Parameter] public EventCallback<bool> VisibleChanged { get; set; }

@@ -50,7 +50,10 @@ public partial class Index : ComponentBase
             };
 
             var response = await MenuService.GetDayMenuAsync(request, CancellationToken.None);
-            if (response.IsSuccess) _menuItems = response.Value.MenuItemCategories;
+            if (response.IsSuccess)
+            {
+                _menuItems = response.Value.MenuItemCategories;
+            }
         }
         catch (HttpRequestException httpEx) when (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
