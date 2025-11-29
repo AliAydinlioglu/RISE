@@ -2,8 +2,8 @@ namespace Rise.Domain.Menu;
 
 public abstract class FoodRestriction : Entity
 {
-    public string Name { get; set; } = null!;
-    public string Symbol { get; set; } = null!;
+    public string Name { get; init; } = null!;
+    public string Symbol { get; init; } = null!;
 
     private FoodRestriction() { }
 
