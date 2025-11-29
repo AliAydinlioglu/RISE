@@ -27,7 +27,7 @@ public static class MenuExtensions
         };
     }
 
-    private static FoodRestrictionDto ToFoodRestrictionDto(this IFoodRestriction fr)
+    private static FoodRestrictionDto ToFoodRestrictionDto(this FoodRestriction fr)
     {
         return new FoodRestrictionDto
         {
