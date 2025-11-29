@@ -18,6 +18,8 @@ using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
+using Rise.Client.Offline;
+using TG.Blazor.IndexedDB;
 using DateTimeService = Rise.Client.DateTimeService;
 
 try
@@ -45,56 +47,58 @@ try
         options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
     });
 
-    builder.Services.AddHttpClient("SecureApi", client =>
+    builder.Services.AddIndexedDB(dbStore =>
     {
-        client.BaseAddress = baseUrl;
-    })
-    .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
-        .ConfigureHandler(
-            authorizedUrls: [baseUrl.ToString()],
-            scopes: ["api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user"]
-        ));
+        dbStore.DbName = "RiseCampusApp";
+        dbStore.Version = 1;
+        dbStore.Stores.Add(new StoreSchema
+            { Name = "RiseOfflineCache", PrimaryKey = new IndexSpec { KeyPath = "key"} });
+    });
+
+    builder.Services.AddHttpClient("SecureApi", client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
+            .ConfigureHandler(
+                authorizedUrls: [baseUrl.ToString()],
+                scopes: ["api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user"]
+            ));
 
     // register the shared Singletons
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
-    builder.Services.AddHttpClient<IProductService, ProductService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
+    builder.Services.AddScoped<ICacheService, CacheService>();
+    builder.Services.AddScoped<RiseHttpMessageHandler>();
 
-    builder.Services.AddHttpClient<ICalendarService, CalendarService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>()
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-    builder.Services.AddHttpClient<ICourseService, CourseService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>()
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddHttpClient<ICourseService, CourseService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>()
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client =>
     {
         client.BaseAddress = baseUrl;
-    });
+    }).AddHttpMessageHandler<RiseHttpMessageHandler>();
 
-    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    });
-    
-    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    });
-    
-    builder.Services.AddHttpClient<INotificationService, NotificationService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
+    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+
+    builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+
+    builder.Services
+        .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>()
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
     builder.Services.AddMudServices();
     await builder.Build().RunAsync();
 }
