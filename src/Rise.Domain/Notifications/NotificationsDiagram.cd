@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Rise.Domain.Notifications.Subscription">
+    <Position X="3" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Notifications\Subscription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rise.Domain.Notifications.Message">
+    <Position X="6.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAEAAIAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Notifications\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rise.Domain.Notifications.Notification">
+    <Position X="0.5" Y="2.5" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAgAABAAAABCAAAAAIAAAAAAACAAAACAAAAAAA=</HashCode>
+      <FileName>Notifications\Notification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rise.Domain.Notifications.NotificationAcknowledge">
+    <Position X="9.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAIAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Notifications\NotificationAcknowledge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Rise.Domain.Notifications.NotificationTypes">
+    <Position X="5.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAEAAQAAAAA=</HashCode>
+      <FileName>Notifications\NotificationTypes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
