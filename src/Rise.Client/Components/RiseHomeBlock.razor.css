@@ -1,5 +1,5 @@
 ::deep .homeblock-item a {
-    color: var(--mud-palette-text-primary);
+    color: var(--mud-palette-text-primary) !important;
     width: 100%;
     height: 100%;
     display: flex;
@@ -20,7 +20,7 @@
 }
 
 .homeblock-container:hover ::deep .homeblock-item a{
-    color: var(--mud-palette-text-secondary);
+    color: var(--mud-palette-text-secondary) !important;
     text-decoration: none;
 }
 .homeblock-container:hover {

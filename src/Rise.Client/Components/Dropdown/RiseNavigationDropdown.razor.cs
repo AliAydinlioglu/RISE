@@ -5,7 +5,6 @@ namespace Rise.Client.Components.Dropdown;
 public partial class RiseNavigationDropdown<TItem> : RiseDropdownBase<TItem>
 {
     [Parameter, EditorRequired] public Func<TItem, string> NavigationUrlFunc { get; set; } = null!;
-    [Parameter] public string Label { get; set; } = "Selecteer optie";
     
     [Inject] private NavigationManager NavigationManager { get; set; } = null!;
 

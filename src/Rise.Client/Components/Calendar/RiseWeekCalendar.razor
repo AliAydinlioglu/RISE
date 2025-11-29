@@ -1,12 +1,12 @@
-<div class="box mb-5 @GetBackgroundColorClass() @GetWidthClass()">
+<div class="box mb-5 @GetWidthClass()" style="@GetBackgroundColorClass()">
     <div class="has-text-centered mb-4">
-        <p class="title is-4 is-capitalized has-text-centered @GetForegroundColorClass()">
+        <p class="title is-4 is-capitalized has-text-centered" style="@GetForegroundColorClass()">
             @Title
         </p>
     </div>
 
     <div class="columns is-mobile is-gapless">
-        <button class="button is-ghost mr-3 @GetForegroundColorClass()" @onclick="OnPreviousWeek" style="text-decoration: none;">
+        <button class="button is-ghost mr-3" @onclick="OnPreviousWeek" style="text-decoration: none; @GetForegroundColorClass()">
             <span class="icon is-small">
                 <i class="fas fa-chevron-left"></i>
             </span>
@@ -17,20 +17,20 @@
             var isSelected = day.Date == SelectedDate.Date;
             <div class="column is-flex is-justify-content-center is-align-items-center">
                 <button data-bunit="wc-day-button" @onclick="() => OnDateSelected(day)">
-                    <div class="has-text-centered @GetForegroundColorClass()">
+                    <div class="has-text-centered" style="@GetForegroundColorClass()">
                         <p class="is-size-7 has-text-weight-semibold is-capitalized mb-2">
                             @day.ToString("ddd")
                         </p>
-                        <div class="@GetBackgroundColorClassWhenSelected(isSelected) is-inline-flex is-justify-content-center is-align-items-center"
-                             style="width: 2.5rem; height: 2.5rem; border-radius: 50%;">
-                            <span data-bunit="calendar-day" class="has-text-weight-bold @GetForegroundColorClassWhenSelected(isSelected)">@day.Day</span>
+                        <div class="is-inline-flex is-justify-content-center is-align-items-center"
+                             style="width: 2.5rem; height: 2.5rem; border-radius: 50%; @GetBackgroundColorClassWhenSelected(isSelected)">
+                            <span data-bunit="calendar-day" class="has-text-weight-bold" style="@GetForegroundColorClassWhenSelected(isSelected)">@day.Day</span>
                         </div>
                     </div>
                 </button>
             </div>
         }
 
-        <button class="button is-ghost @GetForegroundColorClass() ml-3" @onclick="OnNextWeek" style="text-decoration: none;">
+        <button class="button is-ghost ml-3" @onclick="OnNextWeek" style="text-decoration: none; @GetForegroundColorClass()">
             <span class="icon is-small">
                 <i class="fas fa-chevron-right"></i>
             </span>

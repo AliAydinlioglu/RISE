@@ -13,12 +13,12 @@
 }
 
 .card-content{
-    background: white;
-    border: 3px solid black;
-    color: black;
+    background-color: var(--mud-palette-secondary);
+    border: 3px solid var(--mud-palette-primary);
+    color: var(--mud-palette-text-primary);
 }
 .card-content .title, .card-content .subtitle{
-    color:black;
+    color: var(--mud-palette-text-primary);
 }
 
 .column .card {
@@ -45,7 +45,7 @@
 .stacking-container-background {
     position: absolute;
     inset: 0;
-    background-color: black;
+    background-color: var(--mud-palette-primary);
     z-index: 0;
 }
 
@@ -61,6 +61,6 @@
 .vertical-card-image-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--mud-palette-primary-darken);
     z-index: 1;
 }

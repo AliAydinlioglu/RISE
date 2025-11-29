@@ -1,5 +1,5 @@
 ::deep a{
-    color: var(--mud-palette-primary-text);
+    color: var(--mud-palette-text-secondary) !important;
 }
 
 ::deep a.active{

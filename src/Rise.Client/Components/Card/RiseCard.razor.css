@@ -28,7 +28,7 @@
 
 .stacking-container-background {
     z-index: 0;
-    background-color: black;
+    background-color: var(--mud-palette-primary);
     container-type: inline-size;
     overflow: hidden !important;
     width: 100%;
@@ -37,7 +37,7 @@
 
 .stacking-container-background p {
     font-size: 38cqw;
-    color: rgba(128, 128, 128, 0.35);
+    color: rgba(128, 128, 128, 0.35); /* TODO: variabele toevoegen in palette */
     letter-spacing: 0.1em;
     line-height: 1;
     white-space: nowrap;
@@ -55,20 +55,20 @@
 .stacking-container-foreground p {
     line-height: 1;
     margin: 0;
-    color: white;
+    color: var(--mud-palette-text-secondary);
 }
 
 .inner-date-square {
     width: 88%;
     height: 88%;
-    border: calc(5px * var(--scale, 1)) solid white;
+    border: calc(5px * var(--scale, 1)) solid var(--mud-palette-text-secondary);
 }
 
 .box {
-    background: white;
-    border: 2px solid black;
+    background: var(--mud-palette-secondary);
+    border: 2px solid var(--mud-palette-primary);
     border-radius: 0;
-    color: black;
+    color: var(--mud-palette-text-primary);
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -78,7 +78,7 @@
 }
 
 .card-header {
-    color: #9c9c9c;
+    color: var(--mud-palette-gray-light);
 }
 
 .header-label {

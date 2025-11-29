@@ -1,0 +1,228 @@
+@page "/components"
+@using Rise.Client.Components.Calendar
+@using Rise.Client.Components.Dropdown
+@using Rise.Client.Components.Form
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-8">
+
+    <MudText Typo="Typo.h3" GutterBottom="true">Rise Component Index</MudText>
+
+    <!-- RiseAppHeader -------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="AppRiseHeader">
+        <MudText Typo="Typo.subtitle2" Class="mb-2">Zie hoofding van deze pagina</MudText>
+    </ComponentIndexSection>
+
+    <!-- RiseBackButton -------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseBackButton">
+        <ComponentConfigFragment>
+            <RiseBackButton NavigateTo="/">
+                Terug naar Home
+            </RiseBackButton>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseButton ------------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseButton">
+        <ComponentConfigFragment ConfigTitle="Primary & Secondary">
+            <RiseButton OnClick="() => { }" Type="RiseButton.RiseButtonType.Primary">
+                Primary
+            </RiseButton>
+
+            <RiseButton OnClick="() => { }" Type="RiseButton.RiseButtonType.Secondary">
+                Secondary
+            </RiseButton>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="Verschillende formaten">
+            <RiseButton OnClick="() => {}" Size="RiseButton.RiseButtonSize.Small">Small</RiseButton>
+            <RiseButton OnClick="() => {}" Size="RiseButton.RiseButtonSize.Medium">Medium</RiseButton>
+            <RiseButton OnClick="() => {}" Size="RiseButton.RiseButtonSize.Large">Large</RiseButton>
+            <RiseButton OnClick="() => {}" Size="RiseButton.RiseButtonSize.XLarge">XLarge</RiseButton>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseCarousel ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseCarousel">
+        <ComponentConfigFragment ConfigTitle="Carousel">
+            <RiseCarousel Items="CarouselItems"/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseHeadTitle ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseHeadTitle">
+        <ComponentConfigFragment ConfigTitle="Zie hoofding van deze pagina">
+            <RiseHeadTitle>
+                Banaan
+            </RiseHeadTitle>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseHomeBlock ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseHomeBlock">
+        <ComponentConfigFragment>
+            <RiseHomeBlock Href="/" Icon="@Icons.Material.Outlined.House">HomeBlockTitle</RiseHomeBlock>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseItemLink ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseItemLink">
+        <ComponentConfigFragment ConfigTitle="Voorbeeld - linkkleur = default wit">
+            <RiseItemLink Href="/" Icon="@Icons.Material.Outlined.House" Size="Size.Large">
+                Label
+            </RiseItemLink>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseLoader ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseLoader">
+        <ComponentConfigFragment>
+            <RiseLoader/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseNotification ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseNotification">
+        <ComponentConfigFragment ConfigTitle="Info">
+            <RiseNotification Title="Informatie"
+                              Subtitle="Dit is een informatieve notificatie"
+                              Severity="Info"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="Success">
+            <RiseNotification Title="Success"
+                              Subtitle="Dit is een notificatie die succes aanduidt"
+                              Severity="Success"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="Error">
+            <RiseNotification Title="Error"
+                              Subtitle="Dit is een error notificatie"
+                              Severity="Error"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="Warning">
+            <RiseNotification Title="Warning"
+                              Subtitle="Dit is een waarschuwingsnotificatie"
+                              Severity="Warning"/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RisePagination ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RisePagination">
+        <ComponentConfigFragment>
+            <RisePagination TotalPages="3"/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseWeekCalendar ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseWeekCalendar">
+        <ComponentConfigFragment ConfigTitle="Primary Week Calendar">
+            <RiseWeekCalendar Title="Calendar title" CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Primary"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="Secondary Week Calendar">
+            <RiseWeekCalendar Title="Calendar title" CalendarType="RiseWeekCalendar.RiseWeekCalendarType.Secondary"/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- Cards ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseWeekCalendar">
+        <ComponentConfigFragment ConfigTitle="RiseCard">
+            <RiseCard
+                Title="Card Title"
+                Description="Card Description"
+                CardHeader="Card Header"
+                Date="@(new DateTime())"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="RiseVerticalCard">
+            <RiseVerticalCard
+                Title="Card Title"
+                Description="Card Description"
+                CardHeader="Card Header"
+                Date="@(new DateTime())"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="RiseInfoCard">
+            <RiseInfoCard Title="Card Title">ChildContent</RiseInfoCard>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseDropdown ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseDropdown">
+        <ComponentConfigFragment ConfigTitle="RiseNavigationDropdown">
+            <RiseNavigationDropdown
+                TItem="string"
+                Placeholder="Ga naar pagina"
+                Items="@(new[] { "optie 1", "optie 2", "optie 3" })"
+                NavigationUrlFunc="@(s => s)"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="RiseSelectionDropdown">
+            <RiseSelectionDropdown
+                TItem="string"
+                Items="@(new[] { "optie 1", "optie 2", "optie 3" })"
+                SelectedItemChanged="@(_ => { })"/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseForm ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseForm">
+        <ComponentConfigFragment ConfigTitle="Form met TextField en TextArea">
+            <RiseForm OnValidSubmit="() => { }" Model="@(new DummyModel())">
+                <RiseTextField
+                    Label="Voornaam"
+                    HelperText="Vul je voornaam in"
+                    Required="true"
+                    RequiredError="Voornaam is verplicht"
+                    Validation="@(value => string.IsNullOrWhiteSpace(value) ? "Dit veld is verplicht" : null)"/>
+
+                <RiseTextArea
+                    Label="Beschrijving"
+                    HelperText="Vul een beschrijving in"
+                    Lines="5"
+                    Required="true"
+                    RequiredError="Beschrijving is verplicht"
+                    Validation="@(value => string.IsNullOrWhiteSpace(value) ? "Dit veld is verplicht" : null)"/>
+            </RiseForm>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseTextField ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseTextField">
+        <ComponentConfigFragment ConfigTitle="Basic TextField">
+            <RiseTextField
+                Label="E-mailadres"
+                HelperText="Vul je e-mailadres in"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="TextField met validatie">
+            <RiseTextField
+                Label="Gebruikersnaam"
+                Required="true"
+                RequiredError="Gebruikersnaam is verplicht"
+                HelperText="Minimaal 3 karakters"
+                Validation="@(value => string.IsNullOrWhiteSpace(value) || value.Length >= 3 ? null : "Minimaal 3 karakters vereist")"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="TextField - Disabled">
+            <RiseTextField
+                Label="ID"
+                Value="12345"
+                Disabled="true"
+                HelperText="Dit veld kan niet bewerkt worden"/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+
+    <!-- RiseTextArea ---------------------------------------------------------- -->
+    <ComponentIndexSection ComponentTitle="RiseTextArea">
+        <ComponentConfigFragment ConfigTitle="Basic TextArea">
+            <RiseTextArea
+                Label="Opmerkingen"
+                HelperText="Vul je opmerkingen in"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="TextArea met custom regels">
+            <RiseTextArea
+                Label="Lange tekst"
+                Lines="10"
+                HelperText="Maximaal 500 karakters"/>
+        </ComponentConfigFragment>
+        <ComponentConfigFragment ConfigTitle="TextArea - Required">
+            <RiseTextArea
+                Label="Feedback"
+                Required="true"
+                RequiredError="Feedback is verplicht"
+                Lines="6"/>
+        </ComponentConfigFragment>
+    </ComponentIndexSection>
+</MudContainer>

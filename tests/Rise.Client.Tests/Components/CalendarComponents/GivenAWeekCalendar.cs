@@ -64,8 +64,6 @@ public class GivenAWeekCalendar : TestContext
 
         // assert 
         selectedDate.ShouldBe(dayToSelect);
-        
-        buttonToSelect.ClassList.ShouldContain("has-text-white"); 
     }
     
     [Fact]
@@ -98,25 +96,6 @@ public class GivenAWeekCalendar : TestContext
         
         // assert
         previousCalled.ShouldBeTrue();
-    }
-    
-    [Theory]
-    [InlineData(RiseWeekCalendar.RiseWeekCalendarType.Primary, "has-background-black", "has-text-white")]
-    [InlineData(RiseWeekCalendar.RiseWeekCalendarType.Secondary, "has-background-white", "has-text-black")]
-    public void WhenCalenderTypeIsChosen_ThenCorrectCalendarTypeClassesAreRendered(RiseWeekCalendar.RiseWeekCalendarType type, string bgClass, string fgClass)
-    {
-        // assign
-        var cut = RenderComponent<RiseWeekCalendar>(parameters => parameters
-            .Add(p => p.SelectedDate, DateTime.Today)
-            .Add(p => p.CalendarType, type)
-        );
-
-        // assert
-        var rootDiv = cut.Find("div.box");
-        rootDiv.ClassList.ShouldContain(bgClass);
-
-        var title = cut.Find("p.title");
-        title.ClassList.ShouldContain(fgClass);
     }
     
     [Theory]

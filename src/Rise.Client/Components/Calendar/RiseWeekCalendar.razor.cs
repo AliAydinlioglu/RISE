@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Rise.Client.Calendar;
 
@@ -6,6 +5,11 @@ namespace Rise.Client.Components.Calendar;
 
 public partial class RiseWeekCalendar
 {
+    private const string PrimaryBackgroundColor = "background-color: var(--mud-palette-primary) !important;";
+    private const string SecondaryBackgroundColor = "background-color: var(--mud-palette-secondary) !important;";
+    private const string PrimaryTextColor = "color: var(--mud-palette-text-secondary) !important;";
+    private const string SecondaryTextColor = "color: var(--mud-palette-text-primary) !important;";
+    
     [Parameter] public DateTime SelectedDate { get; set; }
     [Parameter] public string Title { get; set; } = string.Empty;
     
@@ -34,26 +38,17 @@ public partial class RiseWeekCalendar
         return ShowOnlySchoolDays ? 5 : 7;
     }
 
-    private int GetWeekNumber()
-    {
-        return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-            SelectedDate,
-            CalendarWeekRule.FirstFourDayWeek,
-            DayOfWeek.Monday
-        );
-    }
-    
     private string GetBackgroundColorClass() => CalendarType switch
     {
-        RiseWeekCalendarType.Primary => "has-background-black",
-        RiseWeekCalendarType.Secondary => "has-background-white",
+        RiseWeekCalendarType.Primary => PrimaryBackgroundColor,
+        RiseWeekCalendarType.Secondary => SecondaryBackgroundColor,
         _ => string.Empty
     };
     
     private string GetForegroundColorClass() => CalendarType switch
     {
-        RiseWeekCalendarType.Primary => "has-text-white",
-        RiseWeekCalendarType.Secondary => "has-text-black",
+        RiseWeekCalendarType.Primary => PrimaryTextColor,
+        RiseWeekCalendarType.Secondary => SecondaryTextColor,
         _ => string.Empty
     };
 
@@ -62,11 +57,11 @@ public partial class RiseWeekCalendar
         return CalendarType switch
         {
             RiseWeekCalendarType.Primary => isSelected 
-                ? "has-background-white" 
-                :  "has-background-black",
+                ? SecondaryBackgroundColor 
+                :  PrimaryBackgroundColor,
             RiseWeekCalendarType.Secondary => isSelected 
-                ? "has-background-black" 
-                :  "has-background-white",
+                ? PrimaryBackgroundColor 
+                :  SecondaryBackgroundColor,
             _ => string.Empty
         };
     } 
@@ -76,11 +71,11 @@ public partial class RiseWeekCalendar
         return CalendarType switch
         {
             RiseWeekCalendarType.Primary => isSelected 
-                ? "has-text-black" 
-                : "has-text-white",
+                ? SecondaryTextColor 
+                : PrimaryTextColor,
             RiseWeekCalendarType.Secondary => isSelected 
-                ? "has-text-white" 
-                : "has-text-black",
+                ? PrimaryTextColor 
+                : SecondaryTextColor,
             _ => string.Empty
         };
     } 

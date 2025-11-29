@@ -1,7 +1,7 @@
 ﻿.info-card {
-    border: 2px solid black;
+    border: 2px solid var(--mud-palette-primary);
     border-radius: 4px;
-    background: white;
+    background: var(--mud-palette-secondary);
     overflow: hidden;
 }
 
@@ -14,7 +14,6 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgba(200, 200, 200, 0.1);
     background-image: url('https://www.hogent.be/sites/hogent/assets/Image/banner66.jpg');
     text-align: center;
 }
@@ -28,11 +27,11 @@
 /* CARD BODY */
 .info-card-content {
     font-size: 0.95rem;
-    color: #111;
+    color: var(--mud-palette-text-primary);
 }
 
 .info-card-content a {
-    color: black;
+    color: var(--mud-palette-text-primary);
     text-decoration: underline;
 }
 
