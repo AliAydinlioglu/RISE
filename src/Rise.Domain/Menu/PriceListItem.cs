@@ -2,11 +2,11 @@ namespace Rise.Domain.Menu;
 
 public class PriceListItem : Entity
 {
-    public string Name { get; set; } = null!;
-    public bool IsHighlighted { get; set; }
-    public bool HasCategoryRemark { get; set; }
+    public string Name { get; init; } = null!;
+    public bool IsHighlighted { get; init; }
+    public bool HasCategoryRemark { get; init; }
 
-    public Price Price { get; set; } = null!;
+    public Price Price { get; init; } = null!;
     public PriceListCategory PriceListCategory { get; init; } = null!;
     
     private PriceListItem() { }

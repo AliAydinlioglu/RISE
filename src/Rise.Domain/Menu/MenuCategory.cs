@@ -2,7 +2,7 @@ namespace Rise.Domain.Menu;
 
 public class MenuCategory : Entity
 {
-    public string Name { get; set; } = null!;
+    public string Name { get; init; } = null!;
     
     private MenuCategory() { }
     

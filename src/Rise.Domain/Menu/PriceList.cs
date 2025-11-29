@@ -2,7 +2,7 @@ namespace Rise.Domain.Menu;
 
 public class PriceList : Entity
 {
-    public string Name { get; set; } = null!;
+    public string Name { get; init; } = null!;
     
     private readonly List<PriceListItem> _priceListItems = [];
     public IReadOnlyList<PriceListItem> PriceListItems => _priceListItems.AsReadOnly();

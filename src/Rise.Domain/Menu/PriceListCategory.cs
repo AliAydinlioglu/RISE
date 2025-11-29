@@ -2,8 +2,8 @@ namespace Rise.Domain.Menu;
 
 public class PriceListCategory : Entity
 {
-    public string Name { get; set; } = null!;
-    public string? Remark { get; set; } 
+    public string Name { get; init; } = null!;
+    public string? Remark { get; init; } 
     
     private PriceListCategory() { }
 

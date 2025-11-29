@@ -5,10 +5,10 @@ namespace Rise.Domain.Menu;
 
 public class Resto : Entity
 {
-    public string Name { get; set; } = null!;
+    public string Name { get; init; } = null!;
     
     public Location Location { get; init; } = null!;
-    public PriceList? PriceList { get; set; }
+    public PriceList? PriceList { get; init; }
     
     private readonly List<ContactPeriod> _openingHours = [];
     public IReadOnlyList<ContactPeriod> OpeningHours => _openingHours.AsReadOnly();
