@@ -26,6 +26,7 @@ public partial class Index : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        _isLoading = true;
         _selectedDate = DateTimeService.Now;
 
         if (_selectedDate.DayOfWeek == DayOfWeek.Saturday)
@@ -35,6 +36,7 @@ public partial class Index : ComponentBase
 
         _currentResto = await RestaurantSelectionService.GetSelectedRestoAsync();
         await LoadMenuAsync();
+        _isLoading = false;
     }
 
     private async Task LoadMenuAsync()

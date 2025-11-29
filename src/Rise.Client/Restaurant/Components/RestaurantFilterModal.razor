@@ -3,7 +3,7 @@
     @foreach (var resto in _restaurants)
     {
         <div class="is-flex gap-2">
-            <div class="flex-grow-1" data-bunit="restaurant-option">
+            <div class="is-flex flex-grow-1" data-bunit="restaurant-option">
                 <RiseButton Class="flex-grow-1" OnClick="() => HandleRestaurantSelect(resto)">@resto.Name</RiseButton>
             </div>
             <RiseButton Type="RiseButton.RiseButtonType.Secondary" OnClick="() => SelectFavoriteResto(resto)">

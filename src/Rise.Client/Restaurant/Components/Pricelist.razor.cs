@@ -17,8 +17,10 @@ public partial class Pricelist : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        _isLoading = true;
         _currentResto = await RestaurantSelectionService.GetSelectedRestoAsync();
         await LoadPricelistAsync();
+        _isLoading = false;
     }
 
     private async Task LoadPricelistAsync()
