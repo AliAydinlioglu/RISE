@@ -37,7 +37,7 @@
 
 .stacking-container-background p {
     font-size: 38cqw;
-    color: rgba(128, 128, 128, 0.35); /* TODO: variabele toevoegen in palette */
+    color: rgba(128, 128, 128, 0.35); /* TODO RI2526T2-267: variabele toevoegen in palette */
     letter-spacing: 0.1em;
     line-height: 1;
     white-space: nowrap;

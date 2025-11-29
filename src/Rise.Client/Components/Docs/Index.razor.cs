@@ -26,7 +26,7 @@ public partial class Index
         return builder =>
         {
             var style =
-                $"background: linear-gradient(135deg, {gradient}); color: white; text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center;";
+                $"background: linear-gradient(135deg, {gradient}); color: var(—mud-palette-text-secondary); text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center;";
             builder.OpenComponent<MudPaper>(0);
             builder.AddAttribute(1, "Class", "pa-6");
             builder.AddAttribute(2, "Style", style);

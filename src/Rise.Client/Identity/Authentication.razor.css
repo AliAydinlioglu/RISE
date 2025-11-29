@@ -14,7 +14,7 @@
 .notification-container {
     max-width: 600px;
     padding: 20px;
-    background: white;
+    background: var(--mud-palette-secondary);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -22,7 +22,7 @@
 .redirect-message {
     margin-top: 16px;
     text-align: center;
-    color: #666;
+    color: var(--mud-palette-gray-light);
     font-size: 14px;
 }
 

@@ -77,13 +77,13 @@
 
 
 .select:not(.is-multiple):not(.is-loading)::after {
-    border-color: #ffffff;
+    border-color: var(—mud-palette-secondary);
 }
 
 /* Clear filters button */
 .button.is-light {
-    background-color: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
+    background-color: var(—mud-palette-primary);
+    color: var(—mud-palette-text-secondary);
     display: flex !important;
     align-items: center !important;
     width: 220px !important;
@@ -97,8 +97,8 @@
 
 .button.is-light:hover {
     background-color: #f80000;
-    border-color: rgba(0, 0, 0);
-    color: rgb(255, 255, 255);
+    border-color: var(—mud-palette-primary);
+    color: var(—mud-palette-secondary);
 }
 
 /*alle 3 fields grouped up*/
@@ -113,7 +113,7 @@
 }
 
 .has-text-grey {
-    color: #ffffffd1 !important
+    color: var(—mud-palette-text-secondary) !important
 }
 
 span.icon-text {

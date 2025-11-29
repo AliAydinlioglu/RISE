@@ -1,6 +1,6 @@
 .detail-se .content, .detail-se .box, .detail-se .box-content, .detail-se .label {
-    background: white;
-    color: black;
+    background: var(—mud-palette-secondary);
+    color: var(—mud-palette-text-primary);
 }
 
 .se-address {

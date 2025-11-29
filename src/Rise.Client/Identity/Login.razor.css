@@ -57,7 +57,7 @@
 
 .login-input {
     background-color:#000000;
-    color: black !important;
+    color: var(—mud-palette-text-primary) !important;
     font-family: 'Montserrat';
 }
 
