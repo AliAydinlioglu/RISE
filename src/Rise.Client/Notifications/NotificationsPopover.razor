@@ -1,0 +1,15 @@
+﻿<MudMenu RelativeWidth="@DropdownWidth.Adaptive" 
+         AnchorOrigin="Origin.BottomLeft" 
+         TransformOrigin="Origin.TopRight"
+         Variant="Variant.Filled" Color="Color.Primary">
+
+    <ActivatorContent>
+        <MudBadge Dot="true" Color="Color.Error" Overlap="true" Visible="@HasNotifications" >
+            <MudIcon Icon="@Icons.Material.Rounded.NotificationsNone" Size="Size.Large" />
+        </MudBadge>
+    </ActivatorContent>
+
+    <ChildContent>
+        <NotificationsList Notifications="@Notifications" />
+    </ChildContent>
+</MudMenu>
