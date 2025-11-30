@@ -3,14 +3,35 @@
     position: sticky;
     top: var(--mud-appbar-height, 64px);
     z-index: 100;
-    padding: 0.75rem 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem;
     transition: all 0.3s ease;
     background-color: white;
 }
 
 .preview-card-wrapper {
-    padding: 0.3rem 0;
+    padding: 0.5rem 0.5rem;
+}
+
+/* Preview Header */
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    margin-bottom: 0.25rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;    
+}
+
+    .preview-header:hover {
+        background-color: var(--mud-palette-action-default-hover);
+    }
+
+.preview-content {
+    margin-top: 0.5rem;
 }
 
 /* Course details link styling */
@@ -86,6 +107,10 @@
 
 /* Mobile responsive */
 @media (max-width: 768px) {
+    .mud-main-content.section {
+        padding-top: 1px;
+        --bulma-section-padding: 1rem 1rem;
+    }
     .sticky-preview-wrapper {
         top: 56px;
         padding: 0.5rem 0;

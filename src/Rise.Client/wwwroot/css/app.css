@@ -12,6 +12,13 @@ html, body {
 }
 
 
+@media (max-width: 768px) {
+    .mud-main-content.section {
+        padding-top: 1px;
+        --bulma-section-padding: 1rem 1rem;
+    }
+}
+
 h1:focus {
     outline: none;
 }
