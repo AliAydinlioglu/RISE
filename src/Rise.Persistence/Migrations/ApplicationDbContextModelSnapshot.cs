@@ -709,7 +709,7 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<int?>("RestoId")
+                    b.Property<int>("RestoId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -1083,6 +1083,117 @@ namespace Rise.Persistence.Migrations
                             t.Property("ContentLocationId")
                                 .HasColumnName("RoleNavigationItemContentLocation_ContentLocationId");
                         });
+                });
+
+            modelBuilder.Entity("Rise.Domain.Notifications.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("NotificationLevel")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("TypeOfNotification")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notification", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Notifications.PushNotificationChannel", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Auth")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("P256dh")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PushNotificationChannels");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Notifications.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.PrimitiveCollection<string>("Channels")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("TypeOfNotification")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Rise.Domain.Products.Product", b =>
@@ -1532,35 +1643,6 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("Rise.Shared.Notifications.NotificationSubscription", b =>
-                {
-                    b.Property<int>("NotificationSubscriptionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("NotificationSubscriptionId"));
-
-                    b.Property<string>("Auth")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("P256dh")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UserId")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("NotificationSubscriptionId");
-
-                    b.ToTable("NotificationSubscriptions");
-                });
-
             modelBuilder.Entity("MenuItemAllergen", b =>
                 {
                     b.HasOne("Rise.Domain.Menu.Allergen", null)
@@ -1935,9 +2017,12 @@ namespace Rise.Persistence.Migrations
 
             modelBuilder.Entity("Rise.Domain.Menu.Menu", b =>
                 {
-                    b.HasOne("Rise.Domain.Menu.Resto", null)
+                    b.HasOne("Rise.Domain.Menu.Resto", "Resto")
                         .WithMany("Menus")
-                        .HasForeignKey("RestoId");
+                        .HasForeignKey("RestoId")
+                        .IsRequired();
+
+                    b.Navigation("Resto");
                 });
 
             modelBuilder.Entity("Rise.Domain.Menu.MenuItem", b =>
@@ -1976,8 +2061,7 @@ namespace Rise.Persistence.Migrations
 
                     b.Navigation("MenuCategory");
 
-                    b.Navigation("Price")
-                        .IsRequired();
+                    b.Navigation("Price");
                 });
 
             modelBuilder.Entity("Rise.Domain.Menu.PriceListItem", b =>
@@ -2147,6 +2231,72 @@ namespace Rise.Persistence.Migrations
                     b.Navigation("NavigationItem");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Rise.Domain.Notifications.Notification", b =>
+                {
+                    b.OwnsOne("Rise.Domain.Notifications.Message", "MsgDetail", b1 =>
+                        {
+                            b1.Property<int>("NotificationId")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("Description");
+
+                            b1.Property<string>("Title")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("varchar(50)")
+                                .HasColumnName("Title");
+
+                            b1.Property<string>("UrlDetailPage")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("varchar(255)")
+                                .HasColumnName("UrlDetailPage");
+
+                            b1.HasKey("NotificationId");
+
+                            b1.ToTable("Notification");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NotificationId");
+                        });
+
+                    b.OwnsMany("Rise.Domain.Notifications.NotificationAcknowledge", "Acknowledgements", b1 =>
+                        {
+                            b1.Property<int>("NotificationId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("ReadOn")
+                                .HasColumnType("datetime(6)");
+
+                            b1.Property<string>("UserName")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("varchar(150)");
+
+                            b1.HasKey("NotificationId", "Id");
+
+                            b1.ToTable("NotificationAcknowledge");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NotificationId");
+                        });
+
+                    b.Navigation("Acknowledgements");
+
+                    b.Navigation("MsgDetail")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rise.Domain.Projects.Project", b =>
