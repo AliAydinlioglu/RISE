@@ -11,7 +11,7 @@
             <div class="mb-2" data-bunit="restaurant-selector-button">
                 <RiseButton OnClick="ToggleRestoSelector" Size="RiseButton.RiseButtonSize.Small"
                             Type="RiseButton.RiseButtonType.Primary">
-                    @_currentResto.Name &nbsp;
+                    @(_currentResto?.Name ?? "Kies restaurant")
                     <MudIcon Icon="@Icons.Material.Filled.FilterList"/>
                 </RiseButton>
             </div>

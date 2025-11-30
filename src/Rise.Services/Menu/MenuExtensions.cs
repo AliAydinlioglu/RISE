@@ -10,8 +10,8 @@ public static class MenuExtensions
         return new MenuItemDto
         {
             Name = mi.Name,
-            StudentPrice = mi.Price.Student,
-            ExternalPrice = mi.Price.Extern,
+            StudentPrice = mi.Price?.Student,
+            ExternalPrice = mi.Price?.Extern,
             Allergens = mi.Allergens.Select(ToFoodRestrictionDto).ToArray(),
             DietaryRestrictions = mi.DietaryRestrictions.Select(ToFoodRestrictionDto).ToArray()
         };
@@ -22,7 +22,7 @@ public static class MenuExtensions
         return new PriceListItemDto
         {
             Name = pli.Name,
-            StudentPrice = pli.Price.Student.Value,
+            StudentPrice = pli.Price.Student,
             ExternalPrice = pli.Price.Extern,
             IsHighlighted = pli.IsHighlighted,
             HasCategoryRemark = pli.HasCategoryRemark
