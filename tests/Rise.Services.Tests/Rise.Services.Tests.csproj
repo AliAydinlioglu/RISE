@@ -35,4 +35,8 @@
       <ProjectReference Include="..\Rise.TestDoubles\Rise.TestDoubles.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Notifications\" />
+    </ItemGroup>
+
 </Project>

@@ -21,7 +21,9 @@ public static class NotificationsSubscriptionsSeeder
                 .Select(x => new Notification(
                     NotificationTypes.Deadline,
                     NotificationLevels.Warning,
-                    new Message(x.TaskTitle, x.TaskDescription + x.DeadlineTimestamp.ToString() ?? "", ""),
+                    new Message(x.TaskTitle, 
+                        x.TaskDescription + " " + x.DeadlineTimestamp.ToString("dddd d MMMM yyyy") ?? ""
+                        , ""),
                     DateTime.Now)
                 ));
         dbContext.Notifications.Add(new Notification(
