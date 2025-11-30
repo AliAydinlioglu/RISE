@@ -1,0 +1,11 @@
+﻿@if(!Notifications.Any()){
+    <RiseNotification Title="Opgeruimd staat netjes, geen berichten" Severity="Info"/>
+}
+
+@foreach (var notification in Notifications) {
+    <RiseNotification Title="@notification.MsgTitle" 
+        Subtitle="@notification.TypeOfNotification"
+                      Severity="@NotificationsListHelpers.ToSeverity(notification.NotificationLevel)">
+        @notification.MsgBody
+    </RiseNotification>
+}
