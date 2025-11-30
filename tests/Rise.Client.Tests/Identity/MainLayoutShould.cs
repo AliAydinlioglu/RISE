@@ -2,6 +2,7 @@
 using MudBlazor.Services;
 using Rise.Client.Faker;
 using Rise.Client.Layout;
+using Rise.Client.Offline;
 using Rise.Client.Shared;
 using Rise.Shared.Notifications;
 using Shouldly;
@@ -19,6 +20,7 @@ namespace Rise.Client.Identity
             var pageTitleService = new FakePageTitleService();
             Services.AddScoped<IPageTitleService>(_ => pageTitleService);
             Services.AddScoped<INotificationService, FakeNotificationService>();
+            Services.AddScoped<IConnectionService, FakeConnectionService>();
         }
 
         [Fact]

@@ -10,50 +10,47 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <RiseAppHeader >
-        
+    <RiseAppHeader>
         <IconMenu>
             <MudIcon Icon="@Icons.Material.Rounded.NotificationsNone" Size="Size.Large"/>
         </IconMenu>
         <ProfileSection>
-             <AuthorizeView>
-                 <NotAuthorized>
-            <MudMenu>
-                <ActivatorContent>
-                    <MudAvatar Class="px-1 border-2  " Variant="Variant.Outlined" Color="Color.Secondary" @onclick="GoToLogin">
-                        <MudIcon Icon="@Icons.Material.Filled.Login" />
-                    </MudAvatar>
-                </ActivatorContent>
-                
-            </MudMenu>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <MudMenu>
+                        <ActivatorContent>
+                            <MudAvatar Class="px-1 border-2  " Variant="Variant.Outlined" Color="Color.Secondary"
+                                       @onclick="GoToLogin">
+                                <MudIcon Icon="@Icons.Material.Filled.Login"/>
+                            </MudAvatar>
+                        </ActivatorContent>
+
+                    </MudMenu>
                 </NotAuthorized>
-             </AuthorizeView>
+            </AuthorizeView>
 
             <AuthorizeView>
-              <Authorized>
-                 <MudMenu>
+                <Authorized>
+                    <MudMenu>
                         <ActivatorContent>
                             <MudAvatar Class="px-1 border-2" Variant="Variant.Outlined" Color="Color.Secondary">
                                 <MudText Typo="Typo.body2">@UserInitials</MudText>
                             </MudAvatar>
                         </ActivatorContent>
                         <ChildContent>
-                            <MudMenuItem @onclick="GoToAccount" Label="Profiel" />
-                            <MudMenuItem @onclick="GoToAccountSettings" Label="Settings" />
-                            <MudMenuItem @onclick="LogoutAsync" Label="Logout" />
+                            <MudMenuItem @onclick="GoToAccount" Label="Profiel"/>
+                            <MudMenuItem @onclick="GoToAccountSettings" Label="Settings"/>
+                            <MudMenuItem @onclick="LogoutAsync" Label="Logout"/>
                         </ChildContent>
-                </MudMenu>
-              </Authorized>
+                    </MudMenu>
+                </Authorized>
             </AuthorizeView>
-            
         </ProfileSection>
-        
     </RiseAppHeader>
-    
-    <Navigation />
-    
+    <Navigation/>
     <main>
         <MudMainContent class="section">
+            <OfflineBanner/>
             @Body
         </MudMainContent>
     </main>

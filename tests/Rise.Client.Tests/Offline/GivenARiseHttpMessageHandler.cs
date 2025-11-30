@@ -1,8 +1,7 @@
 using Rise.Client.Faker;
-using Rise.Client.Offline;
 using Shouldly;
 
-namespace Rise.Client;
+namespace Rise.Client.Offline;
 
 public class GivenARiseHttpMessageHandler :IDisposable
 {

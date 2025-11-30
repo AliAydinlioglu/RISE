@@ -70,6 +70,7 @@ try
     builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
     builder.Services.AddScoped<ICacheService, CacheService>();
     builder.Services.AddScoped<RiseHttpMessageHandler>();
+    builder.Services.AddScoped<IConnectionService, ConnectionService>();
 
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
