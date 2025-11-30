@@ -110,6 +110,9 @@ public partial class Settings : IDisposable
     private TimeOnly PreviewStartTime => new(14, 0);
     private TimeOnly PreviewEndTime => new(17, 30);
     private string PreviewLocation => "Schoonmeersen";
+    private bool PreviewExpanded { get; set; } = true;
+
+    private void TogglePreview() => PreviewExpanded = !PreviewExpanded;
 
     protected override async Task OnInitializedAsync()
     {
