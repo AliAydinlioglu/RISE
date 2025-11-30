@@ -18,12 +18,11 @@ public static class NotificationsSubscriptionsSeeder
 
         dbContext.Notifications.AddRange(
             dbContext.Deadlines
-                .Where(x => x.DeadlineTimestamp == DateTime.UtcNow)
                 .Select(x => new Notification(
                     NotificationTypes.Deadline,
                     NotificationLevels.Warning,
-                    new Message(x.TaskTitle, x.TaskDescription ?? "", ""),
-                    x.DeadlineTimestamp.DateTime)
+                    new Message(x.TaskTitle, x.TaskDescription + x.DeadlineTimestamp.ToString() ?? "", ""),
+                    DateTime.Now)
                 ));
         dbContext.Notifications.Add(new Notification(
             NotificationTypes.Emergency,

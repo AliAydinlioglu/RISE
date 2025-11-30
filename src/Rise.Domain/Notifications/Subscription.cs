@@ -6,7 +6,7 @@ public class Subscription: Entity
     //public DateTime LastRun { get; set; } = DateTime.MinValue;
     public NotificationTypes TypeOfNotification { get; private set; }
 
-    public HashSet<NotificationChannels> Channels { get; private set; } = [];
+    public IList<NotificationChannels> Channels { get; private set; } = [];
 
     private Subscription() { }
 
