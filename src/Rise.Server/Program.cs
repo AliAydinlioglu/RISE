@@ -34,10 +34,10 @@ try
     .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-    
+
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
-    
+
     builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
     {
         options.TokenValidationParameters.ValidIssuers =
@@ -50,7 +50,7 @@ try
     builder.Services
         .AddSerilog((_, lc) => lc.ReadFrom.Configuration(builder.Configuration)
             .Destructure.UsingAttributes());
-        
+
     builder.Services
         .AddDbContext<ApplicationDbContext>(o =>
         {
@@ -73,7 +73,7 @@ try
         .AddFastEndpoints(o =>
         {
             o.IncludeAbstractValidators = true; // Include validators from abstract classes (see https://docs.fluentvalidation.net/en/latest/).
-            o.Assemblies = [typeof(Rise.Shared.Products.ProductRequest).Assembly,typeof(Rise.Shared.StudentActivities.StudentActivityRequest).Assembly ]; // Adds the validators from other assemblies
+            o.Assemblies = [typeof(Rise.Shared.Products.ProductRequest).Assembly, typeof(Rise.Shared.StudentActivities.StudentActivityRequest).Assembly]; // Adds the validators from other assemblies
         })
         .SwaggerDocument(o =>
         {
@@ -109,10 +109,10 @@ try
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-            dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
+            // dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
 
-            dbContext.Database.Migrate(); // Creates the database if it doesn't exist and applies all migrations. See Readme.md for more info.
-            await dbSeeder.SeedAsync(); // Seeds the database with some test data.
+            // dbContext.Database.Migrate(); // Creates the database if it doesn't exist and applies all migrations. See Readme.md for more info.
+            //   await dbSeeder.SeedAsync(); // Seeds the database with some test data.
         }
     }
     // Theses middlewares are strict in order of calling!
@@ -134,7 +134,7 @@ try
                 ep.PostProcessor<GlobalResponseLogger>(Order.Before);
             };
         })
-        .UseSwaggerGen();   
+        .UseSwaggerGen();
     app.MapFallbackToFile("index.html");
     app.Run();
 }
