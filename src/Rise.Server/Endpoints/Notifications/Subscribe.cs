@@ -13,6 +13,7 @@ public class Subscribe(INotificationService notificationService) : Endpoint<Subs
             s.Summary = "Abonneer op notificaties";
             s.Description = "De student kan zich abonneren op verschillende type notificaties. Kan via verschillende kanalen verwittigd worden.";
         });
+        Roles(AppRoles.DistanceStudent, AppRoles.RegularStudent);
     }
 
     public override async Task<Result> ExecuteAsync(SubscribeRequest.Subscribe req, CancellationToken ct)

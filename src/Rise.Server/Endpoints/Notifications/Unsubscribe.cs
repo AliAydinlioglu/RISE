@@ -1,4 +1,5 @@
-﻿using Rise.Shared.Notifications;
+﻿using Rise.Shared.Identity;
+using Rise.Shared.Notifications;
 
 namespace Rise.Server.Endpoints.Notifications;
 
@@ -6,12 +7,13 @@ public class Unsubscribe(INotificationService notificationService) : Endpoint<Un
 {
     public override void Configure()
     {
-        Put("/api/notifications/unsubscribe");
+        Delete("/api/notifications/subscription/{notificationType}");
         Summary(s =>
         {
             s.Summary = "Uitschrijven abonnement";
             s.Description = "De student zich uitschrijven op verschillende type notificaties.";
         });
+        Roles(AppRoles.DistanceStudent, AppRoles.RegularStudent);
     }
 
     public override async Task<Result> ExecuteAsync(UnsubscribeRequest.Unsubscribe req, CancellationToken ct)

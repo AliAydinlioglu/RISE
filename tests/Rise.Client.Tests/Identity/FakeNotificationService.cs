@@ -1,5 +1,4 @@
 using Ardalis.Result;
-using NSubstitute;
 using Rise.Domain.Notifications;
 using Rise.Shared.Common;
 using Rise.Shared.Notifications;
@@ -8,33 +7,27 @@ namespace Rise.Client.Shared;
 
 public class FakeNotificationService(HttpClient httpClient) : INotificationService
 {
-    public Task<Result> AcknowledgeAsRead(AcknowledgeRequest.Post req, CancellationToken ct = default)
+    public Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct = default)
-    {
-        var response = Substitute.For<NotificationResponse.Get>();
-        return Result.Success(response);
-    }
-
-    public Task<Result> Notify(NotifyRequest.Message msg, CancellationToken ct)
+    public List<Subscription> GetSubsciptionsByType(string typeOfNotification)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result> SubscribeToNotification(SubscribeRequest.Subscribe subscribe, CancellationToken ct = default)
+    public Task<Result> Notify(string typeOfNotification, string notificationLevel, string description, string title, string[] channels)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result<SubscriptionsResponse.Get>> SubscriptionSettings(CancellationToken ct = default)
+    public Task<Result> SubscribeToNotification(SubscribeRequest.Subscribe subscribe, CancellationToken ctx)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result> UnsubscribeFromNotification(UnsubscribeRequest.Unsubscribe unsubscribe, CancellationToken ct = default)
+    public Task<Result> UnsubscribeFromNotification(UnsubscribeRequest.Unsubscribe unsubscribe, CancellationToken ctx)
     {
         throw new NotImplementedException();
     }

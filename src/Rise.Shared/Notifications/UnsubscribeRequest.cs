@@ -4,7 +4,6 @@ public class UnsubscribeRequest
 {
     public class Unsubscribe
     {
-        public required string NotificationType { get; set; }
-        public required string NotificationChannel { get; set; }
+        public string NotificationType { get; set; } = null!; // bv. "Deadline"
     }
 }

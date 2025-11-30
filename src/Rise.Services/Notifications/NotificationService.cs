@@ -1,150 +1,57 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Notifications;
-using Rise.Domain.Projects;
 using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Shared.Common;
 using Rise.Shared.Notifications;
-using System.Text.Json;
-using WebPush;
 using static Rise.Shared.Notifications.SubscribeRequest;
 using NotificationChannels = Rise.Domain.Notifications.NotificationChannels;
 
 namespace Rise.Services.Notifications;
 
-public class NotificationService(ApplicationDbContext dbContext, ISessionContextProvider sep) 
-    : INotificationService
+public class NotificationService(ApplicationDbContext dbContext, ISessionContextProvider sep) : INotificationService
 {
-    public async Task<Result<SubscriptionsResponse.Get>> SubscriptionSettings(CancellationToken ct = default)
+    public List<Subscription> GetSubsciptionsByType(string typeOfNotification)
     {
-        var subs = await dbContext.Subscriptions
-            .Where(s => s.UserName == GetUser() && !s.IsDeleted)
-            .ToListAsync();
-           
-        var settings = Enum.GetNames<NotificationTypes>()
-            .Select(t =>
-                new SubscriptionDto.Settings
-                {
-                    TypeOfNotification = t,
-                    Channels = Enum.GetValues<NotificationChannels>()
-                            .Select(n => new SubscriptionDto.NotificationChannelDto
-                            {
-                                Name = n.ToString(),
-                                IsSubscribed = subs.Any(s => s.TypeOfNotification.ToString().Contains(t) 
-                                    && s.Channels.Contains(n))
-                            })
-                            .ToList()
-                });
-
-        return Result.Success(new SubscriptionsResponse.Get { Settings = [.. settings] });
+        throw new NotImplementedException();
     }
 
-    public async Task<Result> Notify(NotifyRequest.Message msg, CancellationToken ct = default)
+    public Task<Result> Notify(string typeOfNotification, string notificationLevel, string description, string title, string[] channels)
     {
-        var subscription = await dbContext.Subscriptions
-            .Where(
-                e => e.UserName == GetUser() && e.TypeOfNotification == ParseNT(msg.TypeOfNotification) && !e.IsDeleted
-            ).SingleOrDefaultAsync(ct);
-
-        if (subscription == null)
-        {
-            Log.Error($"Subscription on '{GetUser()}' for '{msg.TypeOfNotification}' was not found.");
-            return Result.NotFound(
-                $"Subscription on '{GetUser()}' for '{msg.TypeOfNotification}' was not found.");
-        }
-
-        var pushNotificationSettings = await dbContext.PushNotificationChannels
-            .Where(c => c.UserName == GetUser())
-            .SingleOrDefaultAsync(ct);
-
-        if(pushNotificationSettings == null)
-            return Result.Success();
-
-        await SendNotificationAsync(pushNotificationSettings, msg.MsgBody);
-
-        return Result.Success();
-    }
-
-    private static async Task SendNotificationAsync(PushNotificationChannel subscription, string message)
-    {
-        var publicKey = "BMxhk8SDSWBXlx0iYw9fyqAR5g-aDWHdYV62d7rObYYiK54psfyyxj0C7Gxniz3aF_An6rNM93XqO9OOR3wUY7Y";
-        var privateKey = "r9OlE2nzQFPCbbGWf8J_2QF5DObpZaO7F6l7S_XfHTQ";
-
-        var pushSubscription = new PushSubscription(subscription.Url,
-            subscription.P256dh, subscription.Auth);
-        var vapidDetails = new VapidDetails("mailto:admin@example.com", publicKey, privateKey);
-        var webPushClient = new WebPushClient();
-
-        try
-        {
-            var payload = JsonSerializer.Serialize(new
-            {
-                message
-            });
-
-            await webPushClient.SendNotificationAsync(pushSubscription, payload,
-                vapidDetails);
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"Error sending push notification: {ex.Message}");
-        }
+        throw new NotImplementedException();
     }
 
     public async Task<Result> SubscribeToNotification(
         SubscribeRequest.Subscribe subscribe, CancellationToken ctx = default)
     {
-        var channels = await HandleChannels(subscribe);
-        var subscription = await dbContext.Subscriptions
-            .Where(
-                e => e.UserName == GetUser() && e.TypeOfNotification == ParseNT(subscribe.NotificationType)
-            ).SingleOrDefaultAsync(ctx);
-
-        if (subscription == null)
-        {
-            subscription = new Subscription(
-                GetUser(), 
-                ParseNT(subscribe.NotificationType), 
-                channels);
-            dbContext.Subscriptions.Add(subscription);
-        }  else
-        {
-            subscription.IsDeleted = false;
-            channels.ToList().ForEach(c => subscription.AddChannel(c));
-        }
-
+        var subscription = new Subscription(GetUser(), ParseNT(subscribe.NotificationType));
+        HandleChannels(subscribe, subscription);
+        
+        dbContext.Subscriptions.Add(subscription);
 
         await dbContext.SaveChangesAsync(ctx);
 
         return Result.Success();
     }
 
-    private async Task<IList<NotificationChannels>> HandleChannels(Subscribe subscribe)
+    private void HandleChannels(Subscribe subscribe, Subscription subscription)
     {
-        List<NotificationChannels> channels = [];
         if (subscribe.Channels.Push != null)
         {
             var channel = new PushNotificationChannel(
+                subscribe.Channels.Push.SubscriptionId,
                 GetUser(),
-                subscribe.Channels.Push.Url,
+                "www.campus.app",
                 subscribe.Channels.Push.P256dh,
                 subscribe.Channels.Push.Auth);
+            dbContext.PushNotificationChannels.Add(channel);
 
-            var fChannel = dbContext.PushNotificationChannels.Where( c => c.Id.Contains(channel.Id)).SingleOrDefault();
-            if (fChannel == null)
-                dbContext.PushNotificationChannels.Add(channel);
-            else
-                fChannel.IsDeleted = false;
-
-            channels.Add(NotificationChannels.PushNotification);
-            await SendNotificationAsync(channel, $"je bent ingeschreven voor {subscribe.NotificationType}");
+            subscription.Channels.Add(NotificationChannels.PushNotification);
         }
         if (subscribe.Channels.InApp)
         {
-            channels.Add(NotificationChannels.InApp);
+            subscription.Channels.Add(NotificationChannels.InApp);
         }
-
-        return channels;
     }
 
     public async Task<Result> UnsubscribeFromNotification(
@@ -156,17 +63,10 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
             ).SingleOrDefaultAsync(ctx);
 
         if (subscription == null)
-        {
-            Log.Error($"Subscription on '{GetUser()}' for '{unsubscribe.NotificationType}' was not found.");
             return Result.NotFound(
                 $"Subscription on '{GetUser()}' for '{unsubscribe.NotificationType}' was not found.");
-        }
-        
-        var removeChannel = Enum.Parse<NotificationChannels>(unsubscribe.NotificationChannel);
-        if(subscription.Channels.Remove(removeChannel) && !subscription.Channels.Any())
-        {
-            dbContext.Subscriptions.Remove(subscription);
-        }
+
+        dbContext.Subscriptions.Remove(subscription);
 
         await dbContext.SaveChangesAsync(ctx);
 
@@ -181,9 +81,7 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
 
         var query = dbContext.Notifications.AsQueryable();
 
-        query = query.Where(p => notificationTypes.Contains(p.TypeOfNotification) 
-            && !p.IsDeleted 
-            && p.IsAcknowledgedByUser(GetUser()));
+        query = query.Where(p => notificationTypes.Contains(p.TypeOfNotification));
 
         var totalCount = await query.CountAsync(ct);
 
@@ -231,19 +129,4 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
         return Enum.Parse<NotificationTypes>(type);
     }
 
-    public async Task<Result> AcknowledgeAsRead(AcknowledgeRequest.Post req, CancellationToken ct = default)
-    {
-        var notification = await dbContext.Notifications
-            .Where( n => n.Id == req.NotificationId)
-            .SingleOrDefaultAsync(ct);
-        if (notification is null)
-            return Result.NotFound($"Notification with Id '{req.NotificationId}' was not found.");
-
-        if (!notification.IsAcknowledgedByUser(GetUser()))
-            notification.AddAcknowledge(new NotificationAcknowledge(GetUser(), DateTime.Now));
-
-        await dbContext.SaveChangesAsync(ct);
-
-        return Result.Success();
-    }
 }
