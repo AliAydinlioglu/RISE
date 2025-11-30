@@ -26,17 +26,21 @@
             {
                 <div class="preview-card-wrapper">
                     <div class="container">
-                        <RiseCard Date="@PreviewDate"
-                                  Title="@PreviewTitle"
-                                  Description="@PreviewCategory"
-                                  CardHeader="@($"{PreviewStartTime:HH:mm} | {PreviewLocation}")"
+            <MudText Typo="Typo.h6" Class="mb-2">Voorvertoning</MudText>
+
+                    <RiseCard Date="@PreviewDate"
+                              Title="@PreviewTitle"
+                              Description="@PreviewCategory"
+                              CardHeader="@($"{PreviewStartTime:HH:mm} | {PreviewLocation}")"
                                   ImageUrl="@(ThemingService.ImagesOff ? null : "img/HOGENT_bg1.jpg")"
-                                  Scale="1.0"
+                              Scale="1.0"
                                   Class="@(ThemingService.IsDarkMode ? "dark-theme" : "")">
-                            <p class="course-details-link" style="@GetCategoryStyle()">
-                                Course details >
-                            </p>
-                        </RiseCard>
+                        <p class="course-details-link" style="@GetCategoryStyle()">
+                            Course details >
+                        </p>
+                    </RiseCard>
+                </div>
+            }
                     </div>
                 </div>
             }
