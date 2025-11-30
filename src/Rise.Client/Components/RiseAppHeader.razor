@@ -1,17 +1,12 @@
-<MudAppBar Class="py-2" Gutters="true" Elevation="0" >
-    <MudImage Src="/img/HOGENT_Logo_white_rgb.png" Alt="HOGENT logo" ObjectFit="ObjectFit.Contain" Width="75" />
-    <MudSpacer />
+<MudAppBar Class="py-2" Gutters="true" Elevation="0">
+    <MudImage Src="/img/HOGENT_Logo_white_rgb.png" Alt="HOGENT logo" ObjectFit="ObjectFit.Contain" Width="75"/>
+    <MudSpacer/>
     <div class="d-flex gap-4 ">
-        <div>
-            @IconMenu
-        </div>
-        <div>
-            @ProfileSection
-        </div>
+        @ProfileSection
     </div>
 </MudAppBar>
 <div class="is-hidden-tablet py-5 secondary-header" style="margin-top:var(--mud-appbar-height)">
-        <div class=" has-text-centered ">
-            <MudText Typo="Typo.h5" >@TitleState.Content</MudText>
-       </div>
+    <div class=" has-text-centered ">
+        <MudText Typo="Typo.h5">@TitleState.Content</MudText>
+    </div>
 </div>

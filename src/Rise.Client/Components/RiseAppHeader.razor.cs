@@ -6,7 +6,6 @@ namespace Rise.Client.Components;
 public partial class RiseAppHeader : ComponentBase, IDisposable
 {
     
-    [Parameter, EditorRequired] public RenderFragment IconMenu { get; set; }
     [Parameter, EditorRequired] public RenderFragment ProfileSection { get; set; }
     
     [Inject] private IPageTitleService TitleState { get; set; } = null!;

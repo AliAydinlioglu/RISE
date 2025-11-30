@@ -11,9 +11,6 @@
 
 <MudLayout>
     <RiseAppHeader>
-        <IconMenu>
-            <MudIcon Icon="@Icons.Material.Rounded.NotificationsNone" Size="Size.Large"/>
-        </IconMenu>
         <ProfileSection>
             <AuthorizeView>
                 <NotAuthorized>
@@ -31,6 +28,7 @@
 
             <AuthorizeView>
                 <Authorized>
+                    <NotificationBell />
                     <MudMenu>
                         <ActivatorContent>
                             <MudAvatar Class="px-1 border-2" Variant="Variant.Outlined" Color="Color.Secondary">
