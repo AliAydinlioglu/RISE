@@ -136,3 +136,33 @@ main {
     padding-top: 30px !important;
 }
 
+.custom-campus-panel .mud-expand-panel-header {
+    background-color: var(--mud-palette-primary);
+    color: var(--mud-palette-primary-text);
+    border-radius: 4px;
+    padding-right: 4px;
+    font-weight: 600;
+}
+
+.custom-campus-panel .mud-expand-panel-header .mud-expand-panel-icon {
+    color: #ffffff !important;
+}
+
+.custom-campus-panel .mud-collapse-container {
+    padding-left: 16px;
+}
+
+.campus-desc p a {
+    text-decoration: underline !important
+}
+
+@media (max-width: 700px) {
+    .custom-campus-panel .mud-collapse-container {
+        padding-left: 4px;
+    }
+
+    .custom-campus-panels .mud-expansion-panels{
+        padding-bottom: 30px !important;
+    }
+}
+

@@ -1,0 +1,42 @@
+﻿@page "/campuses"
+
+<PageTitle>@_pageTitle</PageTitle>
+
+<div class="container is-hidden-mobile">
+    <RiseHeadTitle ImageUrl="/img/banner15.webp">@_pageTitle</RiseHeadTitle>
+</div>
+
+<div class="campus-panels-container">
+    <MudExpansionPanels MultiExpansion="false" Class="breakout" Dense="true" Gutters="false" Elevation="0" data-bunit="campus-panels">
+        @foreach (var campus in _campuses)
+        {
+            <MudExpansionPanel Class="custom-campus-panel" data-bunit="campus-item">
+                <TitleContent>
+                    <div class="d-flex w-100 campus-item">
+                        <span class="flex-grow-1" data-bunit="campus-name">
+                            @campus.Location.Name
+                        </span>
+                    </div>
+                </TitleContent>
+                <ChildContent>
+                    <div class="campus-desc">
+                        @(new MarkupString(campus.Description))
+                    </div>
+                    <div class="campus-address">
+                        @{
+                            var address = campus.Location.GetAddressWithoutName();
+                        }
+                        <a class="is-size-6 has-text-black" href="https://www.google.com/maps?q=@address"
+                           target="_blank">@address</a>
+                    </div>
+                    @if (campus.HasMap)
+                    {
+                        <div class="campus-map">
+                            <img alt="@campus.Map!.Description" src="@(campus.Map!.Url)">
+                        </div>
+                    }
+                </ChildContent>
+            </MudExpansionPanel>
+        }
+    </MudExpansionPanels>
+</div>

@@ -9,11 +9,11 @@ public class NotificationService(ApplicationDbContext dbContext) : INotification
 {
     public async Task SubscribeToNotifications(NotificationSubscription subscription)
     {
-        var oldSubscriptions = dbContext.NotificationSubscriptions.Where(
-            e => e.UserId == subscription.UserId);
-        dbContext.NotificationSubscriptions.RemoveRange(oldSubscriptions);
+        //var oldSubscriptions = dbContext.NotificationSubscriptions.Where(
+        //    e => e.UserId == subscription.UserId);
+        //dbContext.NotificationSubscriptions.RemoveRange(oldSubscriptions);
 
-        dbContext.NotificationSubscriptions.Add(subscription);
+        //dbContext.NotificationSubscriptions.Add(subscription);
 
         await dbContext.SaveChangesAsync();
     }
