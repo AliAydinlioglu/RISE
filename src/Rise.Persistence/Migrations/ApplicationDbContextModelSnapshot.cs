@@ -1378,6 +1378,33 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("StudentClub", (string)null);
                 });
 
+            modelBuilder.Entity("Rise.Domain.UserPreferences.UserPreference", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("PreferencesJson")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("LONGTEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserPreferences", (string)null);
+                });
+
             modelBuilder.Entity("Rise.Persistence.Models.Identity.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
