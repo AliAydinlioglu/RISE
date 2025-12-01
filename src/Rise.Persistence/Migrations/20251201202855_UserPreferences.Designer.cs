@@ -12,7 +12,7 @@ using Rise.Persistence;
 namespace Rise.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251121215723_UserPreferences")]
+    [Migration("20251201202855_UserPreferences")]
     partial class UserPreferences
     {
         /// <inheritdoc />
@@ -204,6 +204,9 @@ namespace Rise.Persistence.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
                     b.Property<DateTimeOffset>("Timestamp")
                         .HasColumnType("datetime(6)");
 
@@ -220,6 +223,8 @@ namespace Rise.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Announcement", (string)null);
                 });
@@ -250,10 +255,8 @@ namespace Rise.Persistence.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("Lecturer")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("varchar(250)");
+                    b.Property<int>("LecturerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -268,6 +271,8 @@ namespace Rise.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AcademicSemesterId");
+
+                    b.HasIndex("LecturerId");
 
                     b.ToTable("Course", (string)null);
                 });
@@ -366,6 +371,47 @@ namespace Rise.Persistence.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Exam", (string)null);
+                });
+
+            modelBuilder.Entity("Rise.Domain.Calendar.Lecturer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FirstName", "LastName")
+                        .IsUnique();
+
+                    b.ToTable("Lecturer", (string)null);
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Lesson", b =>
@@ -958,12 +1004,7 @@ namespace Rise.Persistence.Migrations
             modelBuilder.Entity("Rise.Domain.UserPreferences.UserPreference", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasMaxLength(255)
-                        .HasColumnType("char(255)");
-
-                    b.Property<string>("PreferenceKey")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -974,15 +1015,15 @@ namespace Rise.Persistence.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("PreferenceValue")
+                    b.Property<string>("PreferencesJson")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("LONGTEXT");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("UserId", "PreferenceKey");
+                    b.HasKey("UserId");
 
                     b.ToTable("UserPreferences", (string)null);
                 });
@@ -1114,6 +1155,35 @@ namespace Rise.Persistence.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Rise.Shared.Notifications.NotificationSubscription", b =>
+                {
+                    b.Property<int>("NotificationSubscriptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("NotificationSubscriptionId"));
+
+                    b.Property<string>("Auth")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("P256dh")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("UserId")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("NotificationSubscriptionId");
+
+                    b.ToTable("NotificationSubscriptions");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Rise.Persistence.Models.Identity.ApplicationRole", null)
@@ -1200,35 +1270,15 @@ namespace Rise.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Rise.Domain.Calendar.Lecturer", "Sender", b1 =>
-                        {
-                            b1.Property<int>("AnnouncementId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
-                                .HasColumnName("FirstName");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasMaxLength(255)
-                                .HasColumnType("varchar(255)")
-                                .HasColumnName("LastName");
-
-                            b1.HasKey("AnnouncementId");
-
-                            b1.ToTable("Announcement");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AnnouncementId");
-                        });
+                    b.HasOne("Rise.Domain.Calendar.Lecturer", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Course");
 
-                    b.Navigation("Sender")
-                        .IsRequired();
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Course", b =>
@@ -1239,7 +1289,15 @@ namespace Rise.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Rise.Domain.Calendar.Lecturer", "Lecturer")
+                        .WithMany()
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("AcademicSemester");
+
+                    b.Navigation("Lecturer");
                 });
 
             modelBuilder.Entity("Rise.Domain.Calendar.Deadline", b =>
