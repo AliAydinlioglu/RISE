@@ -1,5 +1,5 @@
 .modal-overlay {
-    background: white;
+    background: var(--mud-palette-white);
     border-radius: 8px;
     padding: 0;
     max-width: 500px;
@@ -23,7 +23,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--mud-palette-gray-default);
 }
 
 .modal-overlay-header h3 {
