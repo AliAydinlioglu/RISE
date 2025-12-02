@@ -1,4 +1,5 @@
-﻿using Rise.Client.Faker;
+﻿using MudBlazor.Services;
+using Rise.Client.Faker;
 using Rise.Client.Shared;
 using Xunit.Abstractions;
 
@@ -10,6 +11,7 @@ public class IndexShould : TestContext
     {
         Services.AddXunitLogger(outputHelper);
         Services.AddScoped<IPageTitleService>(_ => new FakePageTitleService());
+        Services.AddMudBlazorDialog();
     }
 
     [Fact]
