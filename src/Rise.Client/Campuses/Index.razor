@@ -33,6 +33,13 @@
                     {
                         <div class="campus-map">
                             <img alt="@campus.Map!.Description" src="@(campus.Map!.Url)">
+
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       Class="mt-2 is-hidden-mobile"
+                                       OnClick="@(async () => await EnlargeMapAsync(campus))">
+                                Vergroot kaart
+                            </MudButton>
                         </div>
                     }
                 </ChildContent>

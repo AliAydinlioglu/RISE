@@ -20,11 +20,19 @@ a {
 }
 
 .campus-map{
-    text-align: center
+    text-align: center;
+    width: 30%;
+    margin-left: 35%
 }
 
 @media (max-width: 700px) {
     .campus-panels-container {
         margin-bottom: 35px !important
+    }
+
+    .campus-map {
+        text-align: center;
+        width: 100%;
+        margin-left: 0
     }
 }

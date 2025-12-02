@@ -1,4 +1,5 @@
-﻿using MudBlazor;
+﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Shared.Campuses;
 using Rise.Shared.Locations;
@@ -10,6 +11,11 @@ public partial class Index
 {
     private string _pageTitle = "Campussen";
     private IEnumerable<CampusDto.Index> _campuses = [];
+
+    private bool _isMapDialogOpen = false;
+    private string? _selectedMapUrl;
+
+    [Inject] public required IDialogService DialogService { get; set; }
 
     protected override void OnInitialized()
     {
@@ -208,4 +214,21 @@ public partial class Index
             }
         ];
     }
+
+    private async Task EnlargeMapAsync(CampusDto.Index campus)
+    {
+        var parameters = new DialogParameters
+        {
+            ["MapUrl"] = campus.Map!.Url
+        };
+
+        await DialogService.ShowAsync<MapDialog>(campus.Location.Name, parameters, new DialogOptions
+        {
+            MaxWidth = MaxWidth.ExtraLarge,
+            FullWidth = true,
+            CloseButton = true,
+            FullScreen = true
+        });
+    }
+
 }
