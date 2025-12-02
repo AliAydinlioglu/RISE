@@ -63,29 +63,6 @@ public partial class MainLayout
         }
     }
 
-    //protected override void OnInitialized()
-    //{
-    //    _ = RequestNotificationSubscriptionAsync();
-    //}
-
-    //async Task RequestNotificationSubscriptionAsync()
-    //{
-    //    var subscription = await JSRuntime.InvokeAsync<PushNotification>(
-    //        "blazorPushNotifications.requestSubscription");
-    //    await JSRuntime.InvokeVoidAsync("console.log", subscription);
-    //    if (subscription is not null)
-    //    {
-    //        try
-    //        {
-    //            await NotificationService.SubscribeToNotification(subscription);
-    //        }
-    //        catch (AccessTokenNotAvailableException ex)
-    //        {
-    //            ex.Redirect();
-    //        }
-    //    }
-    //}
-
     private string GetInitials(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
