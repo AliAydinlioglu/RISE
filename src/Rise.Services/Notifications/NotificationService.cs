@@ -50,8 +50,11 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
             ).SingleOrDefaultAsync(ct);
 
         if (subscription == null)
+        {
+            Log.Error($"Subscription on '{GetUser()}' for '{msg.TypeOfNotification}' was not found.");
             return Result.NotFound(
                 $"Subscription on '{GetUser()}' for '{msg.TypeOfNotification}' was not found.");
+        }
 
         var pushNotificationSettings = await dbContext.PushNotificationChannels
             .Where(c => c.UserName == GetUser())
@@ -87,7 +90,7 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"Error sending push notification: {ex.Message}");
+            Log.Error($"Error sending push notification: {ex.Message}");
         }
     }
 
@@ -156,8 +159,11 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
             ).SingleOrDefaultAsync(ctx);
 
         if (subscription == null)
+        {
+            Log.Error($"Subscription on '{GetUser()}' for '{unsubscribe.NotificationType}' was not found.");
             return Result.NotFound(
                 $"Subscription on '{GetUser()}' for '{unsubscribe.NotificationType}' was not found.");
+        }
         
         var removeChannel = Enum.Parse<NotificationChannels>(unsubscribe.NotificationChannel);
         if(subscription.Channels.Remove(removeChannel) && !subscription.Channels.Any())
