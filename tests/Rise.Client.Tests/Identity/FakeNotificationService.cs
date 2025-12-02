@@ -7,27 +7,27 @@ namespace Rise.Client.Shared;
 
 public class FakeNotificationService(HttpClient httpClient) : INotificationService
 {
-    public Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct)
+    public Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
 
-    public List<Subscription> GetSubsciptionsByType(string typeOfNotification)
+    public Task<Result> Notify(NotifyRequest.Message msg, CancellationToken ct)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result> Notify(string typeOfNotification, string notificationLevel, string description, string title, string[] channels)
+    public Task<Result> SubscribeToNotification(SubscribeRequest.Subscribe subscribe, CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result> SubscribeToNotification(SubscribeRequest.Subscribe subscribe, CancellationToken ctx)
+    public Task<Result<SubscriptionsResponse.Get>> SubscriptionSettings(CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Result> UnsubscribeFromNotification(UnsubscribeRequest.Unsubscribe unsubscribe, CancellationToken ctx)
+    public Task<Result> UnsubscribeFromNotification(UnsubscribeRequest.Unsubscribe unsubscribe, CancellationToken ct = default)
     {
         throw new NotImplementedException();
     }

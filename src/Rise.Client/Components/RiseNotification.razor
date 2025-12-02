@@ -1,5 +1,5 @@
 <div>
-    <MudAlert Severity="@_notificationProps.Severity" Variant="Variant.Filled" Icon="@_notificationProps.IconType">
+    <MudAlert Severity="@_notificationProps.Severity" Variant="Variant.Filled" Icon="@_notificationProps.IconType" ShowCloseIcon="true">
         <MudText Typo="Typo.h4" Class="semi-bold">@Title</MudText>
         @if (!string.IsNullOrEmpty(Subtitle))
         {

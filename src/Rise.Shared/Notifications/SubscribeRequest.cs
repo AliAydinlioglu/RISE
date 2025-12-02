@@ -10,7 +10,7 @@ public partial class SubscribeRequest
     }
     public class PushNotification
     {
-        public string SubscriptionId { get; set; }
+        public string Url { get; set; }
         public string P256dh { get; set; }
         public string Auth { get; set; }
     }
@@ -18,7 +18,7 @@ public partial class SubscribeRequest
     // Channels container
     public class NotificationChannels
     {
-        public bool Mail { get; set; } = false;
+        //public bool Mail { get; set; } = false;
         public bool InApp { get; set; } = false;
         public PushNotification? Push { get; set; } // null als niet gebruikt
     }

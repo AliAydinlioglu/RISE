@@ -1,0 +1,15 @@
+﻿@page "/notifications/settings"
+<MudStack>
+    <MudText Typo="Typo.h3" Class="mb-4">Notification settings</MudText>
+
+    @foreach (var setting in NotificationSettings)
+    {
+        <MudText Typo="Typo.h6" Class="mb-4">@setting.TypeOfNotification</MudText>
+        @foreach (var channel in setting.Channels)
+        {
+            <MudSwitch T="bool" Value="@channel.IsSubscribed"
+                ValueChanged="@(value => OnChannelChanged(setting.TypeOfNotification, channel, value))" 
+                Label="@channel.Name" Color="Color.Success" />
+        }
+    }
+</MudStack>

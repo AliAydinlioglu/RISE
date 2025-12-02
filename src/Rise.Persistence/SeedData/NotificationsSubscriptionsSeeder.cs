@@ -1,4 +1,5 @@
 ﻿using Rise.Domain.Notifications;
+using Rise.Shared.Navigation;
 
 namespace Rise.Persistence.SeedData;
 
@@ -37,12 +38,14 @@ public static class NotificationsSubscriptionsSeeder
             new Message("Lector afwezig - Business Analysis", "Lector X is as. woensdag afwezig", ""),
             DateTime.Now));
 
+        IList<NotificationChannels> channels = [NotificationChannels.InApp];
+
         _users.ToList()
             .ForEach(u =>
             {
-                dbContext.Subscriptions.Add(new Subscription(u, NotificationTypes.Deadline));
-                dbContext.Subscriptions.Add(new Subscription(u, NotificationTypes.Emergency));
-                dbContext.Subscriptions.Add(new Subscription(u, NotificationTypes.LectorAbsence));
+                dbContext.Subscriptions.Add(new Subscription(u, NotificationTypes.Deadline, channels));
+                dbContext.Subscriptions.Add(new Subscription(u, NotificationTypes.Emergency, channels));
+                dbContext.Subscriptions.Add(new Subscription(u, NotificationTypes.LectorAbsence, channels));
             });
 
         await dbContext.SaveChangesAsync();

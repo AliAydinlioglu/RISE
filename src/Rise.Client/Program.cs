@@ -25,7 +25,6 @@ using Rise.Shared.Menu;
 using Rise.Client.Services;
 using Rise.Client.StudentActivities;
 using DateTimeService = Rise.Client.DateTimeService;
-using Rise.Client.Notifications;
 
 try
 {
