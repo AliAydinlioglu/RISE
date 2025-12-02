@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using NSubstitute;
 using Rise.Domain.Notifications;
 using Rise.Shared.Common;
 using Rise.Shared.Notifications;
@@ -7,9 +8,10 @@ namespace Rise.Client.Shared;
 
 public class FakeNotificationService(HttpClient httpClient) : INotificationService
 {
-    public Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct = default)
+    public async Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        var response = Substitute.For<NotificationResponse.Get>();
+        return Result.Success(response);
     }
 
     public Task<Result> Notify(NotifyRequest.Message msg, CancellationToken ct)
