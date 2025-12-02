@@ -94,6 +94,7 @@ try
         });
     });
 
+
     builder.Services.AddScoped<IClaimsTransformation, AppClaimsTransformation>();
     builder.Services.AddMemoryCache();
 
