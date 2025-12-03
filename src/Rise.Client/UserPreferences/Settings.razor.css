@@ -3,37 +3,29 @@
     position: sticky;
     top: var(--mud-appbar-height, 64px);
     z-index: 100;
-    padding: 0.75rem;
+    padding: 0.75rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     background-color: white;
 }
-
-.preview-card-wrapper {
-    padding: 0.5rem 0.5rem;
-}
-
-/* Preview Header */
-.preview-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    padding: 0.25rem;
-    margin: -0.25rem;
-    margin-bottom: 0.25rem;
-    border-radius: 4px;
-    transition: background-color 0.2s;    
-}
-
-    .preview-header:hover {
-        background-color: var(--mud-palette-action-default-hover);
+    .sticky-preview-wrapper.collapsed {
+        padding: 0.5rem 0;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     }
-
-.preview-content {
-    margin-top: 0.5rem;
+.preview-header-container {
+    padding-top: 0;
+    padding-bottom: 0;
 }
-
+.preview-card-wrapper {
+    padding: 0.3rem 0;
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+.sticky-preview-wrapper.collapsed .preview-card-wrapper {
+    max-height: 0;
+    padding: 0;
+}
 /* Course details link styling */
 .course-details-link {
     font-size: 14px;
@@ -42,26 +34,21 @@
     cursor: pointer;
     transition: opacity 0.3s;
 }
-
     .course-details-link:hover {
         opacity: 0.7;
     }
-
 /* Settings Body */
 .settings-body-section {
     padding: 1.5rem 0;
     padding-bottom: 100px;
 }
-
 .setting-item {
     padding: 1rem 0;
     border-bottom: 1px solid var(--mud-palette-divider);
 }
-
     .setting-item:last-child {
         border-bottom: none;
     }
-
 /* Clickable notification row */
 .clickable-row {
     cursor: pointer;
@@ -71,11 +58,9 @@
     border-radius: 4px;
     transition: background-color 0.2s;
 }
-
     .clickable-row:hover {
         background-color: var(--mud-palette-action-default-hover);
     }
-
 /* Notification options */
 .notification-options {
     display: flex;
@@ -83,7 +68,6 @@
     gap: 0.75rem;
     padding-left: 1rem;
 }
-
 .notification-item {
     display: flex;
     justify-content: space-between;
@@ -92,7 +76,6 @@
     background: var(--mud-palette-background-grey);
     border-radius: 8px;
 }
-
 /* Fixed Action Buttons */
 .settings-actions-fixed {
     position: fixed;
@@ -105,40 +88,38 @@
     z-index: 99;
 }
 
+.settings-actions-fixed .d-flex {
+    gap: 1rem;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
-    .mud-main-content.section {
-        padding-top: 1px;
-        --bulma-section-padding: 1rem 1rem;
-    }
     .sticky-preview-wrapper {
         top: 56px;
         padding: 0.5rem 0;
     }
-
     .settings-body-section {
         padding: 1rem 0;
         padding-bottom: 100px;
     }
-
     .settings-actions-fixed {
         bottom: 56px;
         padding: 0.75rem;
     }
-
-        .settings-actions-fixed .d-flex > div {
-            display: flex;
-            gap: 0.5rem;
-        }
+    
+    .settings-actions-fixed .d-flex {
+        gap: 0.5rem;
+    }
 }
-
 /* Desktop */
 @media (min-width: 769px) {
     .settings-body-section {
         padding-bottom: 120px;
     }
-
     .settings-actions-fixed {
         bottom: 0;
+    }
+    .sticky-preview-wrapper.collapsed {
+        padding: 0.5rem 0;
     }
 }

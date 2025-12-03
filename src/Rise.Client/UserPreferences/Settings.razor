@@ -2,209 +2,223 @@
 @using Rise.Shared.UserPreferences
 @using Rise.Client.Components
 @using Rise.Client.Components.Card
+@using Microsoft.AspNetCore.Components.Authorization
 @namespace Rise.Client.UserPreferences
 @using static Rise.Client.UserPreferences.Models.PreferenceOptions;
 
-
 <PageTitle>Instellingen</PageTitle>
 
-@* Preview *@
-<div class="sticky-preview-wrapper">
-    <div class="preview-card-wrapper">
-        <div class="container">
-            <div class="preview-header" @onclick="TogglePreview">
-                <MudText Typo="Typo.h6">Voorvertoning</MudText>
-                <MudIcon Icon="@(PreviewExpanded? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)" />
+<AuthorizeView>
+    <Authorized>
+        @* Preview *@
+        <div class="sticky-preview-wrapper @(PreviewCollapsed ? "collapsed" : "")">
+            <div class="container preview-header-container" @onclick="TogglePreview">
+                <div class="d-flex justify-space-between align-center clickable-row">
+                    <MudText Typo="Typo.h6" Class="mb-0">
+                        Voorvertoning
+                    </MudText>
+                    <MudIcon Icon="@(PreviewCollapsed? Icons.Material.Filled.ExpandMore : Icons.Material.Filled.ExpandLess)" />
+                </div>
             </div>
 
-            @if (PreviewExpanded)
+            @if (!PreviewCollapsed)
             {
-                <div class="preview-content">
-                    <RiseCard Date="@PreviewDate"
-                              Title="@PreviewTitle"
-                              Description="@PreviewCategory"
-                              CardHeader="@($"{PreviewStartTime:HH:mm} | {PreviewLocation}")"
-                              ImageUrl="images/HOGENT_bg1.jpg"
-                              ShowImage="@(!ImagesOff)"
-                              Scale="1.0"
-                              Class="@(CurrentTheme == "dark" ? "dark-theme" : "")">
-                        <p class="course-details-link" style="@GetCategoryStyle()">
-                            Course details >
-                        </p>
-                    </RiseCard>
+                <div class="preview-card-wrapper">
+                    <div class="container">
+                        <RiseCard Date="@PreviewDate"
+                                  Title="@PreviewTitle"
+                                  Description="@PreviewCategory"
+                                  CardHeader="@($"{PreviewStartTime:HH:mm} | {PreviewLocation}")"
+                                  ImageUrl="@(ImagesOff ? null : "img/HOGENT_bg1.jpg")"
+                                  Scale="1.0"
+                                  Class="@(CurrentTheme == "dark" ? "dark-theme" : "")">
+                            <p class="course-details-link" style="@GetCategoryStyle()">
+                                Course details >
+                            </p>
+                        </RiseCard>
+                    </div>
                 </div>
             }
         </div>
-    </div>
-</div>
 
-<section class="settings-body-section">
-    <div class="container">
-        <MudText Typo="Typo.h6" Class="mb-4">Persoonlijke Voorkeuren</MudText>
+        <section class="settings-body-section">
+            <div class="container">
+                <MudText Typo="Typo.h6" Class="mb-4">Persoonlijke Voorkeuren</MudText>
 
-        @* Light/Dark Setting *@
-        <div class="setting-item mb-4">
-            <div class="d-flex justify-space-between align-center">
-                <MudText Typo="Typo.subtitle1">Light</MudText>
-                <MudSwitch @bind-Value="IsDarkTheme"
-                           Color="Color.Primary"
-                           UnCheckedColor="Color.Default" />
-                <MudText Typo="Typo.subtitle1">Dark</MudText>
-            </div>
-        </div>
+                @* Light/Dark Setting *@
+                <div class="setting-item mb-4">
+                    <div class="d-flex justify-space-between align-center">
+                        <MudText Typo="Typo.subtitle1">Light</MudText>
+                        <MudSwitch @bind-Value="IsDarkTheme"
+                                   Color="Color.Primary"
+                                   UnCheckedColor="Color.Default" />
+                        <MudText Typo="Typo.subtitle1">Dark</MudText>
+                    </div>
+                </div>
 
-        @* Images On/Off Setting *@
-        <div class="setting-item mb-4">
-            <div class="d-flex justify-space-between align-center">
-                <MudText Typo="Typo.subtitle1">Images On</MudText>
-                <MudSwitch @bind-Value="ImagesOff"
-                           Color="Color.Primary"
-                           UnCheckedColor="Color.Default" />
-                <MudText Typo="Typo.subtitle1">Images Off</MudText>
-            </div>
-        </div>
+                @* Images On/Off Setting *@
+                <div class="setting-item mb-4">
+                    <div class="d-flex justify-space-between align-center">
+                        <MudText Typo="Typo.subtitle1">Images On</MudText>
+                        <MudSwitch @bind-Value="ImagesOff"
+                                   Color="Color.Primary"
+                                   UnCheckedColor="Color.Default" />
+                        <MudText Typo="Typo.subtitle1">Images Off</MudText>
+                    </div>
+                </div>
 
-        @* Colorful/Neutral Setting *@
-        <div class="setting-item mb-4">
-            <div class="d-flex justify-space-between align-center">
-                <MudText Typo="Typo.subtitle1">Colorful</MudText>
-                <MudSwitch @bind-Value="IsNeutral"
-                           Color="Color.Primary"
-                           UnCheckedColor="Color.Default" />
-                <MudText Typo="Typo.subtitle1">Neutral</MudText>
-            </div>
-        </div>
+                @* Colorful/Neutral Setting *@
+                <div class="setting-item mb-4">
+                    <div class="d-flex justify-space-between align-center">
+                        <MudText Typo="Typo.subtitle1">Colorful</MudText>
+                        <MudSwitch @bind-Value="IsNeutral"
+                                   Color="Color.Primary"
+                                   UnCheckedColor="Color.Default" />
+                        <MudText Typo="Typo.subtitle1">Neutral</MudText>
+                    </div>
+                </div>
 
-        @* Campus/Remote Setting *@
-        <div class="setting-item mb-4">
-            <div class="d-flex justify-space-between align-center">
-                <MudText Typo="Typo.subtitle1">Campus</MudText>
-                <MudSwitch @bind-Value="IsRemote"
-                           Color="Color.Primary"
-                           UnCheckedColor="Color.Default" />
-                <MudText Typo="Typo.subtitle1">Remote</MudText>
-            </div>
-        </div>
+                @* Campus/Remote Setting *@
+                <div class="setting-item mb-4">
+                    <div class="d-flex justify-space-between align-center">
+                        <MudText Typo="Typo.subtitle1">Campus</MudText>
+                        <MudSwitch @bind-Value="IsRemote"
+                                   Color="Color.Primary"
+                                   UnCheckedColor="Color.Default" />
+                        <MudText Typo="Typo.subtitle1">Remote</MudText>
+                    </div>
+                </div>
 
-        @* Language Setting *@
-        <div class="setting-item mb-4">
-            <MudText Typo="Typo.subtitle1" Class="mb-2">Taal</MudText>
-            <MudSelect T="LanguageOption"
-                       @bind-Value="CurrentLanguageOption"
-                       Label="Selecteer taal"
-                       Variant="Variant.Outlined"
-                       AnchorOrigin="Origin.BottomCenter">
-                @foreach (var lang in AvailableLanguages)
+                @* Language Setting *@
+                @* Label="Selecteer taal" Weggecomment, soms overlapt label met uitlijning *@
+
+                <div class="setting-item mb-4">
+                    <MudText Typo="Typo.subtitle1" Class="mb-2">Taal</MudText>
+                    <MudSelect T="LanguageOption"
+                               @bind-Value="CurrentLanguageOption"
+                               Variant="Variant.Outlined"
+                               AnchorOrigin="Origin.BottomCenter"
+                               TransformOrigin="Origin.TopCenter">
+                        @foreach (var lang in AvailableLanguages)
+                        {
+                            <MudSelectItem T="LanguageOption" Value="@lang">
+                                @lang.DisplayName
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
+
+                @* Default Campus Setting *@
+                @* Label="Selecteer campus" Weggecomment, soms overlapt label met uitlijning *@
+
+                <div class="setting-item mb-4">
+                    <MudText Typo="Typo.subtitle1" Class="mb-2">Standaard campus</MudText>
+                    <MudSelect T="CampusOption"
+                               @bind-Value="CurrentCampusOption"
+                               Variant="Variant.Outlined"
+                               AnchorOrigin="Origin.BottomCenter"
+                               TransformOrigin="Origin.TopCenter">
+                        @foreach (var campus in AvailableCampuses)
+                        {
+                            <MudSelectItem T="CampusOption" Value="@campus">
+                                @campus.Name
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
+
+                <div class="setting-item mb-4">
+                    <div class="clickable-row" @onclick="ToggleNotifications">
+                        <div class="d-flex justify-space-between align-center">
+                            <MudText Typo="Typo.subtitle1">Notificaties</MudText>
+                            <MudIcon Icon="@(NotificationsExpanded? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)" />
+                        </div>
+                    </div>
+
+                    @if (NotificationsExpanded)
+                    {
+                        <div class="notification-options mt-3">
+                            <div class="notification-item">
+                                <MudText Typo="Typo.body1">Deadlines</MudText>
+                                <MudSwitch @bind-Value="NotifyDeadline"
+                                           Color="Color.Primary"
+                                           UnCheckedColor="Color.Default" />
+                            </div>
+                            <div class="notification-item">
+                                <MudText Typo="Typo.body1">School evenementen</MudText>
+                                <MudSwitch @bind-Value="NotifySchoolEvent"
+                                           Color="Color.Primary"
+                                           UnCheckedColor="Color.Default" />
+                            </div>
+                            <div class="notification-item">
+                                <MudText Typo="Typo.body1">Noodmeldingen</MudText>
+                                <MudSwitch @bind-Value="NotifyEmergencies"
+                                           Color="Color.Primary"
+                                           UnCheckedColor="Color.Default" />
+                            </div>
+                            <div class="notification-item">
+                                <MudText Typo="Typo.body1">Geannuleerde lessen</MudText>
+                                <MudSwitch @bind-Value="NotifyCancelledClass"
+                                           Color="Color.Primary"
+                                           UnCheckedColor="Color.Default" />
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (!string.IsNullOrEmpty(StatusMessage))
                 {
-                    <MudSelectItem T="LanguageOption" Value="@lang">
-                        @lang.DisplayName
-                    </MudSelectItem>
+                    <div class="mt-4">
+                        <RiseNotification Title="@StatusTitle"
+                                          Severity="@ConvertToRiseNotificationSeverity(StatusSeverity)">
+                            @StatusMessage
+                        </RiseNotification>
+                    </div>
                 }
-            </MudSelect>
-        </div>
+            </div>
+        </section>
 
-        @* Default Campus Setting *@
-        <div class="setting-item mb-4">
-            <MudText Typo="Typo.subtitle1" Class="mb-2">Standaard campus</MudText>
-            <MudSelect T="CampusOption"
-                       @bind-Value="CurrentCampusOption"
-                       Label="Selecteer campus"
-                       Variant="Variant.Outlined"
-                       AnchorOrigin="Origin.BottomCenter">
-                @foreach (var campus in AvailableCampuses)
-                {
-                    <MudSelectItem T="CampusOption" Value="@campus">
-                        @campus.Name
-                    </MudSelectItem>
-                }
-            </MudSelect>
-        </div>
-
-        <div class="setting-item mb-4">
-            <div class="clickable-row" @onclick="ToggleNotifications">
+        <div class="settings-actions-fixed">
+            <div class="container">
                 <div class="d-flex justify-space-between align-center">
-                    <MudText Typo="Typo.subtitle1">Notificaties</MudText>
-                    <MudIcon Icon="@(NotificationsExpanded? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)" />
+                    <div class="d-flex gap-3">
+                        @if (!HasUnsavedChanges)
+                        {
+                            <RiseButton Type="RiseButton.RiseButtonType.Secondary"
+                                        OnClick="HandleRestoreDefaults">
+                                Standaardwaarden
+                            </RiseButton>
+                        }
+                        else
+                        {
+                            <RiseButton Type="RiseButton.RiseButtonType.Secondary"
+                                        OnClick="HandleCancel">
+                                Annuleren
+                            </RiseButton>
+                        }
+                    </div>
+
+                    <div>
+                        <RiseButton Type="RiseButton.RiseButtonType.Primary"
+                                    OnClick="HandleSave"
+                                    Disabled="@(!HasUnsavedChanges || IsSaving)">
+                            @if (IsSaving)
+                            {
+                                <RiseLoader />
+                            }
+                            else
+                            {
+                                <span>Opslaan</span>
+                            }
+                        </RiseButton>
+                    </div>
                 </div>
             </div>
-
-            @if (NotificationsExpanded)
-            {
-                <div class="notification-options mt-3">
-                    <div class="notification-item">
-                        <MudText Typo="Typo.body1">Deadlines</MudText>
-                        <MudSwitch @bind-Value="NotifyDeadline"
-                                   Color="Color.Primary"
-                                   UnCheckedColor="Color.Default" />
-                    </div>
-                    <div class="notification-item">
-                        <MudText Typo="Typo.body1">School evenementen</MudText>
-                        <MudSwitch @bind-Value="NotifySchoolEvent"
-                                   Color="Color.Primary"
-                                   UnCheckedColor="Color.Default" />
-                    </div>
-                    <div class="notification-item">
-                        <MudText Typo="Typo.body1">Noodmeldingen</MudText>
-                        <MudSwitch @bind-Value="NotifyEmergencies"
-                                   Color="Color.Primary"
-                                   UnCheckedColor="Color.Default" />
-                    </div>
-                    <div class="notification-item">
-                        <MudText Typo="Typo.body1">Geannuleerde lessen</MudText>
-                        <MudSwitch @bind-Value="NotifyCancelledClass"
-                                   Color="Color.Primary"
-                                   UnCheckedColor="Color.Default" />
-                    </div>
-                </div>
-            }
         </div>
-
-        @if (!string.IsNullOrEmpty(StatusMessage))
-        {
-            <div class="mt-4">
-                <RiseNotification Title="@StatusTitle"
-                                  Severity="@ConvertToRiseNotificationSeverity(StatusSeverity)">
-                    @StatusMessage
-                </RiseNotification>
-            </div>
+    </Authorized>
+    <NotAuthorized>
+        @{
+            Navigation.NavigateTo("/login", forceLoad: true);
         }
-    </div>
-</section>
-
-<div class="settings-actions-fixed">
-    <div class="container">
-        <div class="d-flex justify-space-between align-center">
-            <div class="d-flex gap-3">
-                @if (!HasUnsavedChanges)
-                {
-                    <RiseButton Type="RiseButton.RiseButtonType.Secondary"
-                                OnClick="HandleRestoreDefaults">
-                        Standaardwaarden
-                    </RiseButton>
-                }
-                else
-                {
-                    <RiseButton Type="RiseButton.RiseButtonType.Secondary"
-                                OnClick="HandleCancel">
-                        Annuleren
-                    </RiseButton>
-                }
-            </div>
-
-            <div>
-                <RiseButton Type="RiseButton.RiseButtonType.Primary"
-                            OnClick="HandleSave"
-                            Disabled="@(!HasUnsavedChanges || IsSaving)">
-                    @if (IsSaving)
-                    {
-                        <RiseLoader />
-                    }
-                    else
-                    {
-                        <span>Opslaan</span>
-                    }
-                </RiseButton>
-            </div>
-        </div>
-    </div>
-</div>
+    </NotAuthorized>
+</AuthorizeView>

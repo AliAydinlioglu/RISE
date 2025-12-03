@@ -25,7 +25,7 @@ public partial class MainLayout
 
     private void GoToAccountSettings()
     {
-        NavigationManager.NavigateTo("/account");
+        NavigationManager.NavigateTo("/settings");
     }
     private void GoToAccount()
     {

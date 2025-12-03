@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Components;
+using Rise.Client.Layout;
 using Rise.Client.UserPreferences.Models;
 using Rise.Shared.UserPreferences;
 using System.Text.Json;
@@ -12,9 +13,12 @@ public partial class Settings
 {
     [Inject] private IUserPreferenceService UserPreferenceService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
+    [Inject] private NavigationManager Navigation{ get; set; } = default!;
+
 
     private Dictionary<string, object> CurrentPreferences { get; set; } = new();
     private Dictionary<string, object> OriginalPreferences { get; set; } = new();
+    private bool PreviewCollapsed { get; set; } = false;
 
     private string CurrentTheme
     {
@@ -35,7 +39,7 @@ public partial class Settings
     private bool NotifySchoolEvent { get => GetBoolPref(UserPreferenceKeys.NotifySchoolEvent); set => SetBoolPref(UserPreferenceKeys.NotifySchoolEvent, value); }
     private bool NotifyEmergencies { get => GetBoolPref(UserPreferenceKeys.NotifyEmergencies); set => SetBoolPref(UserPreferenceKeys.NotifyEmergencies, value); }
     private bool NotifyCancelledClass { get => GetBoolPref(UserPreferenceKeys.NotifyCancelledClass); set => SetBoolPref(UserPreferenceKeys.NotifyCancelledClass, value); }
-
+    private void TogglePreview() => PreviewCollapsed = !PreviewCollapsed; 
     private bool GetBoolPref(string key) => GetPreference<bool>(key);
     private void SetBoolPref(string key, bool value) => SetPreference(key, value);
 
@@ -129,9 +133,6 @@ public partial class Settings
     private TimeOnly PreviewStartTime => new(14, 0);
     private TimeOnly PreviewEndTime => new(17, 30);
     private string PreviewLocation => "Schoonmeersen";
-    private bool PreviewExpanded { get; set; } = true;
-
-    private void TogglePreview() => PreviewExpanded = !PreviewExpanded;
 
     private string StatusTitle => Status.Title;
     private string StatusMessage => Status.Message;

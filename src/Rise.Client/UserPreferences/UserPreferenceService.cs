@@ -28,7 +28,6 @@ namespace Rise.Client.UserPreferences
                 "/api/user-preferences",
                 preferences,
                 cancellationToken: ctx);
-
             var result = await response.Content.ReadFromJsonAsync<Result>(cancellationToken: ctx);
             return result!;
         }
@@ -45,7 +44,6 @@ namespace Rise.Client.UserPreferences
                 $"/api/user-preferences/{key}",
                 request,
                 cancellationToken: ctx);
-
             var result = await response.Content.ReadFromJsonAsync<Result>(cancellationToken: ctx);
             return result!;
         }
