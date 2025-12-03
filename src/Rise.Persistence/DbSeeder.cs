@@ -33,7 +33,6 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         await NavigationItemSeeder.Seed(dbContext);
         await ContactSeeder.Seed(dbContext);
         await MenuSeeder.Seed(dbContext);
-        await NotificationsSubscriptionsSeeder.Seed(dbContext);
     }
 
     private async Task RolesAsync()
@@ -70,21 +69,10 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
             Guid.NewGuid(), 
             "Microsoft Entra");
         await userManager.CreateAsync(distanceStudent);
-
-        var wimDedulle = new ApplicationUser(
-            "wim@rise2526t2campusappoutlook.onmicrosoft.com",
-            "Wim",
-            "Dedulle",
-            "TIN/TIAO-3",
-            DateTimeOffset.UtcNow,
-            Guid.Parse("08de2d04-12de-465b-81d8-0b798b03d28e"),
-            "Microsoft Entra");
-        await userManager.CreateAsync(wimDedulle);
-
+        
         await userManager.AddToRoleAsync(regularStudent, nameof(AppRoles.RegularStudent));
         await userManager.AddToRoleAsync(distanceStudent,  nameof(AppRoles.DistanceStudent));
-        await userManager.AddToRoleAsync(wimDedulle, nameof(AppRoles.DistanceStudent));
-
+        
         await dbContext.SaveChangesAsync();
     }
     
