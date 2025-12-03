@@ -2,13 +2,6 @@
     font-size: 2rem;
 }
 
-.no-hover-bg:hover,
-.no-hover-bg:focus,
-.no-hover-bg:active {
-    background-color: transparent !important;
-    box-shadow: none !important;
-}
-
 /* Fullscreen overlay container */
 .notification-overlay {
     position: fixed;
@@ -26,7 +19,6 @@
 
 /* Alerts container (verticaal stapelen) */
 .notification-alerts {
-
     display: flex;
     flex-direction: column;
     gap: 1rem;
