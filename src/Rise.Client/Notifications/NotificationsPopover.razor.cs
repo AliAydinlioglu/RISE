@@ -6,8 +6,9 @@ namespace Rise.Client.Notifications;
 
 public partial class NotificationsPopover
 {
-    public IEnumerable<NotificationDto.Index> Notifications { get; set; } = [];
+    public List<NotificationDto.Index> Notifications { get; set; } = [];
     public bool HasNotifications => Notifications.Any();
+    private bool visible;
 
     [Inject] public required INotificationService NotificationService { get; set; }
 
@@ -20,6 +21,19 @@ public partial class NotificationsPopover
         };
 
         var result = await NotificationService.GetNotifications(request);
-        Notifications = result.Value.Notifications;
+        Notifications = [.. result.Value.Notifications];
+    }
+
+    public void ToggleOverlay(bool value)
+    {
+        visible = value;
+    }
+
+    public void AckowledgeMe(NotificationDto.Index not)
+    {
+        Notifications.RemoveAll(n => n.NotificationId == not.NotificationId);
+        if (Notifications.Count == 0)
+            ToggleOverlay(false);
+        StateHasChanged();
     }
 }

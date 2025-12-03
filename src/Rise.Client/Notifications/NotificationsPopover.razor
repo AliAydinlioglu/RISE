@@ -1,14 +1,31 @@
-﻿<MudMenu RelativeWidth="@DropdownWidth.Adaptive" 
-         AnchorOrigin="Origin.BottomLeft" 
-         TransformOrigin="Origin.TopRight" Color="Color.Primary">
-
-    <ActivatorContent>
-        <MudBadge Dot="true" Color="Color.Error" Overlap="true" Visible="@HasNotifications" >
-            <MudIcon Icon="@Icons.Material.Rounded.NotificationsNone" Size="Size.Large" />
-        </MudBadge>
-    </ActivatorContent>
-
-    <ChildContent>
-        <NotificationsList Notifications="@Notifications" />
-    </ChildContent>
-</MudMenu>
+﻿<MudBadge Class="no-hover-bg" Dot="true" Color="Color.Error" Overlap="true" Visible="@HasNotifications">
+    <MudIconButton Style="background-color:transparent; color:inherit;" OnClick="@(e => ToggleOverlay(true))" Icon="@Icons.Material.Filled.NotificationsNone" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" />
+</MudBadge>
+@if (visible)
+{
+    <div class="notification-overlay" @onclick="() => ToggleOverlay(false)">
+        <div class="notification-alerts">
+            @if (!HasNotifications)
+            {
+                <MudAlert Class="notification-alert" Variant="Variant.Filled"
+                          Severity="Severity.Info"
+                          ContentAlignment="HorizontalAlignment.Start">
+                    Alles opgekuist. 
+                </MudAlert>
+            }
+            @foreach (var notification in Notifications)
+            {
+                <MudAlert @onclick:stopPropagation="true"
+                          Class="notification-alert" Variant="Variant.Filled"
+                          Severity="@NotificationHelper.ToSeverity(notification.NotificationLevel)"
+                          ContentAlignment="HorizontalAlignment.Start"
+                          ShowCloseIcon="true"
+                          CloseIconClicked="(() => AckowledgeMe(notification))">
+                    <MudText Typo="Typo.subtitle1">@notification.MsgTitle</MudText>
+                    <MudText Typo="Typo.subtitle2">@notification.TypeOfNotification</MudText>
+                    <MudText Typo="Typo.body2">@notification.MsgBody</MudText>
+                </MudAlert>
+            }
+        </div>
+    </div>
+}
