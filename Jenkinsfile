@@ -5,6 +5,9 @@ pipeline {
         // GitHub repository configuration
         GITHUB_REPO = 'https://github.com/HOGENT-RISE/dotnet-2526-tiao2.git'
         GITHUB_USERNAME = 'badramr1'
+
+        // Email notification configuration
+        EMAIL_RECIPIENTS = 'tiaopipeline@gmail.com,badr.amri@student.hogent.be,lars.devos@student.hogent.be,brent.lissens@student.hogent.be,jonathan.laekeman@student.hogent.be,jens.vanhoeylandt@student.hogent.be'
         
         // Application server configuration
         // Default value; will be auto-resolved from ops inventory if available
@@ -261,16 +264,25 @@ EOF
         }
     }
     
-    post {
-        always {
-            echo "Pipeline execution completed"
-            cleanWs()
-        }
-        success {
-            echo "Pipeline completed successfully!"
-        }
-        failure {
-            echo "Pipeline failed. Check logs for more details."
-        }
+  post {
+    success {
+        echo "✅ Build succeeded!"
+        
+        mail to: "${EMAIL_RECIPIENTS}",
+             subject: "✅ Build Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+             body: "The build was successful.\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}/console"
     }
+
+    failure {
+        echo "❌ Build failed!"
+
+        mail to: "${EMAIL_RECIPIENTS}",
+             subject: "❌ Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+             body: "The build has failed.\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}/console\nCheck logs in Jenkins."
+    }
+
+    always {
+        echo "Pipeline finished."
+    }
+}
 }
