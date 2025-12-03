@@ -42,7 +42,7 @@
                 {
                     <article data-bunit="se-index-card" class="mb-4 column is-12-mobile is-6-tablet is-3-desktop ">
 
-                        <a href="/school-events/@schoolEvent.Id">
+                        <a href="#" @onclick="@(()=>NavigateToDetail(schoolEvent.Id))" @onclick:preventDefault="true">
                             <!-- Desktop/Tablet: Vertical Card -->
                             <div class="is-hidden-mobile">
                                 <RiseVerticalCard Date="schoolEvent.Date.LocalDateTime" Title="@schoolEvent.Title" ImageUrl="@schoolEvent.ImageUrl">

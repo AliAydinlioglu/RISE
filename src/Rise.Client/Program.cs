@@ -20,6 +20,7 @@ using Rise.Shared.Contact;
 using Rise.Client.Contact;
 using Rise.Client.Restaurant;
 using Rise.Client.Offline;
+using Rise.Client.Services;
 using TG.Blazor.IndexedDB;
 using Rise.Client.Restaurant.Components;
 using Rise.Shared.Menu;
@@ -71,6 +72,7 @@ try
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
+    builder.Services.AddScoped<IPaginationStateService, PaginationStateService>();
     builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
     builder.Services.AddScoped<ICacheService, CacheService>();
     builder.Services.AddScoped<RiseHttpMessageHandler>();

@@ -6,7 +6,7 @@
     <RiseHeadTitle ImageUrl="/img/banner35.webp">Studenten activiteiten</RiseHeadTitle>
 </div>
 <section class="mt-5 container student-activities">
-    @if (studentActivities == null)
+    @if (_studentActivities == null)
     {
         <MudContainer Class="mt-8">
             <RiseLoader/>
@@ -16,11 +16,11 @@
     {
         <div class="is-flex columns  is-multiline  mb-4">
 
-            @foreach (var studentActivity in studentActivities)
+            @foreach (var studentActivity in _studentActivities)
             {
                 <article data-bunit="sa-index" class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
 
-                    <a href="/student-activities/@studentActivity.Id">
+                    <a href="#" @onclick="@(()=>NavigateToDetail(studentActivity.Id))" @onclick:preventDefault="true">
                         <!-- Desktop/Tablet: Vertical Card -->
                         <div class="is-hidden-mobile">
                             <RiseVerticalCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title"
@@ -49,9 +49,9 @@
             }
 
         </div>
-        <RisePagination PageSize="_pageSize" 
+        <RisePagination PageSize="PageSize" 
                         CurrentPage="_currentPage" 
                         CurrentPageChanged="OnPageChangedAsync"
-                        TotalPages="_totalPages"/>
+                        TotalPages="TotalPages"/>
     }
 </section>
