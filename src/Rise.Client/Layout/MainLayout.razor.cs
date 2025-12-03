@@ -69,7 +69,7 @@ public partial class MainLayout
 
     protected override void OnInitialized()
     {
-        ThemingService.OnChange = EventCallback.Factory.Create<IThemingService>(this, StateHasChanged);
+        ThemingService.Subscribe += (sender, args) => StateHasChanged();
         _mytheme = ThemingService.Theme;
         ThemingService.Initialize();
     }

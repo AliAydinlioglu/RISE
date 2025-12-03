@@ -1,6 +1,7 @@
 ﻿﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Attributes;
+using Rise.Client.Theme;
 using Rise.Shared.Contact;
 using Rise.Shared.Common;
 
@@ -15,6 +16,8 @@ public partial class ContactIndex
     private static readonly Random Random = new();
     
     [Inject] public required IContactService ContactService { get; set; }
+    
+    [Inject] private IThemingService ThemingService { get; set; } = null!;
     
     private int? _expandedServiceId;
     private FilterOption? _selectedCampus;
@@ -90,9 +93,9 @@ public partial class ContactIndex
 
     protected string GetBackgroundImageUrl(int facilityId)
     {
-        return _facilityBackgroundImages.TryGetValue(facilityId, out var imageUrl) 
+        return !ThemingService.ImagesOff && _facilityBackgroundImages.TryGetValue(facilityId, out var imageUrl) 
             ? imageUrl 
-            : "/img/banner42.webp";
+            : ""; //or low-res placeholder
     }
 
     private void ApplyFilters()
@@ -162,6 +165,10 @@ public partial class ContactIndex
         {
             _expandedServiceId = serviceId; // Expand clicked service
         }
+    }
+    protected override void OnInitialized()
+    {
+        ThemingService.Subscribe += (sender, args) => StateHasChanged();
     }
 }
 

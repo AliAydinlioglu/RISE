@@ -7,8 +7,9 @@
 
 html, body {
     font-family: 'Montserrat', Arial, sans-serif;
-    background: white;
+    background: var(--mud-palette-background);
     color: black;
+    height: 100%;
 }
 
 
