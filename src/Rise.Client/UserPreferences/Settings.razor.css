@@ -36,10 +36,10 @@
     border-radius: 4px;
     transition: background-color 0.2s;    
 }
-
-    .preview-header:hover {
-        background-color: var(--mud-palette-action-default-hover);
-    }
+.sticky-preview-wrapper.collapsed .preview-card-wrapper {
+    max-height: 0;
+    padding: 0;
+}
 
 .preview-content {
     margin-top: 0.5rem;
@@ -113,12 +113,12 @@
     gap: 1rem;
 }
 
+.settings-actions-fixed .d-flex {
+    gap: 1rem;
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
-    .mud-main-content.section {
-        padding-top: 1px;
-        --bulma-section-padding: 1rem 1rem;
-    }
     .sticky-preview-wrapper {
         top: 72px;
         padding: 0.5rem 0;
@@ -152,6 +152,9 @@
         left: var(--mud-drawer-width-left, 240px);
     }
 
+    .sticky-preview-wrapper.collapsed {
+        padding: 0.5rem 0;
+    }
     .sticky-preview-wrapper.collapsed {
         padding: 0.5rem 0;
     }

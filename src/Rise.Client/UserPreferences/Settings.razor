@@ -28,20 +28,19 @@
                     <div class="container">
             <MudText Typo="Typo.h6" Class="mb-2">Voorvertoning</MudText>
 
-                    <RiseCard Date="@PreviewDate"
-                              Title="@PreviewTitle"
-                              Description="@PreviewCategory"
-                              CardHeader="@($"{PreviewStartTime:HH:mm} | {PreviewLocation}")"
+                        <RiseCard Date="@PreviewDate"
+                                  Title="@PreviewTitle"
+                                  Description="@PreviewCategory"
+                                  CardHeader="@($"{PreviewStartTime:HH:mm} | {PreviewLocation}")"
                                   ImageUrl="@(ThemingService.ImagesOff ? null : "img/HOGENT_bg1.jpg")"
-                              Scale="1.0"
+                                  Scale="1.0"
                                   Class="@(ThemingService.IsDarkMode ? "dark-theme" : "")">
-                        <p class="course-details-link" style="@GetCategoryStyle()">
-                            Course details >
-                        </p>
-                    </RiseCard>
-                </div>
-            }
+                            <p class="course-details-link" style="@GetCategoryStyle()">
+                                Course details >
+                            </p>
+                        </RiseCard>
                     </div>
+                </div>
                 </div>
             }
         </div>
@@ -100,21 +99,21 @@
                 <div class="setting-item mb-4">
                     <MudText Typo="Typo.subtitle1" Class="mb-2">Taal</MudText>
                     <div class="select-full-width">
-                        <MudSelect T="LanguageOption"
-                                   @bind-Value="CurrentLanguageOption"
-                                   Variant="Variant.Outlined"
+                    <MudSelect T="LanguageOption"
+                               @bind-Value="CurrentLanguageOption"
+                               Variant="Variant.Outlined"
                                    FullWidth="true"
                                    AnchorOrigin="Origin.BottomCenter"
                                    TransformOrigin="Origin.TopCenter"
                                    PopoverClass="fix-popover-offset">
-                            @foreach (var lang in AvailableLanguages)
-                            {
-                                <MudSelectItem T="LanguageOption" Value="@lang">
-                                    @lang.DisplayName
-                                </MudSelectItem>
-                            }
-                        </MudSelect>
-                    </div>
+                        @foreach (var lang in AvailableLanguages)
+                        {
+                            <MudSelectItem T="LanguageOption" Value="@lang">
+                                @lang.DisplayName
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
                 </div>
 
                 @* Default Campus Setting *@
@@ -134,19 +133,19 @@
                         <div class="select-full-width">
                             <MudSelect T="PreferenceOptions.RestoOption"
                                        @bind-Value="CurrentRestoOption"
-                                       Variant="Variant.Outlined"
+                               Variant="Variant.Outlined"
                                        FullWidth="true"
                                        AnchorOrigin="Origin.BottomCenter"
                                        TransformOrigin="Origin.TopCenter"
                                        PopoverClass="fix-popover-offset">
                                 @foreach (var resto in AvailableRestos)
-                                {
+                        {
                                     <MudSelectItem T="PreferenceOptions.RestoOption" Value="@resto">
                                         @resto.Name
-                                    </MudSelectItem>
-                                }
-                            </MudSelect>
-                        </div>
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
                     }
                     else
                     {
@@ -180,7 +179,7 @@
                                            UnCheckedColor="Color.Default" />
                             </div>
                             <div class="notification-item">
-                                <MudText Typo="Typo.body1">Noodmeldingen</MudText> 
+                                <MudText Typo="Typo.body1">Noodmeldingen</MudText>
                                 <MudSwitch @bind-Value="NotifyEmergencies"
                                            Color="Color.Primary"
                                            UnCheckedColor="Color.Default" />
