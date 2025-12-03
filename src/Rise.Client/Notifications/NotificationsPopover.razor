@@ -1,4 +1,4 @@
-﻿<MudBadge Class="no-hover-bg" Dot="true" Color="Color.Error" Overlap="true" Visible="@HasNotifications">
+﻿<MudBadge Dot="true" Color="Color.Error" Overlap="true" Visible="@HasNotifications">
     <MudIconButton Style="background-color:transparent; color:inherit;" OnClick="@(e => ToggleOverlay(true))" Icon="@Icons.Material.Filled.NotificationsNone" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" />
 </MudBadge>
 @if (visible)
@@ -8,7 +8,7 @@
             @if (!HasNotifications)
             {
                 <MudAlert Class="notification-alert" Variant="Variant.Filled"
-                          Severity="Severity.Info"
+                          Severity="Severity.Success"
                           ContentAlignment="HorizontalAlignment.Start">
                     Alles opgekuist. 
                 </MudAlert>
