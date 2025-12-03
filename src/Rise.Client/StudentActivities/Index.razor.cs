@@ -11,10 +11,10 @@ public partial class Index
 {
     private IEnumerable<StudentActivityDto.Index>? studentActivities;
     [Inject] public required IStudentActivityService StudentActivityService { get; set; }
-    private int currentPage = 1;
-    private int pageSize = 8;
-    private int totalCount = 0;
-    private int totalPages => (int)Math.Ceiling((double)totalCount / pageSize);
+    private int _currentPage = 1;
+    private readonly int _pageSize = 8;
+    private int _totalCount = 0;
+    private int _totalPages => (int)Math.Ceiling((double)_totalCount / _pageSize);
     protected override async Task OnInitializedAsync()
     {
         await LoadStudentActivitiesAsync();
@@ -24,18 +24,18 @@ public partial class Index
     {
         var request = new QueryRequest.SkipTake
         {
-            Skip = (currentPage - 1) * pageSize,
-            Take = pageSize,
+            Skip = (_currentPage - 1) * _pageSize,
+            Take = _pageSize,
         };
 
         var result = await StudentActivityService.GetIndexAsync(request, CancellationToken.None);
         studentActivities = result.Value.StudentActivities;
-        totalCount = result.Value.TotalCount;
+        _totalCount = result.Value.TotalCount;
     }
 
     private async Task OnPageChangedAsync(int page)
     {
-        currentPage = page;
+        _currentPage = page;
         await LoadStudentActivitiesAsync();
     }
 }
