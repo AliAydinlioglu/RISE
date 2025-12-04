@@ -178,7 +178,7 @@ pipeline {
                     
                         // Fix permissions and deploy application
                         sh """
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << 'EOF'
+                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << EOF
                                 sudo chown -R ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir}
                                 sudo chmod -R 755 ${releaseDir}
                                 sudo rm -rf ${CURRENT_PATH}
@@ -238,7 +238,7 @@ EOF
                     withCredentials([sshUserPrivateKey(credentialsId: 'deploy-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                         // Check if service is running
                         sh """
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << 'EOF'
+                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << EOF
                                 if ! sudo systemctl is-active --quiet ${APP_NAME}; then
                                     echo 'Service ${APP_NAME} is not running'
                                     sudo systemctl status ${APP_NAME}
