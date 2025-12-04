@@ -2,8 +2,8 @@
 using Rise.Shared.Common;
 using Rise.Services.UserPreferences;
 
-namespace Rise.Server.Endpoints.UserPreferences
-{
+namespace Rise.Server.Endpoints.UserPreferences;
+
     public class Update(IUserPreferenceService userPreferenceService)
         : Endpoint<Dictionary<string, object>, Result>
     {
@@ -14,7 +14,6 @@ namespace Rise.Server.Endpoints.UserPreferences
 
         public override Task<Result> ExecuteAsync(Dictionary<string, object> req, CancellationToken ct)
         {
-            return userPreferenceService.UpdatePreferencesAsync(req, ct);
+            return userPreferenceService.TryUpdatePreferencesAsync(req, ct);
         }
     }
-}

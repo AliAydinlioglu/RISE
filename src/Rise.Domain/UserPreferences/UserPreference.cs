@@ -13,25 +13,30 @@ namespace Rise.Domain.UserPreferences
 
         private UserPreference() { }
 
-        public UserPreference(Guid userId, string preferencesJson)
+        public UserPreference(Guid userId, Dictionary<string, object> preferences)
         {
             UserId = Guard.Against.Default(userId, nameof(userId));
-            PreferencesJson = Guard.Against.NullOrWhiteSpace(preferencesJson);
+            Guard.Against.Null(preferences, nameof(preferences));
+            PreferencesJson = JsonSerializer.Serialize(preferences);
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void UpdatePreferences(string preferencesJson)
+        public void UpdatePreferences(Dictionary<string, object> updates)
         {
-            PreferencesJson = Guard.Against.NullOrWhiteSpace(preferencesJson);
-            UpdatedAt = DateTime.UtcNow;
-        }
+            Guard.Against.Null(updates, nameof(updates));
 
-        public void MergePreferences(Dictionary<string, object> updates)
-        {
-            var existing = string.IsNullOrWhiteSpace(PreferencesJson) || PreferencesJson == "{}"
-                ? new Dictionary<string, object>()
-                : JsonSerializer.Deserialize<Dictionary<string, object>>(PreferencesJson)
-                  ?? new Dictionary<string, object>();
+            Dictionary<string, object> existing;
+            try
+            {
+                existing = string.IsNullOrWhiteSpace(PreferencesJson) || PreferencesJson == "{}"
+                    ? new Dictionary<string, object>()
+                    : JsonSerializer.Deserialize<Dictionary<string, object>>(PreferencesJson)
+                      ?? new Dictionary<string, object>();
+            }
+            catch (JsonException ex)
+            {
+                throw new InvalidOperationException("Stored preferences JSON is corrupted.", ex);
+            }
 
             foreach (var (key, value) in updates)
             {
@@ -47,15 +52,21 @@ namespace Rise.Domain.UserPreferences
             if (string.IsNullOrWhiteSpace(PreferencesJson) || PreferencesJson == "{}")
                 return null;
 
-            var preferences = JsonSerializer.Deserialize<Dictionary<string, object>>(PreferencesJson);
-            if (preferences != null && preferences.TryGetValue(key, out var value))
+            try
             {
-                if (value is JsonElement jsonElement)
-                    return jsonElement.GetRawText();
-                return value?.ToString();
+                var preferences = JsonSerializer.Deserialize<Dictionary<string, object>>(PreferencesJson);
+                if (preferences != null && preferences.TryGetValue(key, out var value))
+                {
+                    if (value is JsonElement jsonElement)
+                        return jsonElement.GetRawText();
+                    return value?.ToString();
+                }
+                return null;
             }
-
-            return null;
+            catch (JsonException)
+            {
+                return null;
+            }
         }
     }
 }

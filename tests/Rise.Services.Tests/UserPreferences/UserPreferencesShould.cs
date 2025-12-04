@@ -16,21 +16,14 @@ public class UserPreferenceServiceShould
     private readonly Guid _testUserId = Guid.Parse("08de294a-2705-4195-860d-ff69f2452f67");
     private readonly Guid _testSsoId = Guid.Parse("28a27ff1-c348-44d2-a102-4b46e29bbff6");
     private readonly string _testUserEmail = "test@example.com";
-    private readonly ISessionContextProvider _sessionContextProvider;
-    private readonly IUserService userService;
-
+    private readonly IUserService _userService;
 
     public UserPreferenceServiceShould()
     {
-        _sessionContextProvider = Substitute.For<ISessionContextProvider>();
-        userService = Substitute.For<IUserService>(); 
+        _userService = Substitute.For<IUserService>();
 
-        userService.GetOrCreateUserAsync(Arg.Any<string>())
-            .Returns(Task.FromResult(Result.Success(new Shared.Identity.Accounts.AccountResponse.LoginCallback
-            {
-                Email = _testUserEmail,
-                Roles = Array.Empty<string>()
-            })));
+        _userService.TryGetCurrentUserIdAsync()
+            .Returns(Task.FromResult(Result.Success(_testUserId)));
     }
 
     private ApplicationDbContext CreateDbContext(string databaseName)
@@ -52,46 +45,30 @@ public class UserPreferenceServiceShould
             lastLogin: DateTimeOffset.UtcNow,
             ssoId: _testSsoId,
             ssoProvider: "MicrosoftEntra"
-        );
-    }
-
-    private void SetupAuthenticatedUser(string email)
-    {
-        var claims = new List<Claim>
+        )
         {
-            new Claim(ClaimTypes.NameIdentifier, "test-sso-id"),
-            new Claim(ClaimTypes.Email, email),
-            new Claim("preferred_username", email)
+            Id = _testUserId
         };
-        var identity = new ClaimsIdentity(claims, "TestAuth");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        _sessionContextProvider.User.Returns(claimsPrincipal);
     }
 
     [Fact]
-    public async Task GetPreferences_ReturnsDefaultValuesWhenNoPreferencesExist()
+    public async Task GetPreferences_ReturnsEmptyDictionaryWhenNoPreferencesExist()
     {
         // Arrange
-        using var dbContext = CreateDbContext(nameof(GetPreferences_ReturnsDefaultValuesWhenNoPreferencesExist));
+        using var dbContext = CreateDbContext(nameof(GetPreferences_ReturnsEmptyDictionaryWhenNoPreferencesExist));
 
         var user = CreateTestUser();
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider,userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.GetPreferencesAsync(CancellationToken.None);
+        var result = await service.TryGetPreferencesAsync(CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
-        result.Value.UserPreferences.Settings[UserPreferenceKeys.Theme].ToString().ShouldBe("light");
-        result.Value.UserPreferences.Settings[UserPreferenceKeys.FontSize].ToString().ShouldBe("14");
-        result.Value.UserPreferences.Settings[UserPreferenceKeys.Language].ToString().ShouldBe("nl");
-        result.Value.UserPreferences.Settings[UserPreferenceKeys.NotifyDeadline].ToString().ShouldBe("True");
+        result.Value.UserPreferences.Settings.ShouldBeEmpty();
         result.Value.UserPreferences.LastUpdated.ShouldBeNull();
     }
 
@@ -105,27 +82,22 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        // Create JSON preference
-        var preferencesJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var preferences = new Dictionary<string, object>
         {
             { UserPreferenceKeys.Theme, "dark" },
             { UserPreferenceKeys.FontSize, 18 },
             { UserPreferenceKeys.Language, "en" },
             { UserPreferenceKeys.NotifyDeadline, false }
-        });
+        };
 
-        var preference = new Rise.Domain.UserPreferences.UserPreference(savedUser.Id, preferencesJson);
+        var preference = new Rise.Domain.UserPreferences.UserPreference(_testUserId, preferences);
         dbContext.UserPreferences.Add(preference);
         await dbContext.SaveChangesAsync();
 
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.GetPreferencesAsync(CancellationToken.None);
+        var result = await service.TryGetPreferencesAsync(CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
@@ -145,12 +117,13 @@ public class UserPreferenceServiceShould
         // Arrange
         using var dbContext = CreateDbContext(nameof(GetPreferences_ReturnsUnauthorizedWhenUserNotAuthenticated));
 
-        _sessionContextProvider.User.Returns((ClaimsPrincipal)null);
+        _userService.TryGetCurrentUserIdAsync()
+            .Returns(Task.FromResult(Result<Guid>.Unauthorized("User not authenticated")));
 
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.GetPreferencesAsync(CancellationToken.None);
+        var result = await service.TryGetPreferencesAsync(CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeFalse();
@@ -167,11 +140,7 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         var settings = new Dictionary<string, object>
         {
@@ -182,13 +151,13 @@ public class UserPreferenceServiceShould
         };
 
         // Act
-        var result = await service.UpdatePreferencesAsync(settings, CancellationToken.None);
+        var result = await service.TryUpdatePreferencesAsync(settings, CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
 
         var savedPreference = await dbContext.UserPreferences
-            .FirstOrDefaultAsync(p => p.UserId == savedUser.Id);
+            .FirstOrDefaultAsync(p => p.UserId == _testUserId);
 
         savedPreference.ShouldNotBeNull();
 
@@ -211,21 +180,17 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { UserPreferenceKeys.Theme, "light" },
             { UserPreferenceKeys.FontSize, 14 }
-        });
+        };
 
-        var existingPreference = new Rise.Domain.UserPreferences.UserPreference(savedUser.Id, initialJson);
+        var existingPreference = new Rise.Domain.UserPreferences.UserPreference(_testUserId, initialPreferences);
         dbContext.UserPreferences.Add(existingPreference);
         await dbContext.SaveChangesAsync();
 
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         var settings = new Dictionary<string, object>
         {
@@ -233,13 +198,13 @@ public class UserPreferenceServiceShould
         };
 
         // Act
-        var result = await service.UpdatePreferencesAsync(settings, CancellationToken.None);
+        var result = await service.TryUpdatePreferencesAsync(settings, CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
 
         var updatedPreference = await dbContext.UserPreferences
-            .FirstOrDefaultAsync(p => p.UserId == savedUser.Id);
+            .FirstOrDefaultAsync(p => p.UserId == _testUserId);
 
         updatedPreference.ShouldNotBeNull();
 
@@ -255,9 +220,10 @@ public class UserPreferenceServiceShould
         // Arrange
         using var dbContext = CreateDbContext(nameof(UpdatePreferences_ReturnsUnauthorizedWhenUserNotAuthenticated));
 
-        _sessionContextProvider.User.Returns((ClaimsPrincipal)null);
+        _userService.TryGetCurrentUserIdAsync()
+            .Returns(Task.FromResult(Result<Guid>.Unauthorized("User not authenticated")));
 
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         var settings = new Dictionary<string, object>
         {
@@ -265,7 +231,7 @@ public class UserPreferenceServiceShould
         };
 
         // Act
-        var result = await service.UpdatePreferencesAsync(settings, CancellationToken.None);
+        var result = await service.TryUpdatePreferencesAsync(settings, CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeFalse();
@@ -282,11 +248,7 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
         var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.Theme, "dark", CancellationToken.None);
@@ -295,7 +257,7 @@ public class UserPreferenceServiceShould
         result.IsSuccess.ShouldBeTrue();
 
         var savedPreference = await dbContext.UserPreferences
-            .FirstOrDefaultAsync(p => p.UserId == savedUser.Id);
+            .FirstOrDefaultAsync(p => p.UserId == _testUserId);
 
         savedPreference.ShouldNotBeNull();
 
@@ -314,20 +276,16 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { UserPreferenceKeys.Theme, "light" }
-        });
+        };
 
-        var existingPreference = new Rise.Domain.UserPreferences.UserPreference(savedUser.Id, initialJson);
+        var existingPreference = new Rise.Domain.UserPreferences.UserPreference(_testUserId, initialPreferences);
         dbContext.UserPreferences.Add(existingPreference);
         await dbContext.SaveChangesAsync();
 
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
         var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.Theme, "dark", CancellationToken.None);
@@ -336,7 +294,7 @@ public class UserPreferenceServiceShould
         result.IsSuccess.ShouldBeTrue();
 
         var updatedPreference = await dbContext.UserPreferences
-            .FirstOrDefaultAsync(p => p.UserId == savedUser.Id);
+            .FirstOrDefaultAsync(p => p.UserId == _testUserId);
 
         updatedPreference.ShouldNotBeNull();
 
@@ -357,9 +315,7 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
         var result = await service.UpdateSinglePreferenceAsync(invalidKey, "value", CancellationToken.None);
@@ -375,9 +331,10 @@ public class UserPreferenceServiceShould
         // Arrange
         using var dbContext = CreateDbContext(nameof(UpdateSinglePreference_ReturnsUnauthorizedWhenUserNotAuthenticated));
 
-        _sessionContextProvider.User.Returns((ClaimsPrincipal)null);
+        _userService.TryGetCurrentUserIdAsync()
+            .Returns(Task.FromResult(Result<Guid>.Unauthorized("User not authenticated")));
 
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
         var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.Theme, "dark", CancellationToken.None);
@@ -408,11 +365,7 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
         var result = await service.UpdateSinglePreferenceAsync(key, value, CancellationToken.None);
@@ -421,7 +374,7 @@ public class UserPreferenceServiceShould
         result.IsSuccess.ShouldBeTrue();
 
         var savedPreference = await dbContext.UserPreferences
-            .FirstOrDefaultAsync(p => p.UserId == savedUser.Id);
+            .FirstOrDefaultAsync(p => p.UserId == _testUserId);
 
         savedPreference.ShouldNotBeNull();
         savedPreference.PreferencesJson.ShouldContain(key);
@@ -437,11 +390,7 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         var settings = new Dictionary<string, object>
         {
@@ -459,13 +408,13 @@ public class UserPreferenceServiceShould
         };
 
         // Act
-        var result = await service.UpdatePreferencesAsync(settings, CancellationToken.None);
+        var result = await service.TryUpdatePreferencesAsync(settings, CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
 
         var savedPreference = await dbContext.UserPreferences
-            .FirstOrDefaultAsync(p => p.UserId == savedUser.Id);
+            .FirstOrDefaultAsync(p => p.UserId == _testUserId);
 
         savedPreference.ShouldNotBeNull();
 
@@ -484,22 +433,18 @@ public class UserPreferenceServiceShould
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        var savedUser = await dbContext.Users.FirstAsync(u => u.Email == _testUserEmail);
-
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { UserPreferenceKeys.Theme, "light" },
             { UserPreferenceKeys.FontSize, 14 },
             { UserPreferenceKeys.Language, "nl" }
-        });
+        };
 
-        var existingPreference = new Rise.Domain.UserPreferences.UserPreference(savedUser.Id, initialJson);
+        var existingPreference = new Rise.Domain.UserPreferences.UserPreference(_testUserId, initialPreferences);
         dbContext.UserPreferences.Add(existingPreference);
         await dbContext.SaveChangesAsync();
 
-        SetupAuthenticatedUser(_testUserEmail);
-
-        var service = new UserPreferenceService(dbContext, _sessionContextProvider, userService);
+        var service = new UserPreferenceService(dbContext, _userService);
 
         // Only update theme
         var settings = new Dictionary<string, object>
@@ -508,13 +453,13 @@ public class UserPreferenceServiceShould
         };
 
         // Act
-        var result = await service.UpdatePreferencesAsync(settings, CancellationToken.None);
+        var result = await service.TryUpdatePreferencesAsync(settings, CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
 
         var updatedPreference = await dbContext.UserPreferences
-            .FirstOrDefaultAsync(p => p.UserId == savedUser.Id);
+            .FirstOrDefaultAsync(p => p.UserId == _testUserId);
 
         updatedPreference.ShouldNotBeNull();
 

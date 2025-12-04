@@ -1,7 +1,7 @@
 ﻿using Rise.Shared.UserPreferences;
 
-namespace Rise.Server.Endpoints.UserPreferences
-{
+namespace Rise.Server.Endpoints.UserPreferences;
+
     public class UpdateSingle(IUserPreferenceService userPreferenceService)
         : Endpoint<UserPreferenceRequest.UpdateSingle, Result>
     {
@@ -15,4 +15,3 @@ namespace Rise.Server.Endpoints.UserPreferences
             return await userPreferenceService.UpdateSinglePreferenceAsync(req.Key, req.Value, ct);
         }
     }
-}

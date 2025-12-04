@@ -1,7 +1,7 @@
 ﻿using Rise.Shared.UserPreferences;
 
-namespace Rise.Server.Endpoints.UserPreferences
-{
+namespace Rise.Server.Endpoints.UserPreferences;
+
     public class Get(IUserPreferenceService userPreferenceService)
         : EndpointWithoutRequest<Result<UserPreferenceResponse.Preferences>>
     {
@@ -12,7 +12,6 @@ namespace Rise.Server.Endpoints.UserPreferences
 
         public override Task<Result<UserPreferenceResponse.Preferences>> ExecuteAsync(CancellationToken ct)
         {
-            return userPreferenceService.GetPreferencesAsync(ct);
+            return userPreferenceService.TryGetPreferencesAsync(ct);
         }
     }
-}

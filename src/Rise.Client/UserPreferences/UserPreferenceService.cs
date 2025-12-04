@@ -6,7 +6,7 @@ namespace Rise.Client.UserPreferences
 {
     public class UserPreferenceService(HttpClient httpClient) : IUserPreferenceService
     {
-        public async Task<Result<UserPreferenceResponse.Preferences>> GetPreferencesAsync(CancellationToken ctx)
+        public async Task<Result<UserPreferenceResponse.Preferences>> TryGetPreferencesAsync(CancellationToken ctx)
         {
             var result = await httpClient.GetFromJsonAsync<Result<UserPreferenceResponse.Preferences>>(
                 "/api/user-preferences",
@@ -14,7 +14,7 @@ namespace Rise.Client.UserPreferences
             return result!;
         }
 
-        public async Task<Result<string>> GetSinglePreferenceAsync(string key, CancellationToken ctx)
+        public async Task<Result<string>> TryGetSinglePreferenceAsync(string key, CancellationToken ctx)
         {
             var result = await httpClient.GetFromJsonAsync<Result<string>>(
                 $"/api/user-preferences/{key}",
@@ -22,13 +22,8 @@ namespace Rise.Client.UserPreferences
             return result!;
         }
 
-        public async Task<Result> UpdatePreferencesAsync(Dictionary<string, object> preferences, CancellationToken ctx)
+        public async Task<Result> TryUpdatePreferencesAsync(Dictionary<string, object> preferences, CancellationToken ctx)
         {
-            var request = new UserPreferenceRequest.Update
-            {
-                Preferences = preferences
-            };
-
             var response = await httpClient.PutAsJsonAsync(
                 "/api/user-preferences",
                 preferences,

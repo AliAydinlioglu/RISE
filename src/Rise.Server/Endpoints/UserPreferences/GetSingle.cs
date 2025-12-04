@@ -1,8 +1,8 @@
 ﻿using Rise.Shared.UserPreferences;
 using Rise.Shared.Common;
 
-namespace Rise.Server.Endpoints.UserPreferences
-{
+namespace Rise.Server.Endpoints.UserPreferences;
+
     public class GetSingle(IUserPreferenceService userPreferenceService)
         : Endpoint<string, Result<string>>
     {
@@ -13,7 +13,6 @@ namespace Rise.Server.Endpoints.UserPreferences
 
         public override async Task<Result<string>> ExecuteAsync(string key, CancellationToken ct)
         {
-            return await userPreferenceService.GetSinglePreferenceAsync(key, ct);
+            return await userPreferenceService.TryGetSinglePreferenceAsync(key, ct);
         }
     }
-}

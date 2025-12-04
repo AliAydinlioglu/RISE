@@ -8,9 +8,9 @@ namespace Rise.Shared.UserPreferences
 {
     public interface IUserPreferenceService
     {
-        Task<Result<UserPreferenceResponse.Preferences>> GetPreferencesAsync(CancellationToken ctx);
-        Task<Result<string>> GetSinglePreferenceAsync(string key, CancellationToken ctx);
-        Task<Result> UpdatePreferencesAsync(Dictionary<string, object> preferences, CancellationToken ctx);
+        Task<Result<UserPreferenceResponse.Preferences>> TryGetPreferencesAsync(CancellationToken ctx);
+        Task<Result<string>> TryGetSinglePreferenceAsync(string key, CancellationToken ctx);
+        Task<Result> TryUpdatePreferencesAsync(Dictionary<string, object> preferences, CancellationToken ctx);
         Task<Result> UpdateSinglePreferenceAsync(string key, object value, CancellationToken ctx);
     }
 }

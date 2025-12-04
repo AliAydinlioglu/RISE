@@ -130,9 +130,6 @@ try
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<RiseHttpMessageHandler>();
 
-    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client => { client.BaseAddress = baseUrl; })
-        .AddHttpMessageHandler<RiseHttpMessageHandler>();
-
     builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
     {
         client.BaseAddress = baseUrl;

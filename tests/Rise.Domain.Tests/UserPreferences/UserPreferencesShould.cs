@@ -10,18 +10,19 @@ public class UserPreferenceShould
     [Fact]
     public void BeCreated()
     {
-        var preferencesJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var preferences = new Dictionary<string, object>
         {
             { "theme", "dark" }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            preferencesJson
-        );
+        var preference = new UserPreference(_validUserId, preferences);
 
         preference.UserId.ShouldBe(_validUserId);
-        preference.PreferencesJson.ShouldBe(preferencesJson);
+
+        var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(preference.PreferencesJson);
+        result.ShouldNotBeNull();
+        result["theme"].GetString().ShouldBe("dark");
+
         preference.UpdatedAt.ShouldBeInRange(
             DateTime.UtcNow.AddSeconds(-1),
             DateTime.UtcNow.AddSeconds(1)
@@ -29,12 +30,9 @@ public class UserPreferenceShould
     }
 
     [Fact]
-    public void BeCreatedWithEmptyJson()
+    public void BeCreatedWithEmptyDictionary()
     {
-        var preference = new UserPreference(
-            _validUserId,
-            "{}"
-        );
+        var preference = new UserPreference(_validUserId, new Dictionary<string, object>());
 
         preference.PreferencesJson.ShouldBe("{}");
     }
@@ -42,53 +40,47 @@ public class UserPreferenceShould
     [Fact]
     public void UpdatePreferences()
     {
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { "theme", "light" }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            initialJson
-        );
-
+        var preference = new UserPreference(_validUserId, initialPreferences);
         var originalUpdatedAt = preference.UpdatedAt;
 
-        // Wacht een klein beetje zodat UpdatedAt anders is
         Thread.Sleep(10);
-
-        var newJson = JsonSerializer.Serialize(new Dictionary<string, object>
-        {
-            { "theme", "dark" }
-        });
-
-        preference.UpdatePreferences(newJson);
-
-        preference.PreferencesJson.ShouldBe(newJson);
-        preference.UpdatedAt.ShouldBeGreaterThan(originalUpdatedAt);
-    }
-
-    [Fact]
-    public void MergePreferences()
-    {
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
-        {
-            { "theme", "light" },
-            { "fontSize", 14 },
-            { "language", "nl" }
-        });
-
-        var preference = new UserPreference(
-            _validUserId,
-            initialJson
-        );
 
         var updates = new Dictionary<string, object>
         {
             { "theme", "dark" }
         };
 
-        preference.MergePreferences(updates);
+        preference.UpdatePreferences(updates);
+
+        var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(preference.PreferencesJson);
+        result.ShouldNotBeNull();
+        result["theme"].GetString().ShouldBe("dark");
+        preference.UpdatedAt.ShouldBeGreaterThan(originalUpdatedAt);
+    }
+
+    [Fact]
+    public void MergePreferences()
+    {
+        var initialPreferences = new Dictionary<string, object>
+        {
+            { "theme", "light" },
+            { "fontSize", 14 },
+            { "language", "nl" }
+        };
+
+        var preference = new UserPreference(_validUserId, initialPreferences);
+
+        var updates = new Dictionary<string, object>
+        {
+            { "theme", "dark" }
+        };
+
+        preference.UpdatePreferences(updates);
 
         var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(preference.PreferencesJson);
         result.ShouldNotBeNull();
@@ -100,15 +92,12 @@ public class UserPreferenceShould
     [Fact]
     public void MergePreferences_AddsNewKeys()
     {
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { "theme", "light" }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            initialJson
-        );
+        var preference = new UserPreference(_validUserId, initialPreferences);
 
         var updates = new Dictionary<string, object>
         {
@@ -116,12 +105,12 @@ public class UserPreferenceShould
             { "language", "en" }
         };
 
-        preference.MergePreferences(updates);
+        preference.UpdatePreferences(updates);
 
         var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(preference.PreferencesJson);
         result.ShouldNotBeNull();
         result["theme"].GetString().ShouldBe("light");
-        result["fontSize"].GetInt32().GetType().ShouldBe(typeof(int));
+        result["fontSize"].GetInt32().ShouldBe(16);
         result["language"].GetString().ShouldBe("en");
         result.Count.ShouldBe(3);
     }
@@ -129,16 +118,13 @@ public class UserPreferenceShould
     [Fact]
     public void MergePreferences_UpdatesExistingKeys()
     {
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { "theme", "light" },
             { "fontSize", 14 }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            initialJson
-        );
+        var preference = new UserPreference(_validUserId, initialPreferences);
 
         var updates = new Dictionary<string, object>
         {
@@ -146,7 +132,7 @@ public class UserPreferenceShould
             { "fontSize", 18 }
         };
 
-        preference.MergePreferences(updates);
+        preference.UpdatePreferences(updates);
 
         var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(preference.PreferencesJson);
         result.ShouldNotBeNull();
@@ -155,12 +141,9 @@ public class UserPreferenceShould
     }
 
     [Fact]
-    public void MergePreferences_HandlesEmptyInitialJson()
+    public void MergePreferences_HandlesEmptyInitialDictionary()
     {
-        var preference = new UserPreference(
-            _validUserId,
-            "{}"
-        );
+        var preference = new UserPreference(_validUserId, new Dictionary<string, object>());
 
         var updates = new Dictionary<string, object>
         {
@@ -168,7 +151,7 @@ public class UserPreferenceShould
             { "fontSize", 16 }
         };
 
-        preference.MergePreferences(updates);
+        preference.UpdatePreferences(updates);
 
         var result = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(preference.PreferencesJson);
         result.ShouldNotBeNull();
@@ -179,16 +162,13 @@ public class UserPreferenceShould
     [Fact]
     public void GetSinglePreference_ReturnsValue()
     {
-        var preferencesJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var preferences = new Dictionary<string, object>
         {
             { "theme", "dark" },
             { "fontSize", 16 }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            preferencesJson
-        );
+        var preference = new UserPreference(_validUserId, preferences);
 
         var themeValue = preference.GetSinglePreference("theme");
         themeValue.ShouldNotBeNull();
@@ -200,27 +180,21 @@ public class UserPreferenceShould
     [Fact]
     public void GetSinglePreference_ReturnsNullForNonExistentKey()
     {
-        var preferencesJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var preferences = new Dictionary<string, object>
         {
             { "theme", "dark" }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            preferencesJson
-        );
+        var preference = new UserPreference(_validUserId, preferences);
 
         var value = preference.GetSinglePreference("nonExistentKey");
         value.ShouldBeNull();
     }
 
     [Fact]
-    public void GetSinglePreference_ReturnsNullForEmptyJson()
+    public void GetSinglePreference_ReturnsNullForEmptyDictionary()
     {
-        var preference = new UserPreference(
-            _validUserId,
-            "{}"
-        );
+        var preference = new UserPreference(_validUserId, new Dictionary<string, object>());
 
         var value = preference.GetSinglePreference("theme");
         value.ShouldBeNull();
@@ -231,37 +205,25 @@ public class UserPreferenceShould
     public void ThrowExceptionWhenUserIdIsEmpty(string userIdStr)
     {
         var userId = Guid.Parse(userIdStr);
-        var json = JsonSerializer.Serialize(new Dictionary<string, object> { { "theme", "dark" } });
+        var preferences = new Dictionary<string, object> { { "theme", "dark" } };
 
-        var exception = Should.Throw<ArgumentException>(() => new UserPreference(
-            userId,
-            json
-        ));
+        var exception = Should.Throw<ArgumentException>(() => new UserPreference(userId, preferences));
 
         exception.GetType().ShouldBe(typeof(ArgumentException));
     }
 
-    [Theory]
-    [InlineData(null, typeof(ArgumentNullException))]
-    [InlineData("", typeof(ArgumentException))]
-    [InlineData("   ", typeof(ArgumentException))]
-    public void ThrowExceptionWhenPreferencesJsonIsNullOrWhiteSpace(string? json, Type expectedExceptionType)
+    [Fact]
+    public void ThrowExceptionWhenPreferencesDictionaryIsNull()
     {
-        var exception = Should.Throw<Exception>(() => new UserPreference(
-            _validUserId,
-            json!
-        ));
+        var exception = Should.Throw<ArgumentNullException>(() => new UserPreference(_validUserId, null!));
 
-        exception.GetType().ShouldBe(expectedExceptionType);
+        exception.GetType().ShouldBe(typeof(ArgumentNullException));
     }
 
     [Fact]
-    public void ThrowExceptionWhenUpdatePreferencesJsonIsNull()
+    public void ThrowExceptionWhenUpdatePreferencesDictionaryIsNull()
     {
-        var preference = new UserPreference(
-            _validUserId,
-            "{}"
-        );
+        var preference = new UserPreference(_validUserId, new Dictionary<string, object>());
 
         var exception = Should.Throw<ArgumentNullException>(() => preference.UpdatePreferences(null!));
 
@@ -275,15 +237,12 @@ public class UserPreferenceShould
     [InlineData("notifications", true)]
     public void SupportDifferentPreferenceTypes(string key, object value)
     {
-        var preferencesJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var preferences = new Dictionary<string, object>
         {
             { key, value }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            preferencesJson
-        );
+        var preference = new UserPreference(_validUserId, preferences);
 
         preference.PreferencesJson.ShouldContain(key);
     }
@@ -291,15 +250,12 @@ public class UserPreferenceShould
     [Fact]
     public void SupportArrayPreferences()
     {
-        var preferencesJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var preferences = new Dictionary<string, object>
         {
             { "notifyDeadline", new[] { "push", "email" } }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            preferencesJson
-        );
+        var preference = new UserPreference(_validUserId, preferences);
 
         preference.PreferencesJson.ShouldContain("notifyDeadline");
         preference.PreferencesJson.ShouldContain("push");
@@ -309,62 +265,32 @@ public class UserPreferenceShould
     [Fact]
     public void MaintainUserIdAfterUpdate()
     {
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { "theme", "light" }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            initialJson
-        );
-
-        var newJson = JsonSerializer.Serialize(new Dictionary<string, object>
-        {
-            { "theme", "dark" }
-        });
-
-        preference.UpdatePreferences(newJson);
-
-        preference.UserId.ShouldBe(_validUserId);
-    }
-
-    [Fact]
-    public void MaintainUserIdAfterMerge()
-    {
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
-        {
-            { "theme", "light" }
-        });
-
-        var preference = new UserPreference(
-            _validUserId,
-            initialJson
-        );
+        var preference = new UserPreference(_validUserId, initialPreferences);
 
         var updates = new Dictionary<string, object>
         {
             { "theme", "dark" }
         };
 
-        preference.MergePreferences(updates);
+        preference.UpdatePreferences(updates);
 
         preference.UserId.ShouldBe(_validUserId);
     }
 
     [Fact]
-    public void UpdateTimestampOnMerge()
+    public void UpdateTimestampOnUpdate()
     {
-        var initialJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var initialPreferences = new Dictionary<string, object>
         {
             { "theme", "light" }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            initialJson
-        );
-
+        var preference = new UserPreference(_validUserId, initialPreferences);
         var originalUpdatedAt = preference.UpdatedAt;
 
         Thread.Sleep(10);
@@ -374,7 +300,7 @@ public class UserPreferenceShould
             { "theme", "dark" }
         };
 
-        preference.MergePreferences(updates);
+        preference.UpdatePreferences(updates);
 
         preference.UpdatedAt.ShouldBeGreaterThan(originalUpdatedAt);
     }
@@ -382,7 +308,7 @@ public class UserPreferenceShould
     [Fact]
     public void HandleComplexNestedPreferences()
     {
-        var preferencesJson = JsonSerializer.Serialize(new Dictionary<string, object>
+        var preferences = new Dictionary<string, object>
         {
             { "theme", "dark" },
             { "fontSize", 16 },
@@ -393,14 +319,39 @@ public class UserPreferenceShould
                     { "events", new[] { "push" } }
                 }
             }
-        });
+        };
 
-        var preference = new UserPreference(
-            _validUserId,
-            preferencesJson
-        );
+        var preference = new UserPreference(_validUserId, preferences);
 
         preference.PreferencesJson.ShouldContain("notifications");
         preference.PreferencesJson.ShouldContain("deadline");
+    }
+
+    [Fact]
+    public void ThrowExceptionWhenJsonIsCorrupted_OnUpdate()
+    {
+        var preference = new UserPreference(_validUserId, new Dictionary<string, object> { { "theme", "light" } });
+
+        var field = typeof(UserPreference).GetField("<PreferencesJson>k__BackingField",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        field!.SetValue(preference, "{invalid json}");
+
+        var updates = new Dictionary<string, object> { { "fontSize", 16 } };
+
+        var exception = Should.Throw<InvalidOperationException>(() => preference.UpdatePreferences(updates));
+        exception.Message.ShouldContain("corrupted");
+    }
+
+    [Fact]
+    public void GetSinglePreference_ReturnsNullWhenJsonIsCorrupted()
+    {
+        var preference = new UserPreference(_validUserId, new Dictionary<string, object> { { "theme", "light" } });
+
+        var field = typeof(UserPreference).GetField("<PreferencesJson>k__BackingField",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        field!.SetValue(preference, "{invalid json}");
+
+        var value = preference.GetSinglePreference("theme");
+        value.ShouldBeNull();
     }
 }
