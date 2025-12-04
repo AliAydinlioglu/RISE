@@ -7,7 +7,7 @@ pipeline {
         GITHUB_USERNAME = 'badramr1'
 
         // Email notification configuration
-        EMAIL_RECIPIENTS = 'tiaopipeline@gmail.com,badr.amri@student.hogent.be,lars.devos@student.hogent.be,brent.lissens@student.hogent.be,jonathan.laekeman@student.hogent.be,jens.vanhoeylandt@student.hogent.be'
+        EMAIL_RECIPIENTS = 'tiaopipeline@gmail.com,badr.amri@student.hogent.be,lars.devos@student.hogent.be,brent.lissens@student.hogent.be,jonathan.laekeman@student.hogent.be,jens.vanhoeylandt@student.hogent.be,iliass.assoued@student.hogent.be,ali.aydinlioglu@student.hogent.be,wim.dedulle@student.hogent.be,pieter.pletinckx@student.hogent.be,pieter.swillens@student.hogent.be,andy.wauters@student.hogent.be,marek.zakrzewski@student.hogent.be'
         
         // Application server configuration
         // Default value; will be auto-resolved from ops inventory if available
