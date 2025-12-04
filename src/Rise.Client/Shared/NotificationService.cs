@@ -1,11 +1,19 @@
 ﻿using Rise.Shared.Common;
 using Rise.Shared.Notifications;
 using System.Net.Http.Json;
+using static Rise.Shared.Notifications.SubscribeRequest;
 
 namespace Rise.Client.Shared;
 
 public class NotificationService(HttpClient httpClient) : INotificationService
 {
+    public async Task<Result> AcknowledgeAsRead(AcknowledgeRequest.Post req, CancellationToken ct = default)
+    {
+        var response = await httpClient.PostAsJsonAsync("/api/notifications/acknowledge", req, ct);
+        var result = await response.Content.ReadFromJsonAsync<Result>(cancellationToken: ct);
+        return result!;
+    }
+
     public async Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct)
     {
         var result = await httpClient.GetFromJsonAsync<Result<NotificationResponse.Get>>(

@@ -1,16 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Notifications;
+using Rise.Domain.Projects;
 using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Shared.Common;
 using Rise.Shared.Notifications;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Text.Json;
-using System.Threading.Channels;
 using WebPush;
 using static Rise.Shared.Notifications.SubscribeRequest;
-using static Rise.Shared.Notifications.UnsubscribeRequest;
 using NotificationChannels = Rise.Domain.Notifications.NotificationChannels;
 
 namespace Rise.Services.Notifications;
@@ -184,7 +181,9 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
 
         var query = dbContext.Notifications.AsQueryable();
 
-        query = query.Where(p => notificationTypes.Contains(p.TypeOfNotification) && !p.IsDeleted);
+        query = query.Where(p => notificationTypes.Contains(p.TypeOfNotification) 
+            && !p.IsDeleted 
+            && p.IsAcknowledgedByUser(GetUser()));
 
         var totalCount = await query.CountAsync(ct);
 
@@ -232,4 +231,19 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
         return Enum.Parse<NotificationTypes>(type);
     }
 
+    public async Task<Result> AcknowledgeAsRead(AcknowledgeRequest.Post req, CancellationToken ct = default)
+    {
+        var notification = await dbContext.Notifications
+            .Where( n => n.Id == req.NotificationId)
+            .SingleOrDefaultAsync(ct);
+        if (notification is null)
+            return Result.NotFound($"Notification with Id '{req.NotificationId}' was not found.");
+
+        if (!notification.IsAcknowledgedByUser(GetUser()))
+            notification.AddAcknowledge(new NotificationAcknowledge(GetUser(), DateTime.Now));
+
+        await dbContext.SaveChangesAsync(ct);
+
+        return Result.Success();
+    }
 }

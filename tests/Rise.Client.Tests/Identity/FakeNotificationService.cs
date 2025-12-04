@@ -8,6 +8,11 @@ namespace Rise.Client.Shared;
 
 public class FakeNotificationService(HttpClient httpClient) : INotificationService
 {
+    public Task<Result> AcknowledgeAsRead(AcknowledgeRequest.Post req, CancellationToken ct = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<Result<NotificationResponse.Get>> GetNotifications(QueryRequest.SkipTake request, CancellationToken ct = default)
     {
         var response = Substitute.For<NotificationResponse.Get>();
