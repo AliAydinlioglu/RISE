@@ -6,6 +6,7 @@ using Rise.Domain.Identity;
 using Rise.Domain.Locations;
 using Rise.Domain.Menu;
 using Rise.Domain.Navigation;
+using Rise.Domain.News;
 using Rise.Domain.Notifications;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
@@ -39,6 +40,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<StudentClub> StudentClubs => Set<StudentClub>();
     public DbSet<SchoolEvent> SchoolEvents => Set<SchoolEvent>();
     public DbSet<Facility> Services => Set<Facility>();
+    public DbSet<NewsItem> NewsItems => Set<NewsItem>();
     public DbSet<UserPreference> UserPreferences => Set<UserPreference>();
     public DbSet<AcademicSemester> AcademicSemesters => Set<AcademicSemester>();
     public DbSet<Lecturer> Lecturers => Set<Lecturer>();
