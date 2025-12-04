@@ -12,6 +12,7 @@ public partial class Navigation : ComponentBase
   {
     new NavItem { Title = "Home", Icon = Icons.Material.Outlined.Home, Href = HOME_URL },
     new NavItem { Title = "Kalender", Icon = Icons.Material.Outlined.CalendarMonth, Href = "/kalender" },
+        new NavItem { Title = "Nieuws", Icon = Icons.Material.Outlined.Newspaper, Href = "/news" },
     new NavItem { Title = "Activiteiten", Icon =Icons.Material.Outlined.EventNote, Href = "/student-activities" },
     new NavItem { Title = "Evenementen", Icon =Icons.Material.Outlined.CalendarToday, Href = "/school-events" },
     new NavItem { Title = "Weekmenu", Icon = Icons.Material.Filled.RestaurantMenu, Href = "/restaurant/weekmenu"},
