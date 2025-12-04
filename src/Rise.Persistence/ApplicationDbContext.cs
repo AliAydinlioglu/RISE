@@ -6,6 +6,7 @@ using Rise.Domain.Identity;
 using Rise.Domain.Locations;
 using Rise.Domain.Menu;
 using Rise.Domain.Navigation;
+using Rise.Domain.Notifications;
 using Rise.Domain.Products;
 using Rise.Domain.Projects;
 using Rise.Domain.SchoolEvents;
@@ -57,7 +58,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<PriceListCategory> PriceListCategories => Set<PriceListCategory>();
     public DbSet<PriceListItem> PriceListItems => Set<PriceListItem>();
     public DbSet<Resto> Restos => Set<Resto>();
-  
+    public DbSet<Subscription> Subscriptions => Set<Subscription>();
+    public DbSet<Notification> Notifications => Set<Notification>();
+    public DbSet<PushNotificationChannel> PushNotificationChannels => Set<PushNotificationChannel>();
+
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         // All columns in the mariadb have a maxlength of 255 for string values.

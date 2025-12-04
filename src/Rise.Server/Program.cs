@@ -109,10 +109,10 @@ try
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var dbSeeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-            // dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
+             dbContext.Database.EnsureDeleted(); // Delete the database if it exists to clean it up if needed.
 
-            // dbContext.Database.Migrate(); // Creates the database if it doesn't exist and applies all migrations. See Readme.md for more info.
-            //   await dbSeeder.SeedAsync(); // Seeds the database with some test data.
+             dbContext.Database.Migrate(); // Creates the database if it doesn't exist and applies all migrations. See Readme.md for more info.
+             await dbSeeder.SeedAsync(); // Seeds the database with some test data.
         }
     }
     // Theses middlewares are strict in order of calling!
