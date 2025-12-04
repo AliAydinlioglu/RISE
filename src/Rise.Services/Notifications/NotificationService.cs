@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Notifications;
-using Rise.Domain.Projects;
 using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Shared.Common;
@@ -181,9 +180,7 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
 
         var query = dbContext.Notifications.AsQueryable();
 
-        query = query.Where(p => notificationTypes.Contains(p.TypeOfNotification) 
-            && !p.IsDeleted 
-            && p.IsAcknowledgedByUser(GetUser()));
+        query = query.Where(p => notificationTypes.Contains(p.TypeOfNotification) && !p.IsDeleted);
 
         var totalCount = await query.CountAsync(ct);
 
@@ -205,7 +202,7 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
             .Take(request.Take)
             .Select(p => new NotificationDto.Index
             {
-                IsRead = false,
+                IsRead = p.IsAcknowledgedByUser(GetUser()),
                 NotificationId = p.Id,
                 MsgBody = p.MsgDetail.Description,
                 MsgTitle = p.MsgDetail.Title,
