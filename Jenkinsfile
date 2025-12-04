@@ -152,10 +152,13 @@ pipeline {
                     
                         // Prepare published config files before transfer
                         sh """
+                            # Backend config - use internal IP for server-to-server communication
                             if ls ${PUBLISH_DIR}/appsettings*.json >/dev/null 2>&1; then
                                 sed -i 's|https\\?://\\(localhost\\|127\\.0\\.0\\.1\\|0\\.0\\.0\\.0\\)\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${PUBLISH_DIR}/appsettings*.json
                                 perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=${DB_SERVER};port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none"/' ${PUBLISH_DIR}/appsettings.json
                             fi
+                            
+                            # Frontend config - use public domain for browser requests
                             if ls ${PUBLISH_DIR}/wwwroot/appsettings*.json >/dev/null 2>&1; then
                                 sed -i 's|https\\?://\\(localhost\\|127\\.0\\.0\\.1\\|0\\.0\\.0\\.0\\|${APP_SERVER_HOST}\\)\\(:[0-9]\\+\\)\\?|https://${APP_DOMAIN}|g' ${PUBLISH_DIR}/wwwroot/appsettings*.json
                             fi
@@ -178,7 +181,7 @@ pipeline {
                     
                         // Fix permissions and deploy application
                         sh """
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << EOF
+                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << 'EOFMAIN'
                                 sudo chown -R ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir}
                                 sudo chmod -R 755 ${releaseDir}
                                 sudo rm -rf ${CURRENT_PATH}
@@ -188,7 +191,7 @@ pipeline {
                                 sudo chmod -R 755 ${CURRENT_PATH}
                                 
                                 sudo mkdir -p /etc/systemd/system/${APP_NAME}.service.d
-                                cat << 'EOC' | sudo tee /etc/systemd/system/${APP_NAME}.service.d/override.conf >/dev/null
+                                cat << 'EOFSERVICE' | sudo tee /etc/systemd/system/${APP_NAME}.service.d/override.conf >/dev/null
 [Service]
 Environment=ASPNETCORE_ENVIRONMENT=Development
 Environment=ASPNETCORE_URLS=http://0.0.0.0:${APP_PORT}
@@ -199,15 +202,22 @@ Environment=FrontendUrl=https://${APP_DOMAIN}
 WorkingDirectory=${CURRENT_PATH}
 Restart=always
 RestartSec=5
-EOC
+EOFSERVICE
                                 
+                                # Backend config updates on server
                                 if ls ${CURRENT_PATH}/appsettings*.json >/dev/null 2>&1; then
-                                    sudo sed -i -E 's|(https?://)?(localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)(:[0-9]+)?|http://${APP_SERVER_HOST}|g' ${CURRENT_PATH}/appsettings*.json
+                                    sudo sed -i 's|https\\?://localhost\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${CURRENT_PATH}/appsettings*.json
+                                    sudo sed -i 's|https\\?://127\\.0\\.0\\.1\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${CURRENT_PATH}/appsettings*.json
+                                    sudo sed -i 's|https\\?://0\\.0\\.0\\.0\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${CURRENT_PATH}/appsettings*.json
                                     sudo perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=${DB_SERVER};port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none"/' ${CURRENT_PATH}/appsettings.json
                                 fi
 
+                                # Frontend config updates on server - use public domain
                                 if ls ${CURRENT_PATH}/wwwroot/appsettings*.json >/dev/null 2>&1; then
-                                    sudo sed -i -E 's|(https?://)?(localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0|${APP_SERVER_HOST})(:[0-9]+)?|https://${APP_DOMAIN}|g' ${CURRENT_PATH}/wwwroot/appsettings*.json
+                                    sudo sed -i 's|https\\?://localhost\\(:[0-9]\\+\\)\\?|https://${APP_DOMAIN}|g' ${CURRENT_PATH}/wwwroot/appsettings*.json
+                                    sudo sed -i 's|https\\?://127\\.0\\.0\\.1\\(:[0-9]\\+\\)\\?|https://${APP_DOMAIN}|g' ${CURRENT_PATH}/wwwroot/appsettings*.json
+                                    sudo sed -i 's|https\\?://0\\.0\\.0\\.0\\(:[0-9]\\+\\)\\?|https://${APP_DOMAIN}|g' ${CURRENT_PATH}/wwwroot/appsettings*.json
+                                    sudo sed -i 's|https\\?://${APP_SERVER_HOST}\\(:[0-9]\\+\\)\\?|https://${APP_DOMAIN}|g' ${CURRENT_PATH}/wwwroot/appsettings*.json
                                 fi
                                 
                                 sudo systemctl daemon-reload
@@ -217,7 +227,7 @@ EOC
                                 
                                 echo '=== Deployment completed ==='
                                 sudo systemctl is-active --quiet ${APP_NAME} && echo 'Service is running!' || echo 'Service failed to start'
-EOF
+EOFMAIN
                         """
 
                         echo "Deployment completed successfully!"
