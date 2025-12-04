@@ -32,6 +32,7 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         await CalendarSeeder.Seed(dbContext);
         await NavigationItemSeeder.Seed(dbContext);
         await ContactSeeder.Seed(dbContext);
+        await NewsSeeder.Seed(dbContext);
         await MenuSeeder.Seed(dbContext);
         await NotificationsSubscriptionsSeeder.Seed(dbContext);
     }
