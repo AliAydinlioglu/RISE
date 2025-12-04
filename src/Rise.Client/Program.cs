@@ -66,11 +66,10 @@ try
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
-
-    builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
-    builder.Services.AddScoped<ICacheService, CacheService>();
-    builder.Services.AddScoped<RiseHttpMessageHandler>();
-    builder.Services.AddScoped<IConnectionService, ConnectionService>();
+    builder.Services.AddSingleton<IIndexedDbManager, RiseIndexedDbManager>();
+    builder.Services.AddSingleton<ICacheService, CacheService>();
+    builder.Services.AddSingleton<RiseHttpMessageHandler>();
+    builder.Services.AddSingleton<IConnectionService, ConnectionService>();
 
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()

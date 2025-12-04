@@ -1,0 +1,43 @@
+﻿.container {
+    padding-bottom: 1.5rem;
+}
+
+a {
+    text-decoration: underline
+}
+
+.campus-address{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.campus-desc {
+    padding-top: 1rem;
+}
+
+.custom-campus-panels{
+    margin-bottom: 30px !important
+}
+
+.campus-map{
+    text-align: center;
+    width: 30%;
+    margin-left: 35%
+}
+
+@media (max-width: 700px) {
+    .campus-panels-container {
+        margin-bottom: 35px !important
+    }
+
+    .campus-map {
+        text-align: center;
+        width: 100%;
+        margin-left: 0
+    }
+
+    .campus-desc {
+        padding-top: 1rem;
+        line-height: 24px
+    }
+}

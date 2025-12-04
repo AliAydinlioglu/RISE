@@ -22,19 +22,19 @@ public class NotificationBackgroundService(
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
 
-            var subscriptions = await dbContext.NotificationSubscriptions.ToListAsync(stoppingToken);
+            //var subscriptions = await dbContext.NotificationSubscriptions.ToListAsync(stoppingToken);
 
-            foreach (var s in subscriptions)
-            {
-                try
-                {
-                    await SendNotificationAsync(s, "Je bericht hier");
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Failed to send notification to {Endpoint}", s.Url);
-                }
-            }
+            //foreach (var s in subscriptions)
+            //{
+            //    try
+            //    {
+            //        await SendNotificationAsync(s, "Je bericht hier");
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        logger.LogError(ex, "Failed to send notification to {Endpoint}", s.Url);
+            //    }
+            //}
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
         logger.LogInformation("NotificationBackgroundService stopping.");
