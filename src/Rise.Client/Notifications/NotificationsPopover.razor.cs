@@ -29,11 +29,17 @@ public partial class NotificationsPopover
         visible = value;
     }
 
-    public void AckowledgeMe(NotificationDto.Index not)
+    public async void AckowledgeMe(NotificationDto.Index not)
     {
-        Notifications.RemoveAll(n => n.NotificationId == not.NotificationId);
-        if (Notifications.Count == 0)
-            ToggleOverlay(false);
-        StateHasChanged();
+        var result = await NotificationService.AcknowledgeAsRead(new AcknowledgeRequest.Post
+        {
+            NotificationId = not.NotificationId
+        });
+        if(result.IsSuccess) { 
+            Notifications.RemoveAll(n => n.NotificationId == not.NotificationId);
+            if (Notifications.Count == 0)
+                ToggleOverlay(false);
+            StateHasChanged();
+        }
     }
 }

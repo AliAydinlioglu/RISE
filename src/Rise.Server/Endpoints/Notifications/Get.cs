@@ -1,5 +1,4 @@
-﻿using Rise.Shared.Identity;
-using Rise.Shared.Notifications;
+﻿using Rise.Shared.Notifications;
 using Rise.Shared.Common;
 
 namespace Rise.Server.Endpoints.Notifications;
@@ -12,8 +11,8 @@ public class Get(INotificationService notificationService)
         Get("/api/notifications");
         Summary(s =>
         {
-            s.Summary = "Lijst van verzonden notificaties";
-            s.Description = "De student kan eigen notificaties bekijken";
+            s.Summary = "Lijst van verzonden en onbevestigde notificaties";
+            s.Description = "De student kan eigen onbevestigde notificaties bekijken";
         });
     }
 
