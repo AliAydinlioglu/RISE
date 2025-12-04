@@ -1,0 +1,89 @@
+/* News Detail Page Styling */
+.section {
+    padding-top: 20px !important;
+}
+
+.detail-news .box {
+    background-color: white;
+    padding: 1rem 0px 0px !important;
+}
+
+/* Two column layout using CSS Grid */
+.news-detail-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.news-detail-left {
+    padding-right: 0.5rem;
+}
+
+.news-detail-right {
+    padding-left: 0.5rem;
+}
+
+/* Content styling */
+[data-bunit='news-detail-content-left'] p,
+[data-bunit='news-detail-content-right'] p {
+    line-height: 1.6;
+    color: black;
+}
+
+.news-detail-image-item {
+    width: 100%;
+}
+
+/* Image styling */
+.detail-news .image {
+    margin: 0;
+}
+
+.detail-news .image img {
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Summary styling */
+[data-bunit='news-detail-summary'] p {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 1.5rem;
+    margin-top: 1rem;
+}
+
+.headtitle-content {
+    padding: 0.5rem 1rem !important;
+}
+
+
+/* Mobile responsiveness - keep same structure */
+@media screen and (max-width: 768px) {
+    .detail-news .box {
+        padding: 1rem;
+        padding-top: 0 !important;
+    }
+
+    .news-detail-columns {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .news-detail-left,
+    .news-detail-right {
+        padding: 0;
+    }
+
+}
+
+/* Tablet */
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+    .news-detail-columns {
+        gap: 1.5rem;
+    }
+}
+
