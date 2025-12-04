@@ -37,7 +37,9 @@ public partial class Index
             // 2. Bijloke
             new CampusDto.Index
             {
-                Description = "<p>Campus Bijloke bevindt zich ideaal gelegen aan de kleine ring van Gent (R40), op 6 minuutjes fietsen of 15 minuten wandelen van het station Gent Sint-Pieters (1,5 km). Je kan ook de tram nemen tot aan de halte ‘Gent Bijlokehof’.</p>\r\n<p>In de directe omgeving van campus Bijloke kan je betalend parkeren op straat (oranje zone). Aan de overkant van de R40 start de groene zone en heb je een gunstiger parkeertarief. Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over de parkeertarieven, zones en parkeerduur.</p>\r\n<p>Campus Bijloke ligt binnen de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent en om te testen of je voertuig binnen mag in deze zone.</p>",
+                Description = "<p>Campus Bijloke bevindt zich ideaal gelegen aan de kleine ring van Gent (R40), op 6 minuutjes fietsen of 15 minuten wandelen van het station Gent Sint-Pieters (1,5 km). Je kan ook de tram nemen tot aan de halte ‘Gent Bijlokehof’.</p><br/>" +
+                "<p>In de directe omgeving van campus Bijloke kan je betalend parkeren op straat (oranje zone). Aan de overkant van de R40 start de groene zone en heb je een gunstiger parkeertarief. Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over de parkeertarieven, zones en parkeerduur.</p><br/>" +
+                "<p>Campus Bijloke ligt binnen de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent en om te testen of je voertuig binnen mag in deze zone.</p>",
                 Location = new LocationDto.Index
                 {
                     Id = 2,
@@ -51,7 +53,9 @@ public partial class Index
             // 3. Grote Sikkel
             new CampusDto.Index
             {
-                Description = "<p>Campus Grote Sikkel bevindt zich in het centrum van Gent, vlak tussen de Sint-Baafskathedraal en het stadhuis en op 350 meter van bus- en tramhaltes ‘Gent Korenmarkt’ en ‘Gent Duivelsteen’, of op 450 meter van tramhalte ‘Gent Vogelmarkt’.</p>\r\n<p>Betalend parkeren kan in of Parking Vrijdagmarkt (400 m), Parking Reep (450 m) of Parking Kouter (450 m). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>\r\n<p>Campus Grote Sikkel ligt binnen de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent en om te testen of je voertuig binnen mag in deze zone.</p>",
+                Description = "<p>Campus Grote Sikkel bevindt zich in het centrum van Gent, vlak tussen de Sint-Baafskathedraal en het stadhuis en op 350 meter van bus- en tramhaltes ‘Gent Korenmarkt’ en ‘Gent Duivelsteen’, of op 450 meter van tramhalte ‘Gent Vogelmarkt’.</p><br/>" +
+                "<p>Betalend parkeren kan in of Parking Vrijdagmarkt (400 m), Parking Reep (450 m) of Parking Kouter (450 m). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p><br/>" +
+                "<p>Campus Grote Sikkel ligt binnen de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent en om te testen of je voertuig binnen mag in deze zone.</p>",
                 Location = new LocationDto.Index
                 {
                     Id = 3,
@@ -65,7 +69,8 @@ public partial class Index
             // 4. Ledeganck
             new CampusDto.Index
             {
-                Description = "<p>Campus Ledeganck ligt op 5 minuutjes fietsen of 15 minuten wandelen van het station Gent Sint-Pieters, aan de andere kant van het Citadelpark (1 km), vlak aan de kleine ring van Gent (R40) en de Overpoort.</p>\r\n<p>In de Ledeganckstraat kan je betalend parkeren op straat (groene zone). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat#Groene%20tariefzone%20en%20%22Groene%20Zone%20Uitbreiding%22\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>\r\n<p>",
+                Description = "<p>Campus Ledeganck ligt op 5 minuutjes fietsen of 15 minuten wandelen van het station Gent Sint-Pieters, aan de andere kant van het Citadelpark (1 km), vlak aan de kleine ring van Gent (R40) en de Overpoort.</p><br/>" +
+                "<p>In de Ledeganckstraat kan je betalend parkeren op straat (groene zone). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat#Groene%20tariefzone%20en%20%22Groene%20Zone%20Uitbreiding%22\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>",
                 Location = new LocationDto.Index
                 {
                     Id = 4,
@@ -93,7 +98,8 @@ public partial class Index
             // 6. Melle
             new CampusDto.Index
             {
-                Description = "<p>Campus Melle is vlot bereikbaar en goed gelegen aan de Brusselsesteenweg (N9). De bus brengt je op 16 minuten van station Gent Sint-Pieters naar bushalte 'Melle Tuinbouwschool'. Ook met de fiets is het goed te doen: zo’n 7 km vanaf het station.</p>\r\n<p>Aan de Brusselsesteenweg kan je in de directe omgeving van campus Melle gratis parkeren langs de straatkant.</p>\r\n<p>",
+                Description = "<p>Campus Melle is vlot bereikbaar en goed gelegen aan de Brusselsesteenweg (N9). De bus brengt je op 16 minuten van station Gent Sint-Pieters naar bushalte 'Melle Tuinbouwschool'. Ook met de fiets is het goed te doen: zo’n 7 km vanaf het station.</p><br/>" +
+                "<p>Aan de Brusselsesteenweg kan je in de directe omgeving van campus Melle gratis parkeren langs de straatkant.</p>",
                 Location = new LocationDto.Index
                 {
                     Id = 6,
@@ -107,7 +113,9 @@ public partial class Index
             // 7. Mercator
             new CampusDto.Index
             {
-                Description = "<p>Campus Mercator bevindt zich ideaal gelegen op 4 minuutjes fietsen of 12 minuten wandelen van het centrum en van station Gent Sint-Pieters (1 km). Je kan ook de tram nemen tot aan de halte ‘Gent Koning Albertbrug’ (200 m) of halte ‘Gent Van Nassaustraat’ (450 m).</p>\r\n<p>In de directe omgeving van campus Mercator kan je betalend parkeren op straat (groene zone). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat#Groene%20tariefzone%20en%20%22Groene%20Zone%20Uitbreiding%22\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>\r\n<p>Campus Mercator ligt buiten de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent.</p>\r\n<p>",
+                Description = "<p>Campus Mercator bevindt zich ideaal gelegen op 4 minuutjes fietsen of 12 minuten wandelen van het centrum en van station Gent Sint-Pieters (1 km). Je kan ook de tram nemen tot aan de halte ‘Gent Koning Albertbrug’ (200 m) of halte ‘Gent Van Nassaustraat’ (450 m).</p><br/>" +
+                "<p>In de directe omgeving van campus Mercator kan je betalend parkeren op straat (groene zone). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat#Groene%20tariefzone%20en%20%22Groene%20Zone%20Uitbreiding%22\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p><br/>" +
+                "<p>Campus Mercator ligt buiten de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent.</p>",
                 Map = new CampusMapDto.Details
                 {
                     Url = "/img/campuses/mercator-plan.jpg",
@@ -126,7 +134,11 @@ public partial class Index
             // 8. Schoonmeersen
             new CampusDto.Index
             {
-                Description = "<p>Campus Schoonmeersen is vlot bereikbaar en goed gelegen aan de ring rond Gent (R4) en op wandelafstand van station Gent Sint-Pieters (600 m). De bus- en tramhalte ‘Gent Tuinwijklaan’ heeft een vlotte verbinding met het centrum en de randgemeentes. Gebouw T bevindt zich een halte verder, aan bus- en tramhalte ‘Gent Flamingostraat’.</p>\r\n<p>Als HOGENT-student of CVO-cursist kan je op basis van je studentennummer een parkeervignet aanvragen. Met een geldig parkeervignet kan je tijdens de lessen gratis parkeren op de centrale bovengrondse parking op campus Schoonmeersen. Kijk op <a href=\"/parkeren/\">hogent.be/parkeren</a> voor meer informatie en het parkeerreglement.</p>\r\n<p>Andere bezoekers kunnen terecht in betaalparking Gent Sint-Pieters. Kijk op <a href=\"https://www.belgiantrain.be/nl/station-information/car-or-bike-at-station/b-parking/my-b-parking/gentstpieters\" target=\"_blank\">belgiantrain.be</a> voor meer informatie over parkeertarieven en parkeerduur.</p>\r\n<p>Vanaf de gratis Park &amp; Ride The Loop/Expo is het 9 minuten fietsen tot campus Schoonmeersen (2,4 km). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over deze Park &amp; Ride en over de beschikbare deelfietsen ter plekke.</p>\r\n<p>Campus Schoonmeersen ligt buiten de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent.</p>",
+                Description = "<p>Campus Schoonmeersen is vlot bereikbaar en goed gelegen aan de ring rond Gent (R4) en op wandelafstand van station Gent Sint-Pieters (600 m). De bus- en tramhalte ‘Gent Tuinwijklaan’ heeft een vlotte verbinding met het centrum en de randgemeentes. Gebouw T bevindt zich een halte verder, aan bus- en tramhalte ‘Gent Flamingostraat’.</p><br/>" +
+                "<p>Als HOGENT-student of CVO-cursist kan je op basis van je studentennummer een parkeervignet aanvragen. Met een geldig parkeervignet kan je tijdens de lessen gratis parkeren op de centrale bovengrondse parking op campus Schoonmeersen. Kijk op <a href=\"/parkeren/\">hogent.be/parkeren</a> voor meer informatie en het parkeerreglement.</p><br/>" +
+                "<p>Andere bezoekers kunnen terecht in betaalparking Gent Sint-Pieters. Kijk op <a href=\"https://www.belgiantrain.be/nl/station-information/car-or-bike-at-station/b-parking/my-b-parking/gentstpieters\" target=\"_blank\">belgiantrain.be</a> voor meer informatie over parkeertarieven en parkeerduur.</p><br/>" +
+                "<p>Vanaf de gratis Park &amp; Ride The Loop/Expo is het 9 minuten fietsen tot campus Schoonmeersen (2,4 km). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/park-and-ride-pr/pr-loopexpo\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over deze Park &amp; Ride en over de beschikbare deelfietsen ter plekke.</p><br/>" +
+                "<p>Campus Schoonmeersen ligt buiten de lage-emissiezone (LEZ). Kijk op <a href=\"http://stad.gent/lez\" target=\"_blank\">stad.gent/lez</a> voor meer informatie over de lage-emissiezone in Gent.</p>",
                 Map = new CampusMapDto.Details
                 {
                     Url = "/img/campuses/240400_Schoonmeersen_plan_detail_nieuw-04.png",
@@ -145,7 +157,8 @@ public partial class Index
             // 9. Vesalius
             new CampusDto.Index
             {
-                Description = "<p>Campus Vesalius bevindt zich vlakbij UZ Gent en heeft een vlotte verbinding met station Gent Sint-Pieters (2,3 km) en met het centrum. De campus is 8 minuutjes wandelen vanaf tramhalte ‘Zwijnaarde Gestichtstraat’ en vanaf bushalte ‘Gent UZ’ (600 m), of 3 minuutjes wandelen van bushalte ‘Gent Roelandt&shy;plein’ (200 m).</p>\r\n<p>In de directe omgeving van campus Vesalius kan je betalend parkeren op straat (groene zone). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat#Groene%20tariefzone%20en%20%22Groene%20Zone%20Uitbreiding%22\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>",
+                Description = "<p>Campus Vesalius bevindt zich vlakbij UZ Gent en heeft een vlotte verbinding met station Gent Sint-Pieters (2,3 km) en met het centrum. De campus is 8 minuutjes wandelen vanaf tramhalte ‘Zwijnaarde Gestichtstraat’ en vanaf bushalte ‘Gent UZ’ (600 m), of 3 minuutjes wandelen van bushalte ‘Gent Roelandt&shy;plein’ (200 m).</p><br/>" +
+                "<p>In de directe omgeving van campus Vesalius kan je betalend parkeren op straat (groene zone). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkeren-op-straat/parkeertarieven-op-straat#Groene%20tariefzone%20en%20%22Groene%20Zone%20Uitbreiding%22\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>",
                 Location = new LocationDto.Index
                 {
                     Id = 9,
@@ -173,7 +186,8 @@ public partial class Index
             // 11. Site Geraard de Duivelstraat
             new CampusDto.Index
             {
-                Description = "<p>De Wijnaert bevindt zich in het centrum van Gent, vlak tussen de Sint-Baafskathedraal en de Reep en op 50 meter van bus- en tramhalte ‘Gent Duivelsteen’, of op 250 meter van bushalte ‘Gent Reep’.</p>\r\n<p>Betalend parkeren kan in Parking Reep (150 m), Parking Kouter (400 m) of Parking Vrijdagmarkt (700 m). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>",
+                Description = "<p>De Wijnaert bevindt zich in het centrum van Gent, vlak tussen de Sint-Baafskathedraal en de Reep en op 50 meter van bus- en tramhalte ‘Gent Duivelsteen’, of op 250 meter van bushalte ‘Gent Reep’.</p><br/>" +
+                "<p>Betalend parkeren kan in Parking Reep (150 m), Parking Kouter (400 m) of Parking Vrijdagmarkt (700 m). Kijk op <a href=\"https://stad.gent/nl/mobiliteit-openbare-werken/parkeren/parkings-gent\" target=\"_blank\">stad.gent/parkeren</a> voor meer informatie over parkeertarieven en parkeerduur.</p>",
                 Location = new LocationDto.Index
                 {
                     Id = 11,

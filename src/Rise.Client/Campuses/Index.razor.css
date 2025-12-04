@@ -35,4 +35,9 @@ a {
         width: 100%;
         margin-left: 0
     }
+
+    .campus-desc {
+        padding-top: 1rem;
+        line-height: 24px
+    }
 }
