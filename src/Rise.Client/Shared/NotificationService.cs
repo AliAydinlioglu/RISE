@@ -1,7 +1,6 @@
 ﻿using Rise.Shared.Common;
 using Rise.Shared.Notifications;
 using System.Net.Http.Json;
-using static Rise.Shared.Notifications.SubscribeRequest;
 
 namespace Rise.Client.Shared;
 
