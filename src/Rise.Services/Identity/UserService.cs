@@ -179,11 +179,16 @@ public class UserService(
             return Result.Error("Could not resolve user from SSO claim.");
 
         var email = result.Value.Email;
-        var userEntity = await userManager.Users.FirstOrDefaultAsync(u => u.Email == email);
-
-        if (userEntity == null)
-            return Result.Error("User not found in database.");
-
-        return Result.Success(userEntity.Id);
+        try
+        {
+            var userEntity = await userManager.Users.SingleOrDefaultAsync(u => u.Email == email);
+            if (userEntity == null)
+                return Result.Error("User not found in database.");
+            return Result.Success(userEntity.Id);
+        }
+        catch (InvalidOperationException)
+        {
+            return Result.Error($"Multiple users found with email: {email}. Data integrity violation.");
+        }
     }
 }

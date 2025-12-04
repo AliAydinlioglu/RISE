@@ -9,7 +9,6 @@ namespace Rise.Domain.UserPreferences
     {
         public Guid UserId { get; private set; }
         public string PreferencesJson { get; private set; } = "{}";
-        public DateTime UpdatedAt { get; private set; }
 
         private UserPreference() { }
 
