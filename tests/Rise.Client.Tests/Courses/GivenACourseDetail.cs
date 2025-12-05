@@ -5,6 +5,8 @@ using Rise.Client.Components.Card;
 using Rise.Client.Courses.Components;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Rise.Shared.Courses;
 using Shouldly;
 
@@ -19,6 +21,7 @@ public class GivenACourseDetail : MudBlazorTestSetup
     {
         var pageTitleService = new FakePageTitleService();
         Services.AddScoped<IPageTitleService>(_ => pageTitleService);
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
     [Fact(DisplayName = "When rendering course detail but data not yet fetched, then loader should be shown")]

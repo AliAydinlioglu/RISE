@@ -5,6 +5,8 @@ using Rise.Client.Components.Calendar;
 using Rise.Client.Components.Card;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Shouldly;
@@ -27,6 +29,7 @@ public abstract class GivenACalendarBase<TCalendarComonent> : TestContext
         
         Services.AddScoped<IDateTimeService>(_ => dateTimeServiceMock);
         Services.AddScoped<IPageTitleService>(_ => pageTitleService);
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
     [Fact]

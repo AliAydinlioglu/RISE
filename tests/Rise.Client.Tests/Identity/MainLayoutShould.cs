@@ -5,6 +5,8 @@ using Rise.Client.Faker;
 using Rise.Client.Layout;
 using Rise.Client.Offline;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Rise.Shared.Notifications;
 using Shouldly;
 using Xunit.Abstractions;
@@ -22,6 +24,7 @@ namespace Rise.Client.Identity
             Services.AddScoped<IPageTitleService>(_ => pageTitleService);
             Services.AddScoped<INotificationService, FakeNotificationService>();
             Services.AddScoped<IConnectionService, FakeConnectionService>();
+            Services.AddScoped<IThemingService, FakeThemingService>();
             Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
             Services.AddScoped<IEventStreamService, FakeEventStreamService>();
             Services.AddScoped<IAccessTokenProvider, FakeAccessTokenProvider>();

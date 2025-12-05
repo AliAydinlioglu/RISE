@@ -1,5 +1,8 @@
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
+using Rise.Shared;
 using Rise.Shared.StudentActivities;
 using Shouldly;
 using Xunit.Abstractions;
@@ -17,6 +20,7 @@ public class IndexShould: TestContext
         
         var pageTitleService = new FakePageTitleService();
         Services.AddScoped<IPageTitleService>(_ => pageTitleService);
+        Services.AddScoped<IThemingService, FakeThemingService>();
         
         JSInterop.SetupVoid("window.scrollTo", _ => true);
     }

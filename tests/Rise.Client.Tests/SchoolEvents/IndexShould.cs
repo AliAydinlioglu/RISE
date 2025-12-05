@@ -1,5 +1,7 @@
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Rise.Shared.SchoolEvents;
 using Shouldly;
 using Xunit.Abstractions;
@@ -15,6 +17,7 @@ public class IndexShould : TestContext
     {
         Services.AddXunitLogger(outputHelper);
         Services.AddScoped<IPageTitleService>(_ => new FakePageTitleService());
+        Services.AddScoped<IThemingService, FakeThemingService>();
         Services.AddScoped<IPaginationStateService, FakePaginationStateService>();
         
         JSInterop.SetupVoid("window.scrollTo", _ => true);

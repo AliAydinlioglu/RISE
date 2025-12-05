@@ -1,4 +1,6 @@
 using Rise.Client.Components.Card;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Shouldly;
 using Xunit.Abstractions;
 
@@ -9,6 +11,7 @@ public class GivenACard : TestContext
     public GivenACard(ITestOutputHelper outputHelper)
     {
         Services.AddXunitLogger(outputHelper);
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
     [Theory]
