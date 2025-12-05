@@ -2,6 +2,7 @@ using System.Text.Json;
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Utilities;
+using Rise.Shared.StudentClubs;
 using Rise.Shared.UserPreferences;
 
 namespace Rise.Client.Theme;
@@ -52,11 +53,11 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
             _isNeutral = value;
             if (value)
             {
-                ColorTheme();
+                Theme = DefaultTheme();
             }
             else
             {
-                Theme = DefaultTheme();
+                ColorTheme();
             }
             AsyncToLocalStorage(UserPreferenceKeys.IsNeutral, value);
         }
@@ -79,21 +80,32 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     
     public void Initialize()
     {
-        LoadThemeFromLocalStorage(UserPreferenceKeys.Theme, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
-        LoadThemeFromLocalStorage("darkmode", darkmode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkmode));
-        LoadThemeFromLocalStorage(UserPreferenceKeys.ImagesOff, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff??"false")); 
-        LoadThemeFromLocalStorage(UserPreferenceKeys.IsNeutral, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral));
+        LoadThemeFromStorage(UserPreferenceKeys.Theme, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
+        LoadThemeFromStorage("darkmode", darkmode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkmode?.ToLower() ?? "false")); // does not exist on backend yet
+        LoadThemeFromStorage(UserPreferenceKeys.ImagesOff, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff?.ToLower() ?? "false")); 
+        LoadThemeFromStorage(UserPreferenceKeys.IsNeutral, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "false"));
         // load theme from user preferences
     }
 
-    private void LoadThemeFromLocalStorage(string key, Action<string?> setterCallback)
+    /// <summary>
+    /// Loads theme settings from local storage. If no value exists in local storage,
+    /// fetches from user account preferences as fallback.
+    /// </summary>
+    /// <param name="key">The storage key to retrieve the theme setting.</param>
+    /// <param name="setterCallback">Callback action to set the retrieved value.</param>
+    private void LoadThemeFromStorage(string key, Action<string?> setterCallback)
     {
         jsRuntime.InvokeAsync<string?>("localStorage.getItem", key).AsTask()
-            .ContinueWith(task => setterCallback(task.Result));
-        // userPreferenceService.GetPreferencesAsync(CancellationToken.None)
-        //     .ContinueWith(task => setterCallback(task.Result.Value.UserPreferences.Settings[key].ToString()))
-        //     .CatchAndLog();
-        // .log exceptions
+            .ContinueWith(task =>
+            {
+                if (string.IsNullOrEmpty(task.Result))
+                {
+                    userPreferenceService.GetPreferencesAsync(CancellationToken.None)
+                        .ContinueWith(backend => setterCallback(backend.Result.Value.UserPreferences.Settings[key].ToString()))
+                        .CatchAndLog();
+                } 
+                else setterCallback(task.Result);
+            });
     }
     
     public void ColorTheme(string mainColor = HoGentColors.Pantone7461U)
@@ -127,10 +139,15 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         {
             string jsonValue = JsonSerializer.Serialize(value);
             await jsRuntime.InvokeVoidAsync("localStorage.setItem", key, jsonValue);
-            await userPreferenceService.UpdateSinglePreferenceAsync(key, jsonValue, CancellationToken.None);
+            // enable for hot-saving to backend - disabled in favor of settings page save button
+            //await userPreferenceService.UpdateSinglePreferenceAsync(key, jsonValue, CancellationToken.None);
+            
         }
         catch (Exception e)
         {
+            // saving in the backend is not always possible. But that's ok.
+            // Theme can be triggered locally before a logged in user has a full preference object.
+            // Like upon reading device theme
             Console.WriteLine(e);
             throw;
         }
