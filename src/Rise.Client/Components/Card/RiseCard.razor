@@ -6,7 +6,7 @@
      style="--scale: @ScaleString; @(OnClickNavigateTo is null ? null : "cursor: pointer;")">
     <div class="stacking-container scalable">
         @* BACKGROUND - Image or Title Initials *@
-        @if (!string.IsNullOrEmpty(ImageUrl) && ShowImage)
+        @if (!string.IsNullOrEmpty(ImageUrl) && ShowImage && !ThemingService.ImagesOff)
         {
             <!-- Image background -->
             <div class="square stacking-container-background stacking-container-image">

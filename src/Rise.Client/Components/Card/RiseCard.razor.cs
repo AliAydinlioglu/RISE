@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
+using Rise.Client.Theme;
 using static System.String;
 
 
@@ -42,5 +43,11 @@ public partial class RiseCard
         {
             NavigationManager.NavigateTo(OnClickNavigateTo);
         }
+    }
+    
+    [Inject] public IThemingService ThemingService { get; set; }
+    protected override void OnInitialized()
+    {
+        ThemingService.Subscribe += (sender, args) => StateHasChanged();
     }
 }

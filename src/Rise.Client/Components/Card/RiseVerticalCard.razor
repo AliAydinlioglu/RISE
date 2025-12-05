@@ -3,9 +3,9 @@
 <div class="card vertical-card">
     <div class="stacking-container">
         <div class="stacking-container-background"
-             style="@(!string.IsNullOrEmpty(ImageUrl) ? $"background-image: url('{ImageUrl}'); background-size: cover; background-position: center;" : "")">
+             style="@(ShowImage && !ThemingService.ImagesOff && !string.IsNullOrEmpty(ImageUrl) ? $"background-image: url('{ImageUrl}'); background-size: cover; background-position: center;" : "")">
             @* BACKGROUND *@
-            @if (!string.IsNullOrEmpty(ImageUrl))
+            @if (ShowImage && !ThemingService.ImagesOff && !string.IsNullOrEmpty(ImageUrl))
             {
                 <div class="vertical-card-image-overlay"></div>
             }
