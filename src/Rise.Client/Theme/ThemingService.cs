@@ -127,7 +127,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         {
             string jsonValue = JsonSerializer.Serialize(value);
             await jsRuntime.InvokeVoidAsync("localStorage.setItem", key, jsonValue);
-            // await userPreferenceService.UpdateSinglePreferenceAsync(key, jsonValue, CancellationToken.None);
+            await userPreferenceService.UpdateSinglePreferenceAsync(key, jsonValue, CancellationToken.None);
         }
         catch (Exception e)
         {
