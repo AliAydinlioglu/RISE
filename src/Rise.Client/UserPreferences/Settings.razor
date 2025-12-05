@@ -4,6 +4,7 @@
 @using Rise.Client.Components.Card
 @using Microsoft.AspNetCore.Components.Authorization
 @namespace Rise.Client.UserPreferences
+@using Rise.Client.UserPreferences.Models
 @using static Rise.Client.UserPreferences.Models.PreferenceOptions;
 
 <PageTitle>Instellingen</PageTitle>
@@ -113,26 +114,42 @@
                 </div>
 
                 @* Default Campus Setting *@
-                @* Label="Selecteer campus" Weggecomment, soms overlapt label met uitlijning *@
+                @* Label="Selecteer restaurant" Weggecomment, soms overlapt label met uitlijning *@
 
                 <div class="setting-item mb-4">
-                    <MudText Typo="Typo.subtitle1" Class="mb-2">Standaard campus</MudText>
-                    <div class="select-full-width">
-                        <MudSelect T="CampusOption"
-                                   @bind-Value="CurrentCampusOption"
-                                   Variant="Variant.Outlined"
-                                   FullWidth="true"
-                                   AnchorOrigin="Origin.BottomCenter"
-                                   TransformOrigin="Origin.TopCenter"
-                                   PopoverClass="fix-popover-offset">
-                            @foreach (var campus in AvailableCampuses)
-                            {
-                                <MudSelectItem T="CampusOption" Value="@campus">
-                                    @campus.Name
-                                </MudSelectItem>
-                            }
-                        </MudSelect>
-                    </div>
+                    <MudText Typo="Typo.subtitle1" Class="mb-2">Standaard resto</MudText>
+
+                    @if (IsLoadingRestos)
+                    {
+                        <div class="d-flex justify-center align-center" style="height: 56px;">
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                        </div>
+                    }
+                    else if (AvailableRestos.Any())
+                    {
+                        <div class="select-full-width">
+                            <MudSelect T="PreferenceOptions.RestoOption"
+                                       @bind-Value="CurrentRestoOption"
+                                       Variant="Variant.Outlined"
+                                       FullWidth="true"
+                                       AnchorOrigin="Origin.BottomCenter"
+                                       TransformOrigin="Origin.TopCenter"
+                                       PopoverClass="fix-popover-offset">
+                                @foreach (var resto in AvailableRestos)
+                                {
+                                    <MudSelectItem T="PreferenceOptions.RestoOption" Value="@resto">
+                                        @resto.Name
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+                        </div>
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.body2" Color="Color.Error">
+                            Geen resto's beschikbaar
+                        </MudText>
+                    }
                 </div>
 
                 <div class="setting-item mb-4">

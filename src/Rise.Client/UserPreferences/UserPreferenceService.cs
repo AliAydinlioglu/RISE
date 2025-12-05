@@ -13,6 +13,13 @@ namespace Rise.Client.UserPreferences
                 cancellationToken: ctx);
             return result!;
         }
+        public async Task<Result<UserPreferenceResponse.Defaults>> TryGetDefaultsAsync(CancellationToken ctx)
+        {
+            var result = await httpClient.GetFromJsonAsync<Result<UserPreferenceResponse.Defaults>>(
+                "/api/user-preferences/defaults",
+                cancellationToken: ctx);
+            return result!;
+        }
 
         public async Task<Result<string>> TryGetSinglePreferenceAsync(string key, CancellationToken ctx)
         {

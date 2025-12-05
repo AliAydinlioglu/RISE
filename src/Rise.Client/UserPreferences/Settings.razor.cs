@@ -1,132 +1,109 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Components;
-using Rise.Client.Layout;
 using Rise.Client.UserPreferences.Models;
-using Rise.Shared.UserPreferences;
-using System.Text.Json;
+using Rise.Client.UserPreferences.Services;
 using static Rise.Client.UserPreferences.Models.PreferenceOptions;
 
 namespace Rise.Client.UserPreferences;
 
-public partial class Settings
+public partial class Settings : IDisposable
 {
-    [Inject] private IUserPreferenceService UserPreferenceService { get; set; } = default!;
+    [Inject] private IUserPreferenceStateService PreferenceState { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
-    [Inject] private NavigationManager Navigation{ get; set; } = default!;
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
 
+    private bool PreviewCollapsed { get; set; }
+    private bool NotificationsExpanded { get; set; }
+    private (string Title, string Message, Severity Severity) Status { get; set; } = ("", "", Severity.Info);
 
-    private Dictionary<string, object> CurrentPreferences { get; set; } = new();
-    private Dictionary<string, object> OriginalPreferences { get; set; } = new();
-    private bool PreviewCollapsed { get; set; } = false;
+    private LanguageOption _currentLanguageOption = Languages[0];
+    private RestoOption? _currentRestoOption;
 
-    private string CurrentTheme
-    {
-        get => GetPreference<string>(UserPreferenceKeys.Theme);
-        set => SetPreference(UserPreferenceKeys.Theme, value);
-    }
+    private string CurrentTheme => PreferenceState.Theme; 
 
     private bool IsDarkTheme
     {
-        get => CurrentTheme == "dark";
-        set => CurrentTheme = value ? "dark" : "light";
+        get => PreferenceState.IsDarkTheme;
+        set => PreferenceState.IsDarkTheme = value;
     }
 
-    private bool ImagesOff { get => GetBoolPref(UserPreferenceKeys.ImagesOff); set => SetBoolPref(UserPreferenceKeys.ImagesOff, value); }
-    private bool IsNeutral { get => GetBoolPref(UserPreferenceKeys.IsNeutral); set => SetBoolPref(UserPreferenceKeys.IsNeutral, value); }
-    private bool IsRemote { get => GetBoolPref(UserPreferenceKeys.IsRemote); set => SetBoolPref(UserPreferenceKeys.IsRemote, value); }
-    private bool NotifyDeadline { get => GetBoolPref(UserPreferenceKeys.NotifyDeadline); set => SetBoolPref(UserPreferenceKeys.NotifyDeadline, value); }
-    private bool NotifySchoolEvent { get => GetBoolPref(UserPreferenceKeys.NotifySchoolEvent); set => SetBoolPref(UserPreferenceKeys.NotifySchoolEvent, value); }
-    private bool NotifyEmergencies { get => GetBoolPref(UserPreferenceKeys.NotifyEmergencies); set => SetBoolPref(UserPreferenceKeys.NotifyEmergencies, value); }
-    private bool NotifyCancelledClass { get => GetBoolPref(UserPreferenceKeys.NotifyCancelledClass); set => SetBoolPref(UserPreferenceKeys.NotifyCancelledClass, value); }
-    private void TogglePreview() => PreviewCollapsed = !PreviewCollapsed; 
-    private bool GetBoolPref(string key) => GetPreference<bool>(key);
-    private void SetBoolPref(string key, bool value) => SetPreference(key, value);
+    private bool ImagesOff
+    {
+        get => PreferenceState.ImagesOff;
+        set => PreferenceState.ImagesOff = value;
+    }
 
-    private LanguageOption _currentLanguageOption = Languages[0];
+    private bool IsNeutral
+    {
+        get => PreferenceState.IsNeutral;
+        set => PreferenceState.IsNeutral = value;
+    }
+
+    private bool IsRemote
+    {
+        get => PreferenceState.IsRemote;
+        set => PreferenceState.IsRemote = value;
+    }
+
+    private bool NotifyDeadline
+    {
+        get => PreferenceState.NotifyDeadline;
+        set => PreferenceState.NotifyDeadline = value;
+    }
+
+    private bool NotifySchoolEvent
+    {
+        get => PreferenceState.NotifySchoolEvent;
+        set => PreferenceState.NotifySchoolEvent = value;
+    }
+
+    private bool NotifyEmergencies
+    {
+        get => PreferenceState.NotifyEmergencies;
+        set => PreferenceState.NotifyEmergencies = value;
+    }
+
+    private bool NotifyCancelledClass
+    {
+        get => PreferenceState.NotifyCancelledClass;
+        set => PreferenceState.NotifyCancelledClass = value;
+    }
+
     private LanguageOption CurrentLanguageOption
     {
         get => _currentLanguageOption;
         set
         {
             _currentLanguageOption = value;
-            SetPreference(UserPreferenceKeys.Language, value.Code);
+            PreferenceState.Language = value.Code;
         }
     }
 
-    private CampusOption _currentCampusOption = PreferenceOptions.Campuses[0];
-    private CampusOption CurrentCampusOption
+    private RestoOption? CurrentRestoOption
     {
-        get => _currentCampusOption;
+        get => _currentRestoOption;
         set
         {
-            _currentCampusOption = value;
-            SetPreference(UserPreferenceKeys.FavoriteResto, value.Id);
-        }
-    }
-
-    private T GetPreference<T>(string key)
-    {
-        if (!CurrentPreferences.TryGetValue(key, out var value))
-            return GetDefaultValue<T>(key);
-
-        return value switch
-        {
-            JsonElement je => DeserializeJsonElement<T>(je),
-            T typedValue => typedValue,
-            _ => TryConvert(value, GetDefaultValue<T>(key))
-        };
-    }
-
-    private T GetDefaultValue<T>(string key) =>
-        UserPreferenceDefaults.Values.TryGetValue(key, out var defaultValue)
-            ? TryConvert(defaultValue, default(T)!)
-            : default!;
-
-    private T TryConvert<T>(object value, T fallback)
-    {
-        try { return (T)Convert.ChangeType(value, typeof(T)); }
-        catch { return fallback; }
-    }
-
-    private T DeserializeJsonElement<T>(JsonElement element)
-    {
-        try
-        {
-            return element.ValueKind switch
+            _currentRestoOption = value;
+            if (value != null)
             {
-                JsonValueKind.String when typeof(T) == typeof(string) => (T)(object)element.GetString()!,
-                JsonValueKind.Number when typeof(T) == typeof(int) => (T)(object)element.GetInt32(),
-                JsonValueKind.Number when typeof(T) == typeof(double) => (T)(object)element.GetDouble(),
-                JsonValueKind.True or JsonValueKind.False when typeof(T) == typeof(bool) => (T)(object)element.GetBoolean(),
-                _ => JsonSerializer.Deserialize<T>(element.GetRawText())!
-            };
+                PreferenceState.FavoriteResto = value.Id;
+            }
         }
-        catch { return default!; }
     }
 
-    private void SetPreference<T>(string key, T value)
-    {
-        CurrentPreferences[key] = value!;
-        StateHasChanged();
-    }
-
-    private bool HasUnsavedChanges =>
-        CurrentPreferences.Count != OriginalPreferences.Count ||
-        CurrentPreferences.Any(kvp => !OriginalPreferences.TryGetValue(kvp.Key, out var original) ||
-            GetValueString(kvp.Value) != GetValueString(original));
-
-    private string GetValueString(object value) =>
-        value is JsonElement je ? je.GetRawText() : value?.ToString() ?? string.Empty;
-
-    private bool IsSaving { get; set; }
-    private bool NotificationsExpanded { get; set; }
-    private (string Title, string Message, Severity Severity) Status { get; set; } = ("", "", Severity.Info);
+    private bool HasUnsavedChanges => PreferenceState.HasUnsavedChanges;
+    private bool IsSaving => PreferenceState.IsSaving;
 
     private List<LanguageOption> AvailableLanguages => Languages;
-    private List<CampusOption> AvailableCampuses => PreferenceOptions.Campuses;
+    private List<RestoOption> AvailableRestos => PreferenceState.AvailableRestos;
+    private bool IsLoadingRestos => PreferenceState.IsLoadingRestos;
 
-    //Preview
+    private string StatusTitle => Status.Title;
+    private string StatusMessage => Status.Message;
+    private Severity StatusSeverity => Status.Severity;
+
     private DateTime PreviewDate => new(2025, 12, 15, 14, 0, 0);
     private string PreviewTitle => "Open Campus Dag";
     private string PreviewCategory => "Campus Event";
@@ -134,94 +111,78 @@ public partial class Settings
     private TimeOnly PreviewEndTime => new(17, 30);
     private string PreviewLocation => "Schoonmeersen";
 
-    private string StatusTitle => Status.Title;
-    private string StatusMessage => Status.Message;
-    private Severity StatusSeverity => Status.Severity;
-
-    protected override async Task OnInitializedAsync() => await LoadPreferences();
-
-    private void ToggleNotifications() => NotificationsExpanded = !NotificationsExpanded;
+    protected override async Task OnInitializedAsync()
+    {
+        PreferenceState.OnStateChanged += StateHasChanged;
+        await PreferenceState.InitializeAsync();
+        await LoadPreferences();
+    }
 
     private async Task LoadPreferences()
     {
-        try
+        var result = await PreferenceState.LoadPreferencesAsync();
+
+        if (result.IsSuccess)
         {
-            var result = await UserPreferenceService.TryGetPreferencesAsync(CancellationToken.None);
-
-            if (result.IsSuccess && result.Value != null)
-            {
-                var prefs = result.Value.UserPreferences.Settings;
-                CurrentPreferences = new(prefs);
-                OriginalPreferences = new(prefs);
-
-                UpdateDropdownOptions();
-            }
+            UpdateDropdownOptions();
         }
-        catch (Exception ex)
+        else
         {
-            ShowError("Fout bij laden", $"Kon voorkeuren niet laden: {ex.Message}");
+            var errorMessage = result.Errors.Any()
+                ? string.Join(", ", result.Errors)
+                : "Onbekende fout";
+
+            ShowError("Fout bij laden", $"Kon voorkeuren niet laden: {errorMessage}");
         }
     }
 
     private void UpdateDropdownOptions()
     {
         _currentLanguageOption = Languages.FirstOrDefault(l =>
-            l.Code == GetPreference<string>(UserPreferenceKeys.Language)) ?? Languages[0];
+            l.Code == PreferenceState.Language) ?? Languages[0];
 
-        _currentCampusOption = PreferenceOptions.Campuses.FirstOrDefault(c =>
-            c.Id == GetPreference<string>(UserPreferenceKeys.FavoriteResto)) ?? PreferenceOptions.Campuses[0];
+        _currentRestoOption = AvailableRestos.FirstOrDefault(r =>
+            r.Id == PreferenceState.FavoriteResto);
     }
 
     private async Task HandleSave()
     {
-        if (!HasUnsavedChanges) return;
-
-        IsSaving = true;
         ClearStatus();
 
-        try
-        {
-            var result = await UserPreferenceService.TryUpdatePreferencesAsync(
-                CurrentPreferences, CancellationToken.None);
+        var result = await PreferenceState.SavePreferencesAsync();
 
-            if (result.IsSuccess)
-            {
-                OriginalPreferences = new(CurrentPreferences);
-                ShowSuccess("Opgeslagen", "Je voorkeuren zijn succesvol bijgewerkt!");
-                Snackbar.Add("Instellingen opgeslagen", Severity.Success);
-            }
-            else
-            {
-                var errors = string.Join(", ", result.Errors ?? new List<string> { "Onbekende fout" });
-                ShowError("Fout bij opslaan", errors);
-            }
-        }
-        catch (Exception ex)
+        if (result.IsSuccess)
         {
-            ShowError("Fout bij opslaan", $"Kon voorkeuren niet opslaan: {ex.Message}");
+            ShowSuccess("Opgeslagen", "Je voorkeuren zijn succesvol bijgewerkt!");
+            Snackbar.Add("Instellingen opgeslagen", Severity.Success);
         }
-        finally
+        else
         {
-            IsSaving = false;
+            var errorMessage = result.Errors.Any()
+                ? string.Join(", ", result.Errors)
+                : "Onbekende fout";
+
+            ShowError("Fout bij opslaan", errorMessage);
         }
     }
 
     private void HandleCancel()
     {
-        CurrentPreferences = new(OriginalPreferences);
+        PreferenceState.CancelChanges();
         UpdateDropdownOptions();
         ClearStatus();
         Snackbar.Add("Wijzigingen geannuleerd", Severity.Info);
-        StateHasChanged();
     }
 
     private async Task HandleRestoreDefaults()
     {
-        CurrentPreferences = new(UserPreferenceDefaults.Values);
-        _currentLanguageOption = Languages[0];
-        _currentCampusOption = PreferenceOptions.Campuses[0];
+        PreferenceState.RestoreDefaults();
+        UpdateDropdownOptions();
         await HandleSave();
     }
+
+    private void TogglePreview() => PreviewCollapsed = !PreviewCollapsed;
+    private void ToggleNotifications() => NotificationsExpanded = !NotificationsExpanded;
 
     private void ShowSuccess(string title, string message) =>
         Status = (title, message, Severity.Success);
@@ -243,4 +204,9 @@ public partial class Settings
 
     private string GetCategoryStyle() =>
         $"color: {(IsNeutral ? (CurrentTheme == "dark" ? "#ffffff" : "#000000") : "#16B0A5")}; font-weight: 500; margin-top: 8px; font-size: 14px;";
+
+    public void Dispose()
+    {
+        PreferenceState.OnStateChanged -= StateHasChanged;
+    }
 }
