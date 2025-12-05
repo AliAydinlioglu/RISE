@@ -112,21 +112,21 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     {
         MudColor baseColor = new MudColor(mainColor);
         
-        MudTheme lightTheme = DefaultTheme();
-        lightTheme.PaletteLight.Primary = Colors.Blue.Default;
-        lightTheme.PaletteLight.Secondary = Colors.Blue.Blue50;
-        lightTheme.PaletteLight.Tertiary = Colors.Blue.Blue50;
+        MudTheme colorfulTheme = DefaultTheme();
+        colorfulTheme.PaletteLight.Primary = Colors.Blue.Default;
+        colorfulTheme.PaletteLight.Secondary = Colors.Blue.Blue50;
+        colorfulTheme.PaletteLight.Tertiary = Colors.Blue.Blue50;
         
-        lightTheme.PaletteLight.AppbarBackground = Colors.Blue.Default; 
-        lightTheme.PaletteLight.AppbarText = Colors.Blue.Default;
+        colorfulTheme.PaletteLight.AppbarBackground = Colors.Blue.Default; 
+        colorfulTheme.PaletteLight.AppbarText = Colors.Blue.Default;
 
-        lightTheme.PaletteDark.Primary = baseColor.ColorDarken(0.2);
-        lightTheme.PaletteDark.Secondary = baseColor.ColorDarken(0.9);
-        lightTheme.PaletteDark.Tertiary = baseColor.ColorLighten(0.2);
+        colorfulTheme.PaletteDark.Primary = baseColor.ColorDarken(0.2);
+        colorfulTheme.PaletteDark.Secondary = baseColor.ColorDarken(0.9);
+        colorfulTheme.PaletteDark.Tertiary = baseColor.ColorLighten(0.2);
 
-        lightTheme.PaletteDark.AppbarBackground = baseColor;
-        lightTheme.PaletteDark.AppbarText = HoGentColors.Black;
-        Theme = lightTheme;
+        colorfulTheme.PaletteDark.AppbarBackground = baseColor;
+        colorfulTheme.PaletteDark.AppbarText = HoGentColors.Black;
+        Theme = colorfulTheme;
     }
     
     // neutral theme
@@ -244,7 +244,8 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
                 Primary = Colors.Shades.Black,
                 Secondary = Colors.Shades.Black,
                 Tertiary = Colors.Shades.Black,
-                AppbarBackground = Colors.Shades.Black
+                AppbarBackground = Colors.Shades.Black,
+                AppbarText = Colors.Shades.White
             },
 
             LayoutProperties = new LayoutProperties()
