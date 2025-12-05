@@ -94,18 +94,22 @@
 
                 <div class="setting-item mb-4">
                     <MudText Typo="Typo.subtitle1" Class="mb-2">Taal</MudText>
-                    <MudSelect T="LanguageOption"
-                               @bind-Value="CurrentLanguageOption"
-                               Variant="Variant.Outlined"
-                               AnchorOrigin="Origin.BottomCenter"
-                               TransformOrigin="Origin.TopCenter">
-                        @foreach (var lang in AvailableLanguages)
-                        {
-                            <MudSelectItem T="LanguageOption" Value="@lang">
-                                @lang.DisplayName
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
+                    <div class="select-full-width">
+                        <MudSelect T="LanguageOption"
+                                   @bind-Value="CurrentLanguageOption"
+                                   Variant="Variant.Outlined"
+                                   FullWidth="true"
+                                   AnchorOrigin="Origin.BottomCenter"
+                                   TransformOrigin="Origin.TopCenter"
+                                   PopoverClass="fix-popover-offset">
+                            @foreach (var lang in AvailableLanguages)
+                            {
+                                <MudSelectItem T="LanguageOption" Value="@lang">
+                                    @lang.DisplayName
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </div>
                 </div>
 
                 @* Default Campus Setting *@
@@ -113,18 +117,22 @@
 
                 <div class="setting-item mb-4">
                     <MudText Typo="Typo.subtitle1" Class="mb-2">Standaard campus</MudText>
-                    <MudSelect T="CampusOption"
-                               @bind-Value="CurrentCampusOption"
-                               Variant="Variant.Outlined"
-                               AnchorOrigin="Origin.BottomCenter"
-                               TransformOrigin="Origin.TopCenter">
-                        @foreach (var campus in AvailableCampuses)
-                        {
-                            <MudSelectItem T="CampusOption" Value="@campus">
-                                @campus.Name
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
+                    <div class="select-full-width">
+                        <MudSelect T="CampusOption"
+                                   @bind-Value="CurrentCampusOption"
+                                   Variant="Variant.Outlined"
+                                   FullWidth="true"
+                                   AnchorOrigin="Origin.BottomCenter"
+                                   TransformOrigin="Origin.TopCenter"
+                                   PopoverClass="fix-popover-offset">
+                            @foreach (var campus in AvailableCampuses)
+                            {
+                                <MudSelectItem T="CampusOption" Value="@campus">
+                                    @campus.Name
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </div>
                 </div>
 
                 <div class="setting-item mb-4">

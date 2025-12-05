@@ -54,7 +54,7 @@ public partial class Settings
         }
     }
 
-    private CampusOption _currentCampusOption = Campuses[0];
+    private CampusOption _currentCampusOption = PreferenceOptions.Campuses[0];
     private CampusOption CurrentCampusOption
     {
         get => _currentCampusOption;
@@ -124,7 +124,7 @@ public partial class Settings
     private (string Title, string Message, Severity Severity) Status { get; set; } = ("", "", Severity.Info);
 
     private List<LanguageOption> AvailableLanguages => Languages;
-    private List<CampusOption> AvailableCampuses => Campuses;
+    private List<CampusOption> AvailableCampuses => PreferenceOptions.Campuses;
 
     //Preview
     private DateTime PreviewDate => new(2025, 12, 15, 14, 0, 0);
@@ -146,7 +146,7 @@ public partial class Settings
     {
         try
         {
-            var result = await UserPreferenceService.GetPreferencesAsync(CancellationToken.None);
+            var result = await UserPreferenceService.TryGetPreferencesAsync(CancellationToken.None);
 
             if (result.IsSuccess && result.Value != null)
             {
@@ -168,8 +168,8 @@ public partial class Settings
         _currentLanguageOption = Languages.FirstOrDefault(l =>
             l.Code == GetPreference<string>(UserPreferenceKeys.Language)) ?? Languages[0];
 
-        _currentCampusOption = Campuses.FirstOrDefault(c =>
-            c.Id == GetPreference<string>(UserPreferenceKeys.FavoriteResto)) ?? Campuses[0];
+        _currentCampusOption = PreferenceOptions.Campuses.FirstOrDefault(c =>
+            c.Id == GetPreference<string>(UserPreferenceKeys.FavoriteResto)) ?? PreferenceOptions.Campuses[0];
     }
 
     private async Task HandleSave()
@@ -181,7 +181,7 @@ public partial class Settings
 
         try
         {
-            var result = await UserPreferenceService.UpdatePreferencesAsync(
+            var result = await UserPreferenceService.TryUpdatePreferencesAsync(
                 CurrentPreferences, CancellationToken.None);
 
             if (result.IsSuccess)
@@ -219,7 +219,7 @@ public partial class Settings
     {
         CurrentPreferences = new(UserPreferenceDefaults.Values);
         _currentLanguageOption = Languages[0];
-        _currentCampusOption = Campuses[0];
+        _currentCampusOption = PreferenceOptions.Campuses[0];
         await HandleSave();
     }
 

@@ -17,6 +17,10 @@ html, body {
         padding-top: 1px;
         --bulma-section-padding: 1rem 1rem;
     }
+
+    .mud-popover.mud-popover-relative-width {
+        left: 16px !important;
+    }
 }
 
 h1:focus {
