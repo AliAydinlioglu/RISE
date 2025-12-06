@@ -78,10 +78,6 @@ try
 
     builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
     builder.Services.AddScoped<IFavouriteRestoService, FavouriteRestoService>();
-    builder.Services.AddHttpClient<IWeekmenuService, WeekmenuService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    });
 
     builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
     {
