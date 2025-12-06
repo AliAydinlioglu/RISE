@@ -88,8 +88,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     }
 
     /// <summary>
-    /// Loads theme settings from local storage. If no value exists in local storage,
-    /// fetches from user account preferences as fallback.
+    /// Loads theme settings from local storage. Fetches from user account preferences and updates if needed.
     /// </summary>
     /// <param name="key">The storage key to retrieve the theme setting.</param>
     /// <param name="setterCallback">Callback action to set the retrieved value.</param>
@@ -98,14 +97,33 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         jsRuntime.InvokeAsync<string?>("localStorage.getItem", key).AsTask()
             .ContinueWith(task =>
             {
-                if (string.IsNullOrEmpty(task.Result))
                 {
                     userPreferenceService.GetPreferencesAsync(CancellationToken.None)
                         .ContinueWith(backend => setterCallback(backend.Result.Value.UserPreferences.Settings[key].ToString()))
                         .CatchAndLog();
                 } 
-                else setterCallback(task.Result);
             });
+    }
+
+    private async void AsyncToLocalStorage(string key, object value)
+    {
+        Subscribe?.Invoke(this, this);
+        try
+        {
+            string jsonValue = JsonSerializer.Serialize(value);
+            await jsRuntime.InvokeVoidAsync("localStorage.setItem", key, jsonValue);
+            // enable for hot-saving to backend - disabled in favor of settings page save button
+            //await userPreferenceService.UpdateSinglePreferenceAsync(key, jsonValue, CancellationToken.None);
+            
+        }
+        catch (Exception e)
+        {
+            // saving in the backend is not always possible. But that's ok.
+            // Theme can be triggered locally before a logged in user has a full preference object.
+            // Like upon reading device theme
+            Console.WriteLine(e);
+            throw;
+        }
     }
     
     public void ColorTheme(string mainColor = HoGentColors.Pantone7461U)
@@ -127,30 +145,6 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         colorfulTheme.PaletteDark.AppbarBackground = baseColor;
         colorfulTheme.PaletteDark.AppbarText = HoGentColors.Black;
         Theme = colorfulTheme;
-    }
-    
-    // neutral theme
-    // colorful theme
-
-    private async void AsyncToLocalStorage(string key, object value)
-    {
-        Subscribe?.Invoke(this, this);
-        try
-        {
-            string jsonValue = JsonSerializer.Serialize(value);
-            await jsRuntime.InvokeVoidAsync("localStorage.setItem", key, jsonValue);
-            // enable for hot-saving to backend - disabled in favor of settings page save button
-            //await userPreferenceService.UpdateSinglePreferenceAsync(key, jsonValue, CancellationToken.None);
-            
-        }
-        catch (Exception e)
-        {
-            // saving in the backend is not always possible. But that's ok.
-            // Theme can be triggered locally before a logged in user has a full preference object.
-            // Like upon reading device theme
-            Console.WriteLine(e);
-            throw;
-        }
     }
     
     private static MudTheme DefaultTheme()
