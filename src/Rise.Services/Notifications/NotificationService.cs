@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Notifications;
 using Rise.Persistence;
 using Rise.Services.Identity;
@@ -175,12 +175,13 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
     public async Task<Result<NotificationResponse.Get>> GetNotifications(
         QueryRequest.SkipTake request, CancellationToken ct)
     {
+        var user = GetUser();
         var notificationTypes = dbContext.Subscriptions
-            .Where(p => p.UserName.Contains(GetUser()))
+            .Where(p => p.UserName.Contains(user))
             .Select(s => s.TypeOfNotification);
 
         var query = dbContext.Notifications.AsQueryable();
-
+        
         query = query.Where(p => notificationTypes.Contains(p.TypeOfNotification) && !p.IsDeleted);
 
         var totalCount = await query.CountAsync(ct);
