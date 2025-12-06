@@ -47,7 +47,8 @@ try
         builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
         options.ProviderOptions.LoginMode = "redirect";
         options.ProviderOptions.Cache.CacheLocation = "localStorage";
-        options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
+        options.ProviderOptions.DefaultAccessTokenScopes.Add(
+            "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
     });
 
     builder.Services.AddIndexedDB(dbStore =>
@@ -55,7 +56,7 @@ try
         dbStore.DbName = "RiseCampusApp";
         dbStore.Version = 1;
         dbStore.Stores.Add(new StoreSchema
-            { Name = "RiseOfflineCache", PrimaryKey = new IndexSpec { KeyPath = "key"} });
+            { Name = "RiseOfflineCache", PrimaryKey = new IndexSpec { KeyPath = "key" } });
     });
 
     builder.Services.AddHttpClient("SecureApi", client => { client.BaseAddress = baseUrl; })
@@ -74,39 +75,21 @@ try
     builder.Services.AddScoped<ICacheService, CacheService>();
     builder.Services.AddScoped<RiseHttpMessageHandler>();
     builder.Services.AddScoped<IConnectionService, ConnectionService>();
-    
-    builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
-        .AddHttpMessageHandler<RiseHttpMessageHandler>()
-        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
     builder.Services.AddScoped<IFavouriteRestoService, FavouriteRestoService>();
 
-    builder.Services.AddHttpClient<IMenuService, MenuService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
-    builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
-    builder.Services.AddHttpClient<IWeekmenuService, WeekmenuService>(client => { client.BaseAddress = baseUrl; })
+    builder.Services.AddHttpClient<IMenuService, MenuService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+
+    builder.Services.AddHttpClient<IPriceListService, PriceListService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+
+    builder.Services.AddHttpClient<IRestoService, RestoService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+
+    builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
-        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    builder.Services.AddHttpClient<IRestoService, RestoService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    })
-    .AddHttpMessageHandler<RiseHttpMessageHandler>()
-        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-    
-    builder.Services.AddHttpClient<IProductService, ProductService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    })
-    .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; })
