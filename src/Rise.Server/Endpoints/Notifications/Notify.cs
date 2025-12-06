@@ -6,7 +6,7 @@ public class Notify(INotificationService notificationService) : Endpoint<NotifyR
 {
     public override void Configure()
     {
-        Put("/api/notifications/notify");
+        Post("/api/notifications/notify");
         Summary(s =>
         {
             s.Summary = "Verstuur notificaties";

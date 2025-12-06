@@ -4,8 +4,6 @@ using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Shared.Common;
 using Rise.Shared.Notifications;
-using System.Text.Json;
-using WebPush;
 using static Rise.Shared.Notifications.SubscribeRequest;
 using NotificationChannels = Rise.Domain.Notifications.NotificationChannels;
 
@@ -40,54 +38,57 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
 
     public async Task<Result> Notify(NotifyRequest.Message msg, CancellationToken ct = default)
     {
-        var subscription = await dbContext.Subscriptions
-            .Where(
-                e => e.UserName == GetUser() && e.TypeOfNotification == ParseNT(msg.TypeOfNotification) && !e.IsDeleted
-            ).SingleOrDefaultAsync(ct);
+        var notification = new Notification(
+            Enum.Parse<NotificationTypes>(msg.TypeOfNotification),
+            Enum.Parse<NotificationLevels>(msg.NotificationLevel),
+            new Message(msg.MsgTitle, msg.MsgBody, msg.LinkToAppPage??""),
+            DateTime.Now
+        );
 
-        if (subscription == null)
+        dbContext.Notifications.Add(notification);
+        
+        await dbContext.SaveChangesAsync();
+
+        var subscriptions = await dbContext.Subscriptions
+            .Where(
+                e => e.TypeOfNotification == ParseNT(msg.TypeOfNotification) && !e.IsDeleted
+            ).ToListAsync(ct);
+
+        if (subscriptions.Count == 0)
         {
-            Log.Error($"Subscription on '{GetUser()}' for '{msg.TypeOfNotification}' was not found.");
-            return Result.NotFound(
-                $"Subscription on '{GetUser()}' for '{msg.TypeOfNotification}' was not found.");
+            return Result.Success();
         }
 
-        var pushNotificationSettings = await dbContext.PushNotificationChannels
-            .Where(c => c.UserName == GetUser())
-            .SingleOrDefaultAsync(ct);
-
-        if(pushNotificationSettings == null)
-            return Result.Success();
-
-        await SendNotificationAsync(pushNotificationSettings, msg.MsgBody);
+        foreach(var subscription in subscriptions){
+            var channels = subscription.Channels.ToList();
+            foreach (var channel in channels) {
+                switch (channel)
+                {
+                    case NotificationChannels.InApp:
+                        EventStreamNotification.Publish(subscription.UserName, new NotificationDto.Index
+                        {
+                            IsRead = false,
+                            MsgBody = notification.MsgDetail.Description,
+                            MsgTitle = notification.MsgDetail.Title,
+                            NotificationLevel = notification.NotificationLevel.ToString(),
+                            TypeOfNotification = notification.TypeOfNotification.ToString(),
+                            LinkToAppPage = notification.MsgDetail.UrlDetailPage,
+                            NotificationId = notification.Id,
+                        });
+                        break;
+                    case NotificationChannels.PushNotification:
+                        var pushNotificationSettings = await dbContext.PushNotificationChannels
+                            .FirstOrDefaultAsync(c => c.UserName == subscription.UserName, ct);
+                        if (pushNotificationSettings is not null)
+                            await PushNotification.SendPushNotificationAsync(pushNotificationSettings, msg.MsgBody);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
         return Result.Success();
-    }
-
-    private static async Task SendNotificationAsync(PushNotificationChannel subscription, string message)
-    {
-        var publicKey = "BMxhk8SDSWBXlx0iYw9fyqAR5g-aDWHdYV62d7rObYYiK54psfyyxj0C7Gxniz3aF_An6rNM93XqO9OOR3wUY7Y";
-        var privateKey = "r9OlE2nzQFPCbbGWf8J_2QF5DObpZaO7F6l7S_XfHTQ";
-
-        var pushSubscription = new PushSubscription(subscription.Url,
-            subscription.P256dh, subscription.Auth);
-        var vapidDetails = new VapidDetails("mailto:admin@example.com", publicKey, privateKey);
-        var webPushClient = new WebPushClient();
-
-        try
-        {
-            var payload = JsonSerializer.Serialize(new
-            {
-                message
-            });
-
-            await webPushClient.SendNotificationAsync(pushSubscription, payload,
-                vapidDetails);
-        }
-        catch (Exception ex)
-        {
-            Log.Error($"Error sending push notification: {ex.Message}");
-        }
     }
 
     public async Task<Result> SubscribeToNotification(
@@ -136,7 +137,7 @@ public class NotificationService(ApplicationDbContext dbContext, ISessionContext
                 fChannel.IsDeleted = false;
 
             channels.Add(NotificationChannels.PushNotification);
-            await SendNotificationAsync(channel, $"je bent ingeschreven voor {subscribe.NotificationType}");
+            await PushNotification.SendPushNotificationAsync(channel, $"je bent ingeschreven voor {subscribe.NotificationType}");
         }
         if (subscribe.Channels.InApp)
         {

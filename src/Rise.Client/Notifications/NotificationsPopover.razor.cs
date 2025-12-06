@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Rise.Shared.Notifications;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using MudBlazor;
+using Rise.Client.Shared;
 using Rise.Shared.Common;
+using Rise.Shared.Notifications;
 
 namespace Rise.Client.Notifications;
 
@@ -11,17 +14,13 @@ public partial class NotificationsPopover
     private bool visible;
 
     [Inject] public required INotificationService NotificationService { get; set; }
+    [Inject] public required IEventStreamService EventStreamService { get; set; }
+    [Inject] public required IAccessTokenProvider TokenProvider { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var request = new QueryRequest.SkipTake
-        {
-            Skip = 0,
-            Take = 50,
-        };
-
-        var result = await NotificationService.GetNotifications(request);
-        Notifications = [.. result.Value.Notifications];
+        await InitNotificationList();
+        await InitEventStreaming();
     }
 
     public void ToggleOverlay(bool value)
@@ -29,7 +28,7 @@ public partial class NotificationsPopover
         visible = value;
     }
 
-    public async void AckowledgeMe(NotificationDto.Index not)
+    private async void AckowledgeMe(NotificationDto.Index not)
     {
         var result = await NotificationService.AcknowledgeAsRead(new AcknowledgeRequest.Post
         {
@@ -41,5 +40,34 @@ public partial class NotificationsPopover
                 ToggleOverlay(false);
             StateHasChanged();
         }
+    }
+
+    private async Task InitNotificationList()
+    {
+        var request = new QueryRequest.SkipTake
+        {
+            Skip = 0,
+            Take = 50,
+        };
+
+        var result = await NotificationService.GetNotifications(request);
+        Notifications = [.. result.Value.Notifications.Where(n => !n.IsRead)];
+    }
+
+    private async Task InitEventStreaming()
+    {
+        var result = await TokenProvider.RequestAccessToken();
+        if (result.TryGetToken(out var token))
+        {            
+            EventStreamService.OnMessage += msg =>
+                InvokeAsync(() =>
+                {
+                    Notifications.Insert(0, msg);
+                    StateHasChanged();
+                });
+
+            await EventStreamService.StartAsync(token.Value);
+        }
+
     }
 }

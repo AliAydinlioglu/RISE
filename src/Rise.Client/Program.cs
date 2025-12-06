@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
 using Rise.Client;
 using Rise.Client.Calendar;
+using Rise.Client.Contact;
 using Rise.Client.Courses;
 using Rise.Client.Identity;
 using Rise.Client.Offline;
 using Rise.Client.Products;
 using Rise.Client.SchoolEvents;
 using Rise.Client.Shared;
+using Rise.Client.StudentActivities;
 using Rise.Shared;
 using Rise.Shared.Calendar;
+using Rise.Shared.Contact;
 using Rise.Shared.Courses;
 using Rise.Shared.Notifications;
 using Rise.Shared.Products;
@@ -71,6 +75,7 @@ try
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
+    builder.Services.AddSingleton<IEventStreamService, EventStreamService>();
 
     builder.Services.AddScoped<IPaginationStateService, PaginationStateService>();
     builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
