@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using MudBlazor;
 using Rise.Client.Shared;
+using Rise.Domain.Notifications;
 using Rise.Shared.Common;
 using Rise.Shared.Notifications;
 
@@ -16,6 +18,7 @@ public partial class NotificationsPopover
     [Inject] public required INotificationService NotificationService { get; set; }
     [Inject] public required IEventStreamService EventStreamService { get; set; }
     [Inject] public required IAccessTokenProvider TokenProvider { get; set; }
+    [Inject] public required ISnackbar Snackbar { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,6 +66,13 @@ public partial class NotificationsPopover
                 InvokeAsync(() =>
                 {
                     Notifications.Insert(0, msg);
+                    Snackbar.Add(msg.MsgBody, 
+                        NotificationHelper.ToSeverity(msg.NotificationLevel), 
+                        config =>
+                        {
+                            config.VisibleStateDuration = 5000; // verdwijnt na 5 seconden
+                            config.ShowCloseIcon = true;
+                        });
                     StateHasChanged();
                 });
 
