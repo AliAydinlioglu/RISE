@@ -49,12 +49,28 @@ public class Stream: EndpointWithoutRequest
         return userName;
     }
 
-    private async IAsyncEnumerable<NotificationDto.Index> GetDataStream([EnumeratorCancellation] CancellationToken ct)
+    private async IAsyncEnumerable<NotificationDto.Index> GetDataStream(
+        [EnumeratorCancellation] CancellationToken ct)
     {
         var reader = EventStreamNotification.Subscribe(GetUser()).Reader;
-        await foreach ( var msg in reader.ReadAllAsync(ct))
+
+        while (!ct.IsCancellationRequested)
         {
+            NotificationDto.Index msg;
+
+            try
+            {
+                msg = await reader.ReadAsync(ct);
+            }
+            catch (OperationCanceledException)
+            {
+                yield break;
+            }
+
             yield return msg;
         }
     }
+
+
+
 }
