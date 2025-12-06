@@ -41,7 +41,7 @@ public static class ClaimsPrincipalExtentions
         user?.IsInRole(role) ?? false;
 
     public static string? GetOid(this ClaimsPrincipal user) 
-        => user?.FindFirst("oid")?.Value;
+        => user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
     
     public static string? GetFirstName(this ClaimsPrincipal user) 
         => user?.FindFirst(ClaimTypes.GivenName)?.Value;
