@@ -21,6 +21,7 @@ namespace Rise.Client.Identity
             Services.AddScoped<IPageTitleService>(_ => pageTitleService);
             Services.AddScoped<INotificationService, FakeNotificationService>();
             Services.AddScoped<IConnectionService, FakeConnectionService>();
+            Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
         }
 
         [Fact]
