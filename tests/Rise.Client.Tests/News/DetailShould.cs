@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Rise.Shared.News;
 using Rise.TestDoubles;
 using Shouldly;
@@ -17,6 +19,7 @@ public class DetailShould : TestContext
         Services.AddXunitLogger(outputHelper);
         Services.AddScoped<IPageTitleService>(_ => new FakePageTitleService());
         Services.AddScoped<NavigationManager, FakeNavigationManager>();
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
     [Fact]
