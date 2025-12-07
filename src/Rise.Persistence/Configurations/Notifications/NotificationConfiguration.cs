@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rise.Domain.Notifications;
 
-namespace Rise.Persistence.Configurations.Projects;
+namespace Rise.Persistence.Configurations.Notifications;
 
 /// <summary>
 /// Specific configuration for <see cref="Notification"/>.

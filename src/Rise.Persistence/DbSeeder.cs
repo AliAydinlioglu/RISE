@@ -74,7 +74,9 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
 
         await userManager.CreateAsync(distanceStudent);
         await userManager.AddToRoleAsync(distanceStudent, nameof(AppRoles.DistanceStudent));
-        
+        await userManager.AddToRoleAsync(wimDedulle, nameof(AppRoles.DistanceStudent));
+
+
         var wimDedulle = new ApplicationUser(
             "wim@rise2526t2campusappoutlook.onmicrosoft.com",
             "Wim",

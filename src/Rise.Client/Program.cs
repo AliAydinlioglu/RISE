@@ -14,6 +14,7 @@ using Rise.Client.Products;
 using Rise.Client.Restaurant;
 using Rise.Client.Restaurant.Components;
 using Rise.Client.SchoolEvents;
+using Rise.Client.Services;
 using Rise.Client.Shared;
 using Rise.Client.StudentActivities;
 using Rise.Client.Theme;
@@ -87,7 +88,6 @@ try
     builder.Services.AddSingleton<IEventStreamService, EventStreamService>();
     builder.Services.AddSingleton<IThemingService, ThemingService>();
     builder.Services.AddScoped<IUserPreferenceStateService, UserPreferenceStateService>();
-
     builder.Services.AddScoped<IPaginationStateService, PaginationStateService>();
     builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
     builder.Services.AddScoped<ICacheService, CacheService>();
