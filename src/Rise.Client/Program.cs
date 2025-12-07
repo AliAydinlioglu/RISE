@@ -5,9 +5,10 @@ using MudBlazor.Services;
 using Rise.Client;
 using Rise.Client.Calendar;
 using Rise.Client.Courses;
+using Rise.Client.Identity;
+using Rise.Client.Offline;
 using Rise.Client.Products;
 using Rise.Client.SchoolEvents;
-using Rise.Client.StudentActivities;
 using Rise.Client.Shared;
 using Rise.Shared;
 using Rise.Shared.Calendar;
@@ -20,7 +21,6 @@ using Rise.Shared.Contact;
 using Rise.Client.Contact;
 using Rise.Client.Restaurant;
 using Rise.Client.Offline;
-using Rise.Client.Services;
 using TG.Blazor.IndexedDB;
 using Rise.Client.Restaurant.Components;
 using Rise.Shared.Menu;
@@ -132,6 +132,8 @@ try
         .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
 
     builder.Services.AddMudServices();
     await builder.Build().RunAsync();

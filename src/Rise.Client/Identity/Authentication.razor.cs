@@ -4,6 +4,7 @@ using Rise.Shared.Identity.Accounts;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using System.Text.Json;
 
 namespace Rise.Client.Identity;
 
@@ -23,6 +24,9 @@ public partial class Authentication
 
     [Inject]
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
+    [Inject]
+    private IAppRoleStateService AppRoleStateService { get; set; } = null!;
 
     [Inject]
     private IJSRuntime JSRuntime { get; set; } = default!;
@@ -52,6 +56,11 @@ public partial class Authentication
                 if (result?.IsSuccess == true)
                 {
                     Log.Information("User created/updated successfully: {Email}", result.Value?.Email);
+
+                    var roles = result.Value?.Roles ?? [];
+
+                    AppRoleStateService.SetRoles(roles);
+                    await JSRuntime.InvokeVoidAsync("localStorage.setItem", "roles", JsonSerializer.Serialize(roles));
 
                     var returnUrl = await JSRuntime.InvokeAsync<string?>("localStorage.getItem", "loginReturnUrl");
 
@@ -140,6 +149,7 @@ public partial class Authentication
                         key.includes('telemetry') ||
                         key.startsWith('msal.') ||
                         key.startsWith('login.') ||
+                        key.startsWith('roles') ||
                         key.includes('052a5cbb-135d-45c5-b50e-689b56d29142') ||
                         key.includes('dbcbd040-8ba4-4ed9-9004-fafff85674c7') ||
                         key.includes('0b1720b9-f0e1-43fa-88ea-4b4fecd6352b')
@@ -161,6 +171,7 @@ public partial class Authentication
                         key.includes('login') || 
                         key.includes('auth') ||
                         key.includes('token') || 
+                        key.includes('roles') || 
                         key.includes('account')
                     )) {
                         sessionKeysToRemove.push(key);
@@ -184,6 +195,9 @@ public partial class Authentication
 
         // Clear storage ook bij normale logout
         await ClearAuthStorage();
+
+        AppRoleStateService.ClearRoles();
+        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "roles");
 
         showError = false;
         errorMessage = string.Empty;
