@@ -44,6 +44,20 @@
     font-weight: 900;
 }
 
+/* Image background styling */
+.stacking-container-image {
+    background-color: transparent;
+    padding: 0;
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
 .stacking-container-foreground {
     z-index: 1;
     display: flex;
@@ -96,6 +110,20 @@
     overflow: hidden !important;
     text-overflow: ellipsis !important;
 }
+/*Dit wordt aangepast met de wizard*/
+.box.dark-theme {
+    background: #1e1e1e;
+    border-color: #444;
+    color: white;
+}
+
+    .box.dark-theme .card-header {
+        color: #aaa;
+    }
+
+    .box.dark-theme .description-label {
+        color: #ccc;
+    }
 
 
 @media screen and (max-width: 480px) {

@@ -7,10 +7,29 @@
 
 html, body {
     font-family: 'Montserrat', Arial, sans-serif;
-    background: white;
+    background: var(--mud-palette-background);
     color: black;
+    height: 100%;
 }
 
+
+@media (max-width: 768px) {
+    .mud-main-content.section {
+        padding-top: 1px;
+        --bulma-section-padding: 1rem 1rem;
+    }
+
+    .mud-popover.mud-popover-relative-width {
+        left: 16px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .mud-main-content.section {
+        padding-top: 1px;
+        --bulma-section-padding: 1rem 1rem;
+    }
+}
 
 h1:focus {
     outline: none;

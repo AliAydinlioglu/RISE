@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rise.Domain.Notifications;
 
-namespace Rise.Persistence.Configurations.Projects;
+namespace Rise.Persistence.Configurations.Notifications;
 
 /// <summary>
 /// Specific configuration for <see cref="Notification"/>.
@@ -16,7 +16,7 @@ internal class NotificationConfiguration : EntityConfiguration<Notification>
         builder.Property(x => x.NotificationLevel).IsRequired();
         builder.Property(x => x.TypeOfNotification).IsRequired();
 
-        builder.OwnsMany(x => x.Acknowledgements, ack => { 
+        builder.OwnsMany(x => x.Acknowledgements, ack => {
             ack.Property(x => x.UserName).HasMaxLength(150).IsRequired();
             ack.Property(x => x.ReadOn).IsRequired();
         });

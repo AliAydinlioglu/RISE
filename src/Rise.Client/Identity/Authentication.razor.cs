@@ -4,6 +4,7 @@ using Rise.Shared.Identity.Accounts;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
+using System.Text.Json;
 
 namespace Rise.Client.Identity;
 

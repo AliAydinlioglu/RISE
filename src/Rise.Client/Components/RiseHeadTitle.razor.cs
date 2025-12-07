@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
 
 namespace Rise.Client.Components;
 
@@ -11,11 +12,13 @@ public partial class RiseHeadTitle : ComponentBase
     [Parameter] public string OverlayColor { get; set; } = "rgba(0,0,0,0.35)";
     
     private string? BackgroundStyle =>
-        !string.IsNullOrEmpty(ImageUrl)
+        !ThemingService.ImagesOff && !string.IsNullOrEmpty(ImageUrl)
             ? $"background-image: url('{ImageUrl}'); background-size: cover; background-position: center; color: var(--mud-palette-text-secondary);"
             : "background-color: var(--mud-palette-primary); color: var(--mud-palette-text-secondary);";
 
     [Inject] private IPageTitleService TitleState { get; set; } = null!;
+    
+    [Inject] private IThemingService ThemingService { get; set; } = null!;
     
     protected override void OnParametersSet()
     {
@@ -23,5 +26,10 @@ public partial class RiseHeadTitle : ComponentBase
         {
             TitleState.SetTitle(ChildContent);
         }
+    }
+
+    protected override void OnInitialized()
+    {
+        ThemingService.Subscribe += (sender, args) => StateHasChanged();
     }
 }

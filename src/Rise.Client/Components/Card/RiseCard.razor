@@ -1,22 +1,29 @@
+@using System.Globalization
+@namespace Rise.Client.Components.Card
+
 <div @onclick="HandleClick"
-     class="box is-flex p-0 is-align-items-stretch"
+     class="box is-flex p-0 is-align-items-stretch @Class"
      style="--scale: @ScaleString; @(OnClickNavigateTo is null ? null : "cursor: pointer;")">
     <div class="stacking-container scalable">
-        @* BACKGROUND *@
-        <div
-            class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center"
-            style="@(!string.IsNullOrEmpty(ImageUrl) ? $"background-image: url('{ImageUrl}'); background-size: cover; background-position: center;" : "")">
-            @if (!string.IsNullOrEmpty(ImageUrl))
-            {
-                <div class="square-image-overlay"></div>
-            }
-            <p style="position: relative; z-index: 2;">@BackgroundTitle</p>
-        </div>
+        @* BACKGROUND - Image or Title Initials *@
+        @if (!string.IsNullOrEmpty(ImageUrl) && ShowImage && !ThemingService.ImagesOff)
+        {
+            <!-- Image background -->
+            <div class="square stacking-container-background stacking-container-image">
+                <img src="@ImageUrl" alt="@Title" class="background-image" />
+            </div>
+        }
+        else
+        {
+            <!-- Text background -->
+            <div class="square stacking-container-background is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+                <p>@BackgroundTitle</p>
+            </div>
+        }
 
-        @* FOREGROUND *@
+        @* FOREGROUND - Date (always visible) *@
         <div class="square stacking-container-foreground mr-3">
-            <div
-                class="inner-date-square is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+            <div class="inner-date-square is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
                 <p class="day-of-month-label has-text-weight-bold m-0">@DayOfMonth</p>
                 <p class="month-abbr-label has-text-weight-bold is-uppercase m-0">@MonthAbbreviation</p>
             </div>

@@ -7,6 +7,8 @@ using Rise.Shared.Menu;
 using Shouldly;
 using Xunit.Abstractions;
 using System.Globalization;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 
 namespace Rise.Client.Restaurant;
 
@@ -24,6 +26,7 @@ public class PricelistShould : MudBlazorTestSetup
         Services.AddScoped<IRestaurantSelectionService, FakeRestaurantSelectionService>();
         Services.AddScoped<IRestoService, FakeRestoService>();
         Services.AddScoped<IFavouriteRestoService, FakeFavouriteRestoService>();
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
     [Fact]

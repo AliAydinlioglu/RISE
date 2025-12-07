@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor.Services;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Rise.Shared.SchoolEvents;
 using Rise.TestDoubles;
 using Shouldly;
@@ -20,6 +22,7 @@ public class DetailsShould : TestContext
         Services.AddScoped<IPageTitleService>(_ => new FakePageTitleService());
         Services.AddScoped<NavigationManager, FakeNavigationManager>();
         Services.AddMudServices();
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
     
     [Fact]

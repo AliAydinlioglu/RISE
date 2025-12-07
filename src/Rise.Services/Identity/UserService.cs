@@ -1,9 +1,10 @@
-using System.Security.Claims;
+using Ardalis.Result;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rise.Persistence.Models.Identity;
 using Rise.Shared.Identity;
 using Rise.Shared.Identity.Accounts;
+using System.Security.Claims;
 
 namespace Rise.Services.Identity;
 
@@ -163,5 +164,31 @@ public class UserService(
             Email = user.Email!,
             Roles = (await userManager.GetRolesAsync(user)).ToArray()
         };
+    }
+    public async Task<Result<Guid>> TryGetCurrentUserIdAsync()
+    {
+        var user = sessionProvider.User;
+        if (user == null)
+            return Result.Unauthorized("User not authenticated: session user is null.");
+
+        var ssoClaim = user.FindFirstValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
+        var result = await GetOrCreateUserAsync(ssoClaim);
+
+        if (!result.IsSuccess)
+            return Result.Error("Could not resolve user from SSO claim.");
+
+        var email = result.Value.Email;
+        try
+        {
+            var userEntity = await userManager.Users.SingleOrDefaultAsync(u => u.Email == email);
+            if (userEntity == null)
+                return Result.Error("User not found in database.");
+            return Result.Success(userEntity.Id);
+        }
+        catch (InvalidOperationException)
+        {
+            return Result.Error($"Multiple users found with email: {email}. Data integrity violation.");
+        }
     }
 }

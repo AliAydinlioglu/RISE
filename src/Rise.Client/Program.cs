@@ -9,21 +9,32 @@ using Rise.Client.Contact;
 using Rise.Client.Courses;
 using Rise.Client.Identity;
 using Rise.Client.Offline;
+using Rise.Client.Identity;
+using Rise.Client.Offline;
 using Rise.Client.Products;
+using Rise.Client.Restaurant;
+using Rise.Client.Restaurant.Components;
 using Rise.Client.SchoolEvents;
+using Rise.Client.Services;
 using Rise.Client.Shared;
 using Rise.Client.StudentActivities;
+using Rise.Client.Theme;
+using Rise.Client.UserPreferences;
+using Rise.Client.UserPreferences.Services;
 using Rise.Shared;
 using Rise.Shared.Calendar;
 using Rise.Shared.Contact;
 using Rise.Shared.Courses;
+using Rise.Shared.Menu;
 using Rise.Shared.Notifications;
 using Rise.Shared.Products;
 using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
+using Rise.Client.Theme;
 using Rise.Client.Restaurant;
+using Rise.Shared.UserPreferences;
 using TG.Blazor.IndexedDB;
 using Rise.Shared.Menu;
 using Rise.Client.Services;
@@ -76,7 +87,8 @@ try
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
     builder.Services.AddSingleton<IEventStreamService, EventStreamService>();
-
+    builder.Services.AddSingleton<IThemingService, ThemingService>();
+    builder.Services.AddScoped<IUserPreferenceStateService, UserPreferenceStateService>();
     builder.Services.AddScoped<IPaginationStateService, PaginationStateService>();
     builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
     builder.Services.AddScoped<ICacheService, CacheService>();
@@ -127,11 +139,20 @@ try
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<RiseHttpMessageHandler>();
 
-    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client => { client.BaseAddress = baseUrl; })
-        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    
+    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-    builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; })
-        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+    builder.Services.AddHttpClient<IUserPreferenceService, UserPreferenceService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services
         .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })

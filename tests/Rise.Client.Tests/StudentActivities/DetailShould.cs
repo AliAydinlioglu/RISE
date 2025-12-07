@@ -1,5 +1,7 @@
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Rise.Shared.StudentActivities;
 using Shouldly;
 using Xunit.Abstractions;
@@ -15,6 +17,7 @@ public class DetailShould: TestContext
                 
         var pageTitleService = new FakePageTitleService();
         Services.AddScoped<IPageTitleService>(_ => pageTitleService);
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
     [Fact]

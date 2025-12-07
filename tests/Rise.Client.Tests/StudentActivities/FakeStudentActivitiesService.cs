@@ -28,13 +28,13 @@ public class FakeStudentActivitiesService : IStudentActivityService
 
     public Task<Result<StudentActivityResponse.Detail>> GetDetailByIdAsync(int id, CancellationToken ctx)
     {
-     
+
         var studentActivity = StudentActivityTestDataFactory.CreateTestActivities(
             1,
             StudentActivityTestDataFactory.CreateDefaultLocation(),
             StudentActivityTestDataFactory.CreateDefaultStudentClub()
         )[0];
-        
+
         var detailDto = Rise.Services.StudentActivities.StudentActivityService.ToDetailDto(studentActivity);
         return Task.FromResult(Result.Success(new StudentActivityResponse.Detail { StudentActivity = detailDto }));
     }
