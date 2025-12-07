@@ -154,6 +154,11 @@ try
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
+    builder.Services
+        .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>()
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
     builder.Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
 
     builder.Services.AddMudServices();
