@@ -98,7 +98,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
             .ContinueWith(task =>
             {
                 {
-                    userPreferenceService.GetPreferencesAsync(CancellationToken.None)
+                    userPreferenceService.TryGetPreferencesAsync(CancellationToken.None)
                         .ContinueWith(backend => setterCallback(backend.Result.Value.UserPreferences.Settings[key].ToString()))
                         .CatchAndLog();
                 } 
