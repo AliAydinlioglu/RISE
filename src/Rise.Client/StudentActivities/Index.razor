@@ -1,7 +1,6 @@
 @page "/student-activities"
+@inherits Rise.Client.Shared.PaginatedComponentBase
 
-
-<PageTitle>Studenten Activiteiten</PageTitle>
 <div class="container ">
     <RiseHeadTitle ImageUrl="/img/banner35.webp">Studenten activiteiten</RiseHeadTitle>
 </div>
@@ -20,7 +19,7 @@
             {
                 <article data-bunit="sa-index" class="mb-4 column  is-12-mobile is-6-tablet is-3-desktop ">
 
-                    <a href="#" @onclick="@(()=>NavigateToDetail(studentActivity.Id))" @onclick:preventDefault="true">
+                    <a href="#" @onclick="@(()=>NavigateToDetail(studentActivity.Id))" @onclick:preventDefault>
                         <!-- Desktop/Tablet: Vertical Card -->
                         <div class="is-hidden-mobile">
                             <RiseVerticalCard Date="studentActivity.Date.LocalDateTime" Title="@studentActivity.Title"
@@ -50,7 +49,7 @@
 
         </div>
         <RisePagination PageSize="PageSize" 
-                        CurrentPage="_currentPage" 
+                        CurrentPage="CurrentPage"
                         CurrentPageChanged="OnPageChangedAsync"
                         TotalPages="TotalPages"/>
     }

@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-
 namespace Rise.Client.Services;
 
 public interface IPaginationStateService
@@ -19,7 +17,7 @@ public class PaginationStateService : IPaginationStateService
 
     public int? GetPage(string key)
     {
-        return _pages.TryGetValue(key, out var page) ? page : null;
+        return _pages.TryGetValue(key, out var page) ? page : 1;
     }
 
 
