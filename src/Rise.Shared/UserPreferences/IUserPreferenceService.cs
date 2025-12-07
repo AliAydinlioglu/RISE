@@ -12,5 +12,6 @@ namespace Rise.Shared.UserPreferences
         Task<Result<string>> TryGetSinglePreferenceAsync(string key, CancellationToken ctx);
         Task<Result> TryUpdatePreferencesAsync(Dictionary<string, object> preferences, CancellationToken ctx);
         Task<Result> UpdateSinglePreferenceAsync(string key, object value, CancellationToken ctx);
+        Task<Result<UserPreferenceResponse.Defaults>> TryGetDefaultsAsync(CancellationToken ctx);
     }
 }

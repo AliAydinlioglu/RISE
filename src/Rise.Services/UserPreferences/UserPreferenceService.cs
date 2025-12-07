@@ -130,8 +130,24 @@ namespace Rise.Services.UserPreferences;
                 return Result.Error($"Failed to update preferences: {ex.Message}");
             }
         }
+    public Task<Result<UserPreferenceResponse.Defaults>> TryGetDefaultsAsync(CancellationToken ctx)
+    {
+        try
+        {
+            var defaults = new UserPreferenceResponse.Defaults
+            {
+                DefaultPreferences = new Dictionary<string, object>(UserPreferenceKeys.Defaults)
+            };
 
-        public async Task<Result> UpdateSinglePreferenceAsync(string key, object value, CancellationToken ctx)
+            return Task.FromResult(Result.Success(defaults));
+        }
+        catch (Exception ex)
+        {
+            return Task.FromResult(Result<UserPreferenceResponse.Defaults>.Error($"Failed to get defaults: {ex.Message}"));
+        }
+    }
+
+    public async Task<Result> UpdateSinglePreferenceAsync(string key, object value, CancellationToken ctx)
         {
             return await TryUpdatePreferencesAsync(new Dictionary<string, object> { [key] = value }, ctx);
         }

@@ -12,5 +12,9 @@ namespace Rise.Shared.UserPreferences
         {
             public UserPreferenceDto.Preferences UserPreferences { get; set; } = default!;
         }
+        public class Defaults
+        {
+            public Dictionary<string, object> DefaultPreferences { get; set; } = default!;
+        }
     }
 }
