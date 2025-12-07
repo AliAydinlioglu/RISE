@@ -7,6 +7,7 @@ using Rise.Client;
 using Rise.Client.Calendar;
 using Rise.Client.Contact;
 using Rise.Client.Courses;
+using Rise.Client.Identity;
 using Rise.Client.Offline;
 using Rise.Client.Identity;
 using Rise.Client.Offline;
