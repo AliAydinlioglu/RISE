@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using MudBlazor.Services;
 using Rise.Client.Faker;
 using Rise.Client.Layout;
@@ -22,6 +23,8 @@ namespace Rise.Client.Identity
             Services.AddScoped<INotificationService, FakeNotificationService>();
             Services.AddScoped<IConnectionService, FakeConnectionService>();
             Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
+            Services.AddScoped<IEventStreamService, FakeEventStreamService>();
+            Services.AddScoped<IAccessTokenProvider, FakeAccessTokenProvider>();
         }
 
         [Fact]
