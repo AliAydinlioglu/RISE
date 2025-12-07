@@ -19,7 +19,8 @@ public partial class RiseWeekCalendar
     [Parameter] public RiseWeekCalendarType CalendarType { get; set; } = RiseWeekCalendarType.Primary;
     [Parameter] public RiseWeekCalendarWidth CalendarWidth { get; set; } = RiseWeekCalendarWidth.Small;
     [Parameter] public bool ShowOnlySchoolDays { get; set; } = true;
-    
+    [Parameter] public bool ShowWeek { get; set; } = true;
+
     private async Task OnDateSelected(DateTime date)
     {
         SelectedDate = date;

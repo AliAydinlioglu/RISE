@@ -1,0 +1,16 @@
+@if (IsError)
+{
+    <div data-bunit="error-message">
+        <RiseNotification Severity="Error" Title="Fout">Er ging iets mis met het ophalen van deze informatie! Probeer later opnieuw</RiseNotification>
+    </div>
+}
+else if (IsLoading)
+{
+    <MudContainer Class="mt-8">
+        <RiseLoader/>
+    </MudContainer>
+}
+else
+{
+    @ChildContent
+}

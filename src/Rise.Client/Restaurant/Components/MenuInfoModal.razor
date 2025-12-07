@@ -1,0 +1,32 @@
+@using Rise.Client.Restaurant.Enums
+@using Rise.Client.Restaurant.Helpers
+<RiseModalOverlay Visible="Visible" VisibleChanged="HandleVisibilityChange" Title="Legenda" OnClose="HandleClose">
+        <div class="is-flex is-flex-direction-row is-justify-content-space-around">
+                <div class="is-flex is-flex-direction-column">
+                        <p class="has-text-weight-semibold mb-2">Allergenen</p>
+                        @foreach (var allergen in Enum.GetValues<Allergen>())
+                        {
+                                <div class="is-flex is-align-items-center gap-2">
+                                        <img src="@AllergenHelper.GetAllergenImage(allergen)"
+                                             alt="@AllergenHelper.GetAllergenName(allergen)" width="30px" height="30px"/>
+                                        <span>@AllergenHelper.GetAllergenName(allergen)</span>
+                                </div>
+                        }
+                </div>
+                <div>
+                        <p class="has-text-weight-semibold mb-2">Extra info</p>
+                        <div class="is-flex is-align-items-center gap-2">
+                                <MudIcon
+                                        Icon="@(DietaryRestrictionHelper.GetDietaryRestrictionIcon("Veganistisch"))"
+                                        Color="Color.Success"/>
+                                <span>Veganistisch</span>
+                        </div>
+                        <div class="is-flex is-align-items-center gap-2">
+                                <MudIcon
+                                        Icon="@(DietaryRestrictionHelper.GetDietaryRestrictionIcon("Vegetarisch"))"
+                                        Color="Color.Success"/>
+                                <span>Vegetarisch</span>
+                        </div>
+                </div>
+        </div>
+</RiseModalOverlay>

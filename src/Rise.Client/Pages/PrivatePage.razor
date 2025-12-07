@@ -1,6 +1,5 @@
 @page "/private"
 @attribute [Authorize]
-@using System.Security.Claims
 
 <PageTitle>Private Page</PageTitle>
 
@@ -21,21 +20,19 @@
         }
     </ul>
 }
+<h2>Roles</h2>
 
-@code {
-    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? AuthState { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (AuthState == null)
+@if (roles.Any())
+{
+    <ul>
+        @foreach (var role in roles)
         {
-            return;
+            <li>@role</li>
         }
-
-        var authState = await AuthState;
-        claims = authState.User.Claims;
-    }
+    </ul>
 }
+else
+{
+    <p><i>No roles assigned.</i></p>
+}
+

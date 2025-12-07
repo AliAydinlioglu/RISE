@@ -3,6 +3,7 @@ using Rise.Client.Shared;
 using Rise.Shared.SchoolEvents;
 using Shouldly;
 using Xunit.Abstractions;
+using Rise.Client.Services;
 
 namespace Rise.Client.SchoolEvents;
 
@@ -14,6 +15,9 @@ public class IndexShould : TestContext
     {
         Services.AddXunitLogger(outputHelper);
         Services.AddScoped<IPageTitleService>(_ => new FakePageTitleService());
+        Services.AddScoped<IPaginationStateService, FakePaginationStateService>();
+        
+        JSInterop.SetupVoid("window.scrollTo", _ => true);
     }
     
     [Fact]

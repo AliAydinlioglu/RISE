@@ -1,0 +1,11 @@
+<MudOverlay Visible="Visible" VisibleChanged="VisibleChanged" Class="mud-skip-overlay-section" AutoClose="true" DarkBackground="true">
+    <div class="modal-overlay @(Visible ? "visible" : "")">
+        <div class="modal-overlay-header">
+            <p class="is-hidden-tablet" data-bunit="modal-back-button" @onclick="OnClose"> &#8592; Terug</p>
+            <h3>@Title</h3>
+        </div>
+        <div class="modal-overlay-content is-flex is-flex-direction-column gap-2">
+            @ChildContent
+        </div>
+    </div>
+</MudOverlay>

@@ -6,13 +6,16 @@
     </div>
 
     <div class="columns is-mobile is-gapless">
+    @if (ShowWeek)
+    {
         <button class="button is-ghost pr-3" @onclick="OnPreviousWeek" style="text-decoration: none; @GetForegroundColorClass()">
             <span class="icon is-small">
                 <i class="fas fa-chevron-left"></i>
             </span>
         </button>
-        
-        @foreach (var day in GetSchooldaysOfCurrentWeek())
+    }
+
+    @foreach (var day in GetSchooldaysOfCurrentWeek())
         {
             var isSelected = day.Date == SelectedDate.Date;
             <div class="column is-flex is-justify-content-center is-align-items-center">
@@ -29,11 +32,13 @@
                 </button>
             </div>
         }
-
-        <button class="button is-ghost pl-3" @onclick="OnNextWeek" style="text-decoration: none; @GetForegroundColorClass()">
-            <span class="icon is-small">
-                <i class="fas fa-chevron-right"></i>
-            </span>
-        </button>
+        @if (ShowWeek)
+        {
+            <button class="button is-ghost pl-3" @onclick="OnNextWeek" style="text-decoration: none; @GetForegroundColorClass()">
+                <span class="icon is-small">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+            </button>
+        }
     </div>
 </div>

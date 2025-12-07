@@ -52,24 +52,28 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         await dbContext.DomainRoles.ToListAsync();
 
         var regularStudent = new ApplicationUser(
-            "regular@example.com", 
+            "regular@rise2526t2campusappoutlook.onmicrosoft.com", 
             "Regular", 
             "Student", 
             "TIN/TIAO-2", 
             DateTimeOffset.UtcNow, 
-            Guid.NewGuid(), 
-            "Microsoft Entra");
+            Guid.Parse("0b1720b9-f0e1-43fa-88ea-4b4fecd6352b"), 
+            SsoProviders.MicrosoftEntra);
+
         await userManager.CreateAsync(regularStudent);
-        
+        await userManager.AddToRoleAsync(regularStudent, nameof(AppRoles.RegularStudent));
+
         var distanceStudent = new ApplicationUser(
-            "distance@example.com", 
+            "distance@rise2526t2campusappoutlook.onmicrosoft.com", 
             "Distance", 
             "Student", 
             "TIN/TIAO-3", 
             DateTimeOffset.UtcNow, 
-            Guid.NewGuid(), 
-            "Microsoft Entra");
+            Guid.Parse("8efbf76c-571a-4f10-a720-f4f8e405e467"), 
+            SsoProviders.MicrosoftEntra);
+
         await userManager.CreateAsync(distanceStudent);
+        await userManager.AddToRoleAsync(distanceStudent, nameof(AppRoles.DistanceStudent));
 
         var wimDedulle = new ApplicationUser(
             "wim@rise2526t2campusappoutlook.onmicrosoft.com",
@@ -78,12 +82,22 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
             "TIN/TIAO-3",
             DateTimeOffset.UtcNow,
             Guid.Parse("08de2d04-12de-465b-81d8-0b798b03d28e"),
-            "Microsoft Entra");
-        await userManager.CreateAsync(wimDedulle);
+            SsoProviders.MicrosoftEntra);
 
-        await userManager.AddToRoleAsync(regularStudent, nameof(AppRoles.RegularStudent));
-        await userManager.AddToRoleAsync(distanceStudent,  nameof(AppRoles.DistanceStudent));
+        await userManager.CreateAsync(wimDedulle);
         await userManager.AddToRoleAsync(wimDedulle, nameof(AppRoles.DistanceStudent));
+
+        var andyWauters = new ApplicationUser(
+            "Andy@rise2526t2campusappoutlook.onmicrosoft.com",
+            "Andy",
+            "Wauters",
+            "TIN/TIAO-3",
+            DateTime.UtcNow,
+            Guid.Parse("a6bdaf82-1363-48c8-9af7-0e00fedc0a1b"),
+            SsoProviders.MicrosoftEntra);
+
+        await userManager.CreateAsync(andyWauters);
+        await userManager.AddToRoleAsync(andyWauters, nameof(AppRoles.DistanceStudent));
 
         await dbContext.SaveChangesAsync();
     }

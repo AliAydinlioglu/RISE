@@ -1,0 +1,35 @@
+﻿@page "/send-notification"
+
+<AuthorizeView>
+    <MudPaper Class="pa-4 mx-auto" MaxWidth="500px" Elevation="4">
+        <MudForm @ref="_form">
+            <MudText Typo="Typo.h5" Class="mb-4">Verstuur Notificatie</MudText>
+
+            <MudSelect T="string" Label="Type notificatie" @bind-Value="notification.TypeOfNotification" Required="true">
+                <MudSelectItem Value="@("Deadline")">Deadline</MudSelectItem>
+                <MudSelectItem Value="@("LectorAbsence")">Afwezigheid docent</MudSelectItem>
+                <MudSelectItem Value="@("Emergency")">Noodmelding</MudSelectItem>
+            </MudSelect>
+
+            <MudSelect T="string" Label="Niveau van notificatie" @bind-Value="notification.NotificationLevel" Required="true">
+                <MudSelectItem Value="@("Information")">Informatie</MudSelectItem>
+                <MudSelectItem Value="@("Warning")">Waarschuwing</MudSelectItem>
+                <MudSelectItem Value="@("Urgent")">Dringend</MudSelectItem>
+            </MudSelect>
+
+            <MudTextField @bind-Value="notification.MsgTitle" Label="Titel van bericht" Required="true" />
+            <MudTextField @bind-Value="notification.MsgBody" Label="Bericht" Required="true" Lines="3" />
+            <MudTextField @bind-Value="notification.LinkToAppPage" Label="Link naar app pagina" />
+            <MudSwitch T="bool" @bind-Checked="notification.IsRead" Color="Color.Primary" Label="Gelezen?" Class="mt-2" />
+
+            <MudButton OnClick="@(async () => await Submit())" Type="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">Verstuur</MudButton>
+        </MudForm>
+
+        @if (submitted)
+        {
+            <MudAlert Severity="Severity.Success" Class="mt-4">
+                Notificatie succesvol verzonden!
+            </MudAlert>
+        }
+    </MudPaper>
+</AuthorizeView>

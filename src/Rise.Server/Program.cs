@@ -1,5 +1,6 @@
 using Destructurama;
 using FastEndpoints.Swagger;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -81,7 +82,7 @@ try
                 s.Title = "RISE API";
             };
         });
-    
+
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowBlazorClient", policy =>
@@ -92,7 +93,13 @@ try
                 .AllowCredentials();
         });
     });
+
+
+    builder.Services.AddScoped<IClaimsTransformation, AppClaimsTransformation>();
+    builder.Services.AddMemoryCache();
+
     //builder.Services.AddHostedService<NotificationBackgroundService>();
+
     var app = builder.Build();
     // apply Database migraticons on startup, not so wise in production (Use Generated SQL Scripts) 
     // See: https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli

@@ -16,7 +16,6 @@ public class Index(RoleManager<ApplicationRole> roleManager) : EndpointWithoutRe
     public override void Configure()
     {
         Get("/api/identity/roles");
-        Roles(AppRoles.Administrator);
     }
 
     public override async Task<Result<List<KeyValuePair<Guid, string>>>> ExecuteAsync(CancellationToken ctx)

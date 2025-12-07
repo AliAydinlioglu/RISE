@@ -3,39 +3,31 @@ using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Shared.Common;
 using Rise.Shared.StudentActivities;
+using Rise.Client.Shared;
 
 namespace Rise.Client.StudentActivities;
 
-[HomeBlock(icon:@Icons.Material.Outlined.EventNote, label:"Activititeiten", route:"/student-activities")]
-public partial class Index
+[HomeBlock(icon: @Icons.Material.Outlined.EventNote, label: "Activititeiten", route: "/student-activities")]
+public partial class Index : PaginatedComponentBase
 {
-    private IEnumerable<StudentActivityDto.Index>? studentActivities;
+    private IEnumerable<StudentActivityDto.Index>? _studentActivities;
     [Inject] public required IStudentActivityService StudentActivityService { get; set; }
-    private int currentPage = 1;
-    private int pageSize = 8;
-    private int totalCount = 0;
-    private int totalPages => (int)Math.Ceiling((double)totalCount / pageSize);
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadStudentActivitiesAsync();
-    }
+    
+    protected override string PageKey => "student-activities-page";
+    protected override string RoutePrefix => "student-activities";
 
     private async Task LoadStudentActivitiesAsync()
     {
         var request = new QueryRequest.SkipTake
         {
-            Skip = (currentPage - 1) * pageSize,
-            Take = pageSize,
+            Skip = (CurrentPage - 1) * PageSize,
+            Take = PageSize,
         };
 
         var result = await StudentActivityService.GetIndexAsync(request, CancellationToken.None);
-        studentActivities = result.Value.StudentActivities;
-        totalCount = result.Value.TotalCount;
+        _studentActivities = result.Value.StudentActivities;
+        TotalCount = result.Value.TotalCount;
     }
-
-    private async Task OnPageChangedAsync(int page)
-    {
-        currentPage = page;
-        await LoadStudentActivitiesAsync();
-    }
+    protected override Task LoadDataAsync() => LoadStudentActivitiesAsync();
+    
 }

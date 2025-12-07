@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor;
 using MudBlazor.Services;
 using Rise.Client;
 using Rise.Client.Calendar;
+using Rise.Client.Contact;
 using Rise.Client.Courses;
+using Rise.Client.Identity;
+using Rise.Client.Offline;
 using Rise.Client.Products;
 using Rise.Client.SchoolEvents;
-using Rise.Client.StudentActivities;
 using Rise.Client.Shared;
+using Rise.Client.StudentActivities;
 using Rise.Shared;
 using Rise.Shared.Calendar;
+using Rise.Shared.Contact;
 using Rise.Shared.Courses;
 using Rise.Shared.Notifications;
 using Rise.Shared.Products;
@@ -18,8 +23,11 @@ using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
 using Rise.Shared.Contact;
 using Rise.Client.Contact;
-using Rise.Client.Offline;
+using Rise.Client.Restaurant;
 using TG.Blazor.IndexedDB;
+using Rise.Shared.Menu;
+using Rise.Client.Services;
+using Rise.Client.StudentActivities;
 using DateTimeService = Rise.Client.DateTimeService;
 
 try
@@ -44,7 +52,8 @@ try
         builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
         options.ProviderOptions.LoginMode = "redirect";
         options.ProviderOptions.Cache.CacheLocation = "localStorage";
-        options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
+        options.ProviderOptions.DefaultAccessTokenScopes.Add(
+            "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
     });
 
     builder.Services.AddIndexedDB(dbStore =>
@@ -52,7 +61,7 @@ try
         dbStore.DbName = "RiseCampusApp";
         dbStore.Version = 1;
         dbStore.Stores.Add(new StoreSchema
-            { Name = "RiseOfflineCache", PrimaryKey = new IndexSpec { KeyPath = "key"} });
+            { Name = "RiseOfflineCache", PrimaryKey = new IndexSpec { KeyPath = "key" } });
     });
 
     builder.Services.AddHttpClient("SecureApi", client => { client.BaseAddress = baseUrl; })
@@ -66,10 +75,40 @@ try
     builder.Services.AddSingleton<IPageTitleService, PageTitleService>();
     builder.Services.AddSingleton<IHomeBlockService, HomeBlockService>();
     builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
-    builder.Services.AddSingleton<IIndexedDbManager, RiseIndexedDbManager>();
-    builder.Services.AddSingleton<ICacheService, CacheService>();
-    builder.Services.AddSingleton<RiseHttpMessageHandler>();
-    builder.Services.AddSingleton<IConnectionService, ConnectionService>();
+    builder.Services.AddSingleton<IEventStreamService, EventStreamService>();
+
+    builder.Services.AddScoped<IPaginationStateService, PaginationStateService>();
+    builder.Services.AddScoped<IIndexedDbManager, RiseIndexedDbManager>();
+    builder.Services.AddScoped<ICacheService, CacheService>();
+    builder.Services.AddScoped<RiseHttpMessageHandler>();
+    builder.Services.AddScoped<IConnectionService, ConnectionService>();
+
+    builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
+    builder.Services.AddScoped<IFavouriteRestoService, FavouriteRestoService>();
+
+    builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    });
+
+    builder.Services.AddHttpClient<IRestoService, RestoService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    });
+    
+    builder.Services.AddHttpClient<IProductService, ProductService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddHttpClient<IMenuService, MenuService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+
+    builder.Services.AddHttpClient<IPriceListService, PriceListService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+
+    builder.Services.AddHttpClient<IRestoService, RestoService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
 
     builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
@@ -98,6 +137,8 @@ try
         .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+    builder.Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
 
     builder.Services.AddMudServices();
     await builder.Build().RunAsync();
