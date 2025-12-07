@@ -19,19 +19,21 @@ public class AppRoleStateService(IJSRuntime jsRuntime) : IAppRoleStateService
         if (!string.IsNullOrEmpty(json))
         {
             var roles = JsonSerializer.Deserialize<List<string>>(json);
-            SetRoles(roles);
+            await SetRolesAsync(roles);
         }
     }
 
-    public void SetRoles(IEnumerable<string>? roles)
+    public async Task SetRolesAsync(IEnumerable<string>? roles)
     {
         _roles = (roles ?? Array.Empty<string>()).ToArray();
+        await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "roles", JsonSerializer.Serialize(roles));
         _ = NotifyChanged();
     }
 
-    public void ClearRoles()
+    public async Task ClearRolesAsync()
     {
         _roles = Array.Empty<string>();
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "roles");
         _ = NotifyChanged();
     }
 

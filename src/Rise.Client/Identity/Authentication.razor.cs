@@ -4,7 +4,6 @@ using Rise.Shared.Identity.Accounts;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using System.Text.Json;
 
 namespace Rise.Client.Identity;
 
@@ -59,8 +58,7 @@ public partial class Authentication
 
                     var roles = result.Value?.Roles ?? [];
 
-                    AppRoleStateService.SetRoles(roles);
-                    await JSRuntime.InvokeVoidAsync("localStorage.setItem", "roles", JsonSerializer.Serialize(roles));
+                    await AppRoleStateService.SetRolesAsync(roles);
 
                     var returnUrl = await JSRuntime.InvokeAsync<string?>("localStorage.getItem", "loginReturnUrl");
 
@@ -196,8 +194,7 @@ public partial class Authentication
         // Clear storage ook bij normale logout
         await ClearAuthStorage();
 
-        AppRoleStateService.ClearRoles();
-        await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "roles");
+        await AppRoleStateService.ClearRolesAsync();
 
         showError = false;
         errorMessage = string.Empty;
