@@ -1,6 +1,8 @@
 ﻿using MudBlazor.Services;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 using Xunit.Abstractions;
 
 namespace Rise.Client.Campuses;
@@ -12,6 +14,7 @@ public class IndexShould : TestContext
         Services.AddXunitLogger(outputHelper);
         Services.AddScoped<IPageTitleService>(_ => new FakePageTitleService());
         Services.AddMudBlazorDialog();
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
     [Fact]

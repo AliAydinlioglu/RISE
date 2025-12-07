@@ -13,11 +13,6 @@ public class UserPreferenceService(
     IUserService userService)
     : IUserPreferenceService
 {
-
-        var userId = await userService.TryGetCurrentUserIdAsync();
-        return userId.Value;
-    }
-
     private async Task<Dictionary<string, object>> TryLoadPreferencesAsync(Guid userId, CancellationToken ctx)
     {
         try

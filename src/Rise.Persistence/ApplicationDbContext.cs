@@ -48,7 +48,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) :
     public DbSet<Exam> Exams => Set<Exam>();
     public DbSet<Announcement> Announcements => Set<Announcement>();
     public DbSet<Role> DomainRoles => Set<Role>();
-    public DbSet<NotificationSubscription> NotificationSubscriptions => Set<NotificationSubscription>();
     public DbSet<Allergen> Allergens =>  Set<Allergen>();
     public DbSet<DietaryRestriction> DietaryRestrictions => Set<DietaryRestriction>();
     public DbSet<MenuCategory> MenuCategories => Set<MenuCategory>();

@@ -6,6 +6,8 @@ using Rise.Shared.Menu;
 using Shouldly;
 using Xunit.Abstractions;
 using System.Globalization;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
 
 namespace Rise.Client.Restaurant;
 
@@ -24,6 +26,7 @@ public class IndexShould : MudBlazorTestSetup
         Services.AddScoped<IRestoService, FakeRestoService>();
         Services.AddScoped<IFavouriteRestoService, FakeFavouriteRestoService>();
         Services.AddScoped<IDateTimeService,Rise.Client.Faker.FakeDateTimeService>();
+        Services.AddScoped<IThemingService, FakeThemingService>();
     }
 
 
