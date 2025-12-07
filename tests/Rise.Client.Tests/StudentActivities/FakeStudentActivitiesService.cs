@@ -19,7 +19,7 @@ public class FakeStudentActivitiesService : IStudentActivityService
 
         var wrapper = new StudentActivityResponse.Index
         {
-            StudentActivities = studentActivities.Select(Services.StudentActivities.StudentActivityService.ToIndexDto).ToList(),
+            StudentActivities = studentActivities.Select(Rise.Services.StudentActivities.StudentActivityService.ToIndexDto).ToList(),
             TotalCount = 5,
         };
 
@@ -35,7 +35,7 @@ public class FakeStudentActivitiesService : IStudentActivityService
             StudentActivityTestDataFactory.CreateDefaultStudentClub()
         )[0];
         
-        var detailDto = Services.StudentActivities.StudentActivityService.ToDetailDto(studentActivity);
+        var detailDto = Rise.Services.StudentActivities.StudentActivityService.ToDetailDto(studentActivity);
         return Task.FromResult(Result.Success(new StudentActivityResponse.Detail { StudentActivity = detailDto }));
     }
 }
