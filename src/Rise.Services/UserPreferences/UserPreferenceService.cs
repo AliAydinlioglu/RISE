@@ -42,8 +42,12 @@ public class UserPreferenceService(
     {
         try
         {
-            var userId = await userService.TryGetCurrentUserIdAsync();
-            var preferences = await TryLoadPreferencesAsync(userId.Value, ctx);
+            var userIdResult = await userService.TryGetCurrentUserIdAsync();
+
+            if (!userIdResult.IsSuccess)
+                return Result<UserPreferenceResponse.Preferences>.Unauthorized("User not authenticated.");
+
+            var preferences = await TryLoadPreferencesAsync(userIdResult.Value, ctx);
 
             return Result.Success(new UserPreferenceResponse.Preferences
             {
@@ -56,11 +60,11 @@ public class UserPreferenceService(
         }
         catch (UnauthorizedAccessException)
         {
-            return Result.Unauthorized("User not authenticated.");
+            return Result<UserPreferenceResponse.Preferences>.Unauthorized("User not authenticated.");
         }
         catch (Exception ex)
         {
-            return Result.Error($"Failed to get preferences: {ex.Message}");
+            return Result<UserPreferenceResponse.Preferences>.Error($"Failed to get preferences: {ex.Message}");
         }
     }
 
@@ -68,11 +72,15 @@ public class UserPreferenceService(
     {
         try
         {
-            var userId = await userService.TryGetCurrentUserIdAsync();
+            var userIdResult = await userService.TryGetCurrentUserIdAsync();
+
+            if (!userIdResult.IsSuccess)
+                return Result<string>.Unauthorized("User not authenticated.");
+
             if (!UserPreferenceKeys.AllKeys.Contains(key))
                 return Result<string>.Error($"Invalid preference key: {key}");
 
-            var preferences = await TryLoadPreferencesAsync(userId.Value, ctx);
+            var preferences = await TryLoadPreferencesAsync(userIdResult.Value, ctx);
 
             if (preferences.TryGetValue(key, out var value))
             {
@@ -100,7 +108,10 @@ public class UserPreferenceService(
     {
         try
         {
-            var userId = await userService.TryGetCurrentUserIdAsync();
+            var userIdResult = await userService.TryGetCurrentUserIdAsync();
+
+            if (!userIdResult.IsSuccess)
+                return Result.Unauthorized("User not authenticated.");
 
             foreach (var key in updates.Keys)
             {
@@ -109,11 +120,11 @@ public class UserPreferenceService(
             }
 
             var entity = await dbContext.UserPreferences
-                .FirstOrDefaultAsync(p => p.UserId == userId.Value, ctx);
+                .FirstOrDefaultAsync(p => p.UserId == userIdResult.Value, ctx);
 
             if (entity == null)
             {
-                entity = new UserPreference(userId.Value, updates);
+                entity = new UserPreference(userIdResult.Value, updates);
                 dbContext.UserPreferences.Add(entity);
             }
             else

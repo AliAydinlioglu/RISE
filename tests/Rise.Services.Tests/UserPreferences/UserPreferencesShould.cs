@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.Result;
+using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using Rise.Persistence;
 using Rise.Services.Identity;
 using Rise.Services.UserPreferences;
-using Rise.Shared.UserPreferences;
-using System.Security.Claims;
-using System.Text.Json;
-using Ardalis.Result;
 using Rise.Shared.Identity;
+using Rise.Shared.UserPreferences;
+using Shouldly;
+using System.Text.Json;
 
 namespace Rise.Services.Tests.UserPreferences;
 
@@ -22,6 +22,7 @@ public class UserPreferenceServiceShould
     {
         _userService = Substitute.For<IUserService>();
 
+        // Default: authenticated user
         _userService.TryGetCurrentUserIdAsync()
             .Returns(Task.FromResult(Result.Success(_testUserId)));
     }
@@ -472,6 +473,93 @@ public class UserPreferenceServiceShould
         // Other settings should be preserved
         updatedSettings[UserPreferenceKeys.FontSize].GetInt32().ShouldBe(14);
         updatedSettings[UserPreferenceKeys.Language].GetString().ShouldBe("nl");
+    }
+
+    [Fact]
+    public async Task GetSinglePreference_ReturnsDefaultWhenKeyDoesNotExist()
+    {
+        // Arrange
+        using var dbContext = CreateDbContext(nameof(GetSinglePreference_ReturnsDefaultWhenKeyDoesNotExist));
+
+        var user = CreateTestUser();
+        dbContext.Users.Add(user);
+        await dbContext.SaveChangesAsync();
+
+        var service = new UserPreferenceService(dbContext, _userService);
+
+        // Act
+        var result = await service.TryGetSinglePreferenceAsync(UserPreferenceKeys.Theme, CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldBe(UserPreferenceKeys.Defaults[UserPreferenceKeys.Theme].ToString());
+    }
+
+    [Fact]
+    public async Task GetSinglePreference_ReturnsStoredValue()
+    {
+        // Arrange
+        using var dbContext = CreateDbContext(nameof(GetSinglePreference_ReturnsStoredValue));
+
+        var user = CreateTestUser();
+        dbContext.Users.Add(user);
+        await dbContext.SaveChangesAsync();
+
+        var preferences = new Dictionary<string, object>
+        {
+            { UserPreferenceKeys.Theme, "dark" }
+        };
+
+        var preference = new Rise.Domain.UserPreferences.UserPreference(_testUserId, preferences);
+        dbContext.UserPreferences.Add(preference);
+        await dbContext.SaveChangesAsync();
+
+        var service = new UserPreferenceService(dbContext, _userService);
+
+        // Act
+        var result = await service.TryGetSinglePreferenceAsync(UserPreferenceKeys.Theme, CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldContain("dark");
+    }
+
+    [Fact]
+    public async Task GetSinglePreference_ReturnsErrorForInvalidKey()
+    {
+        // Arrange
+        using var dbContext = CreateDbContext(nameof(GetSinglePreference_ReturnsErrorForInvalidKey));
+
+        var user = CreateTestUser();
+        dbContext.Users.Add(user);
+        await dbContext.SaveChangesAsync();
+
+        var service = new UserPreferenceService(dbContext, _userService);
+
+        // Act
+        var result = await service.TryGetSinglePreferenceAsync("invalidKey", CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.ShouldBeFalse();
+        result.Status.ShouldBe(ResultStatus.Error);
+    }
+
+    [Fact]
+    public async Task GetDefaults_ReturnsDefaultPreferences()
+    {
+        // Arrange
+        using var dbContext = CreateDbContext(nameof(GetDefaults_ReturnsDefaultPreferences));
+
+        var service = new UserPreferenceService(dbContext, _userService);
+
+        // Act
+        var result = await service.TryGetDefaultsAsync(CancellationToken.None);
+
+        // Assert
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.DefaultPreferences.ShouldNotBeNull();
+        result.Value.DefaultPreferences.ShouldContainKey(UserPreferenceKeys.Theme);
+        result.Value.DefaultPreferences.ShouldContainKey(UserPreferenceKeys.Language);
     }
 
     // Helper method to extract typed values from Settings dictionary

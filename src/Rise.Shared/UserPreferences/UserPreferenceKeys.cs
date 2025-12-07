@@ -22,13 +22,13 @@
             [FontSize] = 14,
             [Language] = "nl",
             [ImagesOff] = false,
-            [IsNeutral] = false,
+            [IsNeutral] = true,
             [IsRemote] = false,
             [NotifyDeadline] = true,
             [NotifySchoolEvent] = true,
             [NotifyEmergencies] = true,
             [NotifyCancelledClass] = true,
-            [FavoriteResto] = "1"
+            [FavoriteResto] = "Schoonmeersen B"
         };
 
         public static IEnumerable<string> AllKeys => Defaults.Keys;
