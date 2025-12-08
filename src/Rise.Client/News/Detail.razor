@@ -1,0 +1,76 @@
+@page "/news/{Id:int}"
+
+@if (newsItem == null)
+{
+    <MudContainer Class="mt-8">
+        <RiseLoader/>
+    </MudContainer>
+}
+else
+{
+<div data-bunit='news-detail' class="container is-widescreen detail-news">
+    <RiseBackButton NavigateTo="/news">Terug naar nieuws</RiseBackButton>
+    <div class="section">
+        <div class="is-hidden-mobile">
+            <RiseHeadTitle ImageUrl="/img/banner35.webp">@Title</RiseHeadTitle>
+        </div>
+        <div class="is-hidden-tablet">
+            <RiseHeadTitle ImageUrl="/img/banner35.webp">Nieuws</RiseHeadTitle>
+        </div>
+
+        <div class="content">
+            <div class="box">
+                <div data-bunit='news-detail-summary' class="field mb-5">
+                    <p class="is-size-6 has-text-weight-bold">@Summary</p>
+                </div>
+
+                <div class="news-detail-columns">
+                    <div class="news-detail-left">
+                        <div data-bunit='news-detail-content-left' class="field">
+                            @foreach (var item in LeftColumnItems)
+                            {
+                                @if (item.IsContent)
+                                {
+                                    <div class="mb-4">
+                                        <p>@((MarkupString)item.Content)</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="news-detail-image-item mb-4">
+                                        <figure class="image">
+                                            <img src="@item.ImageUrl" alt="News image">
+                                        </figure>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="news-detail-right">
+                        <div data-bunit='news-detail-content-right' class="field">
+                            @foreach (var item in RightColumnItems)
+                            {
+                                @if (item.IsContent)
+                                {
+                                    <div class="mb-4">
+                                        <p>@((MarkupString)item.Content)</p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="news-detail-image-item mb-4">
+                                        <figure class="image">
+                                            <img src="@item.ImageUrl" alt="News image">
+                                        </figure>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

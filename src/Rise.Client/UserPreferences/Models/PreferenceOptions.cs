@@ -22,5 +22,24 @@
             public string Name { get; set; } = string.Empty;
             public bool IsFavorite { get; set; }
         }
+
+        public static string GetNotificationTypeDisplayName(string notificationType) =>
+            notificationType switch
+            {
+                "Deadline" => "Deadlines",
+                "SchoolEvent" => "School evenementen",
+                "Emergency" => "Noodmeldingen",
+                "CancelledClass" => "Geannuleerde lessen",
+                "LectorAbsence" => "Afwezigheid lectoren",
+                _ => notificationType
+            };
+
+        public static string GetChannelDisplayName(string channelName) =>
+            channelName switch
+            {
+                "InApp" => "In-app notificatie",
+                "PushNotification" => "Push notificatie",
+                _ => channelName
+            };
     }
 }

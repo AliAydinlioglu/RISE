@@ -39,6 +39,8 @@ using TG.Blazor.IndexedDB;
 using Rise.Shared.Menu;
 using Rise.Client.Services;
 using Rise.Client.StudentActivities;
+using Rise.Client.News;
+using Rise.Shared.News;
 using DateTimeService = Rise.Client.DateTimeService;
 
 try
@@ -144,6 +146,17 @@ try
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
     
+    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    });
+    
+    builder.Services.AddHttpClient<INewsService, NewsService>(client =>
+    {
+        client.BaseAddress = baseUrl;
+    }).AddHttpMessageHandler<RiseHttpMessageHandler>();
+    builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
     builder.Services.AddHttpClient<IContactService, ContactService>(client =>
     {
         client.BaseAddress = baseUrl;

@@ -1,24 +1,29 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Components;
-using Rise.Client.Theme;
 using Rise.Client.Layout;
+using Rise.Client.Theme;
 using Rise.Client.UserPreferences.Models;
 using Rise.Client.UserPreferences.Services;
+using Rise.Shared.Notifications;
 using Rise.Shared.UserPreferences;
+using System.Text.Json;
 using static Rise.Client.UserPreferences.Models.PreferenceOptions;
+using static Rise.Shared.Notifications.SubscribeRequest;
+using static Rise.Shared.Notifications.SubscriptionDto;
 
 namespace Rise.Client.UserPreferences;
 
 public partial class Settings : IDisposable
 {
     [Inject] private IUserPreferenceStateService PreferenceState { get; set; } = default!;
-    [Inject] private IUserPreferenceService UserPreferenceService { get; set; } = default!;
     [Inject] private IThemingService ThemingService { get; set; } = default!;
     [Inject] private ISnackbar Snackbar { get; set; } = default!;
     [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Inject] private INotificationService NotificationService { get; set; } = default!;
 
+    private IEnumerable<SubscriptionDto.Settings> NotificationSettings { get; set; } = [];
+    private bool IsLoadingNotifications { get; set; } = true;
     private bool PreviewCollapsed { get; set; }
     private bool NotificationsExpanded { get; set; }
     private (string Title, string Message, Severity Severity) Status { get; set; } = ("", "", Severity.Info);
@@ -136,8 +141,8 @@ public partial class Settings : IDisposable
         PreferenceState.OnStateChanged += StateHasChanged;
 
         await PreferenceState.InitializeAsync();
-
         await LoadPreferences();
+        await LoadNotificationSettings();
 
         UpdateThemingServiceFromPreferences();
     }
@@ -182,6 +187,93 @@ public partial class Settings : IDisposable
                 : "Onbekende fout";
 
             ShowError("Fout bij laden", $"Kon voorkeuren niet laden: {errorMessage}");
+        }
+    }
+
+    private async Task LoadNotificationSettings()
+    {
+        IsLoadingNotifications = true;
+        try
+        {
+            var result = await NotificationService.SubscriptionSettings();
+            if (result.IsSuccess && result.Value != null)
+            {
+                NotificationSettings = result.Value.Settings;
+            }
+            else
+            {
+                ShowError("Fout bij laden", "Kon notificatie-instellingen niet laden");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowError("Fout bij laden", $"Fout bij laden van notificaties: {ex.Message}");
+        }
+        finally
+        {
+            IsLoadingNotifications = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnChannelChanged(string notificationType, NotificationChannelDto channel, bool subscribe)
+    {
+        channel.IsSubscribed = subscribe;
+        StateHasChanged();
+
+        try
+        {
+            if (subscribe)
+            {
+                var result = await NotificationService.SubscribeToNotification(new Subscribe
+                {
+                    Channels = new NotificationChannels
+                    {
+                        InApp = channel.Name == "InApp",
+                        Push = channel.Name == "PushNotification" ? new PushNotification() : null
+                    },
+                    NotificationType = notificationType,
+                });
+
+                if (result.IsSuccess)
+                {
+                    Snackbar.Add($"Geabonneerd op {GetChannelDisplayName(channel.Name)}", Severity.Success);
+                }
+                else
+                {
+                    channel.IsSubscribed = false;
+                    var errorMessage = result.Errors.Any() ? string.Join(", ", result.Errors) : "Onbekende fout";
+                    ShowError("Fout", $"Kon niet abonneren: {errorMessage}");
+                }
+            }
+            else
+            {
+                var result = await NotificationService.UnsubscribeFromNotification(new UnsubscribeRequest.Unsubscribe
+                {
+                    NotificationChannel = channel.Name,
+                    NotificationType = notificationType
+                });
+
+                if (result.IsSuccess)
+                {
+                    Snackbar.Add($"Uitgeschreven van {GetChannelDisplayName(channel.Name)}", Severity.Info);
+                }
+                else
+                {
+                    channel.IsSubscribed = true;
+                    var errorMessage = result.Errors.Any() ? string.Join(", ", result.Errors) : "Onbekende fout";
+                    ShowError("Fout", $"Kon niet uitschrijven: {errorMessage}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            channel.IsSubscribed = !subscribe;
+            ShowError("Fout", $"Kon notificatie-instelling niet opslaan: {ex.Message}");
+        }
+        finally
+        {
+            StateHasChanged();
         }
     }
 

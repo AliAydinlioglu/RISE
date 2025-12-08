@@ -104,6 +104,14 @@
     background: var(--mud-palette-background-grey);
     border-radius: 8px;
 }
+.notification-type-group {
+    border-left: 3px solid var(--mud-palette-primary);
+    padding-left: 12px;
+}
+
+.notification-item.ps-3 {
+    padding-left: 1rem;
+}
 /* Fixed Action Buttons */
 .settings-actions-fixed {
     position: fixed;

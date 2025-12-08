@@ -26,6 +26,7 @@ using Rise.Shared.StudentActivities;
 using Rise.Shared.User;
 using Rise.Shared.StudentActivities;
 using Rise.Services.Identity;
+using Rise.Services.News;
 using Rise.Services.Menu;
 using Rise.Shared.Courses;
 using Rise.Shared.Identity;
@@ -33,6 +34,7 @@ using Rise.Shared.SchoolEvents;
 using Rise.Services.SchoolEvents;
 using Rise.Shared.Notifications;
 using Rise.Services.Notifications;
+using Rise.Shared.News;
 using Rise.Shared.Menu;
 using Rise.Shared.UserPreferences;
 
@@ -66,6 +68,7 @@ public static class ServiceCollectionExtensions
         // Add other application services here.
         services.AddScoped<IStudentActivityService, StudentActivityService>();
         services.AddScoped<ISchoolEventService, SchoolEventService>();
+        services.AddScoped<INewsService, NewsService>();
         return services;
     }
 }

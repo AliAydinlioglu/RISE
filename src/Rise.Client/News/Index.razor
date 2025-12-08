@@ -1,0 +1,45 @@
+@page "/news"
+
+<PageTitle>Nieuws</PageTitle>
+<div class="container">
+    <RiseHeadTitle ImageUrl="/img/banner35.webp">Nieuws</RiseHeadTitle>
+</div>
+<section class="mt-5 container news">
+    <AsyncData IsLoading="_isLoading" IsError="_isError">
+        @if (newsItems != null && newsItems.Any())
+        {
+            <div class="news-items-container">
+
+            @foreach (var newsItem in newsItems)
+            {
+                <article data-bunit="news-index" class="news-item-row mb-4">
+                    <a href="/news/@newsItem.Id" class="news-item-link">
+                        <div class="news-item-content">
+                            <div class="news-item-title-section"
+                                 style="@(!string.IsNullOrEmpty(newsItem.ImageUrls?.FirstOrDefault()) ? $"background-image: url('{newsItem.ImageUrls.FirstOrDefault()}');" : "")">
+                                <div class="news-item-overlay"></div>
+                                <h2 class="news-item-title has-text-weight-bold">@newsItem.Title</h2>
+                            </div>
+                            <div class="news-item-text">
+                                <p class="news-item-summary mb-3">@newsItem.Summary</p>
+                            </div>
+                            <div class="news-item-date">
+                                <span>@newsItem.PublishedAt.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <div class="news-item-more-details">
+                                <span class="has-text-weight-bold">Meer details →</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            }
+
+        </div>
+        <RisePagination CurrentPage="currentPage"
+                        PageSize="pageSize"
+                        TotalPages="totalPages"
+                        CurrentPageChanged="OnPageChangedAsync"/>
+        }
+    </AsyncData>
+</section>
+
