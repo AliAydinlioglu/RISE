@@ -35,32 +35,10 @@
             }
 
         </div>
-        <section class="section pagination-section">
-            <nav class="pagination is-rounded is-centered" role="navigation">
-                <button class="pagination-previous"
-                        disabled="@(currentPage <= 1)"
-                        @onclick="() => OnPageChangedAsync(currentPage - 1)">
-                    Previous
-                </button>
-                <button class="pagination-next"
-                        disabled="@(currentPage >= totalPages)"
-                        @onclick="() => OnPageChangedAsync(currentPage + 1)">
-                    Next
-                </button>
-                <ul class="pagination-list">
-                    @for (int i = 1; i <= totalPages; i++)
-                    {
-                        var pageNumber = i;
-                        <li>
-                            <button class="pagination-link @(currentPage == pageNumber ? "is-current" : "")"
-                                    @onclick="() => OnPageChangedAsync(pageNumber)">
-                                @pageNumber
-                            </button>
-                        </li>
-                    }
-                </ul>
-            </nav>
-        </section>
+        <RisePagination CurrentPage="currentPage"
+                        PageSize="pageSize"
+                        TotalPages="totalPages"
+                        CurrentPageChanged="OnPageChangedAsync"/>
         }
     </AsyncData>
 </section>
