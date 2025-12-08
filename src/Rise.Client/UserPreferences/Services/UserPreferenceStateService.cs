@@ -36,8 +36,8 @@ public class UserPreferenceStateService : IUserPreferenceStateService
 
     public string Theme
     {
-        get => GetPreference<string>(UserPreferenceKeys.Theme);
-        set => SetPreference(UserPreferenceKeys.Theme, value);
+        get => GetPreference<string>(UserPreferenceKeys.DarkMode);
+        set => SetPreference(UserPreferenceKeys.DarkMode, value);
     }
 
     public bool IsDarkTheme
@@ -70,11 +70,11 @@ public class UserPreferenceStateService : IUserPreferenceStateService
         set => SetPreference(UserPreferenceKeys.Language, value);
     }
 
-    public string FavoriteResto
-    {
-        get => GetPreference<string>(UserPreferenceKeys.FavoriteResto);
-        set => SetPreference(UserPreferenceKeys.FavoriteResto, value);
-    }
+public int FavoriteResto
+{
+    get => GetPreference<int>(UserPreferenceKeys.FavoriteResto);
+    set => SetPreference(UserPreferenceKeys.FavoriteResto, value);
+}
 
     public bool NotifyDeadline
     {
@@ -109,8 +109,14 @@ public class UserPreferenceStateService : IUserPreferenceStateService
             if (result.IsSuccess && result.Value != null)
             {
                 var prefs = result.Value.UserPreferences.Settings;
-                CurrentPreferences = new(prefs);
-                OriginalPreferences = new(prefs);
+
+                foreach (var pref in prefs)
+                {
+                    CurrentPreferences[pref.Key] = pref.Value;
+                }
+
+                OriginalPreferences = new Dictionary<string, object>(CurrentPreferences);
+
                 NotifyStateChanged();
                 return Result.Success();
             }
@@ -163,10 +169,19 @@ public class UserPreferenceStateService : IUserPreferenceStateService
         if (defaultsResult.IsSuccess && defaultsResult.Value?.DefaultPreferences != null)
         {
             _defaultPreferences = new Dictionary<string, object>(defaultsResult.Value.DefaultPreferences);
+            if (!CurrentPreferences.Any())
+            {
+                CurrentPreferences = new Dictionary<string, object>(_defaultPreferences);
+            }
         }
         else
         {
-            _defaultPreferences = new Dictionary<string, object>();
+            _defaultPreferences = new Dictionary<string, object>(UserPreferenceKeys.Defaults);
+
+            if (!CurrentPreferences.Any())
+            {
+                CurrentPreferences = new Dictionary<string, object>(UserPreferenceKeys.Defaults);
+            }
         }
 
         await LoadRestosAsync(cancellationToken);
@@ -188,9 +203,10 @@ public class UserPreferenceStateService : IUserPreferenceStateService
             if (result.IsSuccess && result.Value?.Restos != null)
             {
                 AvailableRestos = result.Value.Restos
+                    .Where(r => r.Id.HasValue)
                     .Select(r => new PreferenceOptions.RestoOption
                     {
-                        Id = r.Name, 
+                        Id = r.Id!.Value,
                         Name = r.Name,
                         IsFavorite = r.IsFavorite
                     })
@@ -227,14 +243,18 @@ public class UserPreferenceStateService : IUserPreferenceStateService
     public T GetPreference<T>(string key)
     {
         if (!CurrentPreferences.TryGetValue(key, out var value))
-            return GetDefaultValue<T>(key);
+        {
+            var defaultValue = GetDefaultValue<T>(key);
+            return defaultValue;
+        }
 
-        return value switch
+        var result = value switch
         {
             JsonElement je => DeserializeJsonElement<T>(je),
             T typedValue => typedValue,
             _ => TryConvert(value, GetDefaultValue<T>(key))
         };
+        return result;
     }
 
     public void SetPreference<T>(string key, T value)

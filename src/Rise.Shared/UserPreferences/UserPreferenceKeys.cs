@@ -2,7 +2,7 @@
 {
     public static class UserPreferenceKeys
     {
-        public const string Theme = "theme";
+        public const string DarkMode = "theme";
         public const string FontSize = "fontSize";
         public const string Language = "language";
         public const string ImagesOff = "imagesOff";
@@ -18,17 +18,17 @@
 
         public static readonly Dictionary<string, object> Defaults = new()
         {
-            [Theme] = "light",
+            [DarkMode] = "light",
             [FontSize] = 14,
             [Language] = "nl",
-            [ImagesOff] = false,
+            [ImagesOff] = true,
             [IsNeutral] = true,
             [IsRemote] = false,
             [NotifyDeadline] = true,
             [NotifySchoolEvent] = true,
             [NotifyEmergencies] = true,
             [NotifyCancelledClass] = true,
-            [FavoriteResto] = "Schoonmeersen B"
+            [FavoriteResto] = 3
         };
 
         public static IEnumerable<string> AllKeys => Defaults.Keys;

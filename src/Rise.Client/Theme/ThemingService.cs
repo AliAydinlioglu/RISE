@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
@@ -29,7 +29,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         set
         {
             _theme = value;
-            AsyncToLocalStorage( UserPreferenceKeys.Theme, value);
+            AsyncToLocalStorage( UserPreferenceKeys.DarkMode, value);
         }
     }
     
@@ -63,7 +63,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
             AsyncToLocalStorage(UserPreferenceKeys.IsNeutral, value);
         }
     }
-    private bool _isNeutral = false;
+    private bool _isNeutral = true;
 
     public bool IsDarkMode
     {
@@ -81,10 +81,10 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     
     public void Initialize()
     {
-        LoadThemeFromStorage(UserPreferenceKeys.Theme, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
-        LoadThemeFromStorage("darkmode", darkmode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkmode?.ToLower() ?? "false")); // does not exist on backend yet
+        LoadThemeFromStorage(UserPreferenceKeys.DarkMode, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
+        LoadThemeFromStorage(UserPreferenceKeys.DarkMode, darkmode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkmode?.ToLower() ?? "false")); // does not exist on backend yet
         LoadThemeFromStorage(UserPreferenceKeys.ImagesOff, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff?.ToLower() ?? "false")); 
-        LoadThemeFromStorage(UserPreferenceKeys.IsNeutral, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "false"));
+        LoadThemeFromStorage(UserPreferenceKeys.IsNeutral, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "true"));
         // load theme from user preferences
     }
 

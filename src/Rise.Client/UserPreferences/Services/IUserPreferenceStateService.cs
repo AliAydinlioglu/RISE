@@ -18,7 +18,7 @@ public interface IUserPreferenceStateService
     bool IsNeutral { get; set; }
     bool IsRemote { get; set; }
     string Language { get; set; }
-    string FavoriteResto { get; set; }
+    int FavoriteResto { get; set; }
 
     bool NotifyDeadline { get; set; }
     bool NotifySchoolEvent { get; set; }
