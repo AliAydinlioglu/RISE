@@ -30,10 +30,6 @@ using Rise.Shared.Notifications;
 using Rise.Shared.Products;
 using Rise.Shared.SchoolEvents;
 using Rise.Shared.StudentActivities;
-using Rise.Shared.Contact;
-using Rise.Client.Contact;
-using Rise.Client.Theme;
-using Rise.Client.Restaurant;
 using Rise.Shared.UserPreferences;
 using TG.Blazor.IndexedDB;
 using Rise.Shared.Menu;
@@ -67,7 +63,7 @@ try
         options.ProviderOptions.Cache.CacheLocation = "localStorage";
         options.ProviderOptions.DefaultAccessTokenScopes.Add(
             "api://8ae1a8dc-c2c6-44c9-bed8-7bbce3f84590/access_as_user");
-    });
+    }).AddAccountClaimsPrincipalFactory<RemoteAuthenticationState,RemoteUserAccount, CustomAccountClaimsPrincipalFactory>();
 
     builder.Services.AddIndexedDB(dbStore =>
     {
@@ -146,11 +142,6 @@ try
         client.BaseAddress = baseUrl;
     }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
     
-    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    });
-    
     builder.Services.AddHttpClient<INewsService, NewsService>(client =>
     {
         client.BaseAddress = baseUrl;
@@ -171,8 +162,6 @@ try
         .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
-    builder.Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
 
     builder.Services.AddMudServices();
     await builder.Build().RunAsync();

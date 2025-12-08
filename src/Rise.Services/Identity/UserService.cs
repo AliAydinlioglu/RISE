@@ -191,4 +191,34 @@ public class UserService(
             return Result.Error($"Multiple users found with email: {email}. Data integrity violation.");
         }
     }
+
+    public async Task<Result<AccountResponse.Roles>> GetUserRolesAsync()
+    {
+        var claimsPrincipal = sessionProvider.User;
+
+        if (claimsPrincipal is not { Identity.IsAuthenticated: true })
+            return Result.Unauthorized("User is not authenticated");
+
+        var email = claimsPrincipal.GetEmail();
+
+        if (string.IsNullOrWhiteSpace(email))
+            return Result.Error("Email is required");
+
+        var oidString = claimsPrincipal.GetOid();
+
+        if (!Guid.TryParse(oidString, out var oidGuid))
+            return Result.Error("Oid is invalid");
+
+        var user = await GetApplicationUserAsync(oidGuid, SsoProviders.MicrosoftEntra, email);
+
+        if (user == null)
+            return Result.NotFound("User is not found");
+
+        var userRoles = await userManager.GetRolesAsync(user);
+
+        return Result.Success(new AccountResponse.Roles
+        {
+            Values = userRoles?.ToArray() ?? []
+        });
+    }
 }

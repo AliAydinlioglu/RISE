@@ -19,13 +19,6 @@ public partial class MainLayout
     private Task<AuthenticationState>? AuthenticationState { get; set; }
     private MudTheme _mytheme = new MudTheme();
 
-    [Inject] private IAppRoleStateService AppRoleStateService { get; set; } = null!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await AppRoleStateService.InitializeAsync();
-    }
-
     private void GoToAccountSettings()
     {
         NavigationManager.NavigateTo("/settings");

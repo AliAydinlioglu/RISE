@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Routing;
 using MudBlazor;
+using Rise.Shared.Identity;
 
 namespace Rise.Client.Layout;
 
@@ -32,9 +34,18 @@ public partial class Navigation : ComponentBase
 
     [Inject] public NavigationManager MyNavigationManager { get; set; } = null!;
 
-    override protected void OnInitialized()
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    override protected async Task OnInitializedAsync()
     {
         MyNavigationManager.LocationChanged += (_, _) => StateHasChanged();
+
+        var authState = await AuthenticationStateTask;
+        var user = authState.User;
+
+        Log.Information("Claims => " + string.Join(",",user.Claims.Select(c => c.ValueType + ": " + c.Value)));
+        Log.Information("DistanceStudent: " + user.IsInRole(nameof(AppRoles.DistanceStudent)).ToString());
     }
 
     private bool IsHomePage()
