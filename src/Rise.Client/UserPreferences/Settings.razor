@@ -26,8 +26,6 @@
             {
                 <div class="preview-card-wrapper">
                     <div class="container">
-            <MudText Typo="Typo.h6" Class="mb-2">Voorvertoning</MudText>
-
                         <RiseCard Date="@PreviewDate"
                                   Title="@PreviewTitle"
                                   Description="@PreviewCategory"
@@ -82,7 +80,7 @@
                 </div>
 
                 @* Campus/Remote Setting *@
-@*                 Kan teruggezet worden als we er iets mee doen
+                @*                 Kan teruggezet worden als we er iets mee doen
                 <div class="setting-item mb-4">
                     <div class="d-flex justify-space-between align-center">
                         <MudText Typo="Typo.subtitle1">Campus</MudText>
@@ -99,21 +97,21 @@
                 <div class="setting-item mb-4">
                     <MudText Typo="Typo.subtitle1" Class="mb-2">Taal</MudText>
                     <div class="select-full-width">
-                    <MudSelect T="LanguageOption"
-                               @bind-Value="CurrentLanguageOption"
-                               Variant="Variant.Outlined"
+                        <MudSelect T="LanguageOption"
+                                   @bind-Value="CurrentLanguageOption"
+                                   Variant="Variant.Outlined"
                                    FullWidth="true"
                                    AnchorOrigin="Origin.BottomCenter"
                                    TransformOrigin="Origin.TopCenter"
                                    PopoverClass="fix-popover-offset">
-                        @foreach (var lang in AvailableLanguages)
-                        {
-                            <MudSelectItem T="LanguageOption" Value="@lang">
-                                @lang.DisplayName
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                </div>
+                            @foreach (var lang in AvailableLanguages)
+                            {
+                                <MudSelectItem T="LanguageOption" Value="@lang">
+                                    @lang.DisplayName
+                                </MudSelectItem>
+                            }
+                        </MudSelect>
+                    </div>
                 </div>
 
                 @* Default Campus Setting *@
@@ -133,19 +131,19 @@
                         <div class="select-full-width">
                             <MudSelect T="PreferenceOptions.RestoOption"
                                        @bind-Value="CurrentRestoOption"
-                               Variant="Variant.Outlined"
+                                       Variant="Variant.Outlined"
                                        FullWidth="true"
                                        AnchorOrigin="Origin.BottomCenter"
                                        TransformOrigin="Origin.TopCenter"
                                        PopoverClass="fix-popover-offset">
                                 @foreach (var resto in AvailableRestos)
-                        {
+                                {
                                     <MudSelectItem T="PreferenceOptions.RestoOption" Value="@resto">
                                         @resto.Name
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                </div>
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+                        </div>
                     }
                     else
                     {
@@ -154,7 +152,6 @@
                         </MudText>
                     }
                 </div>
-
                 <div class="setting-item mb-4">
                     <div class="clickable-row" @onclick="ToggleNotifications">
                         <div class="d-flex justify-space-between align-center">
@@ -166,33 +163,47 @@
                     @if (NotificationsExpanded)
                     {
                         <div class="notification-options mt-3">
-                            <div class="notification-item">
-                                <MudText Typo="Typo.body1">Deadlines</MudText>
-                                <MudSwitch @bind-Value="NotifyDeadline"
-                                           Color="Color.Primary"
-                                           UnCheckedColor="Color.Default" />
-                            </div>
-                            <div class="notification-item">
-                                <MudText Typo="Typo.body1">School evenementen</MudText>
-                                <MudSwitch @bind-Value="NotifySchoolEvent"
-                                           Color="Color.Primary"
-                                           UnCheckedColor="Color.Default" />
-                            </div>
-                            <div class="notification-item">
-                                <MudText Typo="Typo.body1">Noodmeldingen</MudText> 
-                                <MudSwitch @bind-Value="NotifyEmergencies"
-                                           Color="Color.Primary"
-                                           UnCheckedColor="Color.Default" />
-                            </div>
-                            <div class="notification-item">
-                                <MudText Typo="Typo.body1">Geannuleerde lessen</MudText>
-                                <MudSwitch @bind-Value="NotifyCancelledClass"
-                                           Color="Color.Primary"
-                                           UnCheckedColor="Color.Default" />
-                            </div>
+                            @if (IsLoadingNotifications)
+                            {
+                                <div class="d-flex justify-center align-center" style="padding: 20px;">
+                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                                </div>
+                            }
+                            else if (NotificationSettings.Any())
+                            {
+                                @foreach (var setting in NotificationSettings)
+                                {
+                                    <div class="notification-type-group mb-3">
+                                        <MudText Typo="Typo.body2" Class="mb-2" Style="font-weight: 600;">
+                                            @GetNotificationTypeDisplayName(setting.TypeOfNotification)
+                                        </MudText>
+
+                                        @foreach (var channel in setting.Channels)
+                                        {
+                                            <div class="notification-item ps-3">
+                                                <MudText Typo="Typo.body2">
+                                                    @GetChannelDisplayName(channel.Name)
+                                                </MudText>
+                                                <MudSwitch T="bool"
+                                                           Value="@channel.IsSubscribed"
+                                                           ValueChanged="@(async (bool value) => await OnChannelChanged(setting.TypeOfNotification, channel, value))"
+                                                           Color="Color.Primary"
+                                                           UnCheckedColor="Color.Default" />
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Error">
+                                    Geen notificatie-instellingen beschikbaar
+                                </MudText>
+                            }
                         </div>
                     }
                 </div>
+
 
                 @if (!string.IsNullOrEmpty(StatusMessage))
                 {
