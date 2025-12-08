@@ -85,7 +85,7 @@ public class UserPreferenceServiceShould
 
         var preferences = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "dark" },
+            { UserPreferenceKeys.DarkMode, "dark" },
             { UserPreferenceKeys.FontSize, 18 },
             { UserPreferenceKeys.Language, "en" },
             { UserPreferenceKeys.NotifyDeadline, false }
@@ -106,7 +106,7 @@ public class UserPreferenceServiceShould
         var settings = result.Value.UserPreferences.Settings;
 
         // Handle JsonElement deserialization
-        GetSettingValue<string>(settings, UserPreferenceKeys.Theme).ShouldBe("dark");
+        GetSettingValue<string>(settings, UserPreferenceKeys.DarkMode).ShouldBe("dark");
         GetSettingValue<int>(settings, UserPreferenceKeys.FontSize).ShouldBe(18);
         GetSettingValue<string>(settings, UserPreferenceKeys.Language).ShouldBe("en");
         GetSettingValue<bool>(settings, UserPreferenceKeys.NotifyDeadline).ShouldBe(false);
@@ -145,7 +145,7 @@ public class UserPreferenceServiceShould
 
         var settings = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "dark" },
+            { UserPreferenceKeys.DarkMode, "dark" },
             { UserPreferenceKeys.FontSize, 16 },
             { UserPreferenceKeys.Language, "en" },
             { UserPreferenceKeys.NotifyDeadline, false }
@@ -165,7 +165,7 @@ public class UserPreferenceServiceShould
         // Parse JSON and verify
         var savedSettings = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(savedPreference.PreferencesJson);
         savedSettings.ShouldNotBeNull();
-        savedSettings[UserPreferenceKeys.Theme].GetString().ShouldBe("dark");
+        savedSettings[UserPreferenceKeys.DarkMode].GetString().ShouldBe("dark");
         savedSettings[UserPreferenceKeys.FontSize].GetInt32().ShouldBe(16);
         savedSettings[UserPreferenceKeys.Language].GetString().ShouldBe("en");
         savedSettings[UserPreferenceKeys.NotifyDeadline].GetBoolean().ShouldBe(false);
@@ -183,7 +183,7 @@ public class UserPreferenceServiceShould
 
         var initialPreferences = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "light" },
+            { UserPreferenceKeys.DarkMode, "light" },
             { UserPreferenceKeys.FontSize, 14 }
         };
 
@@ -195,7 +195,7 @@ public class UserPreferenceServiceShould
 
         var settings = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "dark" }
+            { UserPreferenceKeys.DarkMode, "dark" }
         };
 
         // Act
@@ -211,7 +211,7 @@ public class UserPreferenceServiceShould
 
         var updatedSettings = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(updatedPreference.PreferencesJson);
         updatedSettings.ShouldNotBeNull();
-        updatedSettings[UserPreferenceKeys.Theme].GetString().ShouldBe("dark");
+        updatedSettings[UserPreferenceKeys.DarkMode].GetString().ShouldBe("dark");
         updatedSettings[UserPreferenceKeys.FontSize].GetInt32().ShouldBe(14); // Should be preserved
     }
 
@@ -228,7 +228,7 @@ public class UserPreferenceServiceShould
 
         var settings = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "dark" }
+            { UserPreferenceKeys.DarkMode, "dark" }
         };
 
         // Act
@@ -252,7 +252,7 @@ public class UserPreferenceServiceShould
         var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.Theme, "dark", CancellationToken.None);
+        var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.DarkMode, "dark", CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
@@ -264,7 +264,7 @@ public class UserPreferenceServiceShould
 
         var savedSettings = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(savedPreference.PreferencesJson);
         savedSettings.ShouldNotBeNull();
-        savedSettings[UserPreferenceKeys.Theme].GetString().ShouldBe("dark");
+        savedSettings[UserPreferenceKeys.DarkMode].GetString().ShouldBe("dark");
     }
 
     [Fact]
@@ -279,7 +279,7 @@ public class UserPreferenceServiceShould
 
         var initialPreferences = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "light" }
+            { UserPreferenceKeys.DarkMode, "light" }
         };
 
         var existingPreference = new Rise.Domain.UserPreferences.UserPreference(_testUserId, initialPreferences);
@@ -289,7 +289,7 @@ public class UserPreferenceServiceShould
         var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.Theme, "dark", CancellationToken.None);
+        var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.DarkMode, "dark", CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
@@ -301,7 +301,7 @@ public class UserPreferenceServiceShould
 
         var updatedSettings = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(updatedPreference.PreferencesJson);
         updatedSettings.ShouldNotBeNull();
-        updatedSettings[UserPreferenceKeys.Theme].GetString().ShouldBe("dark");
+        updatedSettings[UserPreferenceKeys.DarkMode].GetString().ShouldBe("dark");
     }
 
     [Theory]
@@ -338,7 +338,7 @@ public class UserPreferenceServiceShould
         var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.Theme, "dark", CancellationToken.None);
+        var result = await service.UpdateSinglePreferenceAsync(UserPreferenceKeys.DarkMode, "dark", CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeFalse();
@@ -346,7 +346,7 @@ public class UserPreferenceServiceShould
     }
 
     [Theory]
-    [InlineData(UserPreferenceKeys.Theme, "dark")]
+    [InlineData(UserPreferenceKeys.DarkMode, "dark")]
     [InlineData(UserPreferenceKeys.FontSize, "20")]
     [InlineData(UserPreferenceKeys.Language, "fr")]
     [InlineData(UserPreferenceKeys.NotifyDeadline, "true")]
@@ -395,7 +395,7 @@ public class UserPreferenceServiceShould
 
         var settings = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "dark" },
+            { UserPreferenceKeys.DarkMode, "dark" },
             { UserPreferenceKeys.FontSize, 18 },
             { UserPreferenceKeys.Language, "en" },
             { UserPreferenceKeys.FavoriteResto, "2" },
@@ -436,7 +436,7 @@ public class UserPreferenceServiceShould
 
         var initialPreferences = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "light" },
+            { UserPreferenceKeys.DarkMode, "light" },
             { UserPreferenceKeys.FontSize, 14 },
             { UserPreferenceKeys.Language, "nl" }
         };
@@ -450,7 +450,7 @@ public class UserPreferenceServiceShould
         // Only update theme
         var settings = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "dark" }
+            { UserPreferenceKeys.DarkMode, "dark" }
         };
 
         // Act
@@ -468,7 +468,7 @@ public class UserPreferenceServiceShould
         updatedSettings.ShouldNotBeNull();
 
         // Theme should be updated
-        updatedSettings[UserPreferenceKeys.Theme].GetString().ShouldBe("dark");
+        updatedSettings[UserPreferenceKeys.DarkMode].GetString().ShouldBe("dark");
 
         // Other settings should be preserved
         updatedSettings[UserPreferenceKeys.FontSize].GetInt32().ShouldBe(14);
@@ -488,11 +488,11 @@ public class UserPreferenceServiceShould
         var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.TryGetSinglePreferenceAsync(UserPreferenceKeys.Theme, CancellationToken.None);
+        var result = await service.TryGetSinglePreferenceAsync(UserPreferenceKeys.DarkMode, CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
-        result.Value.ShouldBe(UserPreferenceKeys.Defaults[UserPreferenceKeys.Theme].ToString());
+        result.Value.ShouldBe(UserPreferenceKeys.Defaults[UserPreferenceKeys.DarkMode].ToString());
     }
 
     [Fact]
@@ -507,7 +507,7 @@ public class UserPreferenceServiceShould
 
         var preferences = new Dictionary<string, object>
         {
-            { UserPreferenceKeys.Theme, "dark" }
+            { UserPreferenceKeys.DarkMode, "dark" }
         };
 
         var preference = new Rise.Domain.UserPreferences.UserPreference(_testUserId, preferences);
@@ -517,7 +517,7 @@ public class UserPreferenceServiceShould
         var service = new UserPreferenceService(dbContext, _userService);
 
         // Act
-        var result = await service.TryGetSinglePreferenceAsync(UserPreferenceKeys.Theme, CancellationToken.None);
+        var result = await service.TryGetSinglePreferenceAsync(UserPreferenceKeys.DarkMode, CancellationToken.None);
 
         // Assert
         result.IsSuccess.ShouldBeTrue();
@@ -558,7 +558,7 @@ public class UserPreferenceServiceShould
         // Assert
         result.IsSuccess.ShouldBeTrue();
         result.Value.DefaultPreferences.ShouldNotBeNull();
-        result.Value.DefaultPreferences.ShouldContainKey(UserPreferenceKeys.Theme);
+        result.Value.DefaultPreferences.ShouldContainKey(UserPreferenceKeys.DarkMode);
         result.Value.DefaultPreferences.ShouldContainKey(UserPreferenceKeys.Language);
     }
 
