@@ -5,15 +5,10 @@
     <RiseHeadTitle ImageUrl="/img/banner35.webp">Nieuws</RiseHeadTitle>
 </div>
 <section class="mt-5 container news">
-    @if (newsItems == null)
-    {
-        <MudContainer Class="mt-8">
-            <RiseLoader/>
-        </MudContainer>
-    }
-    else
-    {
-        <div class="news-items-container">
+    <AsyncData IsLoading="_isLoading" IsError="_isError">
+        @if (newsItems != null && newsItems.Any())
+        {
+            <div class="news-items-container">
 
             @foreach (var newsItem in newsItems)
             {
@@ -66,6 +61,7 @@
                 </ul>
             </nav>
         </section>
-    }
+        }
+    </AsyncData>
 </section>
 

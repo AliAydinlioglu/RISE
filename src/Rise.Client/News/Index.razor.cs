@@ -10,6 +10,8 @@ namespace Rise.Client.News;
 public partial class Index
 {
     private IEnumerable<NewsDto.Index>? newsItems;
+    private bool _isLoading;
+    private bool _isError;
     [Inject] public required INewsService NewsService { get; set; }
     private int currentPage = 1;
     private int pageSize = 8;
@@ -23,15 +25,28 @@ public partial class Index
 
     private async Task LoadNewsItemsAsync()
     {
-        var request = new QueryRequest.SkipTake
+        try
         {
-            Skip = (currentPage - 1) * pageSize,
-            Take = pageSize,
-        };
+            _isLoading = true;
+            _isError = false;
+            var request = new QueryRequest.SkipTake
+            {
+                Skip = (currentPage - 1) * pageSize,
+                Take = pageSize,
+            };
 
-        var result = await NewsService.GetIndexAsync(request, CancellationToken.None);
-        newsItems = result.Value.NewsItems;
-        totalCount = result.Value.TotalCount;
+            var result = await NewsService.GetIndexAsync(request, CancellationToken.None);
+            newsItems = result.Value.NewsItems;
+            totalCount = result.Value.TotalCount;
+        }
+        catch
+        {
+            _isError = true;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
     private async Task OnPageChangedAsync(int page)
