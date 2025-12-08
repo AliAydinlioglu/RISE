@@ -1,5 +1,13 @@
-@page "/news/{Id?}"
+@page "/news/{Id:int}"
 
+@if (newsItem == null)
+{
+    <MudContainer Class="mt-8">
+        <RiseLoader/>
+    </MudContainer>
+}
+else
+{
 <div data-bunit='news-detail' class="container is-widescreen detail-news">
     <RiseBackButton NavigateTo="/news">Terug naar nieuws</RiseBackButton>
     <div class="section">
@@ -65,4 +73,4 @@
         </div>
     </div>
 </div>
-
+}

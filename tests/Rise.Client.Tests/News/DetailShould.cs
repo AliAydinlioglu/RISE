@@ -23,23 +23,23 @@ public class DetailShould : TestContext
     }
 
     [Fact]
-    public void NotLoadNewsItem_WhenIdIsNull()
+    public void ShowLoader_WhenIdIsZero()
     {
         Services.AddScoped<INewsService, FakeNewsService>();
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, null));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, 0));
 
-        cut.Find("[data-bunit='news-detail']").ShouldNotBeNull();
+        cut.FindAll("[data-bunit='news-detail']").Count.ShouldBe(0);
     }
 
     [Fact]
-    public void NotLoadNewsItem_WhenIdIsWhitespace()
+    public void ShowLoader_WhenIdIsNegative()
     {
         Services.AddScoped<INewsService, FakeNewsService>();
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, "   "));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, -1));
 
-        cut.Find("[data-bunit='news-detail']").ShouldNotBeNull();
+        cut.FindAll("[data-bunit='news-detail']").Count.ShouldBe(0);
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class DetailShould : TestContext
         var newsItem = NewsTestDataFactory.CreateDefaultNewsItem();
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var summary = cut.Find("[data-bunit='news-detail-summary']");
         summary.TextContent.ShouldContain(newsItem.Summary);
@@ -64,7 +64,7 @@ public class DetailShould : TestContext
         var newsItem = NewsTestDataFactory.CreateDefaultNewsItem();
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var container = cut.Find("[data-bunit='news-detail']");
         container.ToMarkup().ShouldContain(newsItem.Title);
@@ -78,7 +78,7 @@ public class DetailShould : TestContext
         var newsItem = NewsTestDataFactory.CreateDefaultNewsItem();
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         foreach (var content in newsItem.ContentSections)
         {
@@ -101,7 +101,7 @@ public class DetailShould : TestContext
         );
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         // With 1 image, content should be split: first half in left, image + second half in right
         var leftColumn = cut.Find("[data-bunit='news-detail-content-left']");
@@ -120,7 +120,7 @@ public class DetailShould : TestContext
         var newsItem = NewsTestDataFactory.CreateNewsItemWithMultipleImages(4);
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var leftColumn = cut.Find("[data-bunit='news-detail-content-left']");
         var rightColumn = cut.Find("[data-bunit='news-detail-content-right']");
@@ -142,7 +142,7 @@ public class DetailShould : TestContext
         var newsItem = NewsTestDataFactory.CreateNewsItemWithNoImages();
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var leftColumn = cut.Find("[data-bunit='news-detail-content-left']");
         var rightColumn = cut.Find("[data-bunit='news-detail-content-right']");
@@ -162,7 +162,7 @@ public class DetailShould : TestContext
         var newsService = Services.GetService<INewsService>() as FakeNewsService;
         newsService!.SetNewsItemForDetail(NewsTestDataFactory.CreateDefaultNewsItem());
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var backButton = cut.Find("a[href='/news']");
         backButton.ShouldNotBeNull();
@@ -170,15 +170,15 @@ public class DetailShould : TestContext
     }
 
     [Fact]
-    public void ParseIdCorrectly_WhenValidIdProvided()
+    public void RenderNewsDetail_WhenValidIdProvided()
     {
         Services.AddScoped<INewsService, FakeNewsService>();
         var newsService = Services.GetService<INewsService>() as FakeNewsService;
         newsService!.SetNewsItemForDetail(NewsTestDataFactory.CreateDefaultNewsItem());
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, "123"));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, 123));
 
-        // Verify component renders successfully, meaning ID was parsed correctly
+        // Verify component renders successfully
         cut.Find("[data-bunit='news-detail']").ShouldNotBeNull();
     }
 
@@ -196,7 +196,7 @@ public class DetailShould : TestContext
         );
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var leftColumn = cut.Find("[data-bunit='news-detail-content-left']");
         leftColumn.TextContent.ShouldContain("Left content");
@@ -216,7 +216,7 @@ public class DetailShould : TestContext
         );
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var rightColumn = cut.Find("[data-bunit='news-detail-content-right']");
         rightColumn.TextContent.ShouldContain("Right content");
@@ -230,7 +230,7 @@ public class DetailShould : TestContext
         var newsItem = NewsTestDataFactory.CreateDefaultNewsItem();
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var images = cut.FindAll(".news-detail-image-item img");
         foreach (var image in images)
@@ -253,7 +253,7 @@ public class DetailShould : TestContext
         );
         newsService!.SetNewsItemForDetail(newsItem);
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var detailContent = cut.Find("[data-bunit='news-detail']");
         detailContent.ToMarkup().ShouldContain("<strong>Bold content</strong>");
@@ -267,7 +267,7 @@ public class DetailShould : TestContext
         var newsService = Services.GetService<INewsService>() as FakeNewsService;
         newsService!.SetNewsItemForDetail(NewsTestDataFactory.CreateDefaultNewsItem());
 
-        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId.ToString()));
+        var cut = RenderComponent<Detail>(p => p.Add(x => x.Id, ValidId));
 
         var desktopHeader = cut.FindAll(".is-hidden-mobile");
         var mobileHeader = cut.FindAll(".is-hidden-tablet");

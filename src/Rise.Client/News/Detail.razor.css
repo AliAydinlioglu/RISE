@@ -28,7 +28,7 @@
 [data-bunit='news-detail-content-left'] p,
 [data-bunit='news-detail-content-right'] p {
     line-height: 1.6;
-    color: black;
+    color: var(--mud-palette-text-primary);
 }
 
 .news-detail-image-item {
@@ -51,7 +51,7 @@
 /* Summary styling */
 [data-bunit='news-detail-summary'] p {
     font-weight: bold;
-    color: black;
+    color: var(--mud-palette-text-primary);
     margin-bottom: 1.5rem;
     margin-top: 1rem;
 }

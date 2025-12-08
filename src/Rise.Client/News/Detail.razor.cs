@@ -8,7 +8,7 @@ public partial class Detail
     private NewsDto.Detail? newsItem;
     [Inject] public required INewsService NewsService { get; set; }
 
-    [Parameter] public string? Id { get; set; }
+    [Parameter] public int Id { get; set; }
 
     private string Title { get; set; } = string.Empty;
     private string Summary { get; set; } = string.Empty;
@@ -19,13 +19,12 @@ public partial class Detail
 
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrWhiteSpace(Id))
+        if (Id <= 0)
         {
             return;
         }
 
-        var idValue = int.Parse(Id);
-        var result = await NewsService.GetDetailByIdAsync(idValue, CancellationToken.None);
+        var result = await NewsService.GetDetailByIdAsync(Id, CancellationToken.None);
         newsItem = result.Value.NewsItem;
         
         if (newsItem != null)

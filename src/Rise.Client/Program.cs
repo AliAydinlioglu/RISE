@@ -154,7 +154,7 @@ try
     builder.Services.AddHttpClient<INewsService, NewsService>(client =>
     {
         client.BaseAddress = baseUrl;
-    });
+    }).AddHttpMessageHandler<RiseHttpMessageHandler>();
     builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>();
     builder.Services.AddHttpClient<IContactService, ContactService>(client =>
