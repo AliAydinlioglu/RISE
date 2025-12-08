@@ -74,7 +74,7 @@ public partial class MainLayout
         if (name.Contains("@"))
             name = name.Split('@')[0];
 
-        var parts = name.Split(new[] { ' ', '.', '_' }, StringSplitOptions.RemoveEmptyEntries);
+        var parts = name.Split(new[] { ' ', '.', '_', '-' }, StringSplitOptions.RemoveEmptyEntries);
 
         if (parts.Length == 0)
             return "?";
