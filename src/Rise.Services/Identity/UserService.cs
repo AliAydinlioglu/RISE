@@ -210,15 +210,19 @@ public class UserService(
             return Result.Error("Oid is invalid");
 
         var user = await GetApplicationUserAsync(oidGuid, SsoProviders.MicrosoftEntra, email);
-
-        if (user == null)
-            return Result.NotFound("User is not found");
-
-        var userRoles = await userManager.GetRolesAsync(user);
+        
+        // default authorized role is regular student
+        // at this point user is authenticated, but in 2 use cases roles are not present
+        // 1. User has logged in for first time => user may not be in db yet
+        // 2. User didn't go through the wizard => user has no roles yet
+        // in these cases we flag the user as a regular student
+        var userRoles= user != null ? await userManager.GetRolesAsync(user) : [];
 
         return Result.Success(new AccountResponse.Roles
         {
-            Values = userRoles?.ToArray() ?? []
+            Values = userRoles.Any() 
+                ? userRoles.ToArray() 
+                : [nameof(AppRoles.RegularStudent)]
         });
     }
 }

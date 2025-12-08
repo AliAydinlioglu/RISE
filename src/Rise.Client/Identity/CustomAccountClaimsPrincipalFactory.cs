@@ -40,6 +40,8 @@ public class CustomAccountClaimsPrincipalFactory : AccountClaimsPrincipalFactory
         {
             var customRoles = result.Value.Values;
 
+            Log.Information("Roles: " + string.Join(", ", customRoles));
+            
             foreach (var role in customRoles)
             {
                 claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));

@@ -89,18 +89,6 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         await userManager.CreateAsync(wimDedulle);
         await userManager.AddToRoleAsync(wimDedulle, nameof(AppRoles.DistanceStudent));
 
-        var andyWauters = new ApplicationUser(
-            "Andy@rise2526t2campusappoutlook.onmicrosoft.com",
-            "Andy",
-            "Wauters",
-            "TIN/TIAO-3",
-            DateTime.UtcNow,
-            Guid.Parse("a6bdaf82-1363-48c8-9af7-0e00fedc0a1b"),
-            SsoProviders.MicrosoftEntra);
-
-        await userManager.CreateAsync(andyWauters);
-        await userManager.AddToRoleAsync(andyWauters, nameof(AppRoles.DistanceStudent));
-
         await dbContext.SaveChangesAsync();
     }
     
