@@ -16,6 +16,12 @@ public class BaseNavigationSourceDesktop : INavigationSource
             },
             new NavItem
             {
+                Title = "Nieuws", 
+                Icon = Icons.Material.Outlined.Newspaper, 
+                Href = "/news"
+            },
+            new NavItem
+            {
                 Title = "Activiteiten", 
                 Icon = Icons.Material.Outlined.EventNote, 
                 Href = "/student-activities"

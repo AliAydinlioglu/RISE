@@ -13,9 +13,9 @@ public class PublicMobileNavDecorator(INavigationSource inner) : INavigationSour
         
         items.Add(new NavItem
         {
-            Title = "Nieuws",
-            Icon = Icons.Material.Outlined.Info,
-            Href = "/"
+            Title = "Nieuws", 
+            Icon = Icons.Material.Outlined.Newspaper, 
+            Href = "/news"
         });
         items.Add(new NavItem
         {
