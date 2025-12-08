@@ -4,7 +4,7 @@ namespace Rise.Client.Layout.Nav.Mobile;
 
 public class RegularStudentMobileNavDecorator(INavigationSource inner) : INavigationSource
 {
-    public HashSet<NavItem> GetItems()
+    public List<NavItem> GetItems()
     {
         var items = inner.GetItems();
 

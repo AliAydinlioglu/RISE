@@ -4,7 +4,7 @@ namespace Rise.Client.Layout.Nav.Desktop;
 
 public class BaseNavigationSourceDesktop : INavigationSource
 {
-    public HashSet<NavItem> GetItems()
+    public List<NavItem> GetItems()
     {
         return
         [

@@ -28,7 +28,7 @@ public class CustomAccountClaimsPrincipalFactory : AccountClaimsPrincipalFactory
         // take all original claims 
         var principal = await base.CreateUserAsync(account, options);
 
-        if (principal.Identity?.IsAuthenticated != true)
+        if (!(principal.Identity?.IsAuthenticated ?? false))
             return principal;
 
         var claimsIdentity = (ClaimsIdentity)principal.Identity;

@@ -24,8 +24,8 @@ public partial class Navigation : ComponentBase
         var authState = await AuthenticationStateTask;
         var user = authState.User;
 
-        NavItems = NavigationService.GetNavItemsDesktop(user);
-        MobileNavItems = NavigationService.GetNavItemsMobile(user);
+        NavItems = NavigationService.GetNavItemsDesktop(user).ToHashSet();
+        MobileNavItems = NavigationService.GetNavItemsMobile(user).ToHashSet();
     }
 
     private bool IsHomePage()

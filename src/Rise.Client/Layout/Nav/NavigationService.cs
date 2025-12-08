@@ -7,7 +7,7 @@ namespace Rise.Client.Layout.Nav;
 
 public class NavigationService
 {
-    public static HashSet<NavItem> GetNavItemsDesktop(ClaimsPrincipal user)
+    public static List<NavItem> GetNavItemsDesktop(ClaimsPrincipal user)
     {
         INavigationSource navigationSource = new BaseNavigationSourceDesktop();
 
@@ -17,7 +17,7 @@ public class NavigationService
         return navigationSource.GetItems();
     }
     
-    public static HashSet<NavItem> GetNavItemsMobile(ClaimsPrincipal user)
+    public static List<NavItem> GetNavItemsMobile(ClaimsPrincipal user)
     {
         INavigationSource navigationSource = new BaseNavigationSourceMobile();
 

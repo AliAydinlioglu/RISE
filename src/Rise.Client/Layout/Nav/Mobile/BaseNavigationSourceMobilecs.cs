@@ -4,7 +4,7 @@ namespace Rise.Client.Layout.Nav.Mobile;
 
 public class BaseNavigationSourceMobile : INavigationSource
 {
-    public HashSet<NavItem> GetItems()
+    public List<NavItem> GetItems()
     {
         return
         [
