@@ -96,21 +96,6 @@ try
     builder.Services.AddScoped<IRestaurantSelectionService, RestaurantSelectionStateService>();
     builder.Services.AddScoped<IFavouriteRestoService, FavouriteRestoService>();
 
-    builder.Services.AddHttpClient<IPriceListService, PriceListService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    });
-
-    builder.Services.AddHttpClient<IRestoService, RestoService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    });
-    
-    builder.Services.AddHttpClient<IProductService, ProductService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
-
     builder.Services.AddHttpClient<IMenuService, MenuService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>();
 
@@ -132,31 +117,20 @@ try
         .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<RiseHttpMessageHandler>();
+    builder.Services.AddHttpClient<IStudentActivityService, StudentActivityService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
 
-    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    builder.Services.AddHttpClient<ISchoolEventService, SchoolEventService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
     
-    builder.Services.AddHttpClient<INewsService, NewsService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<RiseHttpMessageHandler>();
+    builder.Services.AddHttpClient<INewsService, NewsService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>();
+    
     builder.Services.AddHttpClient<IContactService, ContactService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>();
-    builder.Services.AddHttpClient<IContactService, ContactService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-    builder.Services.AddHttpClient<IUserPreferenceService, UserPreferenceService>(client =>
-    {
-        client.BaseAddress = baseUrl;
-    }).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+    builder.Services.AddHttpClient<IUserPreferenceService, UserPreferenceService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services
         .AddHttpClient<INotificationService, NotificationService>(client => { client.BaseAddress = baseUrl; })
