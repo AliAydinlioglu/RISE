@@ -51,9 +51,10 @@ public partial class Login
     {
         try
         {
-            var returnUrl = ReturnUrl ?? "/";
-
-            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "loginReturnUrl", returnUrl);
+            var returnUrl = ReturnUrl;
+            
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+                await JSRuntime.InvokeVoidAsync("localStorage.setItem", "loginReturnUrl", returnUrl);
 
             Navigation.NavigateTo("authentication/login");
         }

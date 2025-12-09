@@ -1,5 +1,3 @@
-using System.Security.Claims;
-
 namespace Rise.Shared.Identity.Accounts;
 
 public static partial class AccountRequest
@@ -19,5 +17,10 @@ public static partial class AccountResponse
         /// Only used for conditional rendering in frontend! Should not be the only source for security checks!
         /// </summary>
         public string[] Roles { get; set; } = [];
+    }
+
+    public class Roles
+    {
+        public string[] Values { get; set; } = [];
     }
 }

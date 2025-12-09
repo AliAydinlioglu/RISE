@@ -1,4 +1,4 @@
-<AuthorizeView>
+<AuthorizeView Roles="@(nameof(AppRoles.RegularStudent) + "," + nameof(AppRoles.DistanceStudent))">
     <Authorized>
         @ChildContent
     </Authorized>

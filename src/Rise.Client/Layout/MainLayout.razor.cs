@@ -19,13 +19,6 @@ public partial class MainLayout
     private Task<AuthenticationState>? AuthenticationState { get; set; }
     private MudTheme _mytheme = new MudTheme();
 
-    [Inject] private IAppRoleStateService AppRoleStateService { get; set; } = null!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await AppRoleStateService.InitializeAsync();
-    }
-
     private void GoToAccountSettings()
     {
         NavigationManager.NavigateTo("/settings");
@@ -81,7 +74,7 @@ public partial class MainLayout
         if (name.Contains("@"))
             name = name.Split('@')[0];
 
-        var parts = name.Split(new[] { ' ', '.', '_' }, StringSplitOptions.RemoveEmptyEntries);
+        var parts = name.Split(new[] { ' ', '.', '_', '-' }, StringSplitOptions.RemoveEmptyEntries);
 
         if (parts.Length == 0)
             return "?";
