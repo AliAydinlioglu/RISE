@@ -8,4 +8,5 @@ public interface IUserService
     Task<Guid> GetRoleIdAsync(ClaimsPrincipal? principal);
     Task<Result<AccountResponse.LoginCallback>> GetOrCreateUserAsync(string oid);
     Task<Result<Guid>> TryGetCurrentUserIdAsync();
+    Task<Result<AccountResponse.Roles>> GetUserRolesAsync();
 }

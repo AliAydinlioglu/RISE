@@ -4,7 +4,6 @@ using Rise.Shared.Identity.Accounts;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using System.Text.Json;
 
 namespace Rise.Client.Identity;
 
@@ -24,9 +23,6 @@ public partial class Authentication
 
     [Inject]
     private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
-
-    [Inject]
-    private IAppRoleStateService AppRoleStateService { get; set; } = null!;
 
     [Inject]
     private IJSRuntime JSRuntime { get; set; } = default!;
@@ -56,10 +52,6 @@ public partial class Authentication
                 if (result?.IsSuccess == true)
                 {
                     Log.Information("User created/updated successfully: {Email}", result.Value?.Email);
-
-                    var roles = result.Value?.Roles ?? [];
-
-                    await AppRoleStateService.SetRolesAsync(roles);
 
                     var returnUrl = await JSRuntime.InvokeAsync<string?>("localStorage.getItem", "loginReturnUrl");
 
@@ -194,8 +186,6 @@ public partial class Authentication
 
         // Clear storage ook bij normale logout
         await ClearAuthStorage();
-
-        await AppRoleStateService.ClearRolesAsync();
 
         showError = false;
         errorMessage = string.Empty;

@@ -25,7 +25,6 @@ namespace Rise.Client.Identity
             Services.AddScoped<INotificationService, FakeNotificationService>();
             Services.AddScoped<IConnectionService, FakeConnectionService>();
             Services.AddScoped<IThemingService, FakeThemingService>();
-            Services.AddSingleton<IAppRoleStateService, AppRoleStateService>();
             Services.AddScoped<IEventStreamService, FakeEventStreamService>();
             Services.AddScoped<IAccessTokenProvider, FakeAccessTokenProvider>();
         }

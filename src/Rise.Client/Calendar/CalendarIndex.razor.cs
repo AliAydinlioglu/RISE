@@ -3,10 +3,11 @@ using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Shared;
 using Rise.Shared.Calendar;
+using Rise.Shared.Identity;
 
 namespace Rise.Client.Calendar;
 
-[HomeBlock(icon:@Icons.Material.Outlined.CalendarMonth,route:"/kalender",label:"Kalender")]
+[HomeBlock(icon:@Icons.Material.Outlined.CalendarMonth,route:"/kalender",label:"Kalender",roles: [nameof(AppRoles.RegularStudent),nameof(AppRoles.DistanceStudent)])]
 public partial class CalendarIndex
 {
     private const string DummyUserId = "1";

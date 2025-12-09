@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Routing;
-using MudBlazor;
+using Rise.Client.Layout.Nav;
 
 namespace Rise.Client.Layout;
 
@@ -8,33 +9,23 @@ public partial class Navigation : ComponentBase
 {
     private const string HOME_URL = "/";
 
-    public HashSet<NavItem> NavItems = new()
-  {
-    new NavItem { Title = "Home", Icon = Icons.Material.Outlined.Home, Href = HOME_URL },
-    new NavItem { Title = "Kalender", Icon = Icons.Material.Outlined.CalendarMonth, Href = "/kalender" },
-        new NavItem { Title = "Nieuws", Icon = Icons.Material.Outlined.Newspaper, Href = "/news" },
-    new NavItem { Title = "Activiteiten", Icon =Icons.Material.Outlined.EventNote, Href = "/student-activities" },
-    new NavItem { Title = "Evenementen", Icon =Icons.Material.Outlined.CalendarToday, Href = "/school-events" },
-    new NavItem { Title = "Weekmenu", Icon = Icons.Material.Filled.RestaurantMenu, Href = "/restaurant/weekmenu"},
-    new NavItem { Title = "Prijslijst", Icon = Icons.Material.Filled.ReceiptLong, Href = "/restaurant/prijslijst" },
-    new NavItem { Title = "Contact", Icon =Icons.Material.Outlined.Person, Href = "/contact" },
-    new NavItem { Title = "Campussen", Icon = Icons.Material.Outlined.Map, Href = "/campuses" }
-
-  };
-
-    public HashSet<NavItem> MobileNavItems = new()
-    {
-        new NavItem { Title = "Home", Icon = Icons.Material.Outlined.Home, Href = "/" },
-        new NavItem { Title = "Kalender", Icon = Icons.Material.Outlined.CalendarMonth, Href = "/kalender" },
-        new NavItem { Title = "Activiteiten", Icon = Icons.Material.Outlined.EventNote, Href = "/student-activities" },
-        new NavItem { Title = "Contact", Icon = Icons.Material.Outlined.Person, Href = "/contact" }
-    };
+    public HashSet<NavItem> NavItems = [];
+    public HashSet<NavItem> MobileNavItems = [];
 
     [Inject] public NavigationManager MyNavigationManager { get; set; } = null!;
 
-    override protected void OnInitialized()
-    {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {   
         MyNavigationManager.LocationChanged += (_, _) => StateHasChanged();
+        
+        var authState = await AuthenticationStateTask;
+        var user = authState.User;
+
+        NavItems = NavigationService.GetNavItemsDesktop(user).ToHashSet();
+        MobileNavItems = NavigationService.GetNavItemsMobile(user).ToHashSet();
     }
 
     private bool IsHomePage()

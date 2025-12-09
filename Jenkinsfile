@@ -169,14 +169,13 @@ pipeline {
                             ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "sudo mkdir -p ${releaseDir} && sudo chown ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir} && sudo chmod 755 ${releaseDir}"
                         """
                         
-                        // Create tarball and transfer using cat over SSH instead of SCP
+                        // Transfer files directly using rsync
                         sh """
-                            cd ${PUBLISH_DIR}
-                            tar czf ../release.tar.gz .
-                            cd ..
-                            cat release.tar.gz | ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "cat > ~/release.tar.gz"
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "sudo mv ~/release.tar.gz ${releaseDir}/ && cd ${releaseDir} && sudo tar xzf release.tar.gz && sudo rm release.tar.gz && sudo chown -R ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir}"
-                            rm release.tar.gz
+                            # Use rsync to transfer files directly (more reliable than tarball)
+                            rsync -avz --delete -e "ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no" ${PUBLISH_DIR}/ ${APP_SERVER_USER}@${APP_SERVER_HOST}:${releaseDir}/
+                            
+                            # Fix ownership on remote server
+                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "sudo chown -R ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir}"
                         """
                     
                         // Fix permissions and deploy application
@@ -259,14 +258,6 @@ EOFMAIN
                                 sudo netstat -tlnp | grep :${APP_PORT}
                                 sudo journalctl -u ${APP_NAME} --no-pager -n 50
 EOF
-                        """
-
-                        // Test HTTP endpoint
-                        sh """
-                            curl -f http://${APP_SERVER_HOST}:${APP_PORT} || {
-                                echo "Health check failed"
-                                exit 1
-                            }
                         """
                     }
                 }

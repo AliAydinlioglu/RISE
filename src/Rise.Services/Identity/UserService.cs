@@ -191,4 +191,38 @@ public class UserService(
             return Result.Error($"Multiple users found with email: {email}. Data integrity violation.");
         }
     }
+
+    public async Task<Result<AccountResponse.Roles>> GetUserRolesAsync()
+    {
+        var claimsPrincipal = sessionProvider.User;
+
+        if (claimsPrincipal is not { Identity.IsAuthenticated: true })
+            return Result.Unauthorized("User is not authenticated");
+
+        var email = claimsPrincipal.GetEmail();
+
+        if (string.IsNullOrWhiteSpace(email))
+            return Result.Error("Email is required");
+
+        var oidString = claimsPrincipal.GetOid();
+
+        if (!Guid.TryParse(oidString, out var oidGuid))
+            return Result.Error("Oid is invalid");
+
+        var user = await GetApplicationUserAsync(oidGuid, SsoProviders.MicrosoftEntra, email);
+        
+        // default authorized role is regular student
+        // at this point user is authenticated, but in 2 use cases roles are not present
+        // 1. User has logged in for first time => user may not be in db yet
+        // 2. User didn't go through the wizard => user has no roles yet
+        // in these cases we flag the user as a regular student
+        var userRoles= user != null ? await userManager.GetRolesAsync(user) : [];
+
+        return Result.Success(new AccountResponse.Roles
+        {
+            Values = userRoles.Any() 
+                ? userRoles.ToArray() 
+                : [nameof(AppRoles.RegularStudent)]
+        });
+    }
 }
