@@ -2,13 +2,14 @@ using Rise.Client.Components;
 using Rise.Client.Faker;
 using Rise.Client.Restaurant.Components;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
+using Rise.Client.UserPreferences.Services;
 using Rise.Shared;
 using Rise.Shared.Menu;
 using Shouldly;
-using Xunit.Abstractions;
 using System.Globalization;
-using Rise.Client.Theme;
-using Rise.Client.Theme.Fakers;
+using Xunit.Abstractions;
 
 namespace Rise.Client.Restaurant;
 
@@ -27,6 +28,7 @@ public class PricelistShould : MudBlazorTestSetup
         Services.AddScoped<IRestoService, FakeRestoService>();
         Services.AddScoped<IFavouriteRestoService, FakeFavouriteRestoService>();
         Services.AddScoped<IThemingService, FakeThemingService>();
+        Services.AddScoped<IUserPreferenceStateService, FakeUserPreferenceStateService>();
     }
 
     [Fact]

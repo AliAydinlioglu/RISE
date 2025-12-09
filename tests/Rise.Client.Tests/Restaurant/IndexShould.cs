@@ -1,13 +1,14 @@
 using Rise.Client.Components;
 using Rise.Client.Faker;
 using Rise.Client.Shared;
+using Rise.Client.Theme;
+using Rise.Client.Theme.Fakers;
+using Rise.Client.UserPreferences.Services;
 using Rise.Shared;
 using Rise.Shared.Menu;
 using Shouldly;
-using Xunit.Abstractions;
 using System.Globalization;
-using Rise.Client.Theme;
-using Rise.Client.Theme.Fakers;
+using Xunit.Abstractions;
 
 namespace Rise.Client.Restaurant;
 
@@ -27,6 +28,7 @@ public class IndexShould : MudBlazorTestSetup
         Services.AddScoped<IFavouriteRestoService, FakeFavouriteRestoService>();
         Services.AddScoped<IDateTimeService,Rise.Client.Faker.FakeDateTimeService>();
         Services.AddScoped<IThemingService, FakeThemingService>();
+        Services.AddScoped<IUserPreferenceStateService, FakeUserPreferenceStateService>();
     }
 
 
@@ -118,12 +120,10 @@ public class IndexShould : MudBlazorTestSetup
         var newRestoOption = restaurantOptions.First(div => div.TextContent.Contains("New Test Resto"));
         var newRestoButton = newRestoOption.QuerySelector("button");
         newRestoButton!.Click();
-        
+
         // assert
-        var restaurantSelectionService = Services.GetService<IRestaurantSelectionService>();
-        var selectedResto = restaurantSelectionService!.GetSelectedRestoAsync().Result;
-        selectedResto.Id.ShouldBe(2);
-        selectedResto.Name.ShouldBe("New Test Resto");
+        var preferenceService = Services.GetService<IUserPreferenceStateService>();
+        preferenceService!.FavoriteResto.ShouldBe(2);
         
         var updatedRestoButtonWrapper = cut.Find("span[data-bunit='restaurant-selector-button']");
         updatedRestoButtonWrapper.TextContent.Trim().ShouldContain("New Test Resto");
