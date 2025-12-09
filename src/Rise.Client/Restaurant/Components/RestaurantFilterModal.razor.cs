@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Rise.Client.UserPreferences.Services;
 using Rise.Shared.Common;
 using Rise.Shared.Menu;
 
@@ -13,25 +14,29 @@ public partial class RestaurantFilterModal : ComponentBase
 
     private IEnumerable<RestoOverviewDto> _restaurants = [];
     [Inject] public required IRestoService RestoService { get; set; }
-    [Inject] public required IFavouriteRestoService FavouriteRestoService { get; set; }
+    [Inject] public required IUserPreferenceStateService PreferenceState { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await getRestaurants();
+        await GetRestaurants();
     }
 
-    private async Task getRestaurants()
+    private async Task GetRestaurants()
     {
         var result = await RestoService.GetOverviewAsync(new QueryRequest.SkipTake(), CancellationToken.None);
-        if (result.IsSuccess) _restaurants = result.Value.Restos;
-
-        //TODO: voorlopig tot userpreferences klaar zijn
-        var favResto = await FavouriteRestoService.GetFavouriteRestoAsync();
-        if (favResto != null)
+        if (result.IsSuccess)
         {
-            var favorite = _restaurants.FirstOrDefault(resto => resto.Id == favResto.Id);
-            if (favorite != null)
-                favorite.IsFavorite = true;
+            _restaurants = result.Value.Restos;
+
+            var favoriteRestoId = PreferenceState.FavoriteResto;
+            if (favoriteRestoId > 0)
+            {
+                var favorite = _restaurants.FirstOrDefault(resto => resto.Id == favoriteRestoId);
+                if (favorite != null)
+                {
+                    favorite.IsFavorite = true;
+                }
+            }
         }
     }
 
@@ -56,12 +61,14 @@ public partial class RestaurantFilterModal : ComponentBase
         if (resto.IsFavorite)
             return;
 
-        var request = new MenuRequest.Resto { Id = resto.Id };
-        //TODO: sync with userpreferences
-        //var result = await RestoService.SetFavoriteResto(request, CancellationToken.None);
-        //if (result.IsSuccess) _restaurants = result.Value.Restos;
-        await FavouriteRestoService.SetFavouriteRestoAsync(resto);
-        await getRestaurants();
-        await OnSelect.InvokeAsync(resto);
+        PreferenceState.FavoriteResto = resto.Id!.Value;
+
+        var saveResult = await PreferenceState.SavePreferencesAsync();
+
+        if (saveResult.IsSuccess)
+        {
+            await GetRestaurants();
+            await OnSelect.InvokeAsync(resto);
+        }
     }
 }

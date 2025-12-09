@@ -82,7 +82,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     public void Initialize()
     {
         LoadThemeFromStorage(UserPreferenceKeys.DarkMode, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
-        LoadThemeFromStorage(UserPreferenceKeys.DarkMode, darkmode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkmode?.ToLower() ?? "false")); // does not exist on backend yet
+        LoadThemeFromStorage(UserPreferenceKeys.DarkMode, darkmode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkmode?.ToLower() ?? "false"));
         LoadThemeFromStorage(UserPreferenceKeys.ImagesOff, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff?.ToLower() ?? "false")); 
         LoadThemeFromStorage(UserPreferenceKeys.IsNeutral, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "true"));
         // load theme from user preferences

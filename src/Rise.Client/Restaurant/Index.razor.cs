@@ -3,6 +3,7 @@ using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Client.Calendar;
 using Rise.Client.Restaurant.Components;
+using Rise.Client.UserPreferences.Services;
 using Rise.Shared;
 using Rise.Shared.Menu;
 
@@ -20,7 +21,8 @@ public partial class Index : ComponentBase
     private bool _isError;
 
     [Inject] public required IDateTimeService DateTimeService { get; set; }
-    [Inject] public required IRestaurantSelectionService RestaurantSelectionService { get; set; }
+    [Inject] public required IUserPreferenceStateService PreferenceState { get; set; }
+    [Inject] public required IRestoService RestoService { get; set; }
     [Inject] public required IDialogService? DialogService { get; set; }
     [Inject] public required IMenuService MenuService { get; set; }
 
@@ -34,9 +36,49 @@ public partial class Index : ComponentBase
         else if (_selectedDate.DayOfWeek == DayOfWeek.Sunday)
             _selectedDate = _selectedDate.AddDays(1);
 
-        _currentResto = await RestaurantSelectionService.GetSelectedRestoAsync();
+        await LoadCurrentResto();
         await LoadMenuAsync();
         _isLoading = false;
+    }
+
+    private async Task LoadCurrentResto()
+    {
+        try
+        {
+            var favoriteRestoId = PreferenceState.FavoriteResto;
+
+            if (favoriteRestoId > 0)
+            {
+                var result = await RestoService.GetOverviewAsync(
+                    new Rise.Shared.Common.QueryRequest.SkipTake(),
+                    CancellationToken.None);
+
+                if (result.IsSuccess && result.Value?.Restos != null)
+                {
+                    _currentResto = result.Value.Restos.FirstOrDefault(r => r.Id == favoriteRestoId);
+
+                    if (_currentResto == null && result.Value.Restos.Any())
+                    {
+                        _currentResto = result.Value.Restos.First();
+                    }
+                }
+            }
+            else
+            {
+                var result = await RestoService.GetOverviewAsync(
+                    new Rise.Shared.Common.QueryRequest.SkipTake(),
+                    CancellationToken.None);
+
+                if (result.IsSuccess && result.Value?.Restos != null && result.Value.Restos.Any())
+                {
+                    _currentResto = result.Value.Restos.First();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error loading current resto from preferences");
+        }
     }
 
     private async Task LoadMenuAsync()
@@ -87,7 +129,8 @@ public partial class Index : ComponentBase
     private async Task ApplyRestoSelection(RestoOverviewDto resto)
     {
         _currentResto = resto;
-        await RestaurantSelectionService.SetSelectedRestoAsync(resto);
+        PreferenceState.FavoriteResto = resto.Id!.Value;
+        await PreferenceState.SavePreferencesAsync();
         _visibleRestaurantSelector = false;
         await LoadMenuAsync();
     }
