@@ -35,7 +35,7 @@ else
                                         <p>@((MarkupString)item.Content)</p>
                                     </div>
                                 }
-                                else
+                                else if (ShouldShowImages)
                                 {
                                     <div class="news-detail-image-item mb-4">
                                         <figure class="image">
@@ -57,7 +57,7 @@ else
                                         <p>@((MarkupString)item.Content)</p>
                                     </div>
                                 }
-                                else
+                                else if (ShouldShowImages)
                                 {
                                     <div class="news-detail-image-item mb-4">
                                         <figure class="image">

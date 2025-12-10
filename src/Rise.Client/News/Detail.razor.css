@@ -4,8 +4,15 @@
 }
 
 .detail-news .box {
-    background-color: white;
+    background-color: var(--mud-palette-surface);
     padding: 1rem 0px 0px !important;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.detail-news .content {
+    border: none;
+    border-radius: 0;
 }
 
 /* Two column layout using CSS Grid */
@@ -41,7 +48,7 @@
 }
 
 .detail-news .image img {
-    border: 1px solid #e8e8e8;
+    border: 1px solid var(--mud-palette-lines-default);
     border-radius: 4px;
     width: 100%;
     height: auto;
@@ -86,4 +93,3 @@
         gap: 1.5rem;
     }
 }
-

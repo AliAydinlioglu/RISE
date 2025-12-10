@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Rise.Client.Theme;
 using Rise.Shared.News;
 
 namespace Rise.Client.News;
@@ -7,6 +8,7 @@ public partial class Detail
 {
     private NewsDto.Detail? newsItem;
     [Inject] public required INewsService NewsService { get; set; }
+    [Inject] private IThemingService ThemingService { get; set; } = null!;
 
     [Parameter] public int Id { get; set; }
 
@@ -16,6 +18,8 @@ public partial class Detail
     private IEnumerable<string>? ImageUrls { get; set; }
     private List<ColumnItem> LeftColumnItems { get; set; } = new();
     private List<ColumnItem> RightColumnItems { get; set; } = new();
+
+    private bool ShouldShowImages => !ThemingService.ImagesOff;
 
     protected override async Task OnInitializedAsync()
     {

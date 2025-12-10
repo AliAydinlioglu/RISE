@@ -21,7 +21,8 @@ public static class ContactSeeder
             CreateOngevalMelden(),
             CreateStudentensecretariaatMercator(),
             CreateBibliotheekMercator(),
-            CreateStandaardStudentenShopGent()
+            CreateStandaardStudentenShopGent(),
+            CreateRita()
         };
 
         dbContext.Services.AddRange(services);
@@ -320,7 +321,7 @@ public static class ContactSeeder
 
         service.AddRemark("Gesloten op vakantieperiodes en op feest-, brug- en weekenddagen");
 
-        service.AddCommunicationChannel(new CommunicationChannel("E-mail","mailto:ks.hogent@standaardboekhandel.be",
+        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:ks.hogent@standaardboekhandel.be",
             CommunicationTypes.Email));
         service.AddCommunicationChannel(new CommunicationChannel("Website",
             "https://hogent.standaardstudentshop.be/Practical", CommunicationTypes.Form));
@@ -411,6 +412,42 @@ public static class ContactSeeder
             CommunicationTypes.Phone));
         service.AddCommunicationChannel(new CommunicationChannel("Levensbedreigend", "tel:112",
             CommunicationTypes.Phone));
+
+        return service;
+    }
+
+    private static Facility CreateRita()
+    {
+        var service = new Facility(
+            "Revolte IT-advies",
+            new FacilityCategory("Ondersteunend")
+        );
+
+        service.DescribeService(
+            "RITA is de helpdesk speciaal van studenten voor studenten. RITA is een samenwerking tussen Revolte en HOGENT om studenten te ondersteunen");
+
+        var address = new StructuredAddress("Valentin Vaerwyckweg", 1, 9000, "Gent", "");
+        var location = new FacilityLocation(address, "Schoonmeersen");
+        service.ChangeLocation(location);
+
+        var weekDates = GetCurrentWeekDates();
+        var openingHours = new List<ContactPeriod>
+        {
+            new ContactPeriod(weekDates[1], // Tuesday
+                new List<TimeRange> { new TimeRange(new TimeOnly(17, 0), new TimeOnly(19, 0)) }),
+            new ContactPeriod(weekDates[2], // Wednesday
+                new List<TimeRange> { new TimeRange(new TimeOnly(12, 30), new TimeOnly(13, 30)) }),
+            new ContactPeriod(weekDates[3], // Thursday
+                new List<TimeRange> { new TimeRange(new TimeOnly(17, 0), new TimeOnly(19, 0)) }),
+        };
+        service.ChangeOpeningsHours(openingHours);
+
+        service.AddRemark("Je vindt de helpdesk voor studenten in de bibliotheek op campus Schoonmeersen (tweede verdieping aan de docentendesk).");
+
+        service.AddCommunicationChannel(new CommunicationChannel("E-mail", "mailto:rita@hogent.be",
+            CommunicationTypes.Email));
+        service.AddCommunicationChannel(new CommunicationChannel("Website",
+            "https://www.hogent.be/helpdesk/", CommunicationTypes.Form));
 
         return service;
     }

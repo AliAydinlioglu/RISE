@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Attributes;
+using Rise.Client.Theme;
 using Rise.Shared.Common;
 using Rise.Shared.News;
 
@@ -13,6 +14,7 @@ public partial class Index
     private bool _isLoading;
     private bool _isError;
     [Inject] public required INewsService NewsService { get; set; }
+    [Inject] private IThemingService ThemingService { get; set; } = null!;
     private int currentPage = 1;
     private int pageSize = 8;
     private int totalCount = 0;
@@ -53,6 +55,14 @@ public partial class Index
     {
         currentPage = page;
         await LoadNewsItemsAsync();
+    }
+
+    private string GetBackgroundImageStyle(string? imageUrl)
+    {
+        if (ThemingService.ImagesOff || string.IsNullOrEmpty(imageUrl))
+            return "";
+        
+        return $"background-image: url('{imageUrl}');";
     }
 }
 

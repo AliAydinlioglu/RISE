@@ -16,7 +16,7 @@
                     <a href="/news/@newsItem.Id" class="news-item-link">
                         <div class="news-item-content">
                             <div class="news-item-title-section"
-                                 style="@(!string.IsNullOrEmpty(newsItem.ImageUrls?.FirstOrDefault()) ? $"background-image: url('{newsItem.ImageUrls.FirstOrDefault()}');" : "")">
+                                 style="@GetBackgroundImageStyle(newsItem.ImageUrls?.FirstOrDefault())">
                                 <div class="news-item-overlay"></div>
                                 <h2 class="news-item-title has-text-weight-bold">@newsItem.Title</h2>
                             </div>

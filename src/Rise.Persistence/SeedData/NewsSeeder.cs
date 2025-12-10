@@ -12,7 +12,7 @@ public static class NewsSeeder
         var newsItems = new List<NewsItem>
         {
             new NewsItem(
-                "Auditorium krijgt naam van voormalig voorzitter.",
+                "Auditorium krijgt naam van voormalig voorzitter",
                 "Auditorium D op campus Schoonmeersen heet voortaan auditorium Paul Van Cauwenberge, naar de voormalige voorzitter van HOGENT, die vorige week zijn afscheid vierde na twaalf jaar voorzitterschap.",
                 new List<string>
                 {

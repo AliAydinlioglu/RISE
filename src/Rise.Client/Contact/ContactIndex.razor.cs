@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Rise.Client.Attributes;
 using Rise.Client.Theme;
@@ -13,12 +13,11 @@ public partial class ContactIndex
     private IEnumerable<ContactDto.Index>? _contactFacilities;
     private IEnumerable<ContactDto.Index> _filteredFacilities = [];
     private readonly Dictionary<int, string> _facilityBackgroundImages = new();
-    private static readonly Random Random = new();
-    
+
     [Inject] public required IContactService ContactService { get; set; }
-    
+
     [Inject] private IThemingService ThemingService { get; set; } = null!;
-    
+
     private int? _expandedServiceId;
     private FilterOption? _selectedCampus;
     private FilterOption? _selectedCategory;
@@ -45,11 +44,13 @@ public partial class ContactIndex
     protected int? expandedServiceId => _expandedServiceId;
     protected List<FilterOption> campusOptions => _campusOptions;
     protected List<FilterOption> categoryOptions => _categoryOptions;
+
     protected FilterOption? selectedCampus
     {
         get => _selectedCampus;
         set => _selectedCampus = value;
     }
+
     protected FilterOption? selectedCategory
     {
         get => _selectedCategory;
@@ -86,15 +87,15 @@ public partial class ContactIndex
 
         foreach (var facility in _contactFacilities)
         {
-            var randomBannerNumber = Random.Next(1, 128);
+            var randomBannerNumber = Random.Shared.Next(1, 128);
             _facilityBackgroundImages[facility.Id] = $"/img/banner{randomBannerNumber}.webp";
         }
     }
 
     protected string GetBackgroundImageUrl(int facilityId)
     {
-        return !ThemingService.ImagesOff && _facilityBackgroundImages.TryGetValue(facilityId, out var imageUrl) 
-            ? imageUrl 
+        return !ThemingService.ImagesOff && _facilityBackgroundImages.TryGetValue(facilityId, out var imageUrl)
+            ? imageUrl
             : ""; //or low-res placeholder
     }
 
@@ -111,7 +112,7 @@ public partial class ContactIndex
             }
             else
             {
-                _filteredFacilities = _filteredFacilities.Where(f => 
+                _filteredFacilities = _filteredFacilities.Where(f =>
                     f.Location != null && f.Location.LocationName == _selectedCampus.Value);
             }
         }
@@ -119,7 +120,7 @@ public partial class ContactIndex
         // Filter by category
         if (!string.IsNullOrEmpty(_selectedCategory?.Value))
         {
-            _filteredFacilities = _filteredFacilities.Where(f => 
+            _filteredFacilities = _filteredFacilities.Where(f =>
                 f.FacilityCategoryName == _selectedCategory.Value);
         }
 
@@ -146,8 +147,8 @@ public partial class ContactIndex
         ApplyFilters();
     }
 
-    protected bool HasActiveFilters => 
-        !string.IsNullOrEmpty(_selectedCampus?.Value) || 
+    protected bool HasActiveFilters =>
+        !string.IsNullOrEmpty(_selectedCampus?.Value) ||
         !string.IsNullOrEmpty(_selectedCategory?.Value);
 
     public record FilterOption(string Value, string Label)
@@ -166,10 +167,9 @@ public partial class ContactIndex
             _expandedServiceId = serviceId; // Expand clicked service
         }
     }
+
     protected override void OnInitialized()
     {
         ThemingService.Subscribe += (sender, args) => StateHasChanged();
     }
 }
-
-
