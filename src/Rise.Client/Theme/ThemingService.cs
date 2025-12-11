@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.JSInterop;
 using MudBlazor;
-using MudBlazor.Utilities;
 using Rise.Shared.UserPreferences;
 
 namespace Rise.Client.Theme;
@@ -152,22 +151,22 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     
     public void ColorTheme(string mainColor = HoGentColors.Pantone7461U)
     {
-        MudColor baseColor = new MudColor(mainColor);
-        
+        // MudColor baseColor = new MudColor(mainColor);
+        //
         MudTheme colorfulTheme = DefaultTheme();
-        colorfulTheme.PaletteLight.Primary = baseColor;
-        colorfulTheme.PaletteLight.Secondary = baseColor.ColorLighten(0.5);
-        colorfulTheme.PaletteLight.Tertiary = baseColor.ColorLighten(0.5);
+        colorfulTheme.PaletteLight.Primary = "#4ca2d5ff";
+        colorfulTheme.PaletteLight.Secondary = "#ffffffff";
+        colorfulTheme.PaletteLight.Tertiary = "#ffffffff";
         
-        colorfulTheme.PaletteLight.AppbarBackground = baseColor;
-        colorfulTheme.PaletteLight.AppbarText = baseColor.ColorLighten(0.9);
+        colorfulTheme.PaletteLight.AppbarBackground =  "#4ca2d5ff";
+        colorfulTheme.PaletteLight.AppbarText = "#ffffffff";
 
-        colorfulTheme.PaletteDark.Primary = baseColor.ColorDarken(0.2);
-        colorfulTheme.PaletteDark.Secondary = baseColor.ColorDarken(0.9);
-        colorfulTheme.PaletteDark.Tertiary = baseColor.ColorLighten(0.2);
+        colorfulTheme.PaletteDark.Primary = "#246e99ff";
+        colorfulTheme.PaletteDark.Secondary = "#000000ff";
+        colorfulTheme.PaletteDark.Tertiary = "#a0cee9ff";
 
-        colorfulTheme.PaletteDark.AppbarBackground = baseColor;
-        colorfulTheme.PaletteDark.AppbarText = HoGentColors.Black;
+        colorfulTheme.PaletteDark.AppbarBackground = "#4ca2d5ff";
+        colorfulTheme.PaletteDark.AppbarText = "#000000ff";
         Theme = colorfulTheme;
     }
     
