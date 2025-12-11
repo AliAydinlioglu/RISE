@@ -30,6 +30,12 @@ public static class NotificationsSubscriptionsSeeder
         dbContext.Notifications.Add(new Notification(
             NotificationTypes.Emergency,
             NotificationLevels.Urgent,
+            new Message("Dreigende Stakingen bij NMBS", "Dreigende Stakingen bij NMBS Verstoren Pendelverkeer Studenten", "/news/1"),
+            DateTime.Now));
+        
+        dbContext.Notifications.Add(new Notification(
+            NotificationTypes.Emergency,
+            NotificationLevels.Urgent,
             new Message("Schoonmeersen is afgesloten", "Wegens een bommelding is Campus Schoonmeersen ontruimd voor onbepaalde tijd", ""),
             DateTime.Now));
         dbContext.Notifications.Add(new Notification(

@@ -12,6 +12,27 @@ public static class NewsSeeder
         var newsItems = new List<NewsItem>
         {
             new NewsItem(
+                "Aankondiging: Dreigende Stakingen bij NMBS",
+                "Dreigende Stakingen bij NMBS Verstoren Pendelverkeer Studenten",
+                new List<string>
+                {
+                    "Hogent maakt u attent op een reële dreiging van nationale en/of regionale stakingen in de komende dagen. Deze acties, " +
+                    "voornamelijk binnen de sectoren van het openbaar vervoer, zullen naar verwachting een significante verstoring veroorzaken voor alle studenten die gebruikmaken van trein, bus of tram om de campus te bereiken.",
+                    "<h3 style=\"color: black;\">Wat U Moet Weten over de Verstoring</h3>\n    \n    <p>De aangekondigde acties kunnen leiden tot:</p>\n    <ul>\n        <li><strong style=\"color: black;\">Massale Annulaties:</strong> Treinen, bussen en trams kunnen de gehele dag of gedurende specifieke uren volledig uitvallen.</li>\n        <li><strong style=\"color: black;\">Grote Vertragingen:</strong> Zelfs op trajecten die wel bediend worden, moet u rekening houden met aanzienlijke wachttijden en vertragingen.</li>\n        <li><strong style=\"color: black;\">Onzekerheid:</strong> Vaak wordt pas zeer kort voor de start van de staking duidelijk welke diensten wel of niet rijden. Dit maakt de planning uiterst moeilijk.</li>\n    </ul>",
+                    "<p>De verstoring is met name kritiek voor studenten die verplichtingen hebben zoals <strong style=\"color: black;\">examens, practica, of onmisbare lessen</strong> waarvoor aanwezigheid vereist is.</p>\n\n    <hr>",
+                    "<h3 style=\"color: black;\">Actieplan: Bereid U Voor op Alternatieven</h3>\n    \n    <p>Wij raden alle student-pendelaars ten zeerste aan om <strong style=\"color: black;\">onmiddellijk</strong> alternatieve reisplannen op te stellen. Neem de volgende stappen om te garanderen dat u uw bestemming op tijd bereikt:</p>\n\n    <h4 style=\"color: black;\">1. Raadpleeg Officiële Bronnen</h4>\n    <p>Controleer de officiële kanalen van de vervoersmaatschappijen (NMBS, De Lijn, TEC) voor de meest actuele informatie over de hinder. Doe dit zowel de avond voor, als de ochtend van uw reis.</p>\n\n    <h4 style=\"color: black;\">2. Overweeg Alternatief Vervoer</h4>\n    <ul>\n        <li><strong style=\"color: black;\">Carpoolen:</strong> Organiseer een gedeelde rit met medestudenten of via carpoolapps.</li>\n        <li><strong style=\"color: black;\">De Fiets:</strong> Indien mogelijk, gebruik een (elektrische) fiets. Zelfs voor langere afstanden kan dit een betrouwbaar alternatief zijn.</li>\n        <li><strong style=\"color: black;\">Afstandsonderwijs:</strong> Ga na bij uw docent of er – in uiterste nood – een mogelijkheid is om een les online bij te wonen of later in te halen.</li>\n        <li><strong style=\"color: black;\">Verblijf:</strong> Kan u overnachten bij vrienden of familie dichter bij de campus? Overweeg deze optie om stress te vermijden.</li>\n    </ul>",
+                    "<h4 style=\"color: black;\">3. Plan Ruim Extra Tijd In</h4>\n    <p>Ga uit van het worstcasescenario en <strong style=\"color: black;\">vertrek minstens een uur vroeger</strong> dan u normaal zou doen. Vertragingen kunnen onverwacht optreden, ook op de alternatieve routes.</p>\n\n    <hr>\n\n  ",
+                    "<h3 style=\"color: black;\">Belangrijke Noot voor Examens</h3>\n    \n    <p>Indien de stakingen samenvallen met een examenperiode, gelden de gebruikelijke regels rond het <strong style=\"color: black;\">tijdig aanwezig zijn</strong>. Het niet tijdig verschijnen door stakingen wordt in de meeste gevallen niet als overmacht beschouwd. Zorg er dus voor dat u een robuust plan B hebt.</p>\n    \n    <p><strong style=\"color: black;\">Wees voorbereid, plan slim en vermijd onnodige stress door proactief te handelen.</strong></p>"
+                    
+                }
+                ,
+                new List<string>
+                {
+                    "https://www.belgiantrain.be/-/media/images/npo-product-pages/1500x380_npo.ashx?w=1600",
+                },
+                DateTime.Now.AddDays(-1)
+            ),
+            new NewsItem(
                 "Auditorium krijgt naam van voormalig voorzitter",
                 "Auditorium D op campus Schoonmeersen heet voortaan auditorium Paul Van Cauwenberge, naar de voormalige voorzitter van HOGENT, die vorige week zijn afscheid vierde na twaalf jaar voorzitterschap.",
                 new List<string>
