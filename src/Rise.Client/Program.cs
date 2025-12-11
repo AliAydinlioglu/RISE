@@ -130,6 +130,7 @@ try
         .AddHttpMessageHandler<RiseHttpMessageHandler>();
 
     builder.Services.AddHttpClient<IUserPreferenceService, UserPreferenceService>(client => { client.BaseAddress = baseUrl; })
+        .AddHttpMessageHandler<RiseHttpMessageHandler>()
         .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services
