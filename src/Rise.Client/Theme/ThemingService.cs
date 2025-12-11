@@ -89,16 +89,28 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         LoadThemeFromStorage(LocalImagesDisabledStorageKey, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff?.ToLower() ?? "false")); 
         LoadThemeFromStorage(LocalIsNeutralStorageKey, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "true"));
         // load theme from user preferences
-        LoadThemeFromBackend().ContinueWith(userPreferences =>
+        try
         {
-            var setting = userPreferences.Result.Settings;
-            //according to the backend, the theme is either "light" or "dark" and refuses to store the actual theme.
-            IsDarkMode = setting[UserPreferenceKeys.DarkMode]?.ToString()?.ToLower() != "light";
-            
-            //IsDarkMode = JsonSerializer.Deserialize<bool>(setting["darkMode"]?.ToString()?.ToLower() ?? "false");
-            ImagesOff = JsonSerializer.Deserialize<bool>(setting[UserPreferenceKeys.ImagesOff]?.ToString()?.ToLower() ?? "false");
-            IsNeutral = JsonSerializer.Deserialize<bool>(setting[UserPreferenceKeys.IsNeutral]?.ToString()?.ToLower() ?? "true");
-        });
+            LoadThemeFromBackend().ContinueWith(userPreferences =>
+            {
+                try
+                {
+                    var setting = userPreferences.Result.Settings;
+                    //according to the backend, the theme is either "light" or "dark" and refuses to store the actual theme.
+                    IsDarkMode = setting[UserPreferenceKeys.DarkMode]?.ToString()?.ToLower() != "light";
+                    
+                    //IsDarkMode = JsonSerializer.Deserialize<bool>(setting["darkMode"]?.ToString()?.ToLower() ?? "false");
+                    ImagesOff = JsonSerializer.Deserialize<bool>(setting[UserPreferenceKeys.ImagesOff]?.ToString()?.ToLower() ?? "false");
+                    IsNeutral = JsonSerializer.Deserialize<bool>(setting[UserPreferenceKeys.IsNeutral]?.ToString()?.ToLower() ?? "true");
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            });      
+        } catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
     /// <summary>
