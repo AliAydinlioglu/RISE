@@ -143,12 +143,12 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         MudColor baseColor = new MudColor(mainColor);
         
         MudTheme colorfulTheme = DefaultTheme();
-        colorfulTheme.PaletteLight.Primary = Colors.Blue.Default;
-        colorfulTheme.PaletteLight.Secondary = Colors.Blue.Blue50;
-        colorfulTheme.PaletteLight.Tertiary = Colors.Blue.Blue50;
+        colorfulTheme.PaletteLight.Primary = baseColor;
+        colorfulTheme.PaletteLight.Secondary = baseColor.ColorLighten(0.5);
+        colorfulTheme.PaletteLight.Tertiary = baseColor.ColorLighten(0.5);
         
-        colorfulTheme.PaletteLight.AppbarBackground = Colors.Blue.Default; 
-        colorfulTheme.PaletteLight.AppbarText = Colors.Blue.Default;
+        colorfulTheme.PaletteLight.AppbarBackground = baseColor;
+        colorfulTheme.PaletteLight.AppbarText = baseColor.ColorLighten(0.9);
 
         colorfulTheme.PaletteDark.Primary = baseColor.ColorDarken(0.2);
         colorfulTheme.PaletteDark.Secondary = baseColor.ColorDarken(0.9);
@@ -248,7 +248,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
             PaletteDark = new PaletteDark()
             {
                 Primary = Colors.Shades.Black,
-                Secondary = Colors.Shades.Black,
+                Secondary = Colors.Shades.White,
                 Tertiary = Colors.Shades.Black,
                 AppbarBackground = Colors.Shades.Black,
                 AppbarText = Colors.Shades.White

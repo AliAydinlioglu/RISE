@@ -154,6 +154,10 @@ main {
 .mud-main-content.section {
     padding-top: 30px !important;
 }
+.toolbar .mud-icon-root.mud-svg-icon {
+    color: var(--mud-palette-secondary);
+}
+
 
 .custom-campus-panel .mud-expand-panel-header {
     background-color: var(--mud-palette-primary);
