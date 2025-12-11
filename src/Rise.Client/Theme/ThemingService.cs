@@ -31,7 +31,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         set
         {
             _theme = value;
-            AsyncToLocalStorage(LocalThemeStorageKey, value);
+            //AsyncToLocalStorage(LocalThemeStorageKey, value);
         }
     }
     
@@ -83,7 +83,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     
     public void Initialize()
     {
-        LoadThemeFromStorage(LocalThemeStorageKey, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
+        // LoadThemeFromStorage(LocalThemeStorageKey, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
         LoadThemeFromStorage(LocalDarkModeStorageKey, darkMode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkMode?.ToLower() ?? "false"));
         LoadThemeFromStorage(LocalImagesDisabledStorageKey, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff?.ToLower() ?? "false")); 
         LoadThemeFromStorage(LocalIsNeutralStorageKey, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "true"));
