@@ -200,7 +200,7 @@ main {
         width: 100%;
     }
     .mud-overlay{
-        z-index: 999999!important;
+        z-index: 1000!important;
     }
 
     .pricelist .mud-expand-panel .mud-expand-panel-header, .pricelist .mud-expand-panel .mud-expand-panel-content.mud-expand-panel-gutters{
@@ -217,7 +217,7 @@ main {
         width: 100%;
     }
     .mud-overlay{
-        z-index: 999999!important;
+        z-index: 1000!important;
     }
 
     .pricelist .mud-expand-panel .mud-expand-panel-header, .pricelist .mud-expand-panel .mud-expand-panel-content.mud-expand-panel-gutters{
@@ -231,7 +231,7 @@ main {
         width: 100%;
     }
     .mud-overlay{
-        z-index: 999999!important;
+        z-index: 1000!important;
     }
 
     .pricelist .mud-expand-panel .mud-expand-panel-header, .pricelist .mud-expand-panel .mud-expand-panel-content.mud-expand-panel-gutters{
