@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
-using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Utilities;
-using Rise.Shared.StudentClubs;
 using Rise.Shared.UserPreferences;
 
 namespace Rise.Client.Theme;
@@ -23,13 +21,18 @@ public interface IThemingService
 
 public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPreferenceService) : IThemingService
 {
+    public const string LocalThemeStorageKey = "theme";
+    public const string LocalDarkModeStorageKey = "darkmode";
+    public const string LocalIsNeutralStorageKey = "isNeutral";
+    public const string LocalImagesDisabledStorageKey = "imagesOff";
+    
     public MudTheme Theme
     {
         get => _theme;
         set
         {
             _theme = value;
-            AsyncToLocalStorage( UserPreferenceKeys.DarkMode, value);
+            AsyncToLocalStorage(LocalDarkModeStorageKey, value);
         }
     }
     
@@ -40,7 +43,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         set
         {
             _imagesOff = value;
-            AsyncToLocalStorage( UserPreferenceKeys.ImagesOff, value);
+            AsyncToLocalStorage(LocalImagesDisabledStorageKey, value);
         }
     }
 
@@ -60,7 +63,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
             {
                 ColorTheme();
             }
-            AsyncToLocalStorage(UserPreferenceKeys.IsNeutral, value);
+            AsyncToLocalStorage(LocalIsNeutralStorageKey, value);
         }
     }
     private bool _isNeutral = true;
@@ -81,11 +84,21 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     
     public void Initialize()
     {
-        LoadThemeFromStorage(UserPreferenceKeys.DarkMode, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
-        LoadThemeFromStorage(UserPreferenceKeys.DarkMode, darkmode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkmode?.ToLower() ?? "false"));
-        LoadThemeFromStorage(UserPreferenceKeys.ImagesOff, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff?.ToLower() ?? "false")); 
-        LoadThemeFromStorage(UserPreferenceKeys.IsNeutral, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "true"));
+        LoadThemeFromStorage(LocalThemeStorageKey, theme => Theme = JsonSerializer.Deserialize<MudTheme>(theme) ?? DefaultTheme());
+        LoadThemeFromStorage(LocalDarkModeStorageKey, darkMode => IsDarkMode = JsonSerializer.Deserialize<bool>(darkMode?.ToLower() ?? "false"));
+        LoadThemeFromStorage(LocalImagesDisabledStorageKey, imagesOff => ImagesOff = JsonSerializer.Deserialize<bool>(imagesOff?.ToLower() ?? "false")); 
+        LoadThemeFromStorage(LocalIsNeutralStorageKey, neutral => IsNeutral = JsonSerializer.Deserialize<bool>(neutral?.ToLower() ?? "true"));
         // load theme from user preferences
+        LoadThemeFromBackend().ContinueWith(userPreferences =>
+        {
+            var setting = userPreferences.Result.Settings;
+            //according to the backend, the theme is either "light" or "dark" and refuses to store the actual theme.
+            IsDarkMode = setting[UserPreferenceKeys.DarkMode]?.ToString()?.ToLower() != "light";
+            
+            //IsDarkMode = JsonSerializer.Deserialize<bool>(setting["darkMode"]?.ToString()?.ToLower() ?? "false");
+            ImagesOff = JsonSerializer.Deserialize<bool>(setting[UserPreferenceKeys.ImagesOff]?.ToString()?.ToLower() ?? "false");
+            IsNeutral = JsonSerializer.Deserialize<bool>(setting[UserPreferenceKeys.IsNeutral]?.ToString()?.ToLower() ?? "true");
+        });
     }
 
     /// <summary>
@@ -96,14 +109,13 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
     private void LoadThemeFromStorage(string key, Action<string?> setterCallback)
     {
         jsRuntime.InvokeAsync<string?>("localStorage.getItem", key).AsTask()
-            .ContinueWith(task =>
-            {
-                {
-                    userPreferenceService.TryGetPreferencesAsync(CancellationToken.None)
-                        .ContinueWith(backend => setterCallback(backend.Result.Value.UserPreferences.Settings[key].ToString()))
-                        .CatchAndLog();
-                } 
-            });
+            .ContinueWith(task => setterCallback(task.Result));
+    }
+
+    private Task<UserPreferenceDto.Preferences> LoadThemeFromBackend()
+    {
+        return userPreferenceService.TryGetPreferencesAsync(CancellationToken.None)
+            .ContinueWith(backend => backend.Result.Value.UserPreferences);
     }
 
     private async void AsyncToLocalStorage(string key, object value)
@@ -115,7 +127,6 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
             await jsRuntime.InvokeVoidAsync("localStorage.setItem", key, jsonValue);
             // enable for hot-saving to backend - disabled in favor of settings page save button
             //await userPreferenceService.UpdateSinglePreferenceAsync(key, jsonValue, CancellationToken.None);
-            
         }
         catch (Exception e)
         {
