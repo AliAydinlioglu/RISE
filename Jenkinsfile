@@ -11,7 +11,7 @@ pipeline {
         
         // Application server configuration
         // Default value; will be auto-resolved from ops inventory if available
-        APP_SERVER_HOST = '98.66.235.6'
+        APP_SERVER_HOST = '172.189.57.43'
         APP_SERVER_USER = 'deploy'
         APP_NAME = 'Rise.Server'
         APP_PORT = '5001'
@@ -20,7 +20,7 @@ pipeline {
         APP_DOMAIN = 'campus.badrlab.xyz'
         
         // Database configuration
-        DB_SERVER = '98.66.235.220'
+        DB_SERVER = '4.233.211.102'
         
         // Build configuration
         DOTNET_VERSION = '9.0'
@@ -166,21 +166,21 @@ pipeline {
                         
                         // Create release directory on remote server with proper permissions
                         sh """
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "sudo mkdir -p ${releaseDir} && sudo chown ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir} && sudo chmod 755 ${releaseDir}"
+                            ssh -p 4003 -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "sudo mkdir -p ${releaseDir} && sudo chown ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir} && sudo chmod 755 ${releaseDir}"
                         """
                         
                         // Transfer files directly using rsync
                         sh """
                             # Use rsync to transfer files directly (more reliable than tarball)
-                            rsync -avz --delete -e "ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no" ${PUBLISH_DIR}/ ${APP_SERVER_USER}@${APP_SERVER_HOST}:${releaseDir}/
+                            rsync -avz --delete -e "ssh -p 4003 -i \${SSH_KEY} -o StrictHostKeyChecking=no" ${PUBLISH_DIR}/ ${APP_SERVER_USER}@${APP_SERVER_HOST}:${releaseDir}/
                             
                             # Fix ownership on remote server
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "sudo chown -R ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir}"
+                            ssh -p 4003 -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} "sudo chown -R ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir}"
                         """
                     
                         // Fix permissions and deploy application
                         sh """
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << 'EOFMAIN'
+                            ssh -p 4003 -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << 'EOFMAIN'
                                 sudo chown -R ${APP_SERVER_USER}:${APP_SERVER_USER} ${releaseDir}
                                 sudo chmod -R 755 ${releaseDir}
                                 sudo rm -rf ${CURRENT_PATH}
@@ -247,7 +247,7 @@ EOFMAIN
                     withCredentials([sshUserPrivateKey(credentialsId: 'deploy-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                         // Check if service is running
                         sh """
-                            ssh -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << EOF
+                            ssh -p 4003 -i \${SSH_KEY} -o StrictHostKeyChecking=no ${APP_SERVER_USER}@${APP_SERVER_HOST} << EOF
                                 if ! sudo systemctl is-active --quiet ${APP_NAME}; then
                                     echo 'Service ${APP_NAME} is not running'
                                     sudo systemctl status ${APP_NAME}
