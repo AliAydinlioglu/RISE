@@ -31,7 +31,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         set
         {
             _theme = value;
-            AsyncToLocalStorage(LocalDarkModeStorageKey, value);
+            AsyncToLocalStorage(LocalThemeStorageKey, value);
         }
     }
     
@@ -73,7 +73,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
         set
         {
             _isDarkMode = value;
-            AsyncToLocalStorage("darkmode", value);
+            AsyncToLocalStorage(LocalDarkModeStorageKey, value);
         }
     }
     private bool _isDarkMode = false;
@@ -131,6 +131,7 @@ public class ThemingService(IJSRuntime jsRuntime, IUserPreferenceService userPre
 
     private async void AsyncToLocalStorage(string key, object value)
     {
+        if (value == null) return;
         Subscribe?.Invoke(this, this);
         try
         {
