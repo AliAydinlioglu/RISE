@@ -268,18 +268,10 @@ EOF
   post {
     success {
         echo "✅ Build succeeded!"
-        
-        mail to: "${EMAIL_RECIPIENTS}",
-             subject: "✅ LOCAL Build Success: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-             body: "The build was successful.\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}/console"
     }
 
     failure {
         echo "❌ Build failed!"
-
-        mail to: "${EMAIL_RECIPIENTS}",
-             subject: "❌ LOCAL Build FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-             body: "The build has failed.\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}/console\nCheck logs in Jenkins."
     }
 
     always {
