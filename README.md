@@ -444,7 +444,7 @@ The `dotnet-template` solution is structured to encourage scalability, maintaina
 
 ## Course
 
-There is .NET course from 1-2 years ago which is no longer maintained but still relevant. 
+There is .NET course from 1-2 years ago which is no longer maintained but still relevant..
 
 https://hogent-web.github.io/csharp/
 
