@@ -1,0 +1,12 @@
+**/.git
+**/.github
+**/.idea
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/TestResults
+**/publish
+**/*.user
+**/*.DotSettings.user
+**/.DS_Store

@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rise.Domain.Common;
 using Rise.Domain.Locations;
-using Rise.Domain.Products;
-using Rise.Domain.Projects;
 using Rise.Domain.SchoolEvents;
 using Rise.Domain.StudentActivities;
 using Rise.Persistence.Models.Identity;
@@ -24,8 +22,6 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
     {
         await RolesAsync();
         await UsersAsync();
-        await ProductsAsync();
-        await ProjectsAsync();
         await LocationsAsync();
         await StudentActivitiesAsync();
         await SchoolEventsAsync();
@@ -92,63 +88,6 @@ public class DbSeeder(ApplicationDbContext dbContext, RoleManager<ApplicationRol
         await dbContext.SaveChangesAsync();
     }
     
-    private async Task  ProductsAsync()
-    {
-        if (dbContext.Products.Any())
-            return;
-        
-        dbContext.Products.AddRange(
-            new Product{ Name = "Laptop", Description = "15-inch display, 16GB RAM" },
-            new Product{ Name = "Smartphone", Description = "6.5-inch screen, 128GB storage" },
-            new Product{ Name = "Headphones", Description = "Wireless noise-cancelling" },
-            new Product{ Name = "Keyboard", Description = "Mechanical RGB backlit" },
-            new Product{ Name = "Mouse", Description = "Ergonomic wireless mouse" },
-            new Product{ Name = "Monitor", Description = "27-inch 4K UHD display" },
-            new Product{ Name = "Printer", Description = "All-in-one inkjet printer" },
-            new Product{ Name = "Camera", Description = "Mirrorless 24MP with 4K video" },
-            new Product{ Name = "Smartwatch", Description = "Heart rate monitor, GPS" },
-            new Product{ Name = "Speaker", Description = "Bluetooth portable speaker" }
-        );
-
-        await dbContext.SaveChangesAsync();
-    }
-    
-    private async Task  ProjectsAsync()
-    {
-        if (dbContext.Projects.Any())
-            return;
-        
-        var technicians = await dbContext.Technicians.ToListAsync();
-        
-        if (!technicians.Any())
-            return;
-        
-        var addresses = new List<Domain.Projects.Address>
-        {
-            new Domain.Projects.Address("Koningstraat 12", "Bus 3A", "Brussel", "1000"),
-            new Domain.Projects.Address("Meir 45", "", "Antwerpen", "2000"),
-            new Domain.Projects.Address("Veldstraat 78", "2e verdieping", "Gent", "9000"),
-            new Domain.Projects.Address("Rue de la Loi 175", "", "Bruxelles", "1040"),
-            new Domain.Projects.Address("Place Saint-Lambert 8", "Bureau 12", "Liège", "4000"),
-        };
-
-        var rnd = new Random(123); // Using a seed so the random is always the same.
-        
-        var projects = new List<Project>
-        {
-            new("Website Redesign", technicians[rnd.Next(technicians.Count)], addresses[0]),
-            new("Mobile App Development", technicians[rnd.Next(technicians.Count)], addresses[1]),
-            new("Database Migration", technicians[rnd.Next(technicians.Count)], addresses[2]),
-            new("E-commerce Platform", technicians[rnd.Next(technicians.Count)], addresses[3]),
-            new("CRM Integration", technicians[rnd.Next(technicians.Count)], addresses[4])
-        };
-        
-        
-        
-        dbContext.Projects.AddRange(projects);
-        await dbContext.SaveChangesAsync();
-    }
-
     private async Task LocationsAsync()
     {
         if (dbContext.Locations.Any())

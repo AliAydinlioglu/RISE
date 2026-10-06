@@ -11,7 +11,6 @@ using Rise.Client.Identity;
 using Rise.Client.Offline;
 using Rise.Client.Identity;
 using Rise.Client.Offline;
-using Rise.Client.Products;
 using Rise.Client.Restaurant;
 using Rise.Client.Restaurant.Components;
 using Rise.Client.SchoolEvents;
@@ -104,10 +103,6 @@ try
 
     builder.Services.AddHttpClient<IRestoService, RestoService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>();
-
-    builder.Services.AddHttpClient<IProductService, ProductService>(client => { client.BaseAddress = baseUrl; })
-        .AddHttpMessageHandler<RiseHttpMessageHandler>()
-        .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
     builder.Services.AddHttpClient<ICalendarService, CalendarService>(client => { client.BaseAddress = baseUrl; })
         .AddHttpMessageHandler<RiseHttpMessageHandler>()

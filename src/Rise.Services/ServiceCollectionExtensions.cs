@@ -7,8 +7,6 @@ using Rise.Services.Contact;
 using Rise.Services.Courses;
 using Rise.Services.Identity;
 using Rise.Services.Navigation;
-using Rise.Services.Products;
-using Rise.Services.Projects;
 using Rise.Services.SchoolEvents;
 using Rise.Services.StudentActivities;
 using Rise.Services.User;
@@ -46,8 +44,6 @@ public static class ServiceCollectionExtensions
     {
         // Services
         services.AddScoped<IUserRepository, DummyUserService>();
-        services.AddScoped<IProductService, ProductService>();        
-        services.AddScoped<IProjectService, ProjectService>();        
         services.AddScoped<ICalendarService, CalendarService>();        
         services.AddScoped<INavigationService, NavigationService>();
         services.AddScoped<IUserService, UserService>();

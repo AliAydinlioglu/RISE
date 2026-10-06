@@ -1,35 +1,37 @@
+# Build and Output
 bin/
 obj/
-.idea
+out/
+publish/
+TestResults/
 /packages/
+
+# IDE and Editor
+.idea/
+.vs/
+.vscode/
 riderModule.iml
 /_ReSharper.Caches/
+*.user
+*.userosscache
+*.suo
+*.DotSettings.user
+
+# OS Files
 **/.DS_Store
-/.vs
+Thumbs.db
 
-
+# Database and Log files
 src/Rise.Server/Data/
-
 src/Rise.Server/Logs/
+*.db
+*.db-shm
+*.db-wal
 
-Rise.sln.DotSettings.user
-
-src/Rise.Server/Rise.db
-
-src/Rise.Server/Rise.db-shm
-
-src/Rise.Server/Rise.db-wal
-
-.idea/.idea.Rise/.idea/copilot.data.migration.agent.xml
-
-.idea/.idea.Rise/.idea/copilot.data.migration.ask.xml
-
-.idea/.idea.Rise/.idea/copilot.data.migration.edit.xml
-
-.idea/indexLayout.xml
-
-.idea/projectSettingsUpdater.xml
-
-.idea/vcs.xml
-
-.idea/workspace.xml
+# Environment and Secrets (keep example templates tracked)
+*.env
+*.env.local
+database.env
+!*.env.example
+*.local.json
+appsettings.Secrets.json

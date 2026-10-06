@@ -8,8 +8,6 @@ using Rise.Domain.Menu;
 using Rise.Domain.Navigation;
 using Rise.Domain.News;
 using Rise.Domain.Notifications;
-using Rise.Domain.Products;
-using Rise.Domain.Projects;
 using Rise.Domain.SchoolEvents;
 using Rise.Domain.StudentActivities;
 using Rise.Domain.UserPreferences;
@@ -29,12 +27,9 @@ namespace Rise.Persistence;
 /// <param name="opts"></param>
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(opts)
 {
-    public DbSet<Product> Products => Set<Product>();
-    public DbSet<Project> Projects => Set<Project>();
     public DbSet<RoleNavigationItemContentLocation> RoleNavigationItems => Set<RoleNavigationItemContentLocation>();
     public DbSet<NavigationItem> NavigationItems => Set<NavigationItem>();
     public DbSet<ContentLocation> ContentLocations => Set<ContentLocation>();
-    public DbSet<Technician> Technicians => Set<Technician>();
     public DbSet<StudentActivity> StudentActivities => Set<StudentActivity>();
     public DbSet<Location> Locations => Set<Location>();
     public DbSet<StudentClub> StudentClubs => Set<StudentClub>();

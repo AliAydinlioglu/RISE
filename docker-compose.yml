@@ -1,13 +1,18 @@
 services:
   rise-db:
-    image: mariadb:11
+    image: docker.io/library/mariadb:11
     restart: unless-stopped
     volumes:
       - rise_db_data:/var/lib/mysql
     env_file:
       - database.env
     ports:
-     - 3306:3306
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   rise-server:
     build:
@@ -16,14 +21,14 @@ services:
       args:
         API_BASE_URL: http://localhost:5000
     depends_on:
-      - rise-db
+      rise-db:
+        condition: service_healthy
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      # - ASPNETCORE_ENVIRONMENT=Development # Populates the database from Migration files (does not generate them)
+      - ASPNETCORE_ENVIRONMENT=Development # Automatically applies EF Core migrations and seeds mock campus data
     env_file:
       - database.env
     ports:
-      - "5000:8080"   # intern 8080, extern 5000
+      - "5000:8080"   # internal 8080, host 5000
     restart: unless-stopped
 
   rise-client:
@@ -38,7 +43,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports:
-      - "3000:80"     # extern 3000, intern 80
+      - "3000:80"     # host 3000, internal nginx 80
     restart: unless-stopped
 
 volumes:

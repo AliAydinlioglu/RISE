@@ -3,24 +3,26 @@ pipeline {
     
     environment {
         // GitHub repository configuration
-        GITHUB_REPO = 'https://github.com/HOGENT-RISE/dotnet-2526-tiao2.git'
-        GITHUB_USERNAME = 'badramr1'
+        GITHUB_REPO = env.GITHUB_REPO ?: 'https://github.com/HOGENT-RISE/dotnet-2526-tiao2.git'
+        GITHUB_USERNAME = env.GITHUB_USERNAME ?: 'dev-team'
 
         // Email notification configuration
-        EMAIL_RECIPIENTS = 'tiaopipeline@gmail.com,badr.amri@student.hogent.be,lars.devos@student.hogent.be,brent.lissens@student.hogent.be,jonathan.laekeman@student.hogent.be,jens.vanhoeylandt@student.hogent.be,iliass.assoued@student.hogent.be,ali.aydinlioglu@student.hogent.be,wim.dedulle@student.hogent.be,pieter.pletinckx@student.hogent.be,pieter.swillens@student.hogent.be,andy.wauters@student.hogent.be,marek.zakrzewski@student.hogent.be'
+        EMAIL_RECIPIENTS = env.EMAIL_RECIPIENTS ?: 'dev-team@example.com'
         
         // Application server configuration
-        // Default value; will be auto-resolved from ops inventory if available
-        APP_SERVER_HOST = '192.168.6.11'
-        APP_SERVER_USER = 'deploy'
+        // Default value; can be overridden via environment
+        APP_SERVER_HOST = env.APP_SERVER_HOST ?: '192.168.1.100'
+        APP_SERVER_USER = env.APP_SERVER_USER ?: 'deploy'
         APP_NAME = 'Rise.Server'
         APP_PORT = '5001'
         
-        // Domain configuration for HTTPS (Cloudflare)
-        APP_DOMAIN = 'campus.badrlab.xyz'
+        // Domain configuration for HTTPS
+        APP_DOMAIN = env.APP_DOMAIN ?: 'campus.example.com'
         
         // Database configuration
-        DB_SERVER = '192.168.6.12'
+        DB_SERVER = env.DB_SERVER ?: '192.168.1.101'
+        DB_USER = env.DB_USER ?: 'admin'
+        DB_PASSWORD = env.DB_PASSWORD ?: 'admin123'
         
         // Build configuration
         DOTNET_VERSION = '9.0'
@@ -155,7 +157,7 @@ pipeline {
                             # Backend config - use internal IP for server-to-server communication
                             if ls ${PUBLISH_DIR}/appsettings*.json >/dev/null 2>&1; then
                                 sed -i 's|https\\?://\\(localhost\\|127\\.0\\.0\\.1\\|0\\.0\\.0\\.0\\)\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${PUBLISH_DIR}/appsettings*.json
-                                perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=${DB_SERVER};port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none"/' ${PUBLISH_DIR}/appsettings.json
+                                perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=${DB_SERVER};port=3306;database=campusappdb;user=${DB_USER};password=${DB_PASSWORD};SslMode=none"/' ${PUBLISH_DIR}/appsettings.json
                             fi
                             
                             # Frontend config - use public domain for browser requests
@@ -195,8 +197,8 @@ pipeline {
 Environment=ASPNETCORE_ENVIRONMENT=Development
 Environment=ASPNETCORE_URLS=http://0.0.0.0:${APP_PORT}
 Environment=APP_SERVER_HOST=${APP_SERVER_HOST}
-Environment=ConnectionStrings__DatabaseConnection=server=${DB_SERVER};port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
-Environment=DatabaseConnection=server=${DB_SERVER};port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none
+Environment=ConnectionStrings__DatabaseConnection=server=${DB_SERVER};port=3306;database=campusappdb;user=${DB_USER};password=${DB_PASSWORD};SslMode=none
+Environment=DatabaseConnection=server=${DB_SERVER};port=3306;database=campusappdb;user=${DB_USER};password=${DB_PASSWORD};SslMode=none
 Environment=FrontendUrl=https://${APP_DOMAIN}
 WorkingDirectory=${CURRENT_PATH}
 Restart=always
@@ -208,7 +210,7 @@ EOFSERVICE
                                     sudo sed -i 's|https\\?://localhost\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${CURRENT_PATH}/appsettings*.json
                                     sudo sed -i 's|https\\?://127\\.0\\.0\\.1\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${CURRENT_PATH}/appsettings*.json
                                     sudo sed -i 's|https\\?://0\\.0\\.0\\.0\\(:[0-9]\\+\\)\\?|http://${APP_SERVER_HOST}|g' ${CURRENT_PATH}/appsettings*.json
-                                    sudo perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=${DB_SERVER};port=3306;database=campusappdb;user=admin;password=admin123;SslMode=none"/' ${CURRENT_PATH}/appsettings.json
+                                    sudo perl -i -pe 's/"DatabaseConnection"\\s*:\\s*"[^"]*"/"DatabaseConnection": "server=${DB_SERVER};port=3306;database=campusappdb;user=${DB_USER};password=${DB_PASSWORD};SslMode=none"/' ${CURRENT_PATH}/appsettings.json
                                 fi
 
                                 # Frontend config updates on server - use public domain

@@ -444,6 +444,8 @@
     <_ContentIncludedByDefault Remove="Components\Navigation\NavBarFooter.razor" />
     <_ContentIncludedByDefault Remove="Components\Navigation\NavBody.razor" />
     <_ContentIncludedByDefault Remove="Components\Navigation\NavItem.razor" />
+    <_ContentIncludedByDefault Remove="Products\Create.razor" />
+    <_ContentIncludedByDefault Remove="Products\Index.razor" />
   </ItemGroup>
 
 </Project>
