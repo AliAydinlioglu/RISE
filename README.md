@@ -50,7 +50,7 @@ RISE is a comprehensive digital campus companion engineered for **HOGENT** stude
 
 ---
 
-### 1. 🏠 Campus Portal Dashboard & Mobile Experience
+### 1. Campus Portal Dashboard & Mobile Experience
 The home dashboard provides an intuitive launchpad with quick navigation tiles to all campus services. On smartphones and tablets, the interface transforms into a native-like PWA experience with a dedicated bottom navigation bar.
 
 | Desktop Dashboard | Mobile PWA View |
@@ -146,19 +146,19 @@ RISE includes a documented Blazor UI component library built on MudBlazor, ensur
 
       Package: Microsoft.EntityFrameworkCore.SqlServer
 
-      🔗 [NuGet Link](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/)
+      [NuGet Link](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.SqlServer/)
 
    2. **MariaDB**
 
       Package: Pomelo.EntityFrameworkCore.MySql
 
-      🔗 [NuGet Link](https://www.nuget.org/packages/Pomelo.EntityFrameworkCore.MySql/)
+      [NuGet Link](https://www.nuget.org/packages/Pomelo.EntityFrameworkCore.MySql/)
 
    3. **PostgreSQL**
 
       Package: Npgsql.EntityFrameworkCore.PostgreSQL
 
-      🔗 [NuGet Link](https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/)
+      [NuGet Link](https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/)
 
    4. Mongo etc... 
 
