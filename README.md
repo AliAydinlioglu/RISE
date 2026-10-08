@@ -29,6 +29,103 @@
 - [Shouldly](https://docs.shouldly.org) - Helper for testing.
 - [Destructurama.Attributed](https://github.com/destructurama/attributed) - Masking for sensitive datatypes.
 
+---
+
+## Application Showcase & Screenshots
+
+RISE is a comprehensive digital campus companion engineered for **HOGENT** students, faculty, and campus visitors. Built with **Blazor WebAssembly** on **ASP.NET Core 9**, the platform integrates student community life, campus news, events, dining menus, facilities directories, and support services into a cohesive, responsive experience.
+
+### Feature Overview
+
+| Module | Features & Capabilities | Screenshots |
+|---|---|---|
+| **Campus Dashboard** | Central launcher with dynamic feature blocks, responsive navigation, and PWA mobile layout. | [Desktop](screenshots/01-home-dashboard.png) / [Mobile](screenshots/14-mobile-app-view.png) |
+| **Student Activities** | Club-organized events, date badges, location tags, schedule times, and detailed activity briefings. | [Activities Overview](screenshots/02-student-activities.png) / [Detail View](screenshots/03-activity-detail.png) |
+| **School Events** | Interactive weekly calendar timeline, category classifications, and direct registration links. | [Events Calendar](screenshots/04-school-events.png) / [Event Detail](screenshots/05-event-detail.png) |
+| **Campus Dining (Resto)** | Weekly rotating menu with allergen filters, dietary badges, and categorized price list for students vs. externals. | [Weekly Menu](screenshots/06-restaurant-weekmenu.png) / [Price List](screenshots/07-restaurant-prijslijst.png) |
+| **Campus News** | Visual news feed with high-resolution imagery, article summaries, and rich content reader. | [News Feed](screenshots/08-campus-news.png) / [Article View](screenshots/09-news-article-detail.png) |
+| **Campus Directory** | Multi-campus guide covering all 11 HOGENT campuses with public transit routes, parking, and building maps. | [Campus List](screenshots/10-campuses-directory.png) / [Campus Map](screenshots/11-campus-detail-map.png) |
+| **Contact & Helpdesk** | Multi-campus student administration, facility opening hours, direct contacts, and exam notices. | [Contact Directory](screenshots/12-contact-directory.png) |
+| **Design System** | Modular Blazor & MudBlazor design system with reusable typography, buttons, and navigation blocks. | [Component Index](screenshots/13-ui-components-library.png) |
+
+---
+
+### 1. 🏠 Campus Portal Dashboard & Mobile Experience
+The home dashboard provides an intuitive launchpad with quick navigation tiles to all campus services. On smartphones and tablets, the interface transforms into a native-like PWA experience with a dedicated bottom navigation bar.
+
+| Desktop Dashboard | Mobile PWA View |
+|:---:|:---:|
+| ![Home Dashboard](screenshots/01-home-dashboard.png) | ![Mobile App View](screenshots/14-mobile-app-view.png) |
+| *Desktop view with HOGENT banner and navigation modules* | *Responsive smartphone layout with bottom navigation bar* |
+
+---
+
+### 2. Student Activities & Community
+Students can browse social gatherings, workshops, game nights, and networking events organized by student clubs. Each card displays date badges, start/end times, and campus locations.
+
+| Student Activities Feed | Activity Detail View |
+|:---:|:---:|
+| ![Student Activities](screenshots/02-student-activities.png) | ![Activity Detail](screenshots/03-activity-detail.png) |
+| *Browse upcoming student club activities with date and campus tags* | *Detailed view with organizer details, schedule, and venue address* |
+
+---
+
+### 3. School Events & Interactive Calendar
+The events calendar features a day-by-day navigation timeline to discover academic conferences, guest lectures, theater nights, and student wellbeing sessions with direct registration.
+
+| Campus Events Calendar | Event Details & Registration |
+|:---:|:---:|
+| ![School Events](screenshots/04-school-events.png) | ![Event Detail](screenshots/05-event-detail.png) |
+| *Weekly timeline view with categorized academic and campus events* | *Event details with pricing, location, calendar sync, and signup* |
+
+---
+
+### 4. Campus Restaurant: Weekly Menu & Price List
+Stay up to date with daily cafeteria offerings. View fresh soups, hot meals, salads, and sandwiches with allergen indications, alongside full student and external visitor price lists.
+
+| Rotating Weekly Menu | Itemized Price List |
+|:---:|:---:|
+| ![Restaurant Weekmenu](screenshots/06-restaurant-weekmenu.png) | ![Restaurant Price List](screenshots/07-restaurant-prijslijst.png) |
+| *Daily menu items filtered by campus with allergen and dietary indicators* | *Expandable pricing categories comparing student and external rates* |
+
+---
+
+### 5. Campus News & Announcements
+Stay informed with real-time university announcements, academic schedule releases, student union initiatives, and public transit alerts.
+
+| News & Announcements Feed | Article Reader View |
+|:---:|:---:|
+| ![Campus News](screenshots/08-campus-news.png) | ![News Article Detail](screenshots/09-news-article-detail.png) |
+| *Curated campus news feed with featured photography and publication dates* | *Formatted article reader with recommendations and action plans* |
+
+---
+
+### 6. Campuses Directory & Interactive Floor Plans
+Explore all 11 HOGENT campus sites. Each campus features detailed directions, parking regulations, Low Emission Zone (LEZ) notices, and high-resolution building maps.
+
+| Multi-Campus Directory | Campus Schoonmeersen Detail & Map |
+|:---:|:---:|
+| ![Campuses Directory](screenshots/10-campuses-directory.png) | ![Campus Detail Map](screenshots/11-campus-detail-map.png) |
+| *Collapsible guide for all 11 campus locations across Gent, Aalst, and Melle* | *In-depth site guide with public transit details, parking rules, and campus map* |
+
+---
+
+### 7. Contact & Student Support Services
+Quickly find student administration desks, study coaches, and counseling facilities with live open/closed status indicators, opening hours, contact numbers, and campus filter dropdowns.
+
+![Contact Directory](screenshots/12-contact-directory.png)
+*Interactive student secretariat directory with real-time status and exam opening hours*
+
+---
+
+### 8. Design System & UI Component Library
+RISE includes a documented Blazor UI component library built on MudBlazor, ensuring unified styling, accessibility, and consistency across all modules.
+
+![UI Components Library](screenshots/13-ui-components-library.png)
+*Component showcase displaying design tokens, buttons, headers, and navigation elements*
+
+---
+
 ## Software 
 1. Install [Rider](https://www.jetbrains.com/rider/) or [Visual Studio](https://visualstudio.microsoft.com/)
 2. Make sure you have [ASP.NET 9](https://dotnet.microsoft.com/en-us/download) installed (comes with Rider and Visual Studio) 
